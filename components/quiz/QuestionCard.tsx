@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/quiz/CodeBlock";
 import { TermInput } from "@/components/quiz/TermInput";
 import { ExplanationPanel } from "@/components/quiz/ExplanationPanel";
@@ -15,6 +16,7 @@ interface QuestionCardProps {
   isHintShown: boolean;
   onToggleHint: () => void;
   onSubmit: (value: string) => void;
+  onSkip: () => void;
 }
 
 export function QuestionCard({
@@ -23,6 +25,7 @@ export function QuestionCard({
   isHintShown,
   onToggleHint,
   onSubmit,
+  onSkip,
 }: QuestionCardProps) {
   const [value, setValue] = useState("");
 
@@ -59,6 +62,14 @@ export function QuestionCard({
         isHintShown={isHintShown}
         onToggleHint={onToggleHint}
       />
+
+      {!isAnswered && (
+        <div className="flex justify-end">
+          <Button type="button" variant="outline" size="sm" onClick={onSkip}>
+            건너뛰기
+          </Button>
+        </div>
+      )}
 
       {isAnswered && (
         <div className="flex flex-col gap-4">

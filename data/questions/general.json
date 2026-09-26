@@ -21,7 +21,7 @@
     "termAnswers": ["salt", "솔트", "salting", "솔팅"],
     "explanation": {
       "definition": "Salt(솔트)는 비밀번호를 해시화하기 전에 추가하는 임의의 값으로, 동일한 비밀번호를 가진 사용자라도 해시 결과가 서로 달라지게 만들어 미리 계산된 해시값 테이블(레인보우 테이블)을 이용한 공격을 무력화한다.",
-      "devContext": "bcrypt, scrypt, argon2 같은 비밀번호 해시 함수는 내부적으로 솔트 생성과 저장을 자동으로 처리해주므로, 직접 SHA-256 등으로 비밀번호를 해시하지 말고 반드시 이런 전용 라이브러리(`bcrypt.hash(password, saltRounds)`)를 사용해야 한다. 솔트 없이 단순 해시만 저장하는 것은 신입 개발자가 가장 흔히 저지르는 인증 구현 실수 중 하나다."
+      "devContext": "bcrypt, scrypt, argon2 같은 비밀번호 해시 함수는 내부적으로 솔트 생성과 저장을 자동으로 처리해주므로, 직접 SHA-256 등으로 비밀번호를 해시하지 말고 반드시 이런 전용 라이브러리를 사용해야 한다. Spring Security를 쓴다면 `BCryptPasswordEncoder`를 `PasswordEncoder` 빈으로 등록해 회원가입 시 `encoder.encode(rawPassword)`로 저장하고, `DaoAuthenticationProvider`가 로그인 시 자동으로 솔트가 포함된 해시를 비교하도록 위임하면 된다. 솔트 없이 단순 해시만 저장하는 것은 신입 개발자가 가장 흔히 저지르는 인증 구현 실수 중 하나다."
     },
     "tags": ["cryptography", "hash", "salt", "password"]
   },
@@ -34,7 +34,7 @@
     "termAnswers": ["mac", "강제적 접근통제", "강제적접근통제", "mandatory access control"],
     "explanation": {
       "definition": "MAC(Mandatory Access Control, 강제적 접근통제)는 주체와 객체에 보안 등급(Security Level/Label)을 부여하고, 자원 소유자가 아닌 시스템(관리자 정책)이 접근 허용 여부를 강제로 결정하는 모델이다. 신원 기반으로 소유자가 직접 권한을 설정하는 DAC와 대비된다.",
-      "devContext": "일반적인 웹 애플리케이션 권한 설계는 대부분 DAC/RBAC 위주지만, SELinux나 AppArmor 같은 리눅스 커널 수준의 강제적 접근통제는 MAC 개념을 그대로 구현한 것이다. 컨테이너를 운영할 때 SELinux 정책(예: `container_t` 도메인)이 왜 특정 시스템 콜이나 파일 접근을 차단하는지 이해하려면 MAC의 '소유자도 마음대로 못 바꾸는 강제 정책'이라는 특성을 알아야 한다."
+      "devContext": "Spring Boot 애플리케이션의 권한 설계(Spring Security의 `hasRole`/`hasAuthority`)는 대부분 DAC/RBAC 위주지만, SELinux나 AppArmor 같은 리눅스 커널 수준의 강제적 접근통제는 MAC 개념을 그대로 구현한 것이다. Spring Boot 애플리케이션을 담은 컨테이너를 운영할 때 SELinux 정책(예: `container_t` 도메인)이 왜 특정 시스템 콜이나 파일 접근을 차단하는지 이해하려면 MAC의 '소유자도 마음대로 못 바꾸는 강제 정책'이라는 특성을 알아야 한다."
     },
     "tags": ["access-control", "mac", "selinux"]
   },
@@ -47,7 +47,7 @@
     "termAnswers": ["전자서명", "digital signature"],
     "explanation": {
       "definition": "전자서명(Digital Signature)은 송신자의 개인키로 메시지의 해시값을 서명하고, 수신자가 송신자의 공개키로 서명을 검증하는 방식으로 메시지 무결성, 송신자 인증, 부인방지(작성자가 나중에 서명 사실을 부인할 수 없음)를 제공하는 공개키 기반 기술이다.",
-      "devContext": "JWT의 RS256 서명 방식이 바로 전자서명의 원리를 그대로 사용한다. 서버가 개인키로 토큰을 서명하고 클라이언트/다른 서비스는 공개키로 검증하는데, 개인키가 유출되거나 키 로테이션 없이 오래 방치되면 위조 토큰이 정상 토큰처럼 검증을 통과할 수 있으므로 키 관리 정책을 별도로 수립해야 한다."
+      "devContext": "JWT의 RS256 서명 방식이 바로 전자서명의 원리를 그대로 사용한다. Spring Security OAuth2 Resource Server를 쓴다면 `spring.security.oauth2.resourceserver.jwt.public-key-location`이나 JWK Set URI를 설정해 공개키로 토큰 서명을 검증하도록 위임할 수 있고, 토큰 발급 서버는 개인키로 서명한다. 개인키가 유출되거나 키 로테이션 없이 오래 방치되면 위조 토큰이 정상 토큰처럼 검증을 통과할 수 있으므로, `kid`(Key ID) 기반 키 로테이션 정책을 별도로 수립해야 한다."
     },
     "tags": ["cryptography", "digital-signature", "pki"]
   },
@@ -60,7 +60,7 @@
     "termAnswers": ["눈사태 효과", "애벌런치 효과", "avalanche effect"],
     "explanation": {
       "definition": "눈사태 효과(Avalanche Effect)는 해시 함수의 입력값이 아주 조금만 달라져도 출력 해시값이 통계적으로 완전히 다르게 나타나는 성질로, 좋은 해시 함수가 갖춰야 할 핵심 특성 중 하나다. 이 특성 덕분에 원본 데이터가 아주 조금만 변경되어도 해시값 비교만으로 변조 여부를 탐지할 수 있다.",
-      "devContext": "CI/CD 파이프라인에서 빌드 아티팩트나 배포 이미지의 SHA-256 체크섬을 비교해 무결성을 검증하는 것이 바로 이 성질에 의존한다. 파일이 한 글자만 바뀌어도 해시값이 완전히 달라지므로, 체크섬 불일치는 곧 파일이 변조되었거나 손상되었다는 강력한 신호로 사용할 수 있다."
+      "devContext": "CI/CD 파이프라인에서 빌드 아티팩트나 배포 이미지의 SHA-256 체크섬을 비교해 무결성을 검증하는 것이 바로 이 성질에 의존한다. Spring Boot 프로젝트를 Gradle/Maven으로 빌드해 만든 fat jar나 Docker 이미지도 CI에서 체크섬을 생성해두고, 배포 단계에서 그 값을 재확인하면 빌드 산출물이 배포 과정 중간에 변조되지 않았는지 검증할 수 있다. 파일이 한 글자만 바뀌어도 해시값이 완전히 달라지므로, 체크섬 불일치는 곧 파일이 변조되었거나 손상되었다는 강력한 신호로 사용할 수 있다."
     },
     "tags": ["cryptography", "hash", "avalanche-effect"]
   },
@@ -73,8 +73,73 @@
     "termAnswers": ["가용성", "availability"],
     "explanation": {
       "definition": "가용성(Availability)은 정보보안의 3대 요소(기밀성, 무결성, 가용성) 중 하나로, 인가된 사용자가 필요할 때 정보와 시스템 자원에 정상적으로 접근하고 사용할 수 있어야 한다는 원칙이다. DoS 공격은 가용성을 직접적으로 침해하는 대표적인 공격 유형이다.",
-      "devContext": "실무에서 가용성을 확보하는 대표적인 방법은 서버/DB 이중화, 오토스케일링, 헬스체크 기반 로드밸런싱, CDN·WAF를 통한 DDoS 완화, Rate Limiting 등이 있다. 기능 개발에만 집중하다 보면 놓치기 쉬운 요소이므로, 장애 대응(SRE) 관점에서 SLA/SLO를 정의할 때 가용성을 명시적인 목표로 삼는 것이 중요하다."
+      "devContext": "실무에서 가용성을 확보하는 대표적인 방법은 서버/DB 이중화, 오토스케일링, 헬스체크 기반 로드밸런싱, CDN·WAF를 통한 DDoS 완화, Rate Limiting 등이 있다. Spring Boot에서는 `spring-boot-starter-actuator`의 `/actuator/health`를 쿠버네티스 liveness/readiness probe나 로드밸런서 헬스체크에 연결해 장애 인스턴스를 자동으로 트래픽에서 제외할 수 있고, Resilience4j로 서킷 브레이커·재시도·Rate Limiter를 적용하면 특정 의존성 장애가 전체 서비스 가용성으로 번지는 것을 막을 수 있다. 기능 개발에만 집중하다 보면 놓치기 쉬운 요소이므로, SRE 관점에서 SLA/SLO를 정의할 때 가용성을 명시적인 목표로 삼는 것이 중요하다."
     },
     "tags": ["cia-triad", "availability", "dos"]
+  },
+  {
+    "id": "gen-007",
+    "category": "general",
+    "type": "term_identification",
+    "title": "공개된 통신망에서의 비밀키 공유 기법",
+    "question": "사전에 비밀 정보를 공유하지 않은 두 당사자가 공개된(도청 가능한) 통신 채널을 통해 각자의 개인값과 공개값을 만들어 교환한 뒤, 이산대수 문제의 어려움에 기반해 제3자는 알 수 없는 동일한 공유 비밀값을 유도해내는 키 교환 알고리즘은 무엇인가?",
+    "termAnswers": ["디피-헬만", "디피헬만", "디피-헬만 키 교환", "diffie-hellman", "diffie hellman key exchange", "dh"],
+    "explanation": {
+      "definition": "디피-헬만(Diffie-Hellman) 키 교환은 1976년 발표된 최초의 공개키 기반 키 합의 알고리즘으로, 유한체 상의 이산대수 문제의 계산적 어려움에 기반해 두 당사자가 공개 채널로 값을 주고받는 것만으로 동일한 공유 비밀키를 유도한다. 이 알고리즘 자체는 암호화나 인증 기능은 제공하지 않고 오직 키 분배(교환) 목적으로만 사용되며, 중간자 공격을 막으려면 별도의 인증 절차가 필요하다.",
+      "devContext": "TLS 1.2/1.3의 ECDHE 암호 스위트가 바로 디피-헬만의 타원곡선 변형을 사용해 매 세션마다 새로운 대칭키를 안전하게 교환한다. Spring Boot 애플리케이션에서 HTTPS를 적용할 때 내장 톰캣의 `server.ssl.ciphers`에 `TLS_ECDHE_*` 계열 스위트를 우선 지정하면 순방향 비밀성(Forward Secrecy)을 확보할 수 있어, 서버 개인키가 나중에 유출되더라도 과거 세션의 통신 내용은 복호화되지 않는다. 반대로 정적 RSA 키 교환만 허용하면 서버 개인키 유출 시 과거 트래픽 전체가 복호화될 위험이 있으므로, 운영 환경에서는 SSL Labs 점검 등으로 스위트 목록을 확인해 DH 기반 키 교환을 활성화해두는 것이 실무 체크리스트에 들어간다."
+    },
+    "tags": ["cryptography", "key-exchange", "diffie-hellman"]
+  },
+  {
+    "id": "gen-008",
+    "category": "general",
+    "type": "term_identification",
+    "title": "티켓 기반 제3자 인증 시스템",
+    "question": "클라이언트가 자신의 비밀번호를 네트워크로 직접 전송하지 않고, 중앙 인증 서버(AS)로부터 티켓 부여 티켓(TGT)을 발급받은 뒤 이를 이용해 티켓 발급 서버(TGS)에서 개별 서비스용 티켓을 다시 발급받아 접속하는 대칭키 기반의 싱글사인온(SSO) 인증 프로토콜은 무엇인가?",
+    "termAnswers": ["커버로스", "케르베로스", "kerberos"],
+    "explanation": {
+      "definition": "커버로스(Kerberos)는 Needham-Schroeder 프로토콜을 기반으로 MIT에서 개발한 대칭키 기반의 티켓 발급형 제3자 인증 프로토콜이다. 클라이언트는 AS(Authentication Server)에서 TGT를 발급받고, 이를 TGS(Ticket Granting Server)에 제시해 개별 응용 서버용 세션 티켓을 발급받아 인증을 완료하며, 티켓에는 타임스탬프가 포함되어 재전송 공격을 방지하고 KDC를 통한 SSO를 지원한다.",
+      "devContext": "Spring Boot에서 사내 인트라넷 서비스를 SSO로 묶을 때 SPNEGO/Kerberos 인증을 지원하는 Spring Security Kerberos 확장을 붙이면, 사용자가 사내 AD(Active Directory)에 한 번 로그인한 세션만으로 별도 로그인 폼 없이 여러 백엔드 서비스에 접근할 수 있다. `KerberosServiceAuthenticationProvider`와 `SunJaasKerberosTicketValidator`를 빈으로 등록해 SPNEGO 토큰을 검증하도록 구성하는 방식이 대표적이며, 타임스탬프 기반 재전송 방지 특성 때문에 도메인 컨트롤러와 애플리케이션 서버 간 시간 동기화(NTP)가 어긋나면 인증이 실패하는 점도 운영 시 흔히 겪는 이슈다."
+    },
+    "tags": ["authentication", "kerberos", "sso"]
+  },
+  {
+    "id": "gen-009",
+    "category": "general",
+    "type": "term_identification",
+    "title": "군사 기밀 등급 보호를 위한 정보흐름 통제 모델",
+    "question": "주체와 객체에 보안 등급을 부여하고, 낮은 등급의 주체가 높은 등급의 정보를 읽지 못하게 하며(No Read Up) 높은 등급의 주체가 자신보다 낮은 등급으로 정보를 내려쓰지 못하게(No Write Down) 제한함으로써 오직 기밀성 유지만을 목적으로 하는 최초의 수학적 보안 모델은 무엇인가?",
+    "termAnswers": ["벨라파듈라", "벨-라파듈라", "벨라파듈라 모델", "bell-lapadula", "bell lapadula model", "blp"],
+    "explanation": {
+      "definition": "벨-라파듈라(Bell-LaPadula, BLP) 모델은 군사 시스템의 기밀 등급 보호를 위해 고안된 최초의 수학적 보안 모델로, 상태 전이 시스템에서 주체·객체에 보안 레이블을 부여하고 단순 보안 규칙(No Read Up)과 스타 속성(No Write Down)을 적용해 기밀성 유지를 보장한다. 무결성이 아닌 오직 기밀성 보호만을 목표로 하며, 무결성을 목표로 하는 비바(Biba) 모델과 규칙이 정반대다.",
+      "devContext": "이 모델 자체를 Spring Boot 애플리케이션 코드에 직접 구현하는 경우는 드물지만, 다단계 보안(Multi-Level Security)이 필요한 공공/국방 시스템에서 리소스 서버에 `@PreAuthorize`로 보안 등급 필드를 비교하는 커스텀 `PermissionEvaluator`를 작성할 때 BLP의 No Read Up/No Write Down 원칙을 그대로 로직에 반영한다. 예를 들어 문서 엔티티에 `securityLevel` 필드를 두고, 조회 시 사용자등급이 문서등급 이상인지 검사하고 하향 반출(쓰기) 시에는 별도 승인 절차를 강제하는 서비스 로직을 넣으면 BLP 원칙을 애플리케이션 레벨에서 흉내낼 수 있다. SELinux의 MLS(Multi-Level Security) 정책도 이 모델을 커널 수준에서 구현한 사례이므로, 컨테이너 배포 환경에서 특정 라벨의 프로세스가 상위 등급 파일을 읽지 못하는 이유를 이해하는 데 도움이 된다."
+    },
+    "tags": ["access-control", "bell-lapadula", "confidentiality", "security-model"]
+  },
+  {
+    "id": "gen-010",
+    "category": "general",
+    "type": "term_identification",
+    "title": "서로 다른 두 입력이 같은 해시값을 만들지 못해야 한다는 성질",
+    "question": "해시 함수에서 임의의 서로 다른 두 입력 메시지를 골랐을 때, 이 둘의 해시값이 우연히 일치하는 쌍을 계산적으로 찾아내기 어려워야 한다는 성질로, n비트 해시라면 생일자 역설에 의해 대략 2^(n/2)번의 시도만으로 무력화될 수 있는 해시 함수의 보안 요구사항은 무엇인가?",
+    "termAnswers": ["충돌 저항성", "충돌저항성", "강한 충돌 내성", "collision resistance"],
+    "explanation": {
+      "definition": "충돌 저항성(Collision Resistance)은 해시 함수에서 h(m1) = h(m2)가 되는 서로 다른 임의의 메시지 쌍 (m1, m2)을 찾는 것이 계산적으로 어려워야 한다는 성질이다. 역상 저항성·제2역상 저항성과 달리 특정 메시지를 고정하지 않고 임의의 두 메시지 쌍을 대상으로 하며, 생일자 역설(Birthday Paradox)에 의해 n비트 해시의 충돌쌍은 이론적으로 약 2^(n/2)번의 시도로 발견될 수 있어 MD5(128비트), SHA-1(160비트)처럼 해시 길이가 짧은 함수는 이미 실질적인 충돌 공격에 뚫린 바 있다.",
+      "devContext": "Spring Boot에서 파일 업로드 무결성 검증이나 캐시 키 생성에 해시를 사용할 때, 이미 충돌 공격이 실증된 MD5나 SHA-1을 `MessageDigest.getInstance(\"MD5\")`처럼 그대로 쓰면 공격자가 악의적인 파일을 원본과 동일한 해시값으로 위조해 검증 로직을 우회할 수 있다. 따라서 무결성 검증, 전자서명, JWT 서명(`HS256`/`RS256`) 등 보안이 중요한 용도에서는 반드시 SHA-256 이상(SHA-2/SHA-3 계열)을 사용하도록 `MessageDigest.getInstance(\"SHA-256\")` 호출이나 `Jwts.builder().signWith(...)` 설정을 점검해야 한다. 단순 캐시 키나 체크섬 용도가 아니라 보안 무결성이 걸린 곳이라면 해시 알고리즘 선택 자체를 코드 리뷰 체크리스트에 포함시켜야 한다."
+    },
+    "tags": ["cryptography", "hash", "collision-resistance"]
+  },
+  {
+    "id": "gen-011",
+    "category": "general",
+    "type": "term_identification",
+    "title": "자원 소유자가 직접 권한을 지정하는 접근통제 모델",
+    "question": "객체(자원)의 소유자가 자신의 판단에 따라 다른 사용자에게 접근 권한을 직접 부여하거나 회수할 수 있는 접근통제 모델로, 소유자가 임의로(discretion) 정책을 결정할 수 있어 유연하지만 권한이 의도치 않게 전파되기 쉬운 모델은 무엇인가?",
+    "termAnswers": ["dac", "임의적 접근통제", "임의적접근통제", "discretionary access control"],
+    "explanation": {
+      "definition": "DAC(Discretionary Access Control, 임의적 접근통제)는 객체의 소유자가 스스로 접근 권한을 부여·회수할 수 있는 접근통제 모델로, 리눅스 파일 시스템의 소유자/그룹/기타 권한(rwx)이나 ACL이 대표적인 구현 사례다. 소유자 재량에 따라 세밀한 권한 설정이 가능하지만, 권한을 받은 사용자가 다시 제3자에게 권한을 넘길 수 있어 관리자가 통제하기 어려운 권한 전파(트로이 목마 공격 등)에 취약하다는 한계가 있다.",
+      "devContext": "Spring Boot 애플리케이션에서 게시글이나 파일 리소스에 대해 작성자 본인만 수정/삭제 가능하도록 `@PreAuthorize(\"#post.owner == authentication.name\")` 같은 SpEL 표현식이나 커스텀 `PermissionEvaluator`로 소유자 기반 검사를 구현하는 것이 DAC 개념을 애플리케이션 레벨에 적용한 예다. 리눅스 서버에 배포된 Spring Boot jar 파일이나 로그 디렉터리의 `chmod`/`chown` 권한 설정도 전형적인 DAC이며, 소유자가 실수로 `chmod 777`을 걸어두면 다른 사용자가 임의로 파일을 읽고 쓸 수 있게 되는 것이 DAC의 대표적인 취약점 사례다. RBAC/MAC과 달리 중앙 관리자가 아닌 개별 소유자가 권한을 결정하므로, 대규모 조직에서는 DAC만으로는 일관된 보안 정책을 강제하기 어려워 RBAC나 MAC과 병행하는 경우가 많다."
+    },
+    "tags": ["access-control", "dac", "authorization"]
   }
 ]

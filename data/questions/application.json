@@ -22,7 +22,7 @@
     "termAnswers": ["디렉터리 순회", "디렉토리 순회", "경로 조작", "경로 탐색", "directory traversal", "path traversal"],
     "explanation": {
       "definition": "Directory Traversal(디렉터리 순회, Path Traversal)은 파일 경로를 나타내는 입력값을 검증하지 않고 그대로 사용할 때, '../' 등을 이용해 애플리케이션이 허용하지 않은 상위 디렉터리의 파일에 접근하는 공격이다.",
-      "devContext": "Node.js에서 사용자가 지정한 파일명을 그대로 `fs.readFile(userInput)`에 넘기면 위와 같은 공격에 그대로 노출된다. `path.normalize()`로 경로를 정규화한 뒤, 결과 경로가 허용된 기준 디렉터리(`path.resolve(baseDir)`) 하위에 있는지 `startsWith`로 검증하거나, 애초에 파일명을 화이트리스트/ID 매핑 방식으로만 받는 것이 안전하다."
+      "devContext": "Spring Boot에서 `Paths.get(baseDir, userInput)`처럼 사용자 입력을 그대로 파일 경로에 붙이면 동일한 공격에 노출된다. `path.normalize()`에 해당하는 `Path.normalize()`로 경로를 정규화한 뒤, 결과 경로가 허용된 기준 디렉터리(`Path.resolve(baseDir).normalize()`) 하위에 있는지 `startsWith`로 검증해야 하며, 정적 리소스를 서빙하는 `ResourceHttpRequestHandler`를 직접 구성할 때도 동일한 검증이 필요하다. 가능하면 파일명을 직접 받지 않고 DB에 저장된 ID로 매핑해 조회하는 방식이 가장 안전하다."
     },
     "tags": ["path-traversal", "owasp", "file-access", "input-validation"]
   },
@@ -36,7 +36,7 @@
     "termAnswers": ["sql injection", "sql 인젝션", "sqli", "sql 삽입"],
     "explanation": {
       "definition": "SQL Injection(SQL 삽입)은 사용자 입력값이 SQL 쿼리 문자열에 그대로 결합되는 지점을 악용해, 공격자가 원래 의도되지 않은 쿼리 구문(예: `' OR '1'='1`)을 주입함으로써 인증 우회, 데이터 유출, 데이터 변조를 일으키는 취약점이다.",
-      "devContext": "문자열을 직접 이어붙이는 쿼리 대신 반드시 PreparedStatement/파라미터 바인딩(`WHERE id = ?`)을 사용해야 하며, ORM(TypeORM, Sequelize, JPA 등)을 쓰더라도 raw query 빌더에 사용자 입력을 문자열로 끼워 넣으면 동일하게 취약해질 수 있다는 점을 주의해야 한다."
+      "devContext": "문자열을 직접 이어붙이는 쿼리 대신 반드시 PreparedStatement/파라미터 바인딩(`WHERE id = ?`)을 사용해야 한다. Spring Data JPA에서는 `@Query`에 `:param` 바인딩을 쓰면 안전하지만, `EntityManager.createNativeQuery()`나 `JdbcTemplate`에 사용자 입력을 문자열로 끼워 넣으면 그대로 취약해진다. MyBatis를 함께 쓴다면 `${}` 치환자는 값이 그대로 SQL 문자열에 삽입되므로 반드시 `#{}` 파라미터 바인딩을 사용해야 하며, 동적으로 컬럼명/정렬 방향을 받아야 하는 경우에만 화이트리스트 검증 후 `${}`를 제한적으로 허용해야 한다."
     },
     "tags": ["sql-injection", "owasp", "database", "input-validation"]
   },
@@ -49,7 +49,7 @@
     "termAnswers": ["reflected xss", "반사형 xss", "reflected cross-site scripting"],
     "explanation": {
       "definition": "Reflected XSS(반사형 XSS)는 사용자 입력값(주로 URL 파라미터)이 서버에서 검증·이스케이프 없이 응답 HTML에 그대로 반영되어, 피해자가 악성 링크를 클릭하는 즉시 스크립트가 실행되는 XSS 유형이다. 검색 결과 페이지나 에러 메시지 페이지에서 흔히 발생한다.",
-      "devContext": "React/Vue 같은 프레임워크는 기본적으로 텍스트를 이스케이프해 렌더링하므로 안전하지만, `dangerouslySetInnerHTML`이나 `v-html`처럼 원시 HTML을 직접 삽입하는 API를 사용할 때는 반드시 DOMPurify 같은 라이브러리로 새니타이징해야 한다. 서버 응답 헤더에 CSP(Content-Security-Policy)를 설정해 인라인 스크립트 실행 자체를 차단하는 것도 중요한 방어선이다."
+      "devContext": "React/Vue 같은 프레임워크는 기본적으로 텍스트를 이스케이프해 렌더링하므로 안전하지만, `dangerouslySetInnerHTML`이나 `v-html`처럼 원시 HTML을 직접 삽입하는 API를 사용할 때는 반드시 DOMPurify 같은 라이브러리로 새니타이징해야 한다. 서버 사이드에서 Thymeleaf를 쓴다면 `th:text`는 기본적으로 HTML 이스케이프를 해주지만, 신뢰할 수 없는 값을 `th:utext`(unescaped)로 출력하면 그대로 Reflected XSS에 노출되므로 사용자 입력에는 절대 `th:utext`를 쓰면 안 된다. Spring Security의 `HttpSecurity.headers().contentSecurityPolicy(\"default-src 'self'\")` 설정으로 CSP 헤더를 적용해 인라인 스크립트 실행 자체를 차단하는 것도 중요한 방어선이다."
     },
     "tags": ["xss", "owasp", "reflected-xss", "web-security"]
   },
@@ -62,7 +62,7 @@
     "termAnswers": ["파일 업로드 취약점", "file upload vulnerability", "웹쉘 업로드 취약점", "웹쉘 업로드"],
     "explanation": {
       "definition": "파일 업로드 취약점(File Upload Vulnerability)은 업로드되는 파일의 확장자, Content-Type, 실제 내용에 대한 검증이 부실할 때 발생하며, 공격자가 실행 가능한 스크립트 파일을 업로드한 뒤 직접 접근해 실행시켜(웹쉘) 서버 권한을 탈취하는 데 악용된다.",
-      "devContext": "업로드 디렉터리는 웹 서버에서 스크립트 실행 권한을 제거(예: Nginx `location /uploads { }`에 `fastcgi_pass`를 연결하지 않음, 또는 noexec 마운트)하고, 확장자 화이트리스트 검증과 함께 저장 시 파일명을 서버가 생성한 랜덤 값으로 치환해야 한다. Content-Type 헤더는 클라이언트가 임의로 조작 가능하므로 신뢰하지 말고, 파일의 실제 매직 바이트를 검사하는 라이브러리를 함께 사용하는 것이 안전하다."
+      "devContext": "업로드 디렉터리는 웹 서버에서 스크립트 실행 권한을 제거(예: Nginx `location /uploads { }`에 `fastcgi_pass`를 연결하지 않음, 또는 noexec 마운트)하고, 확장자 화이트리스트 검증과 함께 저장 시 파일명을 서버가 생성한 랜덤 값으로 치환해야 한다. Spring Boot에서 `MultipartFile`을 받을 때는 `spring.servlet.multipart.location`을 애플리케이션의 정적 리소스 경로 밖에 두고, 컨트롤러 단에서 커스텀 `Validator`나 인터셉터로 확장자·MIME 타입을 검사해야 한다. Content-Type 헤더는 클라이언트가 임의로 조작 가능하므로 신뢰하지 말고, Apache Tika 같은 라이브러리로 파일의 실제 매직 바이트를 검사하는 것이 안전하다."
     },
     "tags": ["file-upload", "owasp", "webshell", "web-server"]
   },
@@ -75,8 +75,76 @@
     "termAnswers": ["ssrf", "server-side request forgery", "서버 사이드 요청 위조"],
     "explanation": {
       "definition": "SSRF(Server-Side Request Forgery)는 서버가 사용자 입력값을 기반으로 임의의 URL에 요청을 보내는 기능(이미지 미리보기, 웹훅 등)을 악용해, 공격자가 서버를 대리인으로 삼아 방화벽 안쪽의 내부망 자원이나 클라우드 메타데이터 서비스에 접근하는 공격이다.",
-      "devContext": "AWS/GCP 등 클라우드 환경에서는 SSRF를 통해 `169.254.169.254` 인스턴스 메타데이터 엔드포인트에 접근해 임시 자격 증명을 탈취하는 사례가 많으므로, 외부 URL을 입력받아 서버가 대신 요청하는 기능에는 반드시 사설 IP 대역·메타데이터 주소에 대한 화이트리스트/블랙리스트 검증을 적용해야 한다."
+      "devContext": "AWS/GCP 등 클라우드 환경에서는 SSRF를 통해 `169.254.169.254` 인스턴스 메타데이터 엔드포인트에 접근해 임시 자격 증명을 탈취하는 사례가 많으므로, 외부 URL을 입력받아 서버가 대신 요청하는 기능에는 반드시 사설 IP 대역·메타데이터 주소에 대한 화이트리스트/블랙리스트 검증을 적용해야 한다. Spring에서 `RestTemplate`이나 `WebClient`로 사용자가 입력한 URL을 호출하는 기능을 만든다면, 요청 직전에 호스트를 resolve해 사설 IP 대역(`10.0.0.0/8`, `169.254.0.0/16` 등)인지 검사하는 인터셉터(`ClientHttpRequestInterceptor`)를 공통으로 적용해두는 것이 실무적으로 안전하다."
     },
     "tags": ["ssrf", "owasp", "cloud-security", "web-security"]
+  },
+  {
+    "id": "app-007",
+    "category": "application",
+    "type": "term_identification",
+    "title": "게시판에 저장되어 반복 실행되는 악성 스크립트",
+    "question": "공격자가 게시판이나 댓글처럼 사용자 입력이 저장되는 기능에 악성 스크립트를 입력해 서버 DB에 그대로 저장시키고, 이후 다른 사용자가 해당 게시글을 조회할 때마다 저장된 스크립트가 반복적으로 실행되게 만드는 XSS(Cross-Site Scripting) 유형은 무엇인가?",
+    "codeSnippet": "// 게시글 저장 시 검증/이스케이프 없이 그대로 저장\nboard.setContent(request.getParameter(\"content\"));\nboardRepository.save(board);\n\n// 조회 시에도 이스케이프 없이 그대로 출력\n<div th:utext=\"${board.content}\"></div>",
+    "termAnswers": ["stored xss", "저장형 xss", "저장형 크로스 사이트 스크립팅", "persistent xss", "stored cross-site scripting"],
+    "explanation": {
+      "definition": "Stored XSS(저장형 XSS)는 공격자가 입력한 악성 스크립트가 게시판, 댓글, 프로필 등 서버의 데이터베이스에 그대로 저장되었다가, 다른 사용자가 해당 데이터를 조회하는 시점마다 반복적으로 실행되는 XSS 유형이다. 매번 악성 링크를 클릭하도록 유도해야 하는 Reflected XSS와 달리, 한 번의 저장으로 이후 조회하는 모든 사용자에게 지속적인 피해를 줄 수 있어 파급력이 더 크다.",
+      "devContext": "Spring Boot에서는 저장 시점과 출력 시점 두 곳 모두에서 방어해야 하는데, 저장 전 Lucy-XSS-Filter 같은 라이브러리로 스크립트 태그를 제거하거나, 출력 시 Thymeleaf의 `th:text`(자동 이스케이프)를 사용하고 `th:utext`는 사용자 입력값에는 절대 쓰지 않아야 한다. JPA 엔티티에 `@Convert`로 커스텀 AttributeConverter를 붙여 저장 전 OWASP Java Encoder로 인코딩하는 방식도 실무에서 널리 쓰인다. 또한 Spring Security의 `headers().contentSecurityPolicy()`로 CSP를 적용해 인라인 스크립트 실행 자체를 차단해두면 필터링을 우회당하더라도 2차 방어선 역할을 한다."
+    },
+    "tags": ["xss", "stored-xss", "owasp", "web-security"]
+  },
+  {
+    "id": "app-008",
+    "category": "application",
+    "type": "term_identification",
+    "title": "사용자 입력이 셸 명령어에 결합되어 실행되는 취약점",
+    "question": "웹 애플리케이션이 사용자 입력값을 검증 없이 `Runtime.getRuntime().exec()`처럼 운영체제 명령을 실행하는 함수의 인자에 그대로 결합해, 공격자가 `;`, `|`, `&&` 같은 특수문자로 임의의 시스템 명령을 추가 실행시킬 수 있게 되는 취약점은 무엇인가?",
+    "codeSnippet": "String command = request.getParameter(\"command\");\nDate date = new Date();\nString fullCommand = command + date;\nProcess process = Runtime.getRuntime().exec(fullCommand);",
+    "termAnswers": ["os 명령어 삽입", "운영체제 명령어 삽입", "커맨드 인젝션", "명령어 삽입", "command injection", "os command injection"],
+    "explanation": {
+      "definition": "OS Command Injection(운영체제 명령어 삽입)은 애플리케이션이 외부 입력값을 검증 없이 셸 명령 실행 함수의 인자로 전달할 때, 공격자가 `;`, `|`, `&&`, `||` 등 명령 구분자를 삽입해 원래 의도되지 않은 시스템 명령을 함께 실행시키는 취약점이다. 이를 통해 파일 삭제, 정보 유출, 리버스 쉘 실행 등 서버 전체를 장악하는 수준의 피해로 이어질 수 있다.",
+      "devContext": "Spring Boot에서 외부 프로그램을 호출해야 한다면 `Runtime.exec(String)`처럼 문자열 전체를 셸에 넘기는 방식 대신, `ProcessBuilder(List<String> command)`로 실행 파일과 인자를 배열 단위로 분리해 전달하면 셸 메타문자가 해석되지 않아 훨씬 안전하다. 부득이하게 사용자 입력을 인자로 써야 한다면 화이트리스트 정규식(`^[a-zA-Z0-9_-]+$` 등)으로 특수문자를 원천 차단하고, 가능하면 셸을 거치지 않는 순수 자바 API(예: `Files.delete`, 이미지 처리 라이브러리)로 대체해 아예 외부 프로세스 호출 자체를 없애는 것이 가장 근본적인 대응이다."
+    },
+    "tags": ["command-injection", "owasp", "input-validation", "web-security"]
+  },
+  {
+    "id": "app-009",
+    "category": "application",
+    "type": "term_identification",
+    "title": "검증 없는 외부 URL로 사용자를 이동시키는 취약점",
+    "question": "로그인 후 이동 경로 등을 처리하는 기능에서 사용자가 전달한 URL 파라미터 값을 화이트리스트 검증 없이 그대로 리다이렉트 대상 주소로 사용해, 공격자가 신뢰된 도메인의 링크처럼 보이게 만든 뒤 실제로는 피싱 사이트로 이용자를 이동시키는 취약점은 무엇인가?",
+    "codeSnippet": "String rd = request.getParameter(\"redirect\");\nif (\"0\".equals(rs.getString(1)) && \"01AD\".equals(bn)) {\n    response.sendRedirect(rd);\n    return;\n}",
+    "termAnswers": ["오픈 리다이렉트", "오픈리다이렉트", "open redirect", "부적절한 리다이렉션", "안전하지 않은 리다이렉트"],
+    "explanation": {
+      "definition": "Open Redirect(오픈 리다이렉트)는 애플리케이션이 리다이렉트할 URL을 외부 파라미터 값으로 그대로 받아 검증 없이 이동시킬 때 발생하는 취약점으로, 공격자는 신뢰하는 도메인의 정상 링크에 악성 목적지 URL을 파라미터로 끼워 넣어 피해자를 피싱 사이트로 유인하는 데 악용한다. 링크 자체는 신뢰된 도메인으로 시작하므로 피해자가 의심 없이 클릭하게 된다는 점이 핵심이다.",
+      "devContext": "Spring MVC 컨트롤러에서 `return \"redirect:\" + request.getParameter(\"url\")`처럼 사용자 입력을 그대로 리다이렉트 문자열에 결합하는 코드는 즉시 이 취약점에 노출되므로, 리다이렉트 대상은 절대경로 문자열이 아니라 사전에 정의된 화면 ID나 코드값으로 받아 서버가 관리하는 매핑 테이블(Enum이나 `Map<String, String>`)에서 실제 URL을 조회하도록 바꿔야 한다. 부득이하게 외부 URL을 받아야 한다면 `UriComponentsBuilder`로 파싱한 뒤 호스트가 사전에 등록된 화이트리스트 도메인과 일치하는지 검증하고, 상대경로만 허용하도록 `/`로 시작하는지, `//`나 `http(s)://`로 시작하지 않는지 추가로 검사해야 한다."
+    },
+    "tags": ["open-redirect", "owasp", "phishing", "input-validation"]
+  },
+  {
+    "id": "app-010",
+    "category": "application",
+    "type": "term_identification",
+    "title": "자원의 검사 시점과 실제 사용 시점의 간극을 노린 취약점",
+    "question": "다중 스레드나 다중 프로세스 환경에서 공유 자원의 상태를 확인(Check)한 시점과 그 결과를 바탕으로 실제 자원을 사용(Use)하는 시점 사이에 다른 실행 흐름이 끼어들어 상태를 바꿔버림으로써, 재고 초과 판매나 쿠폰 중복 발급처럼 검증 로직이 무력화되는 시간 및 상태(Time and State) 계열의 보안 약점은 무엇인가?",
+    "termAnswers": ["레이스 컨디션", "경쟁 조건", "race condition", "toctou", "time of check to time of use"],
+    "explanation": {
+      "definition": "Race Condition(경쟁 조건, TOCTOU)은 공유 자원에 대한 검사(Check)와 사용(Use) 사이에 시간차가 존재할 때, 그 틈을 타 다른 스레드나 프로세스가 자원 상태를 변경해버려 검증이 무의미해지는 동시성 취약점이다. 소프트웨어 개발보안 가이드의 7대 보안 약점 중 SQL Injection, 경로 조작과 달리 '입력 데이터 검증' 문제가 아닌 '시간 및 상태' 결함군으로 별도 분류된다.",
+      "devContext": "동시에 여러 요청이 들어와도 재고 수량이나 쿠폰 발급 수량이 초과되지 않으려면, 자바의 `synchronized`만으로는 여러 WAS 인스턴스가 떠 있는 환경에서 한계가 있으므로 DB 트랜잭션 격리 수준과 락을 함께 고려해야 한다. Spring Data JPA에서는 `@Lock(LockModeType.PESSIMISTIC_WRITE)`로 `SELECT ... FOR UPDATE`를 걸어 확인과 갱신을 하나의 트랜잭션으로 원자화하거나, 충돌이 드문 경우 `@Version` 기반 낙관적 락으로 갱신 시점에 충돌을 감지하는 방식을 쓴다. 분산 환경에서는 Redisson 같은 라이브러리로 분산 락을 걸거나, 애초에 DB의 `UNIQUE` 제약조건과 `UPDATE ... WHERE stock > 0`처럼 조건부 갱신 쿼리 한 번으로 검사와 사용을 원자적으로 처리하는 것이 가장 안전하다."
+    },
+    "tags": ["race-condition", "toctou", "concurrency", "secure-coding"]
+  },
+  {
+    "id": "app-011",
+    "category": "application",
+    "type": "term_identification",
+    "title": "다른 곳에서 유출된 계정 정보를 그대로 대입하는 공격",
+    "question": "다른 사이트의 데이터 유출 사고 등으로 확보한 실제 로그인 아이디·비밀번호 조합을 대량으로 자동화 도구에 넣어 여러 인증 시스템에 그대로 대입해봄으로써, 같은 비밀번호를 재사용하는 사용자의 계정을 탈취하는 공격 기법은 무엇인가?",
+    "termAnswers": ["크리덴셜 스터핑", "자격증명 채우기", "자격 증명 채우기", "credential stuffing"],
+    "explanation": {
+      "definition": "Credential Stuffing(크리덴셜 스터핑, 자격증명 채우기)은 다른 서비스의 유출 사고로 확보된 실제 아이디·비밀번호 쌍을 자동화 도구로 대량 대입해, 비밀번호를 재사용하는 사용자의 계정을 탈취하는 공격이다. 무작위 비밀번호를 하나씩 시도하는 무차별 대입(Brute Force) 공격과 달리, 이미 유효성이 검증된 실제 자격 증명 쌍을 사용하기 때문에 성공률이 높고 계정 잠금 정책도 우회하기 쉽다.",
+      "devContext": "Spring Security 기반 로그인에서는 `AuthenticationFailureHandler`에 실패 횟수를 IP/계정 단위로 기록해 임계치를 넘으면 캡차나 추가 인증을 요구하도록 구성하고, Bucket4j 같은 라이브러리로 로그인 엔드포인트에 요청 속도 제한(Rate Limiting)을 걸어 짧은 시간에 대량 로그인 시도가 들어오는 것을 차단해야 한다. 재사용 비밀번호 자체를 줄이기 위해 회원가입/비밀번호 변경 시 Have I Been Pwned API로 유출된 비밀번호인지 검사하는 로직을 추가하는 것도 효과적이다. 근본적으로는 MFA(다중 인증)를 도입해 아이디·비밀번호가 일치하더라도 추가 인증 단계 없이는 로그인이 완료되지 않도록 하는 것이 가장 확실한 대응이다."
+    },
+    "tags": ["credential-stuffing", "authentication", "brute-force", "web-security"]
   }
 ]

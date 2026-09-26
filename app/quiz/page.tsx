@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { X } from "lucide-react";
+import { ChevronLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgressBar } from "@/components/quiz/ProgressBar";
 import { QuestionCard } from "@/components/quiz/QuestionCard";
@@ -21,6 +21,7 @@ export default function QuizPage() {
   const isHintShown = useQuizStore((state) => state.isHintShown);
   const submitAnswer = useQuizStore((state) => state.submitAnswer);
   const nextQuestion = useQuizStore((state) => state.nextQuestion);
+  const previousQuestion = useQuizStore((state) => state.previousQuestion);
   const toggleHint = useQuizStore((state) => state.toggleHint);
   const resetSession = useQuizStore((state) => state.resetSession);
   const addWrongAnswer = useNotebookStore((state) => state.addWrongAnswer);
@@ -71,6 +72,10 @@ export default function QuizPage() {
     }
   }
 
+  function handleSkip() {
+    nextQuestion();
+  }
+
   function handleExit() {
     if (
       window.confirm(
@@ -85,6 +90,16 @@ export default function QuizPage() {
   return (
     <main className="mx-auto flex w-full max-w-[680px] flex-1 flex-col gap-6 px-6 py-8 pb-28 sm:pb-8">
       <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-11 shrink-0"
+          onClick={() => previousQuestion()}
+          disabled={currentIndex === 0}
+          aria-label="이전 문제"
+        >
+          <ChevronLeft className="size-4" />
+        </Button>
         <ProgressBar current={currentIndex + 1} total={queue.length} />
         <Button
           variant="ghost"
@@ -104,6 +119,7 @@ export default function QuizPage() {
         isHintShown={isHintShown}
         onToggleHint={toggleHint}
         onSubmit={handleSubmit}
+        onSkip={handleSkip}
       />
 
       <p className="hidden text-xs text-muted-foreground sm:block">

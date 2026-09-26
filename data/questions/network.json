@@ -8,7 +8,7 @@
     "termAnswers": ["ARP 스푸핑", "ARP스푸핑", "arp spoofing", "arpspoofing"],
     "explanation": {
       "definition": "ARP Spoofing(ARP 스푸핑)은 위조된 ARP 응답으로 대상 호스트의 ARP 캐시 테이블을 조작해, 공격자의 MAC 주소를 특정 IP의 주소인 것처럼 속이는 공격이다. 이를 통해 스니핑, 세션 하이재킹, 중간자 공격(MITM)이 가능해진다.",
-      "devContext": "사내망에 배포된 API 서버나 DB 서버처럼 통신 상대가 고정적인 경우, `arp -s`로 정적 ARP 엔트리를 등록하거나 스위치의 Dynamic ARP Inspection(DAI) 기능을 활성화해 방어할 수 있다. 다만 근본적인 완화책은 통신 구간 자체를 TLS로 암호화해, ARP 스푸핑으로 트래픽을 가로채더라도 평문 내용이 노출되지 않도록 하는 것이다."
+      "devContext": "사내망에 배포된 Spring Boot API 서버나 DB 서버처럼 통신 상대가 고정적인 경우, `arp -s`로 정적 ARP 엔트리를 등록하거나 스위치의 Dynamic ARP Inspection(DAI) 기능을 활성화해 방어할 수 있다. 다만 근본적인 완화책은 통신 구간 자체를 TLS로 암호화하는 것으로, Spring Boot의 `server.ssl.*` 설정으로 HTTPS를 강제하고 서비스 간 통신에도 mTLS를 적용하면 ARP 스푸핑으로 트래픽을 가로채더라도 평문 내용이 노출되지 않는다."
     },
     "tags": ["arp-spoofing", "mitm", "lan", "layer2"]
   },
@@ -21,7 +21,7 @@
     "termAnswers": ["syn flooding", "synflooding", "syn flood", "synflood", "syn 플러딩"],
     "explanation": {
       "definition": "SYN Flooding은 TCP 연결 수립 과정을 악용해 half-open 연결을 대량으로 만들어 서버의 연결 큐 자원을 고갈시키는 공격으로, 대표적인 4계층 대역폭/자원 소진형 DoS 공격이다.",
-      "devContext": "Nginx의 `net.ipv4.tcp_syncookies=1`(SYN 쿠키) 커널 파라미터를 활성화하면 백로그 큐 대신 쿠키 기반으로 연결 상태를 검증해 SYN Flood에 대한 내성을 높일 수 있다. 로드밸런서/CDN(Cloudflare, AWS Shield 등) 앞단에서 요청을 흡수하도록 아키텍처를 구성하는 것도 실무에서 흔히 쓰는 대응 방식이다."
+      "devContext": "Nginx의 `net.ipv4.tcp_syncookies=1`(SYN 쿠키) 커널 파라미터를 활성화하면 백로그 큐 대신 쿠키 기반으로 연결 상태를 검증해 SYN Flood에 대한 내성을 높일 수 있다. 로드밸런서/CDN(Cloudflare, AWS Shield 등) 앞단에서 요청을 흡수하도록 아키텍처를 구성하는 것도 실무에서 흔히 쓰는 대응 방식이다. Spring Boot 임베디드 톰캣을 직접 인터넷에 노출하지 말고 항상 이런 인프라 뒤에 두어야 하며, `server.tomcat.accept-count`, `server.tomcat.max-connections` 같은 값도 무한정 크게 잡기보다는 실제 처리 용량에 맞게 제한해 연결 자원 고갈을 완화하는 것이 좋다."
     },
     "tags": ["dos", "tcp", "syn-flood", "network"]
   },
@@ -34,7 +34,7 @@
     "termAnswers": ["smurf attack", "smurf", "스머프 공격", "스머프"],
     "explanation": {
       "definition": "Smurf Attack(스머프 공격)은 출발지 IP를 피해자로 위조한 ICMP Echo Request를 브로드캐스트 주소로 전송해, 네트워크 내 다수의 호스트가 동시에 피해자에게 응답을 보내도록 유도함으로써 트래픽을 증폭시키는 DoS 공격이다.",
-      "devContext": "라우터에서 `no ip directed-broadcast` 명령으로 외부에서 들어오는 디렉티드 브로드캐스트 패킷 자체를 차단하는 것이 가장 근본적인 방어책이다. 클라우드 인프라에서는 대부분 브로드캐스트 도메인이 논리적으로 분리되어 있어 위험이 낮지만, 온프레미스 네트워크 장비를 직접 구성할 때는 이 설정을 기본값으로 확인해야 한다."
+      "devContext": "라우터에서 `no ip directed-broadcast` 명령으로 외부에서 들어오는 디렉티드 브로드캐스트 패킷 자체를 차단하는 것이 가장 근본적인 방어책이다. 클라우드에 배포된 Spring Boot 서비스라면 대부분 클라우드 사업자의 VPC/서브넷 구조상 브로드캐스트 도메인이 논리적으로 분리되어 있어 위험이 낮지만, 온프레미스 네트워크 장비를 직접 구성해 서비스를 운영할 때는 이 설정을 기본값으로 확인해야 한다."
     },
     "tags": ["dos", "smurf", "icmp", "amplification"]
   },
@@ -47,7 +47,7 @@
     "termAnswers": ["slowloris", "슬로로리스"],
     "explanation": {
       "definition": "Slowloris는 HTTP 헤더를 비정상적으로 느리게, 완전히 종료되지 않은 상태로 계속 전송해 서버의 동시 연결 슬롯을 오랫동안 점유함으로써 서비스 거부를 유발하는 애플리케이션 계층 DoS 공격이다.",
-      "devContext": "Nginx에서는 `client_header_timeout`을 짧게 설정하고, Apache에서는 mod_reqtimeout 모듈로 헤더 수신 제한 시간을 두는 것이 기본 대응이다. 로드밸런서/리버스 프록시 계층에서 동시 연결 수와 최소 전송 속도(minimum data rate)를 강제하는 것도 실무에서 널리 쓰이는 완화책이다."
+      "devContext": "Nginx에서는 `client_header_timeout`을 짧게 설정하고, Apache에서는 mod_reqtimeout 모듈로 헤더 수신 제한 시간을 두는 것이 기본 대응이다. Spring Boot를 임베디드 톰캣으로 직접 운영한다면 `server.tomcat.connection-timeout`을 짧게 설정해 헤더를 다 보내지 않고 연결만 붙잡고 있는 요청을 빠르게 끊어내야 하며, 실무에서는 이런 설정과 별개로 로드밸런서/리버스 프록시 계층에서 동시 연결 수와 최소 전송 속도(minimum data rate)를 강제하는 것도 널리 쓰이는 완화책이다."
     },
     "tags": ["dos", "slowloris", "http", "web-server"]
   },
@@ -60,7 +60,7 @@
     "termAnswers": ["esp", "encapsulating security payload"],
     "explanation": {
       "definition": "ESP(Encapsulating Security Payload)는 IPSec의 구성 프로토콜 중 하나로, 데이터 암호화를 통한 기밀성과 송신처 인증, 무결성 검증을 함께 제공한다. 반면 AH(Authentication Header)는 인증과 무결성만 제공하고 암호화는 지원하지 않는다.",
-      "devContext": "사이트 간 VPN(Site-to-Site VPN)을 구성할 때 AH만 사용하면 패킷 내용이 평문으로 전송되므로, 실제 트래픽의 기밀성이 필요한 대부분의 사내망-클라우드 연결 구간에서는 ESP(또는 ESP+AH 조합)를 선택해야 한다는 점을 인프라 설계 시 반드시 확인해야 한다."
+      "devContext": "사이트 간 VPN(Site-to-Site VPN)을 구성할 때 AH만 사용하면 패킷 내용이 평문으로 전송되므로, 실제 트래픽의 기밀성이 필요한 대부분의 사내망-클라우드 연결 구간에서는 ESP(또는 ESP+AH 조합)를 선택해야 한다는 점을 인프라 설계 시 반드시 확인해야 한다. 애플리케이션 레벨에서 이와 유사한 효과를 내려면, Spring Boot의 `RestTemplate`/`WebClient`로 다른 내부 서비스와 통신할 때도 평문 HTTP 대신 HTTPS(mTLS)를 기본값으로 강제해, 네트워크 계층 암호화가 없는 구간에서도 데이터가 노출되지 않도록 이중으로 방어하는 것이 좋다."
     },
     "tags": ["ipsec", "esp", "vpn", "encryption"]
   },
@@ -73,8 +73,216 @@
     "termAnswers": ["syn scan", "syn 스캔", "half-open scan", "하프오픈 스캔", "스텔스 스캔", "stealth scan"],
     "explanation": {
       "definition": "TCP SYN Scan(하프오픈 스캔, 스텔스 스캔)은 SYN 패킷만 전송해 열린 포트면 SYN+ACK 응답 후 연결을 완료하지 않고 RST로 종료하는 포트 스캔 기법으로, TCP Connect Scan과 달리 완전한 연결을 맺지 않아 대상 시스템의 로그에 잘 남지 않는다.",
-      "devContext": "서버/네트워크 운영 측면에서는 Snort 같은 IDS에 짧은 시간 내 다수의 SYN 패킷 후 RST가 반복되는 패턴을 탐지하는 룰을 등록해, 실제 침해 이전 단계인 정찰(reconnaissance) 활동을 조기에 알아채는 것이 실무 대응이다."
+      "devContext": "서버/네트워크 운영 측면에서는 Snort 같은 IDS에 짧은 시간 내 다수의 SYN 패킷 후 RST가 반복되는 패턴을 탐지하는 룰을 등록해, 실제 침해 이전 단계인 정찰(reconnaissance) 활동을 조기에 알아채는 것이 실무 대응이다. 포트 스캔 이후 공격자가 가장 먼저 두드려보는 것이 열린 HTTP 포트의 관리용 엔드포인트이므로, Spring Boot Actuator의 `/actuator/env`, `/actuator/heapdump` 같은 민감한 엔드포인트를 `management.endpoints.web.exposure.include`에서 최소한으로만 노출하고 Spring Security로 접근을 제한해두어야 한다."
     },
     "tags": ["port-scanning", "syn-scan", "reconnaissance"]
+  },
+  {
+    "id": "net-007",
+    "category": "network",
+    "type": "term_identification",
+    "title": "DNS 캐시 조작을 통한 사이트 위장 공격",
+    "question": "공격자가 DNS 서버의 캐시나 질의·응답 과정에 위조된 응답을 주입하여 특정 도메인 이름을 공격자가 지정한 IP 주소로 매핑시킴으로써, 사용자가 정상적인 URL을 입력해도 피싱·파밍 사이트로 접속하도록 유도하는 공격 기법은 무엇인가?",
+    "termAnswers": ["dns 스푸핑", "dns스푸핑", "dns spoofing", "dnsspoofing", "캐시 포이즈닝", "cache poisoning", "dns 캐시 포이즈닝"],
+    "explanation": {
+      "definition": "DNS Spoofing(캐시 포이즈닝)은 DNS 서버의 캐시에 위조된 도메인-IP 매핑 정보를 주입하거나 정당한 응답보다 빠르게 위조 응답을 보내, 사용자가 요청한 도메인을 공격자가 지정한 악성 IP로 연결시키는 공격이다. 이를 통해 사용자를 피싱/파밍 사이트로 유도해 로그인 정보 등을 탈취할 수 있는 기밀성·무결성 침해형 스푸핑 공격이다.",
+      "devContext": "실무에서는 DNS 서버의 재귀적 질의(recursive query)를 제한하고, 소스 포트/트랜잭션 ID 무작위화가 적용된 최신 DNS 서버 소프트웨어를 사용하며, 궁극적으로는 DNSSEC으로 응답에 전자서명을 붙여 위변조 여부를 검증하도록 구성하는 것이 근본 대응이다. Spring Boot 애플리케이션 입장에서는 외부 API 호출 시 DNS 조회 결과만 믿지 말고 반드시 인증서 체인과 hostname을 검증하는 `RestTemplate`/`WebClient`(HTTPS)를 사용해, DNS가 스푸핑되어 엉뚱한 IP로 연결되더라도 TLS 핸드셰이크 단계에서 인증서 불일치로 연결이 차단되도록 이중 방어선을 두어야 한다. 또한 운영 서버가 참조하는 DNS 리졸버 설정을 주기적으로 점검해 신뢰할 수 없는 상위 DNS로 질의가 전달되지 않도록 관리하는 것도 중요하다."
+    },
+    "tags": ["dns-spoofing", "cache-poisoning", "pharming", "mitm"]
+  },
+  {
+    "id": "net-008",
+    "category": "network",
+    "type": "term_identification",
+    "title": "제3자 서버를 반사판으로 이용하는 증폭형 DDoS 공격",
+    "question": "공격자가 출발지 IP를 피해자의 IP로 위조한 요청을 다수의 정상 DNS·NTP·SNMP 서버로 전송하여, 요청보다 훨씬 큰 응답 트래픽이 해당 서버들로부터 일제히 피해자에게 되돌아가도록 만드는 반사·증폭형 분산 서비스 거부 공격은 무엇인가?",
+    "termAnswers": ["drdos", "drdos 공격", "분산반사서비스거부공격", "distributed reflection dos", "반사 서비스 거부 공격", "반사 증폭 공격"],
+    "explanation": {
+      "definition": "DRDoS(Distributed Reflection Denial of Service)는 공격자가 출발지 IP를 피해자로 위조한 요청 패킷을 다수의 정상 서버(반사체, reflector)에 전송해, 그 서버들이 보낸 대량의 응답 트래픽이 피해자에게 집중되도록 하는 공격이다. DNS, NTP, SNMP, Memcached처럼 요청보다 응답 크기가 훨씬 큰 프로토콜을 악용하면 수십~수만 배의 증폭 효과를 낼 수 있어 대역폭 소진형 DDoS의 대표적인 형태로 꼽힌다.",
+      "devContext": "네트워크/인프라 관점에서는 라우터에서 출발지 IP를 검증하는 uRPF(Unicast Reverse Path Forwarding)를 적용하고, 사내 DNS/NTP 서버가 외부에서 오는 재귀 질의에 무조건 응답하지 않도록 접근 제한 설정을 걸어 반사체로 악용되지 않게 해야 한다. Spring Boot 서비스 자체가 반사 공격의 직접 대상이 되는 경우는 드물지만, 회선 대역폭이 고갈되면 서비스가 통째로 응답 불가 상태가 되므로 CDN/DDoS 방어 서비스(AWS Shield, Cloudflare 등) 뒤에 배치하고, 애플리케이션 레벨에서는 Resilience4j의 `RateLimiter`로 이상 트래픽 유입 시 내부 자원만이라도 보호하는 이중 대응이 필요하다. UDP 기반 서비스를 직접 운영해야 한다면 요청량 대비 응답량을 제한하는 정책도 함께 검토해야 한다."
+    },
+    "tags": ["drdos", "ddos", "amplification", "reflection-attack"]
+  },
+  {
+    "id": "net-009",
+    "category": "network",
+    "type": "term_identification",
+    "title": "알려진 공격 패턴과 대조하여 판단하는 침입 탐지 방식",
+    "question": "이미 알려진 공격의 시그니처(패턴)를 데이터베이스로 구축해두고 탐지 대상 트래픽이 이 패턴과 일치하는지 비교하여 침입 여부를 판단하는 IDS 탐지 기법으로, 알려진 공격에는 오탐률이 낮지만 시그니처가 없는 신종·변종 공격은 탐지하기 어렵다는 한계를 가진 방식은 무엇인가?",
+    "termAnswers": ["오용탐지", "오용 탐지", "misuse detection", "misusedetection", "시그니처 기반 탐지", "시그니처기반탐지", "지식 기반 탐지"],
+    "explanation": {
+      "definition": "오용탐지(Misuse Detection)는 이미 알려진 공격 패턴(시그니처)을 사전에 데이터베이스화해두고 실시간 트래픽과 대조하여 일치하면 침입으로 판단하는 IDS 탐지 방식이다. 알려진 공격에 대해서는 정확도가 높고 오탐(False Positive)이 적지만 시그니처가 없는 신종·변종 공격은 탐지하지 못한다는 한계가 있어, 정상 행위 프로파일과의 편차를 보는 이상탐지(Anomaly Detection)와 상호 보완적으로 함께 사용된다.",
+      "devContext": "Spring Boot 기반 서비스 앞단에 Snort/Suricata 같은 오용탐지 기반 IDS/IPS를 두는 경우, 애플리케이션에서 발생하는 SQL Injection·XSS 같은 알려진 공격 페이로드 로그를 시그니처 업데이트에 활용할 수 있으며, `spring-boot-starter-validation`과 파라미터 화이트리스트 검증을 함께 적용해 시그니처가 우회되더라도 애플리케이션 레벨에서 한 번 더 걸러내는 것이 실무 원칙이다. 또한 Spring Security의 인증 실패 로그처럼 정상 사용 패턴에서 벗어난 이상 행위(예: 짧은 시간 내 대량의 401 응답)를 ELK나 Prometheus+Grafana 알람으로 모니터링해, 시그니처 기반 탐지가 놓칠 수 있는 이상탐지 영역까지 보완하는 것이 바람직하다."
+    },
+    "tags": ["ids", "misuse-detection", "signature-based", "anomaly-detection"]
+  },
+  {
+    "id": "net-010",
+    "category": "network",
+    "type": "term_identification",
+    "title": "베스천 호스트를 이중 라우터 사이에 배치하는 방화벽 구조",
+    "question": "내부 네트워크와 외부 네트워크 사이에 스크리닝 라우터를 각각 배치하고, 그 두 라우터 사이의 완충 지대에 베스천 호스트를 두어 DMZ를 구성함으로써 내부망과 외부망을 이중으로 분리하는 방화벽 아키텍처는 무엇인가?",
+    "termAnswers": ["스크린드 서브넷", "스크린드서브넷", "screened subnet", "screenedsubnet", "스크린드 서브넷 게이트웨이"],
+    "explanation": {
+      "definition": "스크린드 서브넷(Screened Subnet, Screened Subnet Gateway)은 외부 라우터와 내부 라우터라는 두 개의 스크리닝 라우터 사이에 베스천 호스트를 배치해 DMZ라는 완충 네트워크를 구성하는 방화벽 아키텍처이다. 외부 사용자는 외부 라우터를 거쳐 DMZ의 베스천 호스트(공개 서비스)까지만 접근할 수 있고, 내부 라우터가 다시 한 번 내부망 접근을 통제하므로 단일 장비가 뚫려도 내부망까지 직접 도달하기 어려운 이중 방어 구조를 제공한다.",
+      "devContext": "실무에서 외부에 노출해야 하는 Spring Boot API 서버나 리버스 프록시(Nginx)는 DMZ 서브넷에 두고, DB나 내부 관리용 서비스는 내부 라우터 뒤의 사설망에 두어 DMZ 서버가 침해되더라도 곧바로 DB에 접근하지 못하도록 네트워크 ACL/보안그룹을 이중으로 구성하는 것이 스크린드 서브넷 개념을 클라우드 VPC의 퍼블릭/프라이빗 서브넷 구조에 대응시킨 형태다. Spring Boot의 `application.yml`에서 DB 접속 정보는 DMZ가 아닌 내부망 전용 엔드포인트만 바라보게 하고, DMZ의 API 서버에는 `management.endpoints.web.exposure.include`로 최소한의 Actuator 엔드포인트만 열어 베스천 호스트 역할을 하는 서버 자체의 공격 표면을 줄여야 한다."
+    },
+    "tags": ["firewall", "screened-subnet", "dmz", "bastion-host"]
+  },
+  {
+    "id": "net-011",
+    "category": "network",
+    "type": "term_identification",
+    "title": "등록되지 않은 단말의 네트워크 접속을 원천 차단하는 시스템",
+    "question": "사내 네트워크에 접속을 시도하는 단말의 MAC 주소, 백신 설치 여부, 보안 패치 상태 등을 검사하여 정책을 만족하지 못하거나 사전에 등록되지 않은 단말은 네트워크 접근 자체를 차단·격리하는 엔드포인트 접근 통제 시스템은 무엇인가?",
+    "termAnswers": ["nac", "network access control", "networkaccesscontrol", "네트워크 접근 제어", "네트워크접근제어"],
+    "explanation": {
+      "definition": "NAC(Network Access Control)는 네트워크에 연결을 시도하는 모든 단말을 인증하고 보안 정책(백신 설치, 패치 수준, 사전 등록 여부 등) 준수 여부를 검사한 뒤, 조건을 만족하지 못한 단말은 격리 VLAN으로 분리하거나 네트워크 접속 자체를 차단하는 엔드포인트 보안 솔루션이다. 802.1x 인증이나 스위치 포트 제어와 연동해 사내망 진입 단계에서부터 비인가 단말의 접근을 통제한다.",
+      "devContext": "Spring Boot 서비스를 운영하는 사내 개발망이라면, 개발자 PC가 NAC의 정책(백신 최신화, OS 패치 여부)을 통과해야만 사내 Git 서버나 배포 서버, DB에 접근할 수 있게 되므로, CI/CD 파이프라인의 빌드 서버나 운영자 단말도 예외 없이 NAC 등록 대상으로 관리해야 한다는 점을 인지해야 한다. 또한 애플리케이션 레벨의 인증(Spring Security의 로그인/OAuth2)과 NAC의 네트워크 레벨 접근 제어는 계층이 다르므로, NAC를 통과했다고 해서 애플리케이션 인가를 생략해서는 안 되며 두 통제를 각각 독립적으로 설계·검증하는 심층 방어(Defense in Depth) 관점이 실무에서 중요하다."
+    },
+    "tags": ["nac", "access-control", "endpoint-security", "802-1x"]
+  },
+  {
+    "id": "net-012",
+    "category": "network",
+    "type": "term_identification",
+    "title": "클라이언트와 서버가 암호 방식을 협상하는 초기 절차",
+    "question": "클라이언트의 Client Hello로 시작해 서버가 인증서를 제시하고, 양측이 사전 마스터 시크릿을 교환한 뒤 이를 바탕으로 세션 키를 생성하여 Change Cipher Spec과 Finished 메시지를 주고받음으로써 이후 통신에 사용할 암호 알고리즘과 세션 키에 합의하는 절차는 무엇인가?",
+    "termAnswers": ["ssl 핸드셰이크", "tls 핸드셰이크", "ssl/tls 핸드셰이크", "ssl handshake", "tls handshake", "handshake protocol", "핸드셰이크 프로토콜", "ssl 핸드쉐이크", "tls 핸드쉐이크"],
+    "explanation": {
+      "definition": "SSL/TLS Handshake(핸드셰이크 프로토콜)는 클라이언트와 서버가 실제 데이터를 암호화 전송하기 전에, 사용할 암호 알고리즘(Cipher Suite)에 합의하고 서버 인증서를 검증하며 세션 키를 안전하게 생성·교환하는 절차이다. Client Hello - Server Hello - 인증서 전달 - 키 교환 - Change Cipher Spec - Finished 순으로 진행되며, 이 과정이 끝나야 Record Protocol을 통한 암호화 데이터 전송이 시작된다.",
+      "devContext": "Spring Boot에서 `server.ssl.enabled-protocols`나 `server.ssl.ciphers`를 설정할 때, 이 값들이 바로 핸드셰이크 단계에서 서버가 클라이언트에게 제시할 프로토콜 버전과 암호 스위트 목록을 결정한다는 점을 이해해야 한다. 오래된 TLS 1.0/1.1이나 취약한 Cipher Suite가 여전히 활성화돼 있으면 핸드셰이크 자체는 성립하더라도 다운그레이드 공격에 노출될 수 있으므로, `server.ssl.enabled-protocols=TLSv1.2,TLSv1.3`처럼 최신 버전만 허용하는 것이 권장된다. 또한 외부 API를 `WebClient`/`RestTemplate`로 호출할 때 핸드셰이크 실패(인증서 만료, 호스트네임 불일치)로 인한 `SSLHandshakeException`을 흔히 마주치므로, 신뢰 저장소(TrustStore) 구성과 인증서 유효기간 모니터링을 CI/CD 배포 점검 항목에 포함해두는 것이 실무에서 중요하다."
+    },
+    "tags": ["ssl", "tls", "handshake", "cipher-suite"]
+  },
+  {
+    "id": "net-013",
+    "category": "network",
+    "type": "term_identification",
+    "title": "IPSec의 보안 연관을 자동으로 협상하는 프로토콜",
+    "question": "IPSec에서 통신 양측 간에 사용할 암호화·인증 알고리즘, 키 값 등을 담은 보안 연관(SA, Security Association)을 자동으로 협상하고 주기적으로 키를 갱신해주는, ESP·AH와는 별도로 동작하는 키 교환 프로토콜은 무엇인가?",
+    "termAnswers": ["ike", "internet key exchange", "인터넷 키 교환", "ike 프로토콜"],
+    "explanation": {
+      "definition": "IKE(Internet Key Exchange)는 IPSec 통신을 시작하기 전에 양측이 사용할 암호화·인증 알고리즘과 키 정보를 담은 SA(Security Association)를 자동으로 협상하고, 세션 도중 주기적으로 키를 갱신해주는 프로토콜이다. Diffie-Hellman 키 교환을 기반으로 하며, 실제 데이터 보호를 담당하는 ESP/AH와 달리 그 이전 단계인 키 관리와 보안 정책 협상을 담당한다.",
+      "devContext": "Spring Boot 서비스가 site-to-site VPN으로 연결된 사내망-클라우드 구간을 통해 내부 DB나 레거시 시스템과 통신하는 경우, 애플리케이션 레벨에서는 IKE 협상 과정이 직접 드러나지 않지만 이 협상이 실패하거나 SA 갱신 주기(rekey interval)가 만료되면 VPN 터널이 순간적으로 끊겨 커넥션 풀의 타임아웃/재시도 로직이 트리거될 수 있다. 따라서 `HikariCP`의 `connectionTimeout`이나 `RestTemplate`의 재시도 정책을 VPN 재협상 시간을 고려해 여유 있게 설정하고, 인프라팀과 협업해 IKE SA/IPSec SA의 lifetime 설정값을 파악해두는 것이 장애 대응에 도움이 된다."
+    },
+    "tags": ["ipsec", "ike", "key-exchange", "vpn"]
+  },
+  {
+    "id": "net-014",
+    "category": "network",
+    "type": "term_identification",
+    "title": "MS가 주도해 만든 초기 데이터링크 계층 터널링 프로토콜",
+    "question": "PPP(Point-to-Point Protocol) 프레임을 캡슐화해 IP 네트워크 상에 가상의 전용선을 만드는 초기 형태의 VPN 터널링 프로토콜로, 데이터링크 계층에서 동작하며 구현이 간단하지만 자체 암호화가 취약해 MPPE 등을 함께 써야 하는 프로토콜은 무엇인가?",
+    "termAnswers": ["pptp", "point-to-point tunneling protocol", "point to point tunneling protocol"],
+    "explanation": {
+      "definition": "PPTP(Point-to-Point Tunneling Protocol)는 마이크로소프트가 주도해 개발한 데이터링크 계층(2계층) VPN 프로토콜로, PPP 프레임을 GRE로 캡슐화해 터널링한다. 구현과 설정이 간단해 초기 원격 접속 VPN에 널리 쓰였지만, 인증(MS-CHAP)과 암호화(MPPE) 방식이 상대적으로 취약해 현재는 L2TP/IPSec이나 SSL VPN 등 더 안전한 대안으로 대체되는 추세다.",
+      "devContext": "Spring Boot 애플리케이션을 직접 PPTP와 연동할 일은 거의 없지만, 레거시 사내망이 여전히 PPTP 기반 원격 접속 VPN을 운영 중이라면 그 뒤에 있는 내부 API 서버 입장에서는 취약한 인증 체계를 통과한 트래픽이 내부망에 그대로 유입될 수 있다는 위험을 인지해야 한다. 따라서 애플리케이션 레벨에서는 VPN 신뢰 여부와 무관하게 Spring Security로 별도의 사용자 인증·인가를 반드시 요구하고, 가능하면 인프라팀에 PPTP를 IPSec 기반 VPN이나 SSL VPN으로 전환하도록 권고하는 것이 심층 방어 관점에서 바람직하다."
+    },
+    "tags": ["pptp", "vpn", "tunneling", "data-link-layer"]
+  },
+  {
+    "id": "net-015",
+    "category": "network",
+    "type": "term_identification",
+    "title": "PPTP와 L2F의 장점을 결합한 표준 터널링 프로토콜",
+    "question": "그 자체로는 암호화 기능이 없어 단독으로 쓰이기보다는 IPSec(주로 ESP)과 결합해 사용되며, 데이터링크 계층에서 두 지점 간 터널을 만들어 PPP 프레임을 전달하는, PPTP와 L2F(Layer 2 Forwarding)의 장점을 결합해 표준화된 터널링 프로토콜은 무엇인가?",
+    "termAnswers": ["l2tp", "layer 2 tunneling protocol", "layer2 tunneling protocol"],
+    "explanation": {
+      "definition": "L2TP(Layer 2 Tunneling Protocol)는 Cisco의 L2F와 마이크로소프트의 PPTP를 결합해 IETF가 표준화한 2계층 터널링 프로토콜로, 자체 암호화 기능이 없어 실제로는 IPSec(IKE로 SA를 협상하고 ESP로 암호화)과 결합한 'L2TP/IPSec' 형태로 주로 사용된다. PPTP보다 더 다양한 네트워크(ATM, Frame Relay 등)를 지원하고 보안성이 강화된 후속 프로토콜로 평가된다.",
+      "devContext": "L2TP/IPSec으로 구성된 원격 접속 VPN을 통해 Spring Boot로 만든 사내 관리자용 API에 접근하는 구조라면, 애플리케이션 입장에서는 VPN 터널이 이미 IPSec 수준의 암호화를 제공한다는 이유로 애플리케이션 인증을 생략해서는 안 되며 여전히 Spring Security의 세션/토큰 기반 인증을 독립적으로 적용해야 한다. 또한 L2TP/IPSec은 UDP 500(IKE), 4500(NAT-T), 1701(L2TP) 포트를 사용하므로, 방화벽/보안그룹 설정 시 이 포트들이 열려 있는지, 그리고 해당 포트가 꼭 필요한 대상에게만 제한적으로 노출되는지 인프라 구성을 점검하는 것이 실무 협업에서 필요하다."
+    },
+    "tags": ["l2tp", "vpn", "tunneling", "ipsec"]
+  },
+  {
+    "id": "net-016",
+    "category": "network",
+    "type": "term_identification",
+    "title": "레이블 스위칭으로 가상 전용회선을 구현하는 통신사 VPN",
+    "question": "통신사업자의 백본망 내에서 IP 주소 대신 짧은 레이블(Label)을 붙여 미리 정해진 경로(LSP)로 패킷을 빠르게 전달하는 방식을 이용해, 여러 고객사의 트래픽을 논리적으로 분리된 가상 전용회선처럼 제공하는 VPN 기술은 무엇인가?",
+    "termAnswers": ["mpls vpn", "mpls", "multiprotocol label switching", "레이블 스위칭 vpn"],
+    "explanation": {
+      "definition": "MPLS(Multiprotocol Label Switching) VPN은 패킷마다 매번 IP 라우팅 테이블을 조회하는 대신 짧은 레이블을 기반으로 미리 설정된 경로(Label Switched Path)를 따라 전달하는 레이블 스위칭 기술을 이용해, 통신사 백본망 안에서 여러 고객의 트래픽을 논리적으로 분리하는 사이트 간 VPN이다. 2~3계층에서 동작하며 별도의 암호화 없이도 경로 분리 자체로 격리성을 제공하고, 인터넷 구간을 거치지 않아 지연시간과 품질(QoS)이 안정적이라는 장점이 있다.",
+      "devContext": "여러 지사에 배포된 Spring Boot 서비스들이 MPLS VPN으로 연결된 사설 백본을 통해 서로 통신하는 구조라면, 이 구간은 통신사 레이블 스위칭으로 격리될 뿐 암호화되지는 않는다는 점을 기억해야 한다. 따라서 규제 대상 개인정보나 금융 데이터를 주고받는 API라면 MPLS 구간이라도 `WebClient`/`RestTemplate`에서 HTTPS(mTLS)를 기본으로 강제해 전송 구간 자체의 기밀성을 별도로 확보하는 것이 안전하다. 또한 MPLS 회선은 대역폭과 지연시간이 계약(SLA)으로 보장되므로, 지사 간 실시간 API 호출의 타임아웃 값을 이 SLA에 맞춰 현실적으로 설정하는 것도 실무에서 고려할 부분이다."
+    },
+    "tags": ["mpls", "vpn", "label-switching", "wan"]
+  },
+  {
+    "id": "net-017",
+    "category": "network",
+    "type": "term_identification",
+    "title": "별도 클라이언트 프로그램 없이 웹 브라우저만으로 접속하는 VPN",
+    "question": "전용 클라이언트 소프트웨어 설치 없이 웹 브라우저에 내장된 TLS 기능만으로 원격지 사용자를 사내 애플리케이션에 연결시켜주며, 네트워크 계층 전체가 아니라 특정 애플리케이션·URL 단위로 접근을 세밀하게 제어할 수 있는 VPN 방식은 무엇인가?",
+    "termAnswers": ["ssl vpn", "sslvpn", "클라이언트리스 vpn", "clientless vpn"],
+    "explanation": {
+      "definition": "SSL VPN은 IPSec VPN과 달리 별도의 전용 클라이언트 설치 없이(클라이언트리스) 웹 브라우저의 TLS/SSL 기능만으로 사용자를 인증하고 사내 애플리케이션에 연결해주는 원격 접속 VPN이다. 네트워크 계층 전체를 터널링하는 IPSec VPN과 달리 애플리케이션/URL 단위로 세밀한 접근 제어가 가능하고, 방화벽에서 흔히 열려 있는 443 포트를 그대로 사용해 배포와 관리가 상대적으로 간편하다는 장점이 있다.",
+      "devContext": "재택근무자가 SSL VPN을 통해 Spring Boot로 만든 사내 관리 콘솔에 접속하는 경우, SSL VPN 게이트웨이가 이미 사용자를 인증했더라도 이는 네트워크 접근 계층의 인증일 뿐이므로 Spring Security의 로그인/세션 인증을 별도로 요구해야 한다. 또한 SSL VPN은 특정 URL 경로 단위로 접근을 통제할 수 있으므로, `/admin/**`처럼 민감한 엔드포인트는 SSL VPN 게이트웨이의 접근 정책과 Spring Security의 `HttpSecurity` 인가 규칙(`.requestMatchers(\"/admin/**\").hasRole(\"ADMIN\")`) 양쪽에서 이중으로 제한해두는 것이 안전하다. IPSec VPN에 비해 설정이 간단한 만큼, 세션 타임아웃과 재인증 주기를 짧게 잡아 탈취된 세션의 악용 범위를 최소화하는 것도 중요하다."
+    },
+    "tags": ["ssl-vpn", "clientless", "vpn", "remote-access"]
+  },
+  {
+    "id": "net-018",
+    "category": "network",
+    "type": "term_identification",
+    "title": "외부에 공개할 서비스만 따로 모아두는 완충 네트워크 구간",
+    "question": "웹 서버, 메일 서버처럼 외부 사용자에게 반드시 공개해야 하는 서비스만을 내부망과 분리된 별도의 네트워크 구간에 배치함으로써, 해당 서비스가 침해당하더라도 공격자가 곧바로 내부망까지 도달하지 못하도록 외부망과 내부망 사이에 두는 완충 지대는 무엇인가?",
+    "termAnswers": ["dmz", "비무장지대", "demilitarized zone", "완충 네트워크", "디엠지"],
+    "explanation": {
+      "definition": "DMZ(Demilitarized Zone, 비무장지대)는 외부에 공개해야 하는 서버(웹, 메일, DNS 등)를 내부망과는 분리된 독립적인 네트워크 구간에 배치하여, 외부 사용자는 DMZ까지만 접근하고 내부망에는 직접 접근하지 못하도록 만든 완충 지대이다. DMZ 서버가 공격으로 침해되더라도 별도의 접근 통제 없이는 내부망까지 확산되지 않도록 피해 범위를 제한하는 것이 핵심 목적이며, 이 구간을 어떤 방화벽/라우터 조합으로 구현할지는 스크린드 호스트, 스크린드 서브넷 등 다양한 아키텍처로 설계될 수 있다.",
+      "devContext": "외부에 노출되는 Spring Boot API 서버는 클라우드 VPC의 퍼블릭 서브넷(DMZ 역할)에 배치하고, RDS나 내부 배치 서버는 프라이빗 서브넷에 두어 보안그룹으로 DMZ에서 내부망으로의 접근을 최소한의 포트·프로토콜만 허용하도록 구성하는 것이 DMZ 개념을 클라우드 인프라에 적용한 실무 패턴이다. `application.yml`의 DB 접속 정보가 DMZ의 애플리케이션 서버에만 존재하고 프라이빗 서브넷의 DB로만 연결되도록 구성하면, DMZ 서버가 침해되어도 공격자는 애플리케이션이 가진 자격증명 이상으로는 내부 자원에 접근하기 어렵다. 이는 라우터/베스천 호스트 배치 구조 자체를 가리키는 스크린드 서브넷과 달리, DMZ는 그렇게 만들어진 '완충 구간'이라는 결과물 자체를 지칭하는 개념이라는 점에서 구분된다."
+    },
+    "tags": ["dmz", "network-segmentation", "firewall", "public-service"]
+  },
+  {
+    "id": "net-019",
+    "category": "network",
+    "type": "term_identification",
+    "title": "공격자를 유인해 행동을 관찰하는 미끼 시스템",
+    "question": "실제 운영 시스템처럼 보이지만 의도적으로 취약하게 구성해 공격자를 유인한 뒤, 공격자의 침입 경로·기법·도구를 기록하고 분석함으로써 위협 정보를 수집하는 동시에 진짜 자산으로부터 공격을 분산시키는 미끼용 시스템은 무엇인가?",
+    "termAnswers": ["허니팟", "honeypot", "허니 팟"],
+    "explanation": {
+      "definition": "허니팟(Honeypot)은 실제 서비스처럼 위장했지만 실제로는 가치 있는 데이터를 담고 있지 않은 미끼 시스템으로, 공격자를 의도적으로 유인해 침입 시도와 기법을 기록·분석하는 데 목적이 있다. 정상 사용자는 접근할 이유가 없는 자원이므로 허니팟에 대한 접근은 그 자체로 강한 침해 지표(IoC)가 되며, 공격자의 관심을 실제 자산으로부터 분산시키는 효과도 함께 제공한다.",
+      "devContext": "실무에서는 실제 Spring Boot 서비스와 유사하게 보이는 가짜 관리자 로그인 페이지나 더미 API 엔드포인트를 별도 인스턴스로 배포해 허니팟처럼 운용하고, 이곳에 접근하는 트래픽을 즉시 알람으로 연결해 정찰·공격 시도를 조기에 탐지하는 데 활용할 수 있다. 실서비스 코드 안에서도 비슷한 아이디어를 응용해, 존재할 이유가 없는 엔드포인트(예: `/actuator/gateway`처럼 실제로 쓰지 않는 경로)에 대한 접근을 Spring Security의 `AccessDeniedHandler`나 인터셉터에서 로깅해 이상 스캐닝 행위를 탐지하는 캔너리(canary) 패턴으로 응용하기도 한다. 다만 허니팟 자체가 새로운 공격 경유지로 악용되지 않도록 실제 내부망과는 반드시 네트워크 레벨에서 격리해 운영해야 한다."
+    },
+    "tags": ["honeypot", "deception", "threat-intelligence", "decoy"]
+  },
+  {
+    "id": "net-020",
+    "category": "network",
+    "type": "term_identification",
+    "title": "탐지에 그치지 않고 트래픽 경로 상에서 직접 차단하는 시스템",
+    "question": "네트워크 트래픽이 실제로 지나가는 경로 상에 인라인(in-line)으로 설치되어, 공격으로 판단되는 패킷을 사후 경보만 하는 것이 아니라 그 즉시 세션을 끊거나 패킷을 드롭하여 실시간으로 차단까지 수행하는 능동적 보안 시스템은 무엇인가?",
+    "termAnswers": ["ips", "intrusion prevention system", "침입 방지 시스템", "침입방지시스템"],
+    "explanation": {
+      "definition": "IPS(Intrusion Prevention System)는 트래픽의 실제 통과 경로에 인라인으로 배치되어, 탐지된 공격 트래픽을 즉시 차단(세션 종료, 패킷 드롭)할 수 있는 능동적 보안 시스템이다. 네트워크 경로 밖에서 트래픽을 복제해 받아보며 경보만 발생시키는 IDS(Intrusion Detection System)와 달리, IPS는 실시간 차단이 가능한 대신 오탐(False Positive) 발생 시 정상 트래픽까지 차단되어 서비스 장애로 이어질 수 있다는 위험을 함께 가진다.",
+      "devContext": "Spring Boot 서비스 앞단에 IPS를 두면 SQL Injection이나 알려진 익스플로잇 페이로드가 애플리케이션에 도달하기 전에 인라인으로 차단되지만, 정상적인 요청 패턴이 시그니처와 우연히 겹쳐 오탐이 발생하면 실제 사용자의 요청까지 끊길 수 있으므로 IPS 룰 튜닝과 화이트리스트 예외 처리를 인프라팀과 함께 관리해야 한다. 애플리케이션 개발자 입장에서는 IPS가 앞단에서 걸러줄 것이라는 가정에 의존하지 말고, `spring-boot-starter-validation`과 파라미터 바인딩(PreparedStatement/JPA)으로 SQL Injection 자체를 코드 레벨에서 원천 차단하는 것이 IPS 오탐/우회 가능성에 대비한 이중 방어책이 된다. 또한 IPS가 특정 트래픽 패턴을 잘못 차단해 배포 직후 헬스체크가 실패하는 경우도 있으므로, 장애 발생 시 IPS 로그를 점검 대상에 포함해야 한다."
+    },
+    "tags": ["ips", "inline", "real-time-blocking", "network-security"]
+  },
+  {
+    "id": "net-021",
+    "category": "network",
+    "type": "term_identification",
+    "title": "방화벽·IDS·VPN 등 여러 보안 기능을 한 장비에 모은 솔루션",
+    "question": "방화벽, 침입탐지/방지, VPN, 안티바이러스, 스팸 차단 등 개별적으로 도입하던 여러 보안 기능을 하나의 장비 안에 통합해 관리 포인트를 단일화한 올인원(All-in-One) 보안 솔루션은 무엇인가?",
+    "termAnswers": ["utm", "unified threat management", "통합위협관리", "통합 위협 관리"],
+    "explanation": {
+      "definition": "UTM(Unified Threat Management, 통합위협관리)은 방화벽, IDS/IPS, VPN, 안티바이러스, 콘텐츠 필터링 등 여러 보안 기능을 하나의 장비/솔루션에 통합해 제공하는 all-in-one 보안 솔루션이다. 여러 벤더의 개별 장비를 따로 도입·운영하는 것보다 관리 포인트가 단순해지고 비용이 절감되지만, 하나의 장비에 기능이 집중되어 있어 장애나 성능 병목이 발생하면 여러 보안 기능이 동시에 영향을 받을 수 있다는 단점도 있다.",
+      "devContext": "중소규모 조직에서 자체 데이터센터에 Spring Boot 서비스를 운영한다면, 방화벽/VPN/IPS를 개별 장비로 구축하는 대신 UTM 한 대로 이 기능들을 통합 운영하는 경우가 많으며, 개발팀 입장에서는 배포 환경의 아웃바운드/인바운드 규칙, VPN 접속 정보가 모두 이 UTM 장비의 정책에 종속된다는 점을 이해하고 인프라팀과 포트 개방 요청 등을 협의해야 한다. 다만 UTM이 방화벽/IPS 기능을 제공한다고 해서 애플리케이션의 입력 검증이나 Spring Security 인가 로직을 소홀히 해서는 안 되며, UTM 장애 시 단일 장비이므로 보안 기능 전체가 한 번에 무력화될 수 있다는 리스크를 감안해 애플리케이션 레벨의 자체 방어도 항상 유지해야 한다."
+    },
+    "tags": ["utm", "unified-threat-management", "all-in-one", "network-security"]
+  },
+  {
+    "id": "net-022",
+    "category": "network",
+    "type": "term_identification",
+    "title": "여러 보안 장비의 이벤트 로그를 모아 상관분석하는 통합 관제 체계",
+    "question": "방화벽, IDS/IPS, 서버 등 조직 내 다종·다수 보안 장비에서 발생하는 로그와 이벤트를 중앙에서 실시간으로 수집하고, 이를 상관분석(correlation)하여 개별 로그만으로는 드러나지 않는 공격 시나리오나 이상 징후를 탐지하는 통합 보안관제 체계는 무엇인가?",
+    "termAnswers": ["esm/siem", "esm", "siem", "enterprise security management", "security information and event management", "통합보안관리", "보안정보이벤트관리"],
+    "explanation": {
+      "definition": "ESM(Enterprise Security Management, 통합보안관리)은 조직 내 다양한 보안 장비(방화벽, IDS/IPS 등)의 로그를 Agent-Manager-Console 구조로 모아 중앙에서 일관되게 운영·관제하는 시스템이며, SIEM(Security Information and Event Management, 보안정보이벤트관리)은 여기서 한 걸음 더 나아가 대용량 로그를 빅데이터 기반으로 수집·저장하고 룰/시나리오 기반 상관분석을 통해 단일 로그로는 드러나지 않는 지능형 공격 패턴까지 탐지하는 체계이다. 두 개념 모두 여러 장비의 이벤트를 한곳에 모아 종합적으로 판단한다는 점에서 SOC(보안관제센터) 운영의 핵심 인프라로 쓰인다.",
+      "devContext": "Spring Boot 애플리케이션이 Logback/Log4j2로 남기는 인증 실패, 예외, 접근 로그를 ESM/SIEM 에이전트(또는 Filebeat 등)로 수집되도록 구조화된 형식(JSON 로그)으로 남기면, 방화벽·IPS 로그와 애플리케이션 로그를 시간 축으로 상관분석해 '포트 스캔 이후 특정 계정에 대한 무차별 로그인 시도'처럼 개별 로그만으로는 안 보이던 공격 시나리오를 SIEM에서 탐지할 수 있다. 이를 위해 애플리케이션 로그에 요청 IP, 사용자 ID, 엔드포인트, 응답 코드 같은 상관분석에 필요한 필드를 일관되게 포함시키는 것이 실무에서 중요하며, Spring Security의 `AuthenticationFailureBadCredentialsEvent` 같은 이벤트를 리스너로 받아 SIEM이 소비하기 좋은 형태로 로깅해두면 보안관제팀과의 협업 효율이 크게 높아진다."
+    },
+    "tags": ["esm", "siem", "security-monitoring", "log-correlation", "soc"]
   }
 ]

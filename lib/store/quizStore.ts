@@ -28,6 +28,7 @@ interface QuizSessionState {
   startSession: (filters: QuizFilters, options?: StartSessionOptions) => void;
   submitAnswer: (itemId: string, submitted: string, correct: boolean) => void;
   nextQuestion: () => void;
+  previousQuestion: () => void;
   toggleHint: () => void;
   resetSession: () => void;
   setHasHydrated: (value: boolean) => void;
@@ -73,6 +74,11 @@ export const useQuizStore = create<QuizSessionState>()(
       nextQuestion: () =>
         set((state) => ({
           currentIndex: Math.min(state.currentIndex + 1, state.queue.length),
+          isHintShown: false,
+        })),
+      previousQuestion: () =>
+        set((state) => ({
+          currentIndex: Math.max(state.currentIndex - 1, 0),
           isHintShown: false,
         })),
       toggleHint: () => set((state) => ({ isHintShown: !state.isHintShown })),
