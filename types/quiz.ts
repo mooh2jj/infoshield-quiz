@@ -3,7 +3,11 @@ export type SubjectCategory =
   | "network"
   | "application"
   | "general"
-  | "law";
+  | "law"
+  | "aws-security"
+  | "aws-resilient"
+  | "aws-performance"
+  | "aws-cost";
 
 export type QuestionType = "multiple_choice" | "term_identification";
 
@@ -31,4 +35,8 @@ export const SUBJECT_LABELS: Record<SubjectCategory, string> = {
   application: "어플리케이션 보안",
   general: "정보보호 일반",
   law: "정보보호 관리 및 법규",
+  "aws-security": "보안 아키텍처",
+  "aws-resilient": "복원력 아키텍처",
+  "aws-performance": "고성능 아키텍처",
+  "aws-cost": "비용 최적화",
 };

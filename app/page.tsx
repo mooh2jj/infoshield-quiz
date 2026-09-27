@@ -55,9 +55,9 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "aws-saa",
     label: "AWS SAA",
-    description: "4대 도메인 마인드맵 공개 · 퀴즈는 준비 중",
+    description: "4대 도메인 마인드맵 · 실전 시나리오 4지선다 퀴즈",
     href: "/aws-saa",
-    status: "coming-soon",
+    status: "available",
   },
 ];
 

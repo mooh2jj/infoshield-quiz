@@ -18,7 +18,10 @@ export const resilientMindmap: MindmapSection = {
       kinesisBox["Amazon Kinesis<br/>1) Data Streams — 샤드 기반 실시간 순서 보장, 다중 소비자가 동일 스트림을 독립적으로 병렬 소비<br/>2) Data Firehose — S3/Redshift로 변환·적재하는 버퍼링 서비스"]
       messagingChoiceBox["메시징 서비스 선택 기준<br/>1) 순서 보장 + 다중 컨슈머 대규모 스트리밍 — Kinesis Data Streams<br/>2) 단순 1:1 작업 버퍼링·디커플링 — SQS<br/>3) 이벤트 기반 1:N 알림 브로드캐스트 — SNS<br/>4) SaaS 연동·룰 기반 이벤트 필터링 라우팅 — EventBridge"]
     데이터베이스 복원력
-      rdsBox["Amazon RDS<br/>1) Multi-AZ — 동기식 복제, 자동 페일오버(고가용성 목적)<br/>2) Read Replica — 비동기식 복제, 읽기 부하 분산 목적(DR 대응 시 수동 승격 필요)"]
+      rdsBox["Amazon RDS<br/>1) Multi-AZ — 동기식 복제, 자동 페일오버(고가용성 목적), 대기(Standby) 인스턴스는 읽기 트래픽을 직접 수신할 수 없음(빈출 함정)<br/>2) Read Replica — 비동기식 복제, 읽기 부하 분산 목적(DR 대응 시 수동 승격 필요)"]
       auroraBox["Amazon Aurora<br/>1) 3개 AZ에 6개 데이터 복사본을 자동 분산 저장<br/>2) 글로벌 데이터베이스 — Cross-Region 스토리지 기반 복제, 지연 1초 미만"]
-      dynamoResBox["DynamoDB 복원력<br/>1) 글로벌 테이블 — 다중 리전 Active-Active 복제<br/>2) PITR(특정 시점 복구) — 최근 시점 중 임의 지점으로 복원"]`,
+      dynamoResBox["DynamoDB 복원력<br/>1) 글로벌 테이블 — 다중 리전 Active-Active 복제<br/>2) PITR(특정 시점 복구) — 최근 시점 중 임의 지점으로 복원"]
+    DB 성능과 수명 주기 심화
+      rdsProxyBox["Amazon RDS Proxy<br/>1) Lambda 등 서버리스 환경에서 폭증하는 DB 커넥션을 완전관리형 커넥션 풀링으로 흡수<br/>2) DB 장애조치가 발생해도 애플리케이션 연결을 유지해 페일오버 체감 시간을 단축"]
+      dynamoCapacityBox["DynamoDB TTL과 용량 모드<br/>1) TTL(Time to Live) — 지정 시각이 지난 항목을 자동 삭제, 별도 비용 없이 스토리지·비용 절감<br/>2) On-Demand 용량 모드 — 예측 불가능하고 불규칙한 트래픽에 적합<br/>3) Provisioned 용량 모드 — 트래픽 패턴이 예측 가능할 때 비용 효율적"]`,
 };

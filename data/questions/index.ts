@@ -4,6 +4,7 @@ import network from "./network.json";
 import application from "./application.json";
 import general from "./general.json";
 import law from "./law.json";
+import awsSaa from "./aws-saa.json";
 
 export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   system: system as QuizItem[],
@@ -11,6 +12,18 @@ export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   application: application as QuizItem[],
   general: general as QuizItem[],
   law: law as QuizItem[],
+  "aws-security": (awsSaa as QuizItem[]).filter(
+    (item) => item.category === "aws-security"
+  ),
+  "aws-resilient": (awsSaa as QuizItem[]).filter(
+    (item) => item.category === "aws-resilient"
+  ),
+  "aws-performance": (awsSaa as QuizItem[]).filter(
+    (item) => item.category === "aws-performance"
+  ),
+  "aws-cost": (awsSaa as QuizItem[]).filter(
+    (item) => item.category === "aws-cost"
+  ),
 };
 
 export const ALL_QUESTIONS: QuizItem[] = Object.values(

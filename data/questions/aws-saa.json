@@ -1,0 +1,552 @@
+[
+  {
+    "id": "awssaa-001",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "SCP를 이용한 다중 계정 리전·서비스 통제",
+    "question": "대기업의 클라우드 거버넌스 팀은 AWS Organizations로 100개 이상의 계정을 관리합니다. 보안 감사 결과 일부 계정의 루트 사용자와 관리자 IAM 역할이 승인되지 않은 리전에서 리소스를 생성하고 GuardDuty를 비활성화한 사실이 확인되었습니다. 향후 모든 회원 계정(루트 사용자 포함)이 승인되지 않은 리전에서 리소스를 생성하거나 GuardDuty 구성을 변경하지 못하도록 최소한의 운영 오버헤드로 차단하려면?",
+    "options": [
+      "각 회원 계정에 IAM 권한 경계(Permissions Boundary)를 생성하고 관리자 역할에 연결한다.",
+      "Organizations 관리 계정에서 비승인 리전 접근과 GuardDuty API 변경을 명시적으로 거부(Deny)하는 서비스 제어 정책(SCP)을 작성해 조직 루트 또는 OU에 연결한다.",
+      "AWS Config로 위반 사항을 탐지하면 EventBridge와 Lambda를 트리거해 리소스를 사후 삭제한다.",
+      "각 계정의 루트 사용자를 폐쇄하고 모든 관리자 역할을 읽기 전용으로 전환한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "서비스 제어 정책(SCP)은 AWS Organizations 내 모든 회원 계정에 적용되는 최대 권한 가드레일이며, 회원 계정의 루트 사용자까지도 제약할 수 있다. 조건부 Deny(예: aws:RequestedRegion, GuardDuty 관련 Action)를 조직 루트나 OU에 연결하면 사전에 원천 차단된다.",
+      "optionsBreakdown": [
+        "① 권한 경계는 루트 사용자에게 적용되지 않아 요구사항을 충족하지 못한다.",
+        "② SCP는 루트 사용자를 포함한 모든 계정에 최우선으로 적용되는 명시적 거부를 지원한다(정답).",
+        "③ AWS Config 기반 사후 대응은 생성 자체를 막지 못하고 오버헤드도 크다.",
+        "④ 루트 폐쇄·읽기 전용 전환은 운영 자체를 마비시키는 과도한 조치다."
+      ],
+      "devContext": "Spring Boot 배포 파이프라인에서 `aws-sdk`나 Terraform으로 리소스를 프로비저닝할 때, SCP로 리전이 막혀 있으면 애플리케이션 코드가 아니라 IAM 정책 평가 단계에서 AccessDenied가 발생한다. 배포 실패 원인을 진단할 때 애플리케이션 로그보다 CloudTrail의 `errorCode: AccessDenied`와 SCP 평가 결과를 먼저 확인하는 습관을 들이면 디버깅 시간을 크게 줄일 수 있다."
+    },
+    "tags": ["scp", "organizations", "guardduty", "governance"]
+  },
+  {
+    "id": "awssaa-002",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "허브-스포크 하이브리드 네트워킹",
+    "question": "글로벌 기업이 1Gbps Direct Connect로 온프레미스와 연결되어 있고, AWS 상에는 50개 이상의 사업부 VPC가 있습니다. 최근 인수합병으로 서로 다른 VPC 간 직접 통신과, 온프레미스에서 50개 VPC 사설 대역 전체로의 접근이 모두 필요해졌습니다. 복잡한 풀 메시 VPC Peering을 피하면서 전송 효율성과 관리 단순성을 극대화하는 아키텍처는?",
+    "options": [
+      "모든 VPC 간에 VPC Peering을 맺고, 각 VPC에 개별 가상 프라이빗 게이트웨이(VGW)를 연결한다.",
+      "중앙 네트워킹 계정에 AWS Transit Gateway(TGW)를 생성해 모든 VPC를 연결(Attachment)하고, Direct Connect Gateway(DXGW)를 TGW와 연결한다.",
+      "온프레미스와 각 VPC 간에 Site-to-Site VPN 터널을 50개 개별 생성한다.",
+      "허브 VPC 하나를 두고 각 VPC와 소프트웨어 IPsec 라우터 EC2 인스턴스를 배치해 라우팅한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "AWS Transit Gateway는 수백 개의 VPC와 온프레미스를 허브-스포크 구조로 단일 중앙 집선하는 완전관리형 라우터로, VPC Peering과 달리 전이적 라우팅(Transitive Routing)을 지원해 VPC A → TGW → VPC B, 온프레미스 → DXGW → TGW → 전체 VPC 통신을 하나의 게이트웨이로 통합한다.",
+      "optionsBreakdown": [
+        "① VPC Peering은 전이적 라우팅을 지원하지 않아 50개 VPC 간 풀 메시가 필요해 관리가 폭증한다.",
+        "② TGW+DXGW 조합이 전이적 라우팅과 중앙 집중 관리를 모두 만족한다(정답).",
+        "③ VPN 터널 50개는 관리 단순성과 정반대다.",
+        "④ 자체 관리형 라우터 EC2는 고가용성·확장성 확보에 추가 운영 부담이 크다."
+      ],
+      "devContext": "마이크로서비스가 여러 VPC(계정)에 분산 배포된 Spring Cloud 환경에서, 서비스 디스커버리(Eureka)나 Config 서버가 다른 VPC에 있다면 TGW 라우팅 테이블에 해당 CIDR이 전파돼 있는지부터 확인하는 것이 연결 문제의 첫 체크포인트다."
+    },
+    "tags": ["transit-gateway", "direct-connect", "hybrid-network", "vpc-peering"]
+  },
+  {
+    "id": "awssaa-003",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "마이크로초 단위 HPC 병렬 파일 시스템",
+    "question": "자율주행 연구팀이 수백 대의 분산 GPU 인스턴스로 라이다 센서 데이터를 딥러닝 훈련시킵니다. 수백만 IOPS와 수백 GB/s 처리량을 마이크로초 지연시간으로 제공해야 하며, 훈련 데이터셋은 이미 S3에 있고 훈련 시작 시 자동 로드·결과 동기화가 필요합니다. 가장 적합한 스토리지 솔루션은?",
+    "options": [
+      "Amazon EFS 프로비저닝된 처리량 모드",
+      "Amazon FSx for Windows File Server 멀티 AZ 배포",
+      "Amazon FSx for Lustre 파일 시스템을 생성하고 S3 버킷을 데이터 리포지토리로 연동",
+      "각 EC2에 Multi-Attach가 활성화된 EBS io2 볼륨을 공유 마운트"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "Amazon FSx for Lustre는 HPC·머신러닝·비디오 렌더링에 최적화된 초고속 병렬 파일 시스템으로, S3 데이터 리포지토리와 연동해 파일 시스템 생성 시 S3 객체 메타데이터를 즉시 로드하고 변경 사항을 다시 S3로 내보낼 수 있다.",
+      "optionsBreakdown": [
+        "① EFS는 범용 공유 파일 시스템으로 수백만 IOPS급 초고속 병렬 처리에는 한계가 있다.",
+        "② FSx for Windows는 SMB/AD 연동용이며 Linux HPC 워크로드에 맞지 않다.",
+        "③ FSx for Lustre + S3 리포지토리 연동이 요구사항을 정확히 충족한다(정답).",
+        "④ EBS Multi-Attach는 클러스터 인식 파일 시스템이 필요하며 수백 대 공유에 부적합하다."
+      ],
+      "devContext": "일반 Spring Boot 백엔드에서는 보기 드문 워크로드지만, 배치 처리용 Spring Batch job이 대량의 파일을 병렬로 읽고 써야 한다면 FSx for Lustre를 임시 스크래치 볼륨으로 마운트하고 최종 산출물만 S3로 내보내는 패턴이 비용·성능 면에서 유리하다."
+    },
+    "tags": ["fsx-lustre", "hpc", "s3-repository", "storage"]
+  },
+  {
+    "id": "awssaa-004",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "순서 보장 대규모 스트리밍의 다중 소비자 처리",
+    "question": "IoT 공장에서 5만 개 이상의 센서가 초당 수백만 건의 텔레메트리 데이터를 전송합니다. 데이터는 발생 순서대로 유지되어야 하며, 1초 이내 이상 감지 Lambda와 5분 단위로 S3에 적재하는 배치 시스템이 동시에 같은 데이터를 독립적으로 처리해야 합니다. 가장 확장성 있고 복원력 있는 아키텍처는?",
+    "options": [
+      "센서가 Amazon SQS FIFO 대기열로 직접 전송하고, 두 시스템이 큐를 순차적으로 폴링·삭제한다.",
+      "센서 데이터를 Kinesis Data Streams로 수집하고, Lambda와 Kinesis Data Firehose를 각각 해당 스트림의 컨슈머로 연결한다.",
+      "센서가 SNS 토픽으로 발행하고 SNS가 S3와 Lambda를 직접 구독한다.",
+      "센서 데이터를 Aurora Serverless v2에 초당 수백만 건 직접 INSERT한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Kinesis Data Streams는 파티션 키 기준 샤드 내에서 완벽한 순서를 보장하며, 메시지를 읽어도 큐에서 사라지지 않고 보존 기간 동안 유지되므로 여러 컨슈머(Lambda, Firehose)가 동일 스트림을 독립적으로 병렬 소비할 수 있다.",
+      "optionsBreakdown": [
+        "① SQS는 한 소비자가 메시지를 읽으면 삭제되므로 다중 소비자가 전체 데이터를 각자 읽을 수 없다.",
+        "② Kinesis의 다중 컨슈머 모델이 요구사항에 정확히 부합한다(정답).",
+        "③ SNS는 순서를 보장하지 않는다(FIFO 토픽 제외).",
+        "④ Aurora에 초당 수백만 건 직접 쓰기는 DB 커넥션·쓰기 성능 한계로 비현실적이다."
+      ],
+      "devContext": "Spring Cloud Stream의 Kinesis Binder를 사용하면 `@StreamListener` 스타일로 동일 스트림에 여러 애플리케이션 그룹(실시간 알림 서비스, 배치 적재 서비스)을 독립적으로 붙일 수 있어, 위 아키텍처를 Spring 생태계에서 비교적 쉽게 구현할 수 있다."
+    },
+    "tags": ["kinesis", "multi-consumer", "streaming", "iot"]
+  },
+  {
+    "id": "awssaa-005",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "초저 RTO RPO 글로벌 금융 데이터베이스",
+    "question": "글로벌 온라인 뱅킹이 서울·버지니아 2개 리전에서 운영됩니다. 리전 전체 장애 시에도 RTO 1분 미만, RPO 1초 미만을 유지해야 하고, 각 리전 로컬 사용자에게 빠른 읽기 지연시간도 제공해야 합니다. 어떤 데이터베이스 아키텍처가 적합한가?",
+    "options": [
+      "RDS for MySQL Multi-AZ를 구성하고 타 리전에 교차 리전 Read Replica를 두어 자동 장애조치 스크립트를 작성한다.",
+      "Aurora Global Database를 구성해 기본 리전에 쓰기/읽기 인스턴스를, 보조 리전에 스토리지 기반 복제 클러스터를 두고 장애 시 보조 리전을 독립 클러스터로 승격한다.",
+      "두 리전에 각각 DynamoDB 테이블을 만들고 일 단위 백업을 교차 리전 복사한다.",
+      "EC2에 자체 관리형 PostgreSQL과 DRBD를 구성한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Aurora Global Database는 전용 인프라 스토리지 기반 복제로 교차 리전 복제 지연을 일반적으로 1초 미만(RPO)으로 유지하며, 기본 리전 완전 장애 시에도 보조 리전을 완전한 읽기/쓰기 클러스터로 1분 미만(RTO)에 승격할 수 있다.",
+      "optionsBreakdown": [
+        "① RDS Read Replica는 엔진 레벨 비동기 복제로 지연이 수 초~수 분으로 늘어날 수 있고 수동 페일오버는 수 분 이상 소요된다.",
+        "② Aurora Global Database가 RTO<1분, RPO<1초 요구를 정확히 만족한다(정답).",
+        "③ 일 단위 백업 복사는 RPO 요구를 전혀 충족하지 못한다.",
+        "④ 자체 관리형 DRBD 구성은 복잡도와 운영 부담이 매우 크고 SLA 보장이 어렵다."
+      ],
+      "devContext": "Spring Boot에서 다중 리전 Aurora Global Database를 쓸 때는 `spring.datasource` 설정을 리전별로 분리하고, 승격(Failover) 이벤트 시 애플리케이션이 새 클러스터 엔드포인트를 다시 조회하도록 커넥션 풀(HikariCP)의 `validationTimeout`과 재연결 로직을 확인해두는 것이 실제 장애 훈련에서 중요하다."
+    },
+    "tags": ["aurora-global-database", "rto-rpo", "disaster-recovery", "multi-region"]
+  },
+  {
+    "id": "awssaa-006",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "온프레미스에서 KMS로의 완전 프라이빗 통신",
+    "question": "의료 기관이 온프레미스 서버에서 AWS KMS로 환자 기록을 암호화하려 합니다. 데이터센터와 AWS 간 통신은 공용 인터넷을 경유하지 않고 이미 연결된 Direct Connect를 통해서만 사설 IP로 이루어져야 합니다. 가장 안전하고 운영 효율적인 구성은?",
+    "options": [
+      "온프레미스 서버에서 인터넷 게이트웨이를 통해 KMS의 공개 엔드포인트로 HTTPS 통신한다.",
+      "VPC 내에 KMS용 Interface VPC 엔드포인트(PrivateLink)를 생성하고, 온프레미스 DNS가 엔드포인트 사설 IP를 확인하도록 조건부 전달자를 구성해 Direct Connect로 통신한다.",
+      "VPC 내에 KMS용 Gateway VPC 엔드포인트를 생성하고 라우팅 테이블에 Direct Connect 경로를 추가한다.",
+      "온프레미스 서버에 하드코딩된 IAM 액세스 키를 등록해 직접 API를 호출한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Interface VPC 엔드포인트(PrivateLink)는 서브넷 내 사설 IP를 갖는 ENI를 생성하며, Direct Connect나 VPN이 연결돼 있으면 온프레미스에서도 공용 인터넷 없이 이 사설 IP로 KMS 등 AWS 서비스에 직접 접근할 수 있다.",
+      "optionsBreakdown": [
+        "① 공개 엔드포인트 HTTPS 통신은 공용 인터넷을 경유하므로 요구사항 위반이다.",
+        "② Interface 엔드포인트 + 조건부 전달자 DNS 구성이 정답이다.",
+        "③ Gateway 엔드포인트는 S3·DynamoDB만 지원하며 KMS·온프레미스 연동에 사용할 수 없다.",
+        "④ 액세스 키 하드코딩은 보안 원칙 위반이며 네트워크 경로 요구사항도 해결하지 못한다."
+      ],
+      "devContext": "Spring Cloud AWS의 KMS 클라이언트를 온프레미스 배치 서버에서 사용할 때, SDK가 기본 리전 공개 엔드포인트로 접속하지 않도록 `AwsClientBuilder.EndpointConfiguration`에 PrivateLink 엔드포인트 URL을 명시적으로 지정해야 한다."
+    },
+    "tags": ["kms", "privatelink", "interface-endpoint", "direct-connect"]
+  },
+  {
+    "id": "awssaa-007",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "스티키 세션 부하 불균형 해소",
+    "question": "ALB 뒤 Auto Scaling EC2 플릿에서 실행되는 쇼핑몰이 할인 이벤트 중 특정 인스턴스에만 트래픽이 몰립니다. 원인은 ALB의 스티키 세션(대상 그룹 고정성)입니다. 부하를 완벽히 균등 분산하면서 인스턴스가 스케일 인 되어도 사용자 세션(장바구니 등)이 유실되지 않게 하려면?",
+    "options": [
+      "스티키 세션 쿠키 만료 시간을 30일로 늘리고 인스턴스 사양을 업그레이드한다.",
+      "스티키 세션을 비활성화해 라운드로빈으로 고르게 분산하고, 세션 데이터를 Amazon ElastiCache for Redis 클러스터로 외부화한다.",
+      "EC2 로컬 EBS 볼륨에 세션을 저장하고 1분마다 스냅샷을 생성한다.",
+      "ALB를 NLB로 교체하고 세션 고정성을 유지한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "웹 서버가 세션 상태를 로컬 메모리에 두면 스티키 세션에 의존하게 되어 부하 불균형과 스케일 인 시 세션 유실이 발생한다. 세션을 ElastiCache for Redis 같은 외부 캐시로 분리하면 무상태(Stateless) 웹 계층이 되어 완전한 라운드로빈 분산과 자유로운 스케일 아웃/인이 가능하다.",
+      "optionsBreakdown": [
+        "① 쿠키 연장과 사양 업그레이드는 근본 원인(스티키 세션 의존)을 해결하지 못한다.",
+        "② 세션 외부화가 스티키 세션 없이도 세션 유지·균등 분산을 동시에 만족시키는 정답이다.",
+        "③ 로컬 볼륨 스냅샷은 실시간 세션 공유가 불가능하고 복구도 느리다.",
+        "④ NLB로 교체해도 세션 고정성을 유지하면 근본 문제가 그대로 남는다."
+      ],
+      "devContext": "Spring Session Data Redis 스타터(`spring-session-data-redis`)를 추가하면 `HttpSession` 구현체를 자동으로 Redis 기반으로 교체할 수 있어, 애플리케이션 코드 변경 없이 세션 외부화를 매우 적은 작업량으로 구현할 수 있다."
+    },
+    "tags": ["sticky-session", "elasticache", "stateless", "session-externalization"]
+  },
+  {
+    "id": "awssaa-008",
+    "category": "aws-cost",
+    "type": "multiple_choice",
+    "title": "접근 빈도 기반 S3 수명 주기 최적화",
+    "question": "SaaS 기업이 문서를 S3에 보관합니다. 업로드 후 30일은 빈번히 조회·수정되고, 30일 후에는 95% 이상 거의 조회되지 않지만 감사 목적으로 1초 이내 즉시 검색이 필요합니다. 365일이 지나면 7년간 법적 보존만 하면 되고 검색은 수 시간이 걸려도 무방합니다. 비용을 가장 극대화하여 절감하는 수명 주기 정책은?",
+    "options": [
+      "업로드 즉시 Glacier Deep Archive로 저장하고 필요 시 대량 복원을 요청한다.",
+      "30일간 Standard 유지 → 30일 후 Standard-IA로 전환 → 365일 후 Glacier Deep Archive로 전환",
+      "30일간 Standard 유지 → 30일 후 One Zone-IA로 전환 → 365일 후 Glacier Instant Retrieval로 전환",
+      "전체 기간 동안 S3 Intelligent-Tiering 단일 클래스를 유지한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "30일 이후 즉시 검색이 필요하므로 다중 AZ 복원력을 제공하는 Standard-IA가 적합하고(One Zone-IA는 AZ 장애 시 유실 위험), 365일 이후 장기 보존은 검색 지연을 감수할 수 있으므로 가장 저렴한 Glacier Deep Archive가 최적이다.",
+      "optionsBreakdown": [
+        "① 즉시 Deep Archive는 30일간의 빈번한 조회·수정 요구사항(즉시 접근)을 만족하지 못한다.",
+        "② Standard → Standard-IA → Deep Archive 조합이 접근 패턴과 비용을 모두 최적화한다(정답).",
+        "③ One Zone-IA는 단일 AZ라 감사용 기업 문서에 유실 위험이 있고, Glacier Instant Retrieval은 Deep Archive보다 비싸다.",
+        "④ Intelligent-Tiering 단일 클래스는 자동 계층 전환은 되지만 365일 이후 Deep Archive 수준까지 저렴해지지 않는다."
+      ],
+      "devContext": "Spring Batch로 수명 주기 전환 배치를 직접 구현할 필요 없이, S3 버킷의 Lifecycle Rule(JSON/콘솔)로 선언적으로 설정하면 애플리케이션 코드는 오브젝트 키만 알면 되고 실제 스토리지 클래스 전환은 S3가 백그라운드에서 처리한다."
+    },
+    "tags": ["s3-lifecycle", "storage-class", "cost-optimization", "glacier"]
+  },
+  {
+    "id": "awssaa-009",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "대용량 파일의 안전한 클라이언트 직접 업로드",
+    "question": "모바일 앱이 2GB 비디오를 업로드하는 서비스에서, 현재는 앱→EC2 웹 서버→S3 순으로 전송해 서버 CPU·네트워크 병목이 심합니다. 서버 부하를 없애면서 앱에 장기 IAM 자격증명을 노출하지 않고 S3로 직접 업로드하려면?",
+    "options": [
+      "S3 버킷을 퍼블릭 쓰기 가능으로 전환하고 앱이 직접 PUT 요청을 보낸다.",
+      "앱이 백엔드 인증 API를 호출하면 백엔드가 제한된 유효 시간의 S3 Presigned URL을 생성해 반환하고, 앱이 이 URL로 S3에 직접 업로드한다.",
+      "앱 배포 바이너리에 S3 쓰기 권한을 가진 Access Key/Secret Key를 암호화해 패키징한다.",
+      "EC2 앞에 NLB를 추가하고 인스턴스를 c5n.18xlarge로 스케일업한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "S3 Presigned URL은 IAM 권한을 가진 백엔드가 만료 시간이 포함된 임시 서명 URL을 발급해, 별도 권한이 없는 클라이언트가 해당 URL로만 S3 객체에 직접 안전하게 업로드(PUT)할 수 있게 한다.",
+      "optionsBreakdown": [
+        "① 퍼블릭 쓰기 버킷은 누구나 업로드 가능해 보안 사고로 이어진다.",
+        "② Presigned URL 발급이 병목·자격증명 노출 문제를 동시에 해결하는 정답이다.",
+        "③ 앱 바이너리에 자격증명을 심는 것은 리버스 엔지니어링으로 유출될 수 있다.",
+        "④ 서버 스케일업은 여전히 대용량 파일이 서버를 경유하므로 근본 해결이 아니다."
+      ],
+      "devContext": "Spring Boot 컨트롤러에서 `S3Presigner.presignPutObject(...)`(AWS SDK v2)로 URL을 생성해 반환하는 엔드포인트 하나만 만들면 되며, 이때 `Content-Length`와 `Content-Type` 조건을 서명에 포함시켜 클라이언트가 임의의 파일 크기·타입으로 업로드하는 것을 제한할 수 있다."
+    },
+    "tags": ["s3-presigned-url", "mobile-upload", "least-privilege", "offload"]
+  },
+  {
+    "id": "awssaa-010",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "고정 공인 IP가 필요한 프라이빗 결제 마이크로서비스",
+    "question": "금융 결제 서비스가 파트너 은행 방화벽 화이트리스트 등록을 위해 1~2개의 고정 공인 IP로만 인바운드를 받아야 합니다. 백엔드는 프라이빗 서브넷의 ECS Fargate이며, 외부 결제망과의 아웃바운드 통신도 필요합니다. 요구사항을 모두 충족하는 구성은?",
+    "options": [
+      "퍼블릭 서브넷에 Elastic IP를 할당한 ALB를 배치하고 프라이빗 서브넷에 ECS 태스크를 배포한다.",
+      "퍼블릭 서브넷에 Elastic IP를 할당한 NLB와 NAT 게이트웨이를 배치하고, NLB 대상 그룹을 프라이빗 서브넷 ECS 태스크로 지정하며 프라이빗 라우팅 테이블의 기본 경로를 NAT 게이트웨이로 향하게 한다.",
+      "ECS Fargate 태스크를 퍼블릭 서브넷에 직접 배치하고 태스크마다 퍼블릭 IP를 자동 할당한다.",
+      "퍼블릭 서브넷에 ALB를 두고 앞단에 CloudFront를 배치해 CloudFront 도메인을 화이트리스트로 제공한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "ALB는 고정 IP를 직접 지원하지 않고 DNS로 가변 IP를 사용하는 반면, NLB는 가용 영역당 고정 Elastic IP를 서브넷에 매핑할 수 있어 화이트리스트 요건을 만족한다. 프라이빗 서브넷의 인바운드는 NLB가, 아웃바운드는 NAT 게이트웨이가 각각 처리한다.",
+      "optionsBreakdown": [
+        "① ALB는 고정 IP를 지원하지 않아 화이트리스트 요구사항을 만족할 수 없다.",
+        "② NLB(고정 EIP) + NAT 게이트웨이 조합이 인바운드 고정 IP와 아웃바운드 인터넷 접속을 모두 만족한다(정답).",
+        "③ 퍼블릭 서브넷 직접 배치·퍼블릭 IP 자동 할당은 태스크마다 IP가 바뀌고 보안 요건에도 맞지 않는다.",
+        "④ CloudFront 도메인은 IP 기반 화이트리스트 요구사항(고정 공인 IP)과 맞지 않는다."
+      ],
+      "devContext": "Spring Boot 애플리케이션 코드 자체는 이 구성과 무관하지만, 헬스체크 엔드포인트(`/actuator/health`)를 NLB 대상 그룹 상태 확인에 연결할 때는 NLB가 L4 기반이라 HTTP 상태 코드가 아니라 TCP 연결 성공 여부만 보는 경우가 많다는 점을 배포 매니페스트 작성 시 유의해야 한다."
+    },
+    "tags": ["nlb", "elastic-ip", "fargate", "nat-gateway"]
+  },
+  {
+    "id": "awssaa-011",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "중앙 집중식 인라인 트래픽 심층 검사",
+    "question": "20개 VPC를 운영하는 전자상거래 기업이 인터넷 인/아웃바운드는 물론 VPC 간 트래픽까지 중앙에서 실시간 심층 패킷 검사(DPI)로 침입을 차단해야 합니다. 가장 확장성 있고 AWS 네이티브한 솔루션은?",
+    "options": [
+      "각 VPC의 모든 서브넷에 오픈소스 방화벽 소프트웨어를 설치한 EC2를 개별 배포한다.",
+      "중앙 인스펙션 VPC를 구축해 AWS Network Firewall을 배포하고, Transit Gateway 라우팅 테이블을 조작해 모든 VPC 간·인터넷 트래픽이 검사 VPC를 경유하도록 구성한다.",
+      "모든 서브넷의 Network ACL에 악성 IP를 수동으로 등록한다.",
+      "AWS WAF를 생성해 20개 VPC의 모든 프라이빗 EC2 인스턴스에 직접 연결한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "AWS Network Firewall은 VPC 레벨의 상태 저장(Stateful) 트래픽 검사·IPS/IDS·URL 필터링을 제공하는 완전관리형 서비스이며, 중앙 Inspection VPC와 Transit Gateway를 결합하면 모든 Spoke VPC의 East-West·인터넷 트래픽을 중앙 방화벽으로 강제 라우팅해 일관된 검사를 수행할 수 있다.",
+      "optionsBreakdown": [
+        "① 서브넷마다 EC2 방화벽을 개별 배포하는 것은 확장성·관리 효율이 매우 낮다.",
+        "② 중앙 Inspection VPC + Network Firewall + TGW 라우팅이 확장성과 AWS 네이티브 요구를 모두 만족한다(정답).",
+        "③ NACL 수동 등록은 실시간 심층 패킷 검사(DPI)를 제공하지 못한다.",
+        "④ WAF는 L7 HTTP/HTTPS 웹 요청 검사용이며 VPC 간 임의 트래픽 검사에는 적합하지 않다."
+      ],
+      "devContext": "마이크로서비스 간 통신(East-West 트래픽)이 많은 Spring Cloud 기반 아키텍처에서, 인스펙션 VPC를 경유하도록 라우팅하면 서비스 간 지연시간이 소폭 늘어날 수 있으므로 배포 전 왕복 지연시간(RTT)을 측정해 SLA에 영향이 없는지 확인해야 한다."
+    },
+    "tags": ["network-firewall", "transit-gateway", "inspection-vpc", "ips-ids"]
+  },
+  {
+    "id": "awssaa-012",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "DynamoDB 읽기 핫스팟의 마이크로초 가속",
+    "question": "모바일 RPG의 실시간 랭킹 리더보드가 DynamoDB의 특정 파티션 키에 극심한 읽기 핫스팟을 유발해 피크 시간대 응답 지연이 수십 밀리초로 증가합니다. 코드를 대규모로 리팩토링하지 않고 읽기 응답 시간을 마이크로초 단위로 단축해야 합니다. 가장 적절한 솔루션은?",
+    "options": [
+      "테이블의 읽기 용량 단위(RCU)를 10배로 수동 프로비저닝한다.",
+      "DynamoDB 앞단에 DAX(DynamoDB Accelerator) 인메모리 캐시 클러스터를 배포하고 SDK 엔드포인트를 DAX로 지정한다.",
+      "DynamoDB 데이터를 5분마다 Redshift로 복제해 리더보드 쿼리를 수행한다.",
+      "DynamoDB 글로벌 테이블을 생성해 여러 리전에 부하를 분산한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "DAX는 DynamoDB 전용 완전관리형 인메모리 캐시로, 기존 DynamoDB API와 100% 호환되어 엔드포인트 변경만으로 응답 시간을 밀리초에서 마이크로초 단위로 줄여준다.",
+      "optionsBreakdown": [
+        "① RCU를 늘려도 핫 파티션 자체는 해소되지 않고 비용만 증가한다.",
+        "② DAX가 코드 재작성 없이 즉시 응답 속도를 획기적으로 개선하는 정답이다.",
+        "③ Redshift 복제는 5분 지연이 있어 실시간 리더보드에 맞지 않고 아키텍처도 복잡해진다.",
+        "④ 글로벌 테이블은 리전 간 분산이지 핫 파티션 읽기 가속과는 무관하다."
+      ],
+      "devContext": "AWS SDK의 `AmazonDynamoDBClientBuilder` 대신 `ClusterDaxClient`로 엔드포인트만 교체하면 되므로, Spring Data DynamoDB를 쓰는 리포지토리 레이어의 인터페이스나 비즈니스 로직은 전혀 손댈 필요가 없다는 점이 이 서비스의 핵심 장점이다."
+    },
+    "tags": ["dax", "dynamodb", "hot-partition", "caching"]
+  },
+  {
+    "id": "awssaa-013",
+    "category": "aws-cost",
+    "type": "multiple_choice",
+    "title": "대규모 다운로드의 인터넷 아웃바운드 비용 절감",
+    "question": "소프트웨어 회사가 전 세계 사용자에게 평균 500MB 패치 파일을 S3에서 직접 다운로드하게 하고 있어 인터넷 아웃바운드 데이터 전송 비용이 막대합니다. 다운로드 성능을 높이면서 인터넷 송신 비용을 가장 크게 절감하는 방법은?",
+    "options": [
+      "S3 버킷에 S3 Transfer Acceleration을 활성화한다.",
+      "S3 버킷 앞단에 Amazon CloudFront 배포를 생성하고 사용자가 CloudFront 엣지 캐시를 통해 다운로드하도록 유도한다.",
+      "S3 스토리지 클래스를 즉시 Glacier Instant Retrieval로 전환한다.",
+      "여러 리전에 EC2 프록시 플릿을 배포해 S3 다운로드를 중계한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "S3에서 인터넷으로 직접 전송하는 비용보다 CloudFront를 통한 전송 비용이 훨씬 저렴하며, S3 오리진에서 CloudFront 엣지로의 전송 자체는 완전 무료다. 또한 전 세계 엣지 로케이션 캐싱으로 다운로드 지연시간도 단축된다.",
+      "optionsBreakdown": [
+        "① Transfer Acceleration은 업로드 가속에 주로 쓰이며 추가 비용이 발생한다.",
+        "② CloudFront 경유가 성능 향상과 비용 절감을 동시에 달성하는 정답이다.",
+        "③ 스토리지 클래스 전환은 다운로드 트래픽 자체의 인터넷 전송 비용과 무관하다.",
+        "④ EC2 프록시 플릿은 오히려 컴퓨팅·전송 비용과 운영 부담을 추가한다."
+      ],
+      "devContext": "Spring Boot로 다운로드 API를 만들 때도 파일을 서버가 직접 스트리밍하기보다, CloudFront가 캐싱한 S3 객체의 서명된 URL(또는 공개 URL)로 302 리다이렉트하도록 설계하면 서버는 트래픽을 전혀 중계하지 않는다."
+    },
+    "tags": ["cloudfront", "data-transfer-cost", "s3", "edge-caching"]
+  },
+  {
+    "id": "awssaa-014",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "IGW·NAT 없는 프라이빗 컨테이너의 AWS 서비스 연동",
+    "question": "프라이빗 서브넷의 ECS Fargate 태스크가 SQS를 폴링하고 DynamoDB에 결과를 저장하며 KMS로 암호화 키를 처리합니다. 보안 규정상 이 VPC는 인터넷 게이트웨이나 NAT 게이트웨이를 전혀 가질 수 없습니다. 최소 비용으로 완전히 프라이빗하게 통신하도록 구성하는 방법은?",
+    "options": [
+      "SQS, DynamoDB, KMS 모두를 위한 Interface VPC 엔드포인트를 각각 생성한다.",
+      "DynamoDB용 Gateway VPC 엔드포인트(무료)를 생성하고, SQS·KMS용 Interface VPC 엔드포인트(PrivateLink)를 각각 생성해 프라이빗 서브넷에 연결한다.",
+      "프라이빗 서브넷에 가상 방화벽 EC2를 띄워 인터넷으로 우회 통신한다.",
+      "Direct Connect를 통해 인터넷 트래픽을 온프레미스로 라우팅한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "DynamoDB와 S3는 무료인 Gateway VPC 엔드포인트를 지원하므로 라우팅 테이블 등록만으로 충분하지만, SQS와 KMS는 Gateway 엔드포인트를 지원하지 않아 유료인 Interface VPC 엔드포인트(PrivateLink)로 사설 IP를 할당받아야 한다.",
+      "optionsBreakdown": [
+        "① DynamoDB까지 Interface 엔드포인트로 생성하면 불필요한 시간당 요금·데이터 처리 비용이 추가된다.",
+        "② Gateway(DynamoDB, 무료) + Interface(SQS·KMS, 유료) 조합이 최소 비용의 완전 프라이빗 솔루션이다(정답).",
+        "③ EC2 방화벽 우회는 규정(인터넷 게이트웨이 금지)에 정면으로 위배된다.",
+        "④ Direct Connect로 인터넷을 온프레미스로 우회하는 것은 과도하게 복잡하고 규정 취지에도 맞지 않는다."
+      ],
+      "devContext": "Spring Cloud AWS를 쓰는 애플리케이션이라면 `software.amazon.awssdk` 클라이언트 빌더에 엔드포인트를 명시하지 않아도 되는 경우가 많은데, VPC 엔드포인트를 쓰면 DNS 이름 해석이 자동으로 프라이빗 IP를 가리키도록 Route 53 Private Hosted Zone이 연동되기 때문이다."
+    },
+    "tags": ["vpc-endpoint", "gateway-endpoint", "interface-endpoint", "fargate"]
+  },
+  {
+    "id": "awssaa-015",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "쓰기 폭증을 흡수하는 이벤트 버퍼링 패턴",
+    "question": "티켓 예매 사이트에서 콘서트 오픈 시 1분간 수십만 명이 동시에 예매 버튼을 눌러 RDS PostgreSQL의 동시 쓰기·잠금이 폭증해 커넥션 풀이 고갈되고 서비스가 다운됩니다. 예매 요청을 누락 없이 접수하면서 DB가 처리 가능한 속도로 부하를 평활화하려면?",
+    "options": [
+      "RDS 인스턴스를 db.m6i.32xlarge로 스케일업하고 스토리지 IOPS를 최대치로 올린다.",
+      "웹 서버와 DB 사이에 Amazon SQS FIFO 대기열을 배치해 예매 요청을 먼저 버퍼링하고, 오토스케일링되는 백엔드 워커가 DB 성능 한도 내에서 큐 메시지를 배치로 꺼내 순차 처리한다.",
+      "데이터베이스 앞에 Read Replica를 5대 증설한다.",
+      "웹 애플리케이션에 지수 백오프를 적용해 DB 에러 시 클라이언트가 즉시 재시도하게 만든다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "큐 기반 부하 평활화(Queue-based Load Leveling) 패턴은 급증하는 쓰기 요청을 SQS에 완충시켜, 백엔드 워커가 DB가 감당 가능한 속도로 메시지를 소화하게 함으로써 DB 다운을 방지하고 요청 유실을 0으로 만든다. 접수 순서가 중요하므로 FIFO 큐가 적합하다.",
+      "optionsBreakdown": [
+        "① 스케일업은 비용이 크고 임계치를 넘는 순간 다시 다운될 위험이 남는다.",
+        "② SQS FIFO 버퍼링 + 워커 오토스케일링이 요청 유실 없이 DB 부하를 평활화하는 정답이다.",
+        "③ Read Replica는 읽기 분산용이라 쓰기 폭증 문제를 전혀 해결하지 못한다.",
+        "④ 클라이언트 즉시 재시도는 오히려 요청 폭증을 가중시킨다."
+      ],
+      "devContext": "Spring Boot에서 `@SqsListener`(Spring Cloud AWS Messaging)로 워커를 구현하고, 워커의 Auto Scaling 정책을 큐의 `ApproximateNumberOfMessagesVisible` CloudWatch 지표에 연동하면 대기열 적체 상황에 맞춰 자동으로 워커 수를 늘리고 줄일 수 있다."
+    },
+    "tags": ["sqs-fifo", "load-leveling", "queue-buffering", "rds"]
+  },
+  {
+    "id": "awssaa-016",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "인바운드 개방 없는 긴급 제로데이 패치",
+    "question": "금융 회사가 AWS Organizations 내 1,500대 이상의 프라이빗 EC2 인스턴스에 긴급 제로데이 패치를 배포해야 합니다. 인터넷 게이트웨이나 SSH 인바운드는 열려 있지 않으며, 정기 점검 기간을 기다리지 않고 가능한 한 빨리 일괄 패치해야 합니다. 최소 운영 오버헤드로 이를 달성하는 방법은?",
+    "options": [
+      "보안 그룹에 일시적으로 인바운드 SSH(22)를 열고 Ansible 플레이북을 수동 실행한다.",
+      "Systems Manager Run Command를 사용해 대상 인스턴스 플릿에 즉시 패치 설치 스크립트를 원격 실행한다.",
+      "Systems Manager Patch Manager로 주말 정기 점검 기간에 새 패치 기준선을 배포하도록 스케줄링한다.",
+      "AWS Config 규칙으로 비준수 인스턴스를 식별해 Lambda로 인스턴스를 재부팅한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Systems Manager Run Command는 인바운드 포트 개방 없이 SSM 에이전트를 통해 대규모 인스턴스 플릿에 즉시(ad-hoc) 명령을 실행할 수 있어, 정기 점검을 기다릴 수 없는 긴급 패치 상황에 적합하다.",
+      "optionsBreakdown": [
+        "① SSH 인바운드 개방은 보안 원칙 위반이며 운영 오버헤드도 크다.",
+        "② Run Command가 즉시성과 보안 요구사항을 동시에 만족하는 정답이다.",
+        "③ Patch Manager의 정기 점검 스케줄은 '즉시' 조건에 맞지 않는다(정기 배포용).",
+        "④ 재부팅은 패치 설치 자체를 보장하지 않는다."
+      ],
+      "devContext": "Spring Boot 애플리케이션 서버 플릿을 SSM 관리형 인스턴스로 등록해두면, 배포 파이프라인에서 `aws ssm send-command`로 애플리케이션 재시작·설정 리로드 같은 운영 작업도 SSH 없이 동일한 방식으로 자동화할 수 있다."
+    },
+    "tags": ["ssm-run-command", "patch-management", "zero-day", "fleet-operations"]
+  },
+  {
+    "id": "awssaa-017",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "RDS 읽기 병목 해소와 고가용성 확보",
+    "question": "프로모션 기간 급증한 읽기 트래픽으로 RDS MySQL의 CPU가 95%에 도달했습니다. 동시에 한 가용 영역 장애 시 자동 페일오버도 필요합니다. 기존 데이터 유실을 최소화하면서 읽기 병목과 가용성을 모두 해결하는 아키텍처는?",
+    "options": [
+      "Multi-AZ 배포를 활성화하고 읽기 집약 트래픽을 대기(Standby) 인스턴스로 라우팅한다.",
+      "Multi-AZ 배포로 자동 장애조치를 구현하고, 하나 이상의 Read Replica를 생성해 읽기 트래픽을 분산한다.",
+      "인스턴스를 Multi-Region Active-Active 배포로 전환하고 Route 53 지연 시간 라우팅을 적용한다.",
+      "인스턴스를 수직 확장(Scale-Up)하고 온디맨드 인스턴스 스토어를 추가 연결한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "RDS Multi-AZ의 대기(Standby) 인스턴스는 동기식 장애 조치 전용이며 읽기 트래픽을 직접 수신할 수 없다. 읽기 부하 분산은 반드시 별도의 비동기식 Read Replica로 해결해야 하며, 두 기능은 서로 대체할 수 없는 별개의 목적을 가진다.",
+      "optionsBreakdown": [
+        "① 'Multi-AZ 대기 인스턴스로 읽기 트래픽 라우팅'은 불가능한 대표적인 함정 보기다.",
+        "② Multi-AZ(가용성) + Read Replica(읽기 분산)의 조합이 두 요구사항을 정확히 분리 충족한다(정답).",
+        "③ RDS MySQL은 네이티브 Multi-Region Active-Active 쓰기를 지원하지 않는다.",
+        "④ 수직 확장은 다운타임을 유발할 수 있고 AZ 장애 자체에 대한 가용성은 제공하지 못한다."
+      ],
+      "devContext": "Spring Boot에서 읽기/쓰기를 분리하려면 `AbstractRoutingDataSource`로 쓰기 트랜잭션은 Primary 엔드포인트, `@Transactional(readOnly = true)`가 붙은 조회는 Reader 엔드포인트(Read Replica)로 라우팅하는 구성이 정석이며, Multi-AZ의 Standby 엔드포인트를 이 용도로 착각해 연결하면 안 된다."
+    },
+    "tags": ["rds-multi-az", "read-replica", "high-availability", "read-scaling"]
+  },
+  {
+    "id": "awssaa-018",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "WORM 규정 준수와 즉시 검색이 필요한 장기 보관",
+    "question": "의료 분석 기업이 환자 진료 기록을 7년 이상 의무 보관해야 하며, 루트 관리자를 포함한 누구도 조작·삭제할 수 없어야 합니다(WORM). 평소 거의 조회되지 않지만 규제 기관 불시 감사 시 밀리초 단위로 즉시 데이터를 불러와야 합니다. 가장 비용 효율적인 솔루션은?",
+    "options": [
+      "S3 Glacier Flexible Retrieval에 저장하고 볼트 잠금(Vault Lock)을 설정한다.",
+      "S3 Glacier Instant Retrieval에 저장하고 규정 준수 모드(Compliance Mode)의 S3 Object Lock을 적용한다.",
+      "S3 Standard-IA에 저장하고 수명 주기 규칙으로 90일 후 Deep Archive로 이동한다.",
+      "S3 Standard에 저장하고 거버넌스 모드(Governance Mode)의 S3 Object Lock을 적용한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "루트를 포함해 누구도 삭제할 수 없어야 하므로 Object Lock의 Compliance Mode(거버넌스 모드는 특정 권한 보유자가 삭제 가능하므로 WORM 요건 위배)가 필요하고, 접근 빈도는 낮지만 밀리초 즉시 검색이 필요하므로 분·시간 단위 지연이 있는 Flexible/Deep Archive 대신 Glacier Instant Retrieval을 선택해야 한다.",
+      "optionsBreakdown": [
+        "① Flexible Retrieval은 복원에 최소 수 분 이상 소요되어 '밀리초 즉시 조회' 조건을 만족하지 못한다.",
+        "② Glacier Instant Retrieval + Compliance Mode 조합이 두 요구사항을 모두 충족하는 정답이다.",
+        "③ Standard-IA→Deep Archive 전환은 결국 감사 시점에 수 시간 지연이 발생할 수 있어 즉시성 조건에 맞지 않는다.",
+        "④ 거버넌스 모드는 루트 사용자가 예외적으로 삭제 권한을 가질 수 있어 WORM 조건을 위배한다."
+      ],
+      "devContext": "Spring Boot에서 감사 대상 문서를 업로드할 때 `PutObjectRequest`에 `objectLockMode(ObjectLockMode.COMPLIANCE)`와 보존 기간을 함께 지정해야 하며, 버킷 생성 시점에 Object Lock을 활성화해야 하므로(사후 활성화 불가) 초기 설계 단계에서 반드시 결정해야 한다."
+    },
+    "tags": ["s3-object-lock", "worm", "compliance-mode", "glacier-instant-retrieval"]
+  },
+  {
+    "id": "awssaa-019",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "FIFO 순서 보장과 정확히 1회 처리",
+    "question": "전자상거래 주문 시스템에서 프로모션 시작 시 초당 수만 건의 결제 요청이 인입됩니다. 각 주문은 FIFO 순서가 철저히 보장되어야 하며 중복 결제 없이 정확히 1회만 처리되어야 합니다. 백엔드 워커가 일시적 DB 타임아웃으로 실패해도 주문이 유실되지 않고 별도 격리되어 사후 분석이 가능해야 합니다. 가장 적합한 아키텍처는?",
+    "options": [
+      "Amazon SNS 주제 → AWS Lambda → S3 아카이브",
+      "Amazon SQS FIFO 대기열 → Auto Scaling EC2 워커 플릿 → 실패 메시지용 SQS FIFO DLQ",
+      "Amazon Kinesis Data Streams → Kinesis Data Firehose → Amazon DynamoDB",
+      "Amazon SQS 표준 대기열 → AWS Fargate → SQS 표준 DLQ"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "SQS FIFO 대기열은 순서를 엄격히 보장하고 정확히 1회 처리를 지원하며(표준 큐는 순서 미보장·최소 1회 전달로 중복 가능), DLQ는 실패한 메시지를 격리·보존해 사후 분석을 가능하게 한다.",
+      "optionsBreakdown": [
+        "① SNS는 순서를 보장하지 않고 실패 격리(DLQ) 패턴도 자연스럽지 않다.",
+        "② SQS FIFO + DLQ 조합이 순서·중복 제거·실패 격리를 모두 만족하는 정답이다.",
+        "③ Kinesis 조합은 순서는 보장되지만 '정확히 1회 처리'와 DLQ 기반 실패 격리 패턴에는 SQS FIFO가 더 직접적으로 부합한다.",
+        "④ SQS 표준 대기열은 순서가 뒤바뀔 수 있고 중복 수신 가능성이 있다."
+      ],
+      "devContext": "Spring Cloud AWS Messaging의 `@SqsListener`에서 FIFO 큐를 사용할 때는 `MessageGroupId`(주문 단위 키)와 `MessageDeduplicationId`를 정확히 설정해야 순서 보장과 중복 제거가 실제로 동작하며, 이를 누락하면 FIFO 큐를 쓰고도 표준 큐처럼 동작하는 실수를 하기 쉽다."
+    },
+    "tags": ["sqs-fifo", "exactly-once", "dlq", "order-processing"]
+  },
+  {
+    "id": "awssaa-020",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "구성 변경 추적과 API 호출 기록의 역할 구분",
+    "question": "SOC 2 감사를 준비하는 회사가 (1) 특정 IAM 사용자·역할이 언제 어떤 API를 어떤 리소스에 호출했는지 추적하고, (2) S3 퍼블릭 액세스 설정이나 보안 그룹 규칙이 승인된 기준선에서 벗어나는 구성 변경을 탐지·알림받아야 합니다. 운영 오버헤드를 최소화하며 두 요구사항을 모두 충족하는 솔루션은?",
+    "options": [
+      "AWS CloudTrail로 구성 변경(드리프트)을 탐지하고 AWS Config로 API 호출 활동을 기록한다.",
+      "AWS Config로 구성 변경(드리프트)을 탐지·알림하고 AWS CloudTrail로 모든 API 호출 활동을 기록한다.",
+      "AWS Config 하나만 활성화한다. Config가 구성 변경 추적과 API 호출 기록을 모두 처리할 수 있다.",
+      "각 인스턴스에 CloudWatch Logs 에이전트를 설치해 OS 레벨 로그로 API 호출을 캡처하고, Config는 구성 이력 관리 용도로만 사용한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "AWS Config는 리소스 구성 변경 이력 추적과 드리프트 알림을, AWS CloudTrail은 API 호출자·시각·대상 리소스를 기록하는 감사 추적을 담당한다. 두 서비스는 목적이 명확히 분리되어 있다.",
+      "optionsBreakdown": [
+        "① Config와 CloudTrail의 역할이 서로 뒤바뀐 대표적인 빈출 함정이다.",
+        "② Config(구성 드리프트) + CloudTrail(API 호출 기록)이 정확한 역할 분담이다(정답).",
+        "③ Config는 API 호출 자체를 기록하는 서비스가 아니므로 CloudTrail을 대체할 수 없다.",
+        "④ CloudWatch Logs 에이전트는 OS·애플리케이션 로그 수집용이며 AWS API 호출을 기록하지 않는다."
+      ],
+      "devContext": "Spring Boot 애플리케이션의 액추에이터 로그만 보고 있으면 'AWS 인프라 레벨'에서 누가 보안 그룹을 바꿨는지는 알 수 없다. 장애·보안 사고 조사 시 애플리케이션 로그(CloudWatch Logs)와 인프라 감사 로그(CloudTrail), 구성 이력(Config)을 함께 대조하는 습관이 필요하다."
+    },
+    "tags": ["aws-config", "cloudtrail", "audit", "governance"]
+  },
+  {
+    "id": "awssaa-021",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "서버리스 환경의 DB 커넥션 폭증 흡수",
+    "question": "이커머스 회사가 주문 처리 API를 Lambda로 서버리스 전환했습니다. 프로모션 시작과 동시에 동시 실행 Lambda가 수천 개로 급증하며, 각 함수가 단일 Aurora MySQL 클러스터에 개별 연결을 맺어 'Too many connections' 오류가 발생하고 실제 쿼리 부하는 크지 않은데도 DB CPU가 치솟습니다. 애플리케이션 로직이나 DB 엔진 교체 없이 해결하는 가장 적절한 방법은?",
+    "options": [
+      "커스텀 파라미터 그룹에서 max_connections를 늘리고 인스턴스 클래스를 스케일업한다.",
+      "Aurora 클러스터 앞단에 Amazon RDS Proxy를 배치하고 Lambda 함수가 RDS Proxy 엔드포인트를 사용하도록 수정한다.",
+      "Aurora 클러스터를 Aurora Global Database로 전환해 트래픽을 여러 리전으로 분산한다.",
+      "Lambda의 예약된 동시성(Reserved Concurrency)을 늘려 DB 연결이 순차적으로 발생하게 만든다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Amazon RDS Proxy는 애플리케이션과 DB 사이에서 커넥션 풀을 관리해, 짧고 폭증하는 서버리스 연결을 소수의 안정적인 DB 연결로 재사용·완충한다. 엔드포인트 교체만으로 적용되어 애플리케이션 로직 변경이 거의 없다.",
+      "optionsBreakdown": [
+        "① max_connections 증가와 스케일업은 동일한 연결 처리·폐기 패턴이 반복되며 비용만 늘어난다.",
+        "② RDS Proxy 도입이 근본적인 커넥션 풀링 해결책이다(정답).",
+        "③ Global Database는 리전 간 지연시간·재해복구 문제를 해결하는 기능으로 커넥션 폭증과 무관하다.",
+        "④ 동시성을 예약(제한)하면 처리량 자체가 줄어 프로모션 트래픽을 감당하지 못한다."
+      ],
+      "devContext": "일반 Spring Boot(상시 구동 서버) 환경에서는 HikariCP 풀이 이미 커넥션을 재사용하므로 RDS Proxy가 필수는 아니지만, Lambda처럼 요청마다 컨테이너가 새로 뜨는 서버리스 환경에서는 애플리케이션 레벨 풀링이 무의미해지므로 RDS Proxy 같은 인프라 레벨 풀링이 꼭 필요하다는 차이를 기억해야 한다."
+    },
+    "tags": ["rds-proxy", "lambda", "connection-pooling", "serverless"]
+  },
+  {
+    "id": "awssaa-022",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "코드 없는 자동 데이터 만료 삭제",
+    "question": "IoT 회사가 센서 측정값을 DynamoDB에 저장합니다. 애플리케이션은 항상 최근 90일 데이터만 조회하지만 오래된 항목이 삭제되지 않아 테이블 크기와 비용이 계속 증가합니다. 별도 코드 개발이나 운영 오버헤드 없이 90일이 지난 항목을 자동 삭제하는 가장 비용 효율적인 방법은?",
+    "options": [
+      "EventBridge로 매일 야간 Lambda를 트리거해 테이블을 스캔하고 90일이 지난 항목을 삭제한다.",
+      "각 항목에 저장 시각+90일을 나타내는 만료 타임스탬프 속성을 추가하고 이를 DynamoDB TTL(Time to Live) 속성으로 지정한다.",
+      "DynamoDB Streams를 활성화하고 오래된 레코드가 캡처되면 삭제하는 컨슈머 애플리케이션을 작성한다.",
+      "테이블 전체에 90일 보존 주기를 갖는 온디맨드 백업 정책을 설정한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "DynamoDB TTL은 항목별 만료 타임스탬프 속성만 지정하면 별도 코드나 쓰기 처리량 소모 없이 DynamoDB가 자동으로 만료 항목을 삭제해주는 No-Code 솔루션이다.",
+      "optionsBreakdown": [
+        "① Lambda 스캔 스크립트를 직접 작성·운영해야 하므로 개발 노력 최소화 조건에 위배된다.",
+        "② TTL 속성 지정만으로 자동 삭제가 이루어지는 가장 저비용·저오버헤드 정답이다.",
+        "③ Streams 컨슈머 작성도 별도 코드 개발이 필요해 요구사항에 맞지 않는다.",
+        "④ 백업 보존 정책은 원본 테이블의 실시간 크기를 줄이지 못하며 항목을 자동으로 지우지도 않는다."
+      ],
+      "devContext": "AWS SDK Enhanced Client(DynamoDB Enhanced Client for Java)로 엔티티를 매핑할 때 만료 시각 필드를 `Instant`나 epoch초로 저장해두고, 테이블 설정에서 해당 속성명을 TTL 속성으로 지정하기만 하면 되므로 Spring Data 리포지토리 코드에는 삭제 로직을 전혀 추가할 필요가 없다."
+    },
+    "tags": ["dynamodb-ttl", "cost-optimization", "no-code", "data-lifecycle"]
+  }
+]

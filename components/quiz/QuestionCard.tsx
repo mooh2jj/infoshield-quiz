@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/quiz/CodeBlock";
 import { TermInput } from "@/components/quiz/TermInput";
+import { MultipleChoiceOptions } from "@/components/quiz/MultipleChoiceOptions";
 import { ExplanationPanel } from "@/components/quiz/ExplanationPanel";
 import { buildHint } from "@/lib/hint";
 import { cn } from "@/lib/utils";
@@ -28,8 +29,18 @@ export function QuestionCard({
   onSkip,
 }: QuestionCardProps) {
   const [value, setValue] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState<number | undefined>(
+    undefined
+  );
 
   const isAnswered = Boolean(answer);
+  const isMultipleChoice = item.type === "multiple_choice";
+
+  function handleSelectOption(index: number) {
+    if (isAnswered) return;
+    setSelectedIndex(index);
+    onSubmit(String(index));
+  }
 
   return (
     <div
@@ -51,17 +62,29 @@ export function QuestionCard({
 
       {item.codeSnippet && <CodeBlock code={item.codeSnippet} />}
 
-      <TermInput
-        value={value}
-        onChange={setValue}
-        onSubmit={() => {
-          if (!isAnswered && value.trim()) onSubmit(value);
-        }}
-        disabled={isAnswered}
-        hint={item.termAnswers ? buildHint(item.termAnswers) : undefined}
-        isHintShown={isHintShown}
-        onToggleHint={onToggleHint}
-      />
+      {isMultipleChoice ? (
+        <MultipleChoiceOptions
+          options={item.options ?? []}
+          answerIndex={item.answerIndex ?? -1}
+          selectedIndex={
+            isAnswered && answer ? Number(answer.submitted) : selectedIndex
+          }
+          disabled={isAnswered}
+          onSelect={handleSelectOption}
+        />
+      ) : (
+        <TermInput
+          value={value}
+          onChange={setValue}
+          onSubmit={() => {
+            if (!isAnswered && value.trim()) onSubmit(value);
+          }}
+          disabled={isAnswered}
+          hint={item.termAnswers ? buildHint(item.termAnswers) : undefined}
+          isHintShown={isHintShown}
+          onToggleHint={onToggleHint}
+        />
+      )}
 
       {!isAnswered && (
         <div className="flex justify-end">
@@ -83,7 +106,11 @@ export function QuestionCard({
           >
             {answer?.correct
               ? "정답입니다!"
-              : `오답입니다. 정답: ${item.termAnswers?.[0] ?? ""}`}
+              : `오답입니다. 정답: ${
+                  isMultipleChoice
+                    ? (item.options?.[item.answerIndex ?? -1] ?? "")
+                    : (item.termAnswers?.[0] ?? "")
+                }`}
           </p>
           <ExplanationPanel item={item} />
         </div>

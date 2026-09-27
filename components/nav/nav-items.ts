@@ -149,10 +149,9 @@ export const NAV_GROUPS: NavGroup[] = [
       {
         href: "/aws-saa",
         label: "퀴즈",
-        pillLabel: "AWS SAA 퀴즈 준비중",
+        pillLabel: "AWS SAA 퀴즈",
         icon: ListChecks,
-        matchPrefixes: ["/aws-saa"],
-        status: "coming-soon",
+        matchPrefixes: ["/aws-saa", "/aws-saa/quiz", "/aws-saa/result"],
       },
       {
         href: "/aws-saa/mindmap",
