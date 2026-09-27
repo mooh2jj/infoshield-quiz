@@ -21,11 +21,7 @@ export const osMindmap: MindmapSection = {
         Locality
         Working Set
         PFF
-      배치 기법
-        First Fit
-        Next Fit
-        Best Fit
-        Worst Fit
+      fitBox["배치 기법<br/>1) First Fit — 처음 발견한 충분히 큰 공간에 배치<br/>2) Next Fit — 이전 배치 위치 다음부터 검색<br/>3) Best Fit — 가장 딱 맞는(자투리 최소) 공간에 배치<br/>4) Worst Fit — 가장 큰 공간에 배치"]
     CPU 스케줄링
       프로세스 상태 전이
         준비 실행 대기

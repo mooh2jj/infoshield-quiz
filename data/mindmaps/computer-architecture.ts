@@ -7,10 +7,7 @@ export const computerArchitectureMindmap: MindmapSection = {
   chart: `mindmap
   root((컴퓨터 구조))
     구성 요소
-      중앙처리장치 CPU
-        연산장치 ALU
-        제어장치 CU
-        레지스터
+      cpuBox["CPU 구성요소<br/>1) ALU — 산술·논리 연산을 수행<br/>2) CU — 명령어를 해석해 제어신호 생성<br/>3) 레지스터 — 데이터를 임시로 고속 저장"]
       주기억장치
         RAM 휘발성
         ROM 비휘발성

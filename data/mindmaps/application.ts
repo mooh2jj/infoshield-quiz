@@ -15,9 +15,7 @@ export const applicationMindmap: MindmapSection = {
       S MIME
       spamBox["스팸 차단<br/>1) SPF — 발신 서버 IP를 도메인 소유자가 인증<br/>2) DKIM — 전자서명으로 위변조 검증<br/>3) DMARC — SPF·DKIM 결과를 정책에 반영"]
     웹서버 보안
-      httpd conf 설정
-      디렉토리 리스팅 차단
-      서버 시그니처 숨김
+      httpdConfBox["httpd.conf 보안 설정<br/>1) indexes 제거 — 디렉토리 리스팅 차단<br/>2) FollowSymLinks 제거 — 심볼릭 링크 차단<br/>3) ServerSignature Off — 서버 정보 노출 차단<br/>4) ServerTokens Prod — 배너에 최소 정보만 노출"]
       access log error log
     DNS 보안
       Recursive Iterative 질의

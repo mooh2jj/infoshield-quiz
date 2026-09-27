@@ -31,10 +31,7 @@ export const systemMindmap: MindmapSection = {
         보안 로그
         시스템 로그
     시스템 해킹 방어
-      버퍼 오버플로우 대응
-        ASLR
-        DEP
-        스택 가드
+      bofBox["버퍼 오버플로우 대응<br/>1) ASLR — 메모리 주소를 실행마다 무작위 배치<br/>2) DEP — 데이터 영역의 코드 실행을 차단<br/>3) 스택 가드 — 카나리 값으로 스택 변조 탐지"]
       경쟁 조건 대응 TOCTOU
       루트킷 무결성 점검
     악성코드 분류

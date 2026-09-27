@@ -32,10 +32,7 @@ export const networkMindmap: MindmapSection = {
       인라인 실시간 차단 IPS
       NAC 접근통제
       허니팟 유인
-      VPN
-        SSL VPN
-        IPSec VPN
-        PPTP L2TP MPLS
+      vpnBox["VPN 종류<br/>1) SSL VPN — 브라우저 기반, 별도 클라이언트 불필요<br/>2) IPSec VPN — 네트워크 계층 전체를 터널링<br/>3) PPTP·L2TP·MPLS — 2~3계층 터널링 프로토콜"]
       통합관리 UTM ESM SIEM
     무선랜 보안
       wlanBox["WEP·WPA·WPA2<br/>1) WEP — RC4, 40bit 고정키, 24bit IV, 무작위 공격에 취약<br/>2) WPA — 128bit 동적 암호화, TKIP, 802.1x·EAP 준수<br/>3) WPA2 — AES, 802.11i, CCMP 사용"]

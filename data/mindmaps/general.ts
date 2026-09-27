@@ -11,7 +11,7 @@ export const generalMindmap: MindmapSection = {
       스트림 암호 RC4 비트단위 빠름
       블록 암호 구조 Feistel DES SEED, SPN AES
       modeBox["블록 암호 운용모드<br/>1) ECB — 가장 단순, 병렬처리 가능<br/>2) CBC — 초기화 벡터 사용, 가장 널리 사용<br/>3) CFB — 순차적 암호화, 스트림처럼 사용<br/>4) OFB — 평문과 무관하게 키스트림 생성<br/>5) CTR — 카운터를 사용한 병렬 암호화"]
-      대표 알고리즘 DES 3DES AES SEED
+      algoBox["대표 블록 암호<br/>1) DES — 56Bit 키, 16라운드<br/>2) 3DES — 168Bit 키, 48라운드<br/>3) AES — 128Bit 키 이상, NIST 표준<br/>4) SEED — 128Bit 키, 국내 표준"]
     pubKeyBox["공개키 암호 알고리즘<br/>1) RSA — 소인수분해 문제 기반<br/>2) ECC — 타원곡선 이산대수 문제, 짧은 키로도 안전<br/>3) Diffie Hellman — 키 교환 전용, 암호화 기능은 없음"]
     해시 함수
       단방향성과 고정길이 출력
