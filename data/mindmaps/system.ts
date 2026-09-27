@@ -25,7 +25,7 @@ export const systemMindmap: MindmapSection = {
       checkCmdBox["실전 점검·계정 잠금 명령어(실기)<br/>1) find / -perm -4000 — SUID 파일 검색<br/>2) last / lastb — 로그인 성공(wtmp)·실패(btmp) 이력 확인<br/>3) passwd -l / usermod -L 계정 — 계정 잠금, usermod -U는 잠금 해제<br/>4) chage -l 계정 — 비밀번호 만료 정보 확인"]
       xinetdBox["xinetd.conf 항목(실기)<br/>1) service — 서비스 이름<br/>2) socket_type — stream 또는 dgram<br/>3) protocol — tcp 또는 udp<br/>4) wait — 동시 처리 여부<br/>5) user — 실행 권한 사용자<br/>6) server — 실행 파일 경로"]
     리눅스 실무 명령어
-      procNetBox["네트워크·프로세스 점검 명령어(실기)<br/>1) netstat -an — 전체 연결·리스닝 포트 확인<br/>2) ps -ef — 전체 프로세스 목록 확인<br/>3) kill -9 PID — 프로세스 강제 종료<br/>4) who / w — 현재 로그인 사용자 확인"]
+      procNetBox["네트워크·프로세스 점검 명령어(실기)<br/>1) netstat -an — 전체 연결·리스닝 포트 확인<br/>2) lsof -i :포트 — 해당 포트를 사용 중인 프로세스 확인<br/>3) ps -ef — 전체 프로세스 목록 확인<br/>4) kill -9 PID — 프로세스 강제 종료<br/>5) who / w — 현재 로그인 사용자 확인"]
       findBox["find 명령어 옵션(실기)<br/>1) find / -name 파일명 — 이름으로 검색<br/>2) find / -user 사용자 — 소유자로 검색<br/>3) find / -mtime -1 — 최근 1일 이내 수정 파일 검색<br/>4) find / -size +100M — 100MB 이상 파일 검색"]
     윈도우 아키텍처
       메시지 기반 구조
