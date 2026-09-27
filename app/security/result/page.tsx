@@ -41,12 +41,12 @@ export default function ResultPage() {
   function handleRetryWrong() {
     if (wrongIds.length === 0) return;
     startSession({ subjects: [], types: [] }, { questionIds: wrongIds });
-    router.push("/quiz");
+    router.push("/security/quiz");
   }
 
   function handleHome() {
     resetSession();
-    router.push("/");
+    router.push("/security");
   }
 
   if (total === 0) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { NAV_ITEMS } from "@/components/nav/nav-items";
+import { NAV_GROUPS } from "@/components/nav/nav-items";
 import { NavLink } from "@/components/nav/NavLink";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -12,9 +12,23 @@ export function SidebarNav() {
           infoshield-quiz
         </span>
       </div>
-      <nav className="flex flex-1 flex-col gap-1 px-3">
-        {NAV_ITEMS.map((item) => (
-          <NavLink key={item.href} item={item} variant="sidebar" />
+      <nav className="flex flex-1 flex-col gap-4 px-3">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.id} className="flex flex-col gap-1">
+            <div className="flex items-center gap-2 px-3 py-1">
+              <span className="text-xs font-semibold text-sidebar-foreground/60">
+                {group.label}
+              </span>
+              {group.status === "coming-soon" && (
+                <span className="rounded-full bg-sidebar-accent px-1.5 py-0.5 text-[10px] font-medium text-sidebar-accent-foreground/70">
+                  준비중
+                </span>
+              )}
+            </div>
+            {group.items.map((item) => (
+              <NavLink key={item.href + item.label} item={item} variant="sidebar" />
+            ))}
+          </div>
         ))}
       </nav>
       <div className="flex items-center justify-between border-t border-sidebar-border px-4 py-3">

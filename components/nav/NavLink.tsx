@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { NavItem } from "@/components/nav/nav-items";
 
+const EXACT_ONLY_PREFIXES = new Set(["/", "/security", "/processing"]);
+
 function isPrefixActive(pathname: string, prefix: string): boolean {
-  if (prefix === "/") return pathname === "/";
+  if (EXACT_ONLY_PREFIXES.has(prefix)) return pathname === prefix;
   return pathname === prefix || pathname.startsWith(`${prefix}/`);
 }
 
@@ -35,7 +37,7 @@ export function NavLink({ item, variant }: NavLinkProps) {
         )}
       >
         <Icon className="size-4" />
-        {item.label}
+        {item.pillLabel ?? item.label}
       </Link>
     );
   }

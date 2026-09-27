@@ -31,13 +31,13 @@ export default function QuizPage() {
 
   useEffect(() => {
     if (hasHydrated && queue.length === 0) {
-      router.replace("/");
+      router.replace("/security");
     }
   }, [hasHydrated, queue.length, router]);
 
   useEffect(() => {
     if (hasHydrated && queue.length > 0 && currentIndex >= queue.length) {
-      router.replace("/result");
+      router.replace("/security/result");
     }
   }, [hasHydrated, queue.length, currentIndex, router]);
 
@@ -83,7 +83,7 @@ export default function QuizPage() {
       )
     ) {
       resetSession();
-      router.push("/");
+      router.push("/security");
     }
   }
 
