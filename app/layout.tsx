@@ -4,7 +4,8 @@ import { ThemeProvider } from "next-themes";
 import "pretendard/dist/web/variable/pretendardvariable.css";
 import "./globals.css";
 import { HydrateStores } from "@/components/HydrateStores";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { SidebarNav } from "@/components/nav/SidebarNav";
+import { MobileTopBar } from "@/components/nav/MobileTopBar";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -23,13 +24,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <HydrateStores />
-          <div className="flex justify-end px-2 py-2">
-            <ThemeToggle />
+          <div className="app-shell-row flex min-h-dvh flex-col md:flex-row">
+            <SidebarNav />
+            <MobileTopBar />
+            <div className="flex min-w-0 flex-1 flex-col">{children}</div>
           </div>
-          {children}
         </ThemeProvider>
       </body>
     </html>

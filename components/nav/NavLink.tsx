@@ -1,0 +1,58 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import type { NavItem } from "@/components/nav/nav-items";
+
+function isPrefixActive(pathname: string, prefix: string): boolean {
+  if (prefix === "/") return pathname === "/";
+  return pathname === prefix || pathname.startsWith(`${prefix}/`);
+}
+
+interface NavLinkProps {
+  item: NavItem;
+  variant: "sidebar" | "pill";
+}
+
+export function NavLink({ item, variant }: NavLinkProps) {
+  const pathname = usePathname();
+  const isActive = item.matchPrefixes.some((prefix) =>
+    isPrefixActive(pathname, prefix)
+  );
+  const Icon = item.icon;
+
+  if (variant === "pill") {
+    return (
+      <Link
+        href={item.href}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm font-medium whitespace-nowrap transition-colors",
+          isActive
+            ? "border-primary bg-primary text-primary-foreground"
+            : "border-sidebar-border bg-background text-foreground hover:bg-muted"
+        )}
+      >
+        <Icon className="size-4" />
+        {item.label}
+      </Link>
+    );
+  }
+
+  return (
+    <Link
+      href={item.href}
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        "flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors",
+        isActive
+          ? "bg-sidebar-accent text-sidebar-accent-foreground"
+          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+      )}
+    >
+      <Icon className="size-4" />
+      {item.label}
+    </Link>
+  );
+}

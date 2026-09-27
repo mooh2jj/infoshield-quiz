@@ -138,3 +138,22 @@
     @apply font-sans;
   }
 }
+
+@media print {
+  :root,
+  .dark {
+    color-scheme: light;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --border: oklch(0.922 0 0);
+  }
+  .overflow-x-auto {
+    overflow: visible;
+  }
+  .app-shell-row {
+    display: block !important;
+    min-height: auto !important;
+  }
+}
