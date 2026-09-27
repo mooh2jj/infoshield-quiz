@@ -1,5 +1,4 @@
 import { MermaidDiagram } from "@/components/mindmap/MermaidDiagram";
-import { MindmapNotes } from "@/components/mindmap/MindmapNotes";
 import { MindmapTabs } from "@/components/mindmap/MindmapTabs";
 import { PrintButton } from "@/components/mindmap/PrintButton";
 import { MINDMAP_SECTIONS } from "@/data/mindmaps";
@@ -37,7 +36,6 @@ export default function MindmapPage() {
               </p>
             </div>
             <MermaidDiagram id={`mindmap-${section.id}`} chart={section.chart} />
-            <MindmapNotes notes={section.notes} />
           </section>
         ))}
       </div>

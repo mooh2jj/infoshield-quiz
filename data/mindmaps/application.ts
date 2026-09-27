@@ -8,13 +8,12 @@ export const applicationMindmap: MindmapSection = {
   root((애플리케이션 보안))
     FTP 보안
       Active Passive 모드
-      Anonymous FTP
-      Bounce Attack
+      ftpBox["FTP 취약점<br/>1) Anonymous FTP — 인증 없이 접근 가능<br/>2) Bounce Attack — 제3자 서버 경유 포트 스캔"]
     전자우편 보안
       SMTP POP3 IMAP
       PGP 분산키 관리
       S MIME
-      스팸 차단 SPF DKIM DMARC
+      spamBox["스팸 차단<br/>1) SPF — 발신 서버 IP를 도메인 소유자가 인증<br/>2) DKIM — 전자서명으로 위변조 검증<br/>3) DMARC — SPF·DKIM 결과를 정책에 반영"]
     웹서버 보안
       httpd conf 설정
       디렉토리 리스팅 차단
@@ -54,38 +53,10 @@ export const applicationMindmap: MindmapSection = {
       캡슐화
         세션 정보 노출
       API 오용
+      secureCodingBox["구분 요약<br/>1) 입력데이터 검증 및 표현 — SQLi, XSS 등<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
     데이터베이스 보안
       암호화 방식
         Plug In 방식
         API 방식
       접근제어와 감사로그`,
-  notes: [
-    {
-      term: "시큐어코딩 7대 유형",
-      items: [
-        "입력데이터 검증 및 표현 — SQL Injection, XSS, 경로 조작 등",
-        "보안기능 — 하드코딩된 비밀번호, 약한 암호화",
-        "시간 및 상태 — 경쟁 조건(TOCTOU)",
-        "에러처리 — 민감정보 노출, 예외 미처리",
-        "코드오류 — 널 참조, 자원 해제 누락",
-        "캡슐화 — 세션 정보 노출, private 배열 반환",
-        "API 오용 — 취약하거나 신뢰할 수 없는 API 호출",
-      ],
-    },
-    {
-      term: "전자우편 스팸 차단",
-      items: [
-        "SPF — 발신 서버의 IP를 도메인 소유자가 인증",
-        "DKIM — 전자서명으로 메일 위변조 여부를 검증",
-        "DMARC — SPF·DKIM 결과를 바탕으로 처리 정책을 적용",
-      ],
-    },
-    {
-      term: "FTP 취약점",
-      items: [
-        "Anonymous FTP — 별도 인증 없이 접근 가능",
-        "Bounce Attack — 제3자 FTP 서버를 경유해 포트를 스캔",
-      ],
-    },
-  ],
 };

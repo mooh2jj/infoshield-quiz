@@ -16,17 +16,10 @@ export const systemMindmap: MindmapSection = {
         Ext2 Ext3 Ext4
         UFS
       권한 관리
-        SetUID
-        SetGID
-        Sticky Bit
+        permBox["특수 권한<br/>1) SetUID — 파일 소유자 권한으로 실행<br/>2) SetGID — 소유 그룹 권한으로 실행<br/>3) Sticky Bit — 소유자와 root만 삭제 가능"]
         umask
         ACL
-    유닉스 로그
-      utmp 현재 로그인
-      wtmp 로그인 이력
-      lastlog 최근 로그인 성공
-      btmp 로그인 실패
-      sulog su 명령 기록
+    logBox["유닉스 로그<br/>1) utmp — 현재 로그인 중인 사용자<br/>2) wtmp — 로그인 로그아웃 이력<br/>3) lastlog — 마지막 로그인 성공 기록<br/>4) btmp — 로그인 실패 기록<br/>5) sulog — su 명령어 사용 기록"]
     계정 관리
       etc passwd
       etc shadow
@@ -34,12 +27,7 @@ export const systemMindmap: MindmapSection = {
       PAM 인증 모듈
     윈도우 아키텍처
       메시지 기반 구조
-      핵심 프로세스
-        Winlogon
-        GINA
-        LSA
-        SAM
-        SRM
+      processBox["핵심 프로세스<br/>1) Winlogon — 로그인 절차 담당<br/>2) GINA — 계정정보와 암호화된 패스워드를 LSA에 전달<br/>3) LSA — 계정 검증과 감사기록 수행<br/>4) SAM — 계정 정보(해시값) 저장<br/>5) SRM — 사용자별 SID 부여 및 권한 검사"]
     윈도우 계정과 로그
       내장 계정
         Administrators
@@ -64,33 +52,4 @@ export const systemMindmap: MindmapSection = {
         백도어 비자가증식
       랜섬웨어
       봇 좀비PC 봇넷`,
-  notes: [
-    {
-      term: "유닉스 로그 4종",
-      items: [
-        "utmp — 현재 로그인 중인 사용자 정보",
-        "wtmp — 로그인·로그아웃 이력",
-        "lastlog — 사용자별 마지막 로그인 성공 기록",
-        "btmp — 로그인 실패 기록",
-      ],
-    },
-    {
-      term: "특수 권한 3종",
-      items: [
-        "SetUID — 실행 시 파일 소유자 권한으로 동작",
-        "SetGID — 실행 시 소유 그룹 권한으로 동작, 디렉터리는 그룹 상속",
-        "Sticky Bit — 소유자와 root만 파일 삭제 가능",
-      ],
-    },
-    {
-      term: "윈도우 핵심 프로세스",
-      items: [
-        "Winlogon — 로그인 절차를 담당하는 프로세스",
-        "GINA — 계정정보와 암호화된 패스워드를 LSA에 전달",
-        "LSA — 계정 검증과 감사기록 수행",
-        "SAM — 계정 정보(해시값)가 저장되는 곳",
-        "SRM — 사용자별 SID 부여 및 접근 권한 검사",
-      ],
-    },
-  ],
 };
