@@ -100,4 +100,67 @@ export const NAV_GROUPS: NavGroup[] = [
       },
     ],
   },
+  {
+    id: "telecom",
+    label: "정보통신기사",
+    items: [
+      {
+        href: "/telecom",
+        label: "퀴즈",
+        pillLabel: "정보통신 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/telecom"],
+        status: "coming-soon",
+      },
+      {
+        href: "/telecom/mindmap",
+        label: "마인드맵",
+        pillLabel: "정보통신 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/telecom/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "netadmin",
+    label: "네트워크관리사 1·2급",
+    items: [
+      {
+        href: "/netadmin",
+        label: "퀴즈",
+        pillLabel: "네트워크관리사 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/netadmin"],
+        status: "coming-soon",
+      },
+      {
+        href: "/netadmin/mindmap",
+        label: "마인드맵",
+        pillLabel: "네트워크관리사 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/netadmin/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "aws-saa",
+    label: "AWS SAA",
+    items: [
+      {
+        href: "/aws-saa",
+        label: "퀴즈",
+        pillLabel: "AWS SAA 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/aws-saa"],
+        status: "coming-soon",
+      },
+      {
+        href: "/aws-saa/mindmap",
+        label: "마인드맵",
+        pillLabel: "AWS SAA 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/aws-saa/mindmap"],
+      },
+    ],
+  },
 ];

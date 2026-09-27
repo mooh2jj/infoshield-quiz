@@ -38,6 +38,27 @@ const CERTIFICATIONS: CertificationCard[] = [
     href: "/linux",
     status: "coming-soon",
   },
+  {
+    id: "telecom",
+    label: "정보통신기사",
+    description: "5개 과목 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/telecom",
+    status: "coming-soon",
+  },
+  {
+    id: "netadmin",
+    label: "네트워크관리사 1·2급",
+    description: "5개 과목 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/netadmin",
+    status: "coming-soon",
+  },
+  {
+    id: "aws-saa",
+    label: "AWS SAA",
+    description: "4대 도메인 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/aws-saa",
+    status: "coming-soon",
+  },
 ];
 
 export default function HomePage() {
