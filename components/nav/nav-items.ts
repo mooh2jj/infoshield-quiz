@@ -1,4 +1,4 @@
-import { Clock, ListChecks, Network } from "lucide-react";
+import { ListChecks, Network } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -7,12 +7,12 @@ export interface NavItem {
   pillLabel?: string;
   icon: LucideIcon;
   matchPrefixes: string[];
+  status?: "available" | "coming-soon";
 }
 
 export interface NavGroup {
   id: string;
   label: string;
-  status: "available" | "coming-soon";
   items: NavItem[];
 }
 
@@ -20,7 +20,6 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     id: "security",
     label: "정보보안기사",
-    status: "available",
     items: [
       {
         href: "/security",
@@ -41,14 +40,21 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     id: "processing",
     label: "정보처리기사",
-    status: "coming-soon",
     items: [
       {
         href: "/processing",
-        label: "준비 중",
-        pillLabel: "정보처리기사",
-        icon: Clock,
+        label: "퀴즈",
+        pillLabel: "처리 퀴즈 준비중",
+        icon: ListChecks,
         matchPrefixes: ["/processing"],
+        status: "coming-soon",
+      },
+      {
+        href: "/processing/mindmap",
+        label: "마인드맵",
+        pillLabel: "처리 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/processing/mindmap"],
       },
     ],
   },

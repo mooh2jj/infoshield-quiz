@@ -20,7 +20,7 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "processing",
     label: "정보처리기사",
-    description: "콘텐츠 준비 중입니다",
+    description: "5개 과목 마인드맵 공개 · 퀴즈는 준비 중",
     href: "/processing",
     status: "coming-soon",
   },

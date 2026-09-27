@@ -55,6 +55,11 @@ export function NavLink({ item, variant }: NavLinkProps) {
     >
       <Icon className="size-4" />
       {item.label}
+      {item.status === "coming-soon" && (
+        <span className="ml-auto rounded-full bg-sidebar-accent px-1.5 py-0.5 text-[10px] font-medium text-sidebar-accent-foreground/70">
+          준비중
+        </span>
+      )}
     </Link>
   );
 }
