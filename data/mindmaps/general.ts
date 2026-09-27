@@ -27,7 +27,7 @@ export const generalMindmap: MindmapSection = {
       otpBox["OTP 생성 방식(실기)<br/>1) 동기식 — 시간(TOTP) 또는 이벤트(횟수) 기반, 서버와 동기화 필요<br/>2) 비동기식 — 질의응답(Challenge-Response) 방식"]
       secModelBox["보안 모델 3종<br/>1) 벨라파듈라 — 기밀성 중심, No Read Up·No Write Down<br/>2) 비바 — 무결성 중심, No Read Down·No Write Up<br/>3) 클락윌슨 — 무결성 중심, 상업용 시스템의 직무분리"]
     인증서버와 PKI
-      Kerberos AS TGS 티켓 기반
+      kerberosBox["Kerberos 인증 절차(실기)<br/>1) 사용자 → AS — 로그인 인증 요청<br/>2) AS → 사용자 — TGT(티켓 발급 티켓) 발급<br/>3) 사용자 → TGS — TGT 제시하며 서비스 티켓 요청<br/>4) TGS → 사용자 — 서비스 티켓(세션 티켓) 발급<br/>5) 사용자 → 서비스 서버 — 서비스 티켓 제시<br/>6) 서비스 서버 → 사용자 — 인증 완료 후 서비스 제공"]
       SSO 통합인증
       PKI 구성요소 CA RA CRL
       PMI 속성 인증서
