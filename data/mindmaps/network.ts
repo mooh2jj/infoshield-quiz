@@ -42,6 +42,9 @@ export const networkMindmap: MindmapSection = {
       tcpdumpBox["tcpdump 필터 문법(실기)<br/>1) -i eth0 — 캡처할 인터페이스 지정<br/>2) host 1.2.3.4 — 특정 호스트 필터<br/>3) port 80 — 특정 포트 필터"]
       sniffToolBox["스니핑 도구(실기)<br/>1) Wireshark — GUI 기반 패킷 캡처·분석<br/>2) dsniff — 스위치 환경에서 ARP 스푸핑 기반 스니핑<br/>3) Ettercap — ARP 스푸핑과 스니핑을 함께 수행"]
       pentestBox["모의해킹 테스트 도구(실기)<br/>1) Kali Linux — 침투테스트 전용 배포판, Nmap·Metasploit 내장<br/>2) Ubuntu 등 — 취약점 실습용 테스트 대상 서버로 구성<br/>3) 대표 도구 — Nmap(스캐닝), Metasploit(익스플로잇), Wireshark(분석)"]
+    OS별 네트워크 명령어
+      linuxNetBox["리눅스 네트워크 명령어(실기)<br/>1) ifconfig / ip addr — 인터페이스 정보 확인<br/>2) route -n / ip route — 라우팅 테이블 확인<br/>3) traceroute — 목적지까지 경로 추적<br/>4) arp -a — ARP 캐시 테이블 확인<br/>5) nslookup / dig — DNS 조회"]
+      winNetBox["윈도우 네트워크 명령어(실기)<br/>1) ipconfig /all — 네트워크 설정 전체 확인<br/>2) tracert — 경로 추적<br/>3) netstat -ano — 연결과 PID 함께 확인<br/>4) net share — 공유 폴더 목록 확인<br/>5) net use — 네트워크 드라이브 연결"]
     무선랜 보안
       wlanBox["WEP·WPA·WPA2<br/>1) WEP — RC4, 40bit 고정키, 24bit IV, 무작위 공격에 취약<br/>2) WPA — 128bit 동적 암호화, TKIP, 802.1x·EAP 준수<br/>3) WPA2 — AES, 802.11i, CCMP 사용"]
       RFID 보안
