@@ -26,6 +26,7 @@ export const networkMindmap: MindmapSection = {
       DRDoS
       세션 하이재킹
       scanBox["포트 스캐닝 기법<br/>1) TCP Connect Scan — 완전한 3way handshake로 스캔, 로그에 남음<br/>2) SYN Stealth Scan — SYN만 보내고 RST로 종료, 로그 잘 안 남음<br/>3) FIN NULL Xmas Scan — 비정상 플래그로 방화벽 우회 시도"]
+      scanRespBox["포트 스캔 응답표(실기)<br/>1) SYN 스캔 — 열림: SYN+ACK, 닫힘: RST<br/>2) FIN·NULL·Xmas — 열림: 무응답, 닫힘: RST(유닉스 계열 기준)"]
     네트워크 보안 솔루션
       firewallBox["방화벽 아키텍처<br/>1) Screening Router — 패킷 필터링만 수행<br/>2) Dual Homed Gateway — 두 인터페이스를 가진 베스천 호스트<br/>3) Screened Host — 라우터 뒤에 베스천 호스트 배치<br/>4) Screened Subnet — 이중 라우터 사이에 DMZ 구성"]
       idsBox["IDS 탐지 방식<br/>1) 오용 탐지 — 알려진 패턴 기반, False Negative가 큼<br/>2) 이상 탐지 — 정상행위 프로파일 기반, False Positive가 큼"]

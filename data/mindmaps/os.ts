@@ -10,6 +10,7 @@ export const osMindmap: MindmapSection = {
       커널 Kernel
       셸 Shell
       파일시스템
+    cronBox["crontab 형식(실기)<br/>1) 분 — 0~59<br/>2) 시 — 0~23<br/>3) 일 — 1~31<br/>4) 월 — 1~12<br/>5) 요일 — 0~7(0과 7은 일요일)"]
     osTypeBox["운영체제 종류<br/>1) Batch — 작업을 모아 순차적·일괄 처리<br/>2) Multi Programming — 여러 프로그램을 동시 기동<br/>3) Time Sharing — 시간을 분할해 CPU 공유<br/>4) Multi Processing — 여러 CPU로 처리<br/>5) Real Time — 정해진 시간 내 실시간 처리<br/>6) Distributed — 네트워크로 분산된 자원을 처리"]
     메모리 관리
       cacheBox["캐시 메모리 사상 방법<br/>1) 직접 사상 — 특정 블록만 매핑, 구현 간단<br/>2) 연관 사상 — 아무 위치에나 매핑, 검색 가장 빠름<br/>3) 집합 연관 사상 — 두 방식을 절충"]

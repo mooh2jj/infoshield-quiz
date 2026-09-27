@@ -13,6 +13,7 @@ export const generalMindmap: MindmapSection = {
       modeBox["블록 암호 운용모드<br/>1) ECB — 가장 단순, 병렬처리 가능<br/>2) CBC — 초기화 벡터 사용, 가장 널리 사용<br/>3) CFB — 순차적 암호화, 스트림처럼 사용<br/>4) OFB — 평문과 무관하게 키스트림 생성<br/>5) CTR — 카운터를 사용한 병렬 암호화"]
       algoBox["대표 블록 암호<br/>1) DES — 56Bit 키, 16라운드<br/>2) 3DES — 168Bit 키, 48라운드<br/>3) AES — 128Bit 키 이상, NIST 표준<br/>4) SEED — 128Bit 키, 국내 표준"]
     pubKeyBox["공개키 암호 알고리즘<br/>1) RSA — 소인수분해 문제 기반<br/>2) ECC — 타원곡선 이산대수 문제, 짧은 키로도 안전<br/>3) Diffie Hellman — 키 교환 전용, 암호화 기능은 없음"]
+    rsaBox["RSA 키 생성 절차(실기)<br/>1) 두 소수 p, q 선택<br/>2) n = p × q 계산<br/>3) 오일러 함수 φ(n) = (p-1)(q-1) 계산<br/>4) φ(n)과 서로소인 e 선택(공개키)<br/>5) e·d ≡ 1 mod φ(n)인 d 계산(개인키)"]
     해시 함수
       단방향성과 고정길이 출력
       hashAlgoBox["해시 알고리즘 종류<br/>1) MD4 — 128Bit 출력<br/>2) MD5 — 128Bit 출력, 패스워드 저장에 사용<br/>3) SHA — 160Bit 출력<br/>4) SHA-1 — 160Bit 출력, NIST 표준<br/>5) SHA-2 — 256Bit 이상, 현재 권장"]

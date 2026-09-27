@@ -21,6 +21,7 @@ export const systemMindmap: MindmapSection = {
       etc shadow
       runLevelBox["Run Level<br/>1) 0 — 시스템 정지<br/>2) 1 — 단일 사용자 모드, 관리자 전용<br/>3) 3 — 다중 사용자 모드, 콘솔<br/>4) 5 — 다중 사용자 모드, GUI<br/>5) 6 — 재부팅"]
       PAM 인증 모듈
+      checkCmdBox["실전 점검 명령어(실기)<br/>1) find / -perm -4000 — SUID 파일 검색<br/>2) last — 로그인 성공 이력(wtmp) 확인<br/>3) lastb — 로그인 실패 이력(btmp) 확인<br/>4) passwd -l 계정 — 계정 잠금"]
     윈도우 아키텍처
       메시지 기반 구조
       processBox["핵심 프로세스<br/>1) Winlogon — 로그인 절차 담당<br/>2) GINA — 계정정보와 암호화된 패스워드를 LSA에 전달<br/>3) LSA — 계정 검증과 감사기록 수행<br/>4) SAM — 계정 정보(해시값) 저장<br/>5) SRM — 사용자별 SID 부여 및 권한 검사"]
