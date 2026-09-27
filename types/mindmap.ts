@@ -7,11 +7,17 @@ export type MindmapSectionId =
   | "general"
   | "law";
 
+export interface MindmapNote {
+  term: string;
+  items: string[];
+}
+
 export interface MindmapSection {
   id: MindmapSectionId;
   title: string;
   description: string;
   chart: string;
+  notes: MindmapNote[];
 }
 
 export const MINDMAP_SECTION_LABELS: Record<MindmapSectionId, string> = {
