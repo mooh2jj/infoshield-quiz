@@ -5,7 +5,16 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import type { NavItem } from "@/components/nav/nav-items";
 
-const EXACT_ONLY_PREFIXES = new Set(["/", "/security", "/processing", "/bigdata", "/linux"]);
+const EXACT_ONLY_PREFIXES = new Set([
+  "/",
+  "/security",
+  "/processing",
+  "/bigdata",
+  "/linux",
+  "/telecom",
+  "/netadmin",
+  "/aws-saa",
+]);
 
 function isPrefixActive(pathname: string, prefix: string): boolean {
   if (EXACT_ONLY_PREFIXES.has(prefix)) return pathname === prefix;
@@ -30,7 +39,7 @@ export function NavLink({ item, variant }: NavLinkProps) {
         href={item.href}
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm font-medium whitespace-nowrap transition-colors",
+          "flex min-h-11 items-center gap-1.5 rounded-full border px-3 text-sm font-medium whitespace-nowrap transition-colors",
           isActive
             ? "border-primary bg-primary text-primary-foreground"
             : "border-sidebar-border bg-background text-foreground hover:bg-muted"
