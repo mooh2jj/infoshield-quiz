@@ -14,7 +14,7 @@ export const systemMindmap: MindmapSection = {
       권한 관리
         permBox["특수 권한<br/>1) SetUID — 파일 소유자 권한으로 실행<br/>2) SetGID — 소유 그룹 권한으로 실행<br/>3) Sticky Bit — 소유자와 root만 삭제 가능"]
         chmodBox["8진수 권한 계산(실기)<br/>1) r=4, w=2, x=1의 합으로 표현<br/>2) 예: rwxr-xr-- = 754<br/>3) chmod 754 file.txt로 적용"]
-        umask
+        umaskBox["umask 계산(실기)<br/>1) 파일 기본 권한 666에서 umask 값을 뺌<br/>2) 디렉터리 기본 권한 777에서 umask 값을 뺌<br/>3) 예: umask 022 → 파일 644(666-022), 디렉터리 755(777-022)"]
         ACL
     logBox["유닉스 로그<br/>1) utmp — 현재 로그인 중인 사용자<br/>2) wtmp — 로그인 로그아웃 이력<br/>3) lastlog — 마지막 로그인 성공 기록<br/>4) btmp — 로그인 실패 기록<br/>5) sulog — su 명령어 사용 기록"]
     계정 관리
