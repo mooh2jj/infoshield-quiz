@@ -23,10 +23,11 @@ export const applicationMindmap: MindmapSection = {
       Recursive Iterative 질의
       DNSSEC
       DNS 스푸핑 캐시 변조
+      dnsRecordBox["DNS 레코드 유형<br/>1) A — IPv4 주소<br/>2) AAAA — IPv6 주소<br/>3) PTR — 특수 이름 도메인(역방향)<br/>4) NS — DNS 서버<br/>5) MX — 메일 서버<br/>6) CNAME — 호스트의 다른 이름"]
     전자상거래 보안
       SET 이중서명
       SSL TLS 핸드셰이크
-      IPSec AH ESP IKE
+      ipsecBox["IPSec 모드와 프로토콜<br/>1) 터널 모드 — IP 헤더까지 암호화<br/>2) 전송 모드 — 메시지만 암호화<br/>3) AH — 인증과 무결성만 제공<br/>4) ESP — 암호화·인증·무결성 모두 제공<br/>5) IKE — 키 교환"]
       전자화폐 특성
         익명성
         이중사용 방지

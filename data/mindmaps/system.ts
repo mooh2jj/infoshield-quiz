@@ -7,11 +7,7 @@ export const systemMindmap: MindmapSection = {
   chart: `mindmap
   root((시스템 보안))
     유닉스 파일시스템
-      구조
-        Boot Block
-        Super Block
-        Inode
-        Data Block
+      structBox["구조<br/>1) Boot Block — 부팅 프로그램<br/>2) Super Block — 파일시스템 크기, 블록 수, 빈 블록<br/>3) Inode — 소유자, 파일크기, 데이터블록 주소, 생성시간<br/>4) Data Block — 실제 사용자 데이터"]
       종류
         Ext2 Ext3 Ext4
         UFS
@@ -29,10 +25,7 @@ export const systemMindmap: MindmapSection = {
       메시지 기반 구조
       processBox["핵심 프로세스<br/>1) Winlogon — 로그인 절차 담당<br/>2) GINA — 계정정보와 암호화된 패스워드를 LSA에 전달<br/>3) LSA — 계정 검증과 감사기록 수행<br/>4) SAM — 계정 정보(해시값) 저장<br/>5) SRM — 사용자별 SID 부여 및 권한 검사"]
     윈도우 계정과 로그
-      내장 계정
-        Administrators
-        Users
-        Guests
+      accountBox["내장 계정<br/>1) Administrators — 모든 권한 보유<br/>2) Users — 로컬 사용자 계정<br/>3) Guests — 네트워크 접근 가능, 허락된 권한만 보유<br/>4) Backup Operators — 도메인 컨트롤러 파일 백업<br/>5) Power Users — 로컬 사용자 생성·수정 권한"]
       로그 종류
         응용프로그램 로그
         보안 로그

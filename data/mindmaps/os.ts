@@ -18,10 +18,7 @@ export const osMindmap: MindmapSection = {
       실시간 Real Time
       분산처리 Distributed
     메모리 관리
-      캐시 메모리 사상 방법
-        직접 사상
-        연관 사상
-        집합 연관 사상
+      cacheBox["캐시 메모리 사상 방법<br/>1) 직접 사상 — 특정 블록만 매핑, 구현 간단<br/>2) 연관 사상 — 아무 위치에나 매핑, 검색 가장 빠름<br/>3) 집합 연관 사상 — 두 방식을 절충"]
       가상 메모리 할당 기법
         페이징
         세그멘테이션
@@ -38,15 +35,7 @@ export const osMindmap: MindmapSection = {
     CPU 스케줄링
       프로세스 상태 전이
         준비 실행 대기
-      선점 스케줄링
-        Round Robin
-        SRT
-        MLQ
-        MLFQ
-      비선점 스케줄링
-        FCFS
-        SJF
-        HRN
+      schedBox["스케줄링 방식<br/>1) 선점 — 우선순위 높은 프로세스가 끼어듦, Round Robin·SRT·MLQ·MLFQ<br/>2) 비선점 — 실행 중인 프로세스를 끝까지 실행, FCFS·SJF·HRN"]
     교착상태 Deadlock
       발생 조건
         상호배제
