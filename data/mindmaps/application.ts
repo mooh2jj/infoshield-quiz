@@ -16,6 +16,7 @@ export const applicationMindmap: MindmapSection = {
       spamBox["스팸 차단<br/>1) SPF — 발신 서버 IP를 도메인 소유자가 인증<br/>2) DKIM — 전자서명으로 위변조 검증<br/>3) DMARC — SPF·DKIM 결과를 정책에 반영"]
     웹서버 보안
       httpdConfBox["httpd.conf 보안 설정<br/>1) indexes 제거 — 디렉토리 리스팅 차단<br/>2) FollowSymLinks 제거 — 심볼릭 링크 차단<br/>3) ServerSignature Off — 서버 정보 노출 차단<br/>4) ServerTokens Prod — 배너에 최소 정보만 노출"]
+      cacheBox["Cache-Control 헤더(실기)<br/>1) no-store — 캐시 저장 자체를 금지<br/>2) no-cache — 캐시하되 사용 전 서버 재검증<br/>3) private — 브라우저만 저장, 공유 캐시 금지<br/>4) max-age=N — N초 동안 캐시 유효"]
       access log error log
     DNS 보안
       Recursive Iterative 질의
@@ -35,6 +36,7 @@ export const applicationMindmap: MindmapSection = {
       DOI 무결성 관리
     secureCodingBox["시큐어코딩 7대 유형<br/>1) 입력데이터 검증 및 표현 — SQL Injection, XSS, CSRF, 경로 조작, OS 명령어 삽입<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
     robotsBox["robots.txt 문법(실기)<br/>1) User-agent: * — 모든 크롤러 대상<br/>2) Disallow: /admin — 해당 경로 크롤링 금지<br/>3) Allow: /public — 크롤링 허용"]
+    redirectBox["Open Redirect 방지(실기)<br/>1) 취약 — 전달받은 파라미터를 그대로 리다이렉트에 사용<br/>2) 안전 — 화이트리스트 URL과 대조 후 리다이렉트<br/>3) 상대경로만 허용, http나 // 로 시작하는 값은 차단"]
     데이터베이스 보안
       암호화 방식
         Plug In 방식

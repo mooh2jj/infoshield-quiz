@@ -23,11 +23,13 @@ export const generalMindmap: MindmapSection = {
     접근통제
       acModelBox["접근통제 모델<br/>1) DAC — 신분 기반, 소유자가 자율적으로 권한 관리<br/>2) MAC — 객체 기반, 관리자가 강제적으로 권한 관리<br/>3) RBAC — 역할 기반, 역할에 권한 부여 후 사용자에 할당"]
       authBox["인증 3요소<br/>1) 지식 기반 — 패스워드 등 아는 것<br/>2) 소유 기반 — OTP 등 가진 것<br/>3) 존재 기반 — 생체인증, FRR·FAR·CER로 평가"]
+      otpBox["OTP 생성 방식(실기)<br/>1) 동기식 — 시간(TOTP) 또는 이벤트(횟수) 기반, 서버와 동기화 필요<br/>2) 비동기식 — 질의응답(Challenge-Response) 방식"]
       secModelBox["보안 모델 3종<br/>1) 벨라파듈라 — 기밀성 중심, No Read Up·No Write Down<br/>2) 비바 — 무결성 중심, No Read Down·No Write Up<br/>3) 클락윌슨 — 무결성 중심, 상업용 시스템의 직무분리"]
     인증서버와 PKI
       Kerberos AS TGS 티켓 기반
       SSO 통합인증
       PKI 구성요소 CA RA CRL
       PMI 속성 인증서
-      전자서명 원리`,
+      전자서명 원리
+      sigVerifyBox["전자서명 검증 절차(실기)<br/>1) 송신자가 메시지 해시값을 개인키로 서명<br/>2) 수신자가 송신자 공개키로 서명을 복호화해 해시값 추출<br/>3) 수신자가 받은 메시지를 직접 해시해 비교<br/>4) 두 해시값이 같으면 무결성·인증 확인"]`,
 };

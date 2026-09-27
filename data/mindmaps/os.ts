@@ -27,6 +27,8 @@ export const osMindmap: MindmapSection = {
       프로세스 상태 전이
         준비 실행 대기
       schedBox["스케줄링 방식<br/>1) 선점 — 우선순위 높은 프로세스가 끼어듦, Round Robin·SRT·MLQ·MLFQ<br/>2) 비선점 — 실행 중인 프로세스를 끝까지 실행, FCFS·SJF·HRN"]
+      ctxBox["문맥 교환(실기)<br/>1) 정의 — 실행 중이던 프로세스 상태(PCB)를 저장하고 다음 프로세스 상태를 적재<br/>2) 오버헤드 — 전환이 잦을수록 순수 처리 시간이 줄어 성능 저하"]
+      niceBox["우선순위 조정 명령어(실기)<br/>1) nice -n 값 명령어 — 새 프로세스를 지정 우선순위로 실행<br/>2) renice -n 값 -p PID — 실행 중인 프로세스의 우선순위 변경<br/>3) ps -ef — 전체 프로세스 목록 확인"]
     교착상태 Deadlock
       발생 조건
         상호배제

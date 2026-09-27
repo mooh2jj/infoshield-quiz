@@ -14,7 +14,7 @@ export const computerArchitectureMindmap: MindmapSection = {
       보조기억장치
         HDD SSD
         광디스크
-      입출력장치
+      ioBox["입출력 기법<br/>1) Program I/O — CPU가 직접 제어, 비효율적<br/>2) Interrupt — 완료 시 장치가 CPU에 알림<br/>3) DMA — Cycle Stealing으로 메모리 직접 접근<br/>4) I/O Channel — Byte·Selector·Block Multiplexer"]
       busBox["시스템 버스 종류<br/>1) 데이터 버스 — 실제 데이터를 전송<br/>2) 주소 버스 — 접근할 메모리 주소를 전달<br/>3) 제어 버스 — 읽기·쓰기 등 제어 신호를 전달"]
       hwCmdBox["하드웨어 확인 명령어(실기)<br/>1) lscpu — CPU 정보 확인<br/>2) free -h — 메모리 사용량 확인<br/>3) df -h — 디스크 사용량 확인<br/>4) dmesg — 부팅 시 하드웨어 인식 로그 확인"]
     regBox["레지스터 종류<br/>1) MAR — 메모리 주소 레지스터<br/>2) MBR — 메모리 버퍼 레지스터<br/>3) IR — 실행 중인 명령어 저장<br/>4) PC — 다음 명령어 주소 저장<br/>5) AC — 연산 결과 임시 저장"]
@@ -22,5 +22,6 @@ export const computerArchitectureMindmap: MindmapSection = {
     인터럽트
       typeBox["인터럽트 종류<br/>1) 내부 인터럽트 — 프로그램 오류, SVC 트랩<br/>2) 외부 인터럽트 — 정전·기계 착오, 입출력 요청"]
       interruptBox["처리 순서<br/>1) 인터럽트 발생<br/>2) 현재 상태 저장<br/>3) 서비스 루틴 실행<br/>4) 상태 복구 후 재개"]
-    addrBox["명령어 주소 지정 방식<br/>1) 즉시 주소 — 명령어에 값을 직접 포함<br/>2) 직접 주소 — 메모리 주소를 직접 지정<br/>3) 간접 주소 — 주소가 저장된 주소를 지정<br/>4) 레지스터 주소 — 레지스터에 저장된 값을 사용"]`,
+    addrBox["명령어 주소 지정 방식<br/>1) 즉시 주소 — 명령어에 값을 직접 포함<br/>2) 직접 주소 — 메모리 주소를 직접 지정<br/>3) 간접 주소 — 주소가 저장된 주소를 지정<br/>4) 레지스터 주소 — 레지스터에 저장된 값을 사용"]
+    memCalcBox["메모리 용량 계산(실기)<br/>1) 주소 버스 n비트 — 최대 2^n개 주소 지정 가능<br/>2) 데이터 버스 m비트 — 한 번에 전송 가능한 데이터 크기"]`,
 };
