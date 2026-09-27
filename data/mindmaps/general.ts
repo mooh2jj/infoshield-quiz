@@ -15,7 +15,7 @@ export const generalMindmap: MindmapSection = {
     pubKeyBox["공개키 암호 알고리즘<br/>1) RSA — 소인수분해 문제 기반<br/>2) ECC — 타원곡선 이산대수 문제, 짧은 키로도 안전<br/>3) Diffie Hellman — 키 교환 전용, 암호화 기능은 없음"]
     해시 함수
       단방향성과 고정길이 출력
-      MD5 SHA1 SHA2
+      hashAlgoBox["해시 알고리즘 종류<br/>1) MD4 — 128Bit 출력<br/>2) MD5 — 128Bit 출력, 패스워드 저장에 사용<br/>3) SHA — 160Bit 출력<br/>4) SHA-1 — 160Bit 출력, NIST 표준<br/>5) SHA-2 — 256Bit 이상, 현재 권장"]
       생일자 공격
       충돌 저항성
     attackBox["암호문 공격 4종<br/>1) 암호문 단독 공격 — 암호문만으로 분석<br/>2) 기지 평문 공격 — 평문·암호문 쌍을 이미 알고 있음<br/>3) 선택 평문 공격 — 평문을 선택해 암호문을 얻어냄<br/>4) 선택 암호문 공격 — 암호문을 선택해 평문을 얻어냄"]

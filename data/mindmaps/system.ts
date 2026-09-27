@@ -19,7 +19,7 @@ export const systemMindmap: MindmapSection = {
     계정 관리
       etc passwd
       etc shadow
-      Run Level 0 to 6
+      runLevelBox["Run Level<br/>1) 0 — 시스템 정지<br/>2) 1 — 단일 사용자 모드, 관리자 전용<br/>3) 3 — 다중 사용자 모드, 콘솔<br/>4) 5 — 다중 사용자 모드, GUI<br/>5) 6 — 재부팅"]
       PAM 인증 모듈
     윈도우 아키텍처
       메시지 기반 구조

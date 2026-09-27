@@ -18,10 +18,7 @@ export const computerArchitectureMindmap: MindmapSection = {
         HDD SSD
         광디스크
       입출력장치
-      시스템 버스
-        데이터 버스
-        주소 버스
-        제어 버스
+      busBox["시스템 버스 종류<br/>1) 데이터 버스 — 실제 데이터를 전송<br/>2) 주소 버스 — 접근할 메모리 주소를 전달<br/>3) 제어 버스 — 읽기·쓰기 등 제어 신호를 전달"]
     regBox["레지스터 종류<br/>1) MAR — 메모리 주소 레지스터<br/>2) MBR — 메모리 버퍼 레지스터<br/>3) IR — 실행 중인 명령어 저장<br/>4) PC — 다음 명령어 주소 저장<br/>5) AC — 연산 결과 임시 저장"]
     cycleBox["명령어 실행 사이클<br/>1) Fetch — 메모리에서 명령어를 읽어옴<br/>2) Indirect — 간접 주소면 실제 주소 재참조<br/>3) Execute — CPU가 명령어를 실행<br/>4) Interrupt — 인터럽트 발생 여부 확인"]
     인터럽트

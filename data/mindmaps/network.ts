@@ -7,7 +7,7 @@ export const networkMindmap: MindmapSection = {
   chart: `mindmap
   root((네트워크 보안))
     프로토콜 구조
-      OSI 7계층
+      osiBox["OSI 7계층<br/>1) 물리(1) — 리피터, 전기 신호 전송<br/>2) 데이터링크(2) — 스위치·브리지, 프레임 전송<br/>3) 네트워크(3) — 라우터, 경로 결정<br/>4) 전송(4) — 종단간 신뢰성 있는 전달<br/>5) 세션(5) — 연결 수립·유지<br/>6) 표현(6) — 데이터 형식 변환<br/>7) 응용(7) — 게이트웨이, 사용자 서비스"]
       TCP IP 4계층
       tcpFlagBox["TCP 연결지향<br/>1) SYN — 연결 동기화 요청<br/>2) ACK — 응답 확인<br/>3) PSH — 즉시 전송 요구<br/>4) FIN — 정상 종료<br/>5) RST — 비정상 종료 후 재연결"]
       UDP 비연결형 빠른 전송

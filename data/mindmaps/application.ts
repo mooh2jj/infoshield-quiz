@@ -10,7 +10,7 @@ export const applicationMindmap: MindmapSection = {
       Active Passive 모드
       ftpBox["FTP 취약점<br/>1) Anonymous FTP — 인증 없이 접근 가능<br/>2) Bounce Attack — 제3자 서버 경유 포트 스캔"]
     전자우편 보안
-      SMTP POP3 IMAP
+      mailProtoBox["전자우편 프로토콜<br/>1) SMTP — 25번 포트, 메일 발송<br/>2) POP3 — 110번 포트, 읽고 서버에서 삭제<br/>3) IMAP — 143번 포트, 서버에 남겨 동기화"]
       PGP 분산키 관리
       S MIME
       spamBox["스팸 차단<br/>1) SPF — 발신 서버 IP를 도메인 소유자가 인증<br/>2) DKIM — 전자서명으로 위변조 검증<br/>3) DMARC — SPF·DKIM 결과를 정책에 반영"]
@@ -35,26 +35,7 @@ export const applicationMindmap: MindmapSection = {
       DRM 저작권 관리
       워터마킹 정보은닉
       DOI 무결성 관리
-    시큐어코딩 7대 유형
-      입력데이터 검증
-        SQL Injection
-        XSS
-        CSRF
-        경로 조작
-        OS 명령어 삽입
-      보안기능
-        하드코딩된 비밀번호
-        약한 암호화 알고리즘
-      시간 및 상태
-        경쟁 조건
-      에러처리
-        정보 노출
-      코드오류
-        널 참조
-      캡슐화
-        세션 정보 노출
-      API 오용
-      secureCodingBox["구분 요약<br/>1) 입력데이터 검증 및 표현 — SQLi, XSS 등<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
+    secureCodingBox["시큐어코딩 7대 유형<br/>1) 입력데이터 검증 및 표현 — SQL Injection, XSS, CSRF, 경로 조작, OS 명령어 삽입<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
     데이터베이스 보안
       암호화 방식
         Plug In 방식

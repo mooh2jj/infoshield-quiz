@@ -16,7 +16,7 @@ export const lawMindmap: MindmapSection = {
         RTO RPO
       DRP 재해복구
         drsBox["DRS 유형<br/>1) Mirror — Active Active 실시간 이중화<br/>2) Hot — Active Standby, 높은 가용성<br/>3) Warm — 핵심 업무 위주로만 구축<br/>4) Cold — 기반 시설만 미리 구축"]
-      백업 전략 Full Incremental Differential
+      backupBox["백업 전략<br/>1) Full — 전체 데이터를 백업<br/>2) Incremental — 마지막 백업 이후 변경분만 백업<br/>3) Differential — 마지막 전체백업 이후 모든 변경분 백업"]
     ISMS P 인증
       의무대상 ISP IDC 매출 1500억 이상
       관리체계 수립운영
