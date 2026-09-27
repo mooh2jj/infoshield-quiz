@@ -24,6 +24,13 @@ const CERTIFICATIONS: CertificationCard[] = [
     href: "/processing",
     status: "coming-soon",
   },
+  {
+    id: "bigdata",
+    label: "빅데이터분석기사",
+    description: "5개 챕터 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/bigdata",
+    status: "coming-soon",
+  },
 ];
 
 export default function HomePage() {

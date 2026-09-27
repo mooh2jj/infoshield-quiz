@@ -58,4 +58,25 @@ export const NAV_GROUPS: NavGroup[] = [
       },
     ],
   },
+  {
+    id: "bigdata",
+    label: "빅데이터분석기사",
+    items: [
+      {
+        href: "/bigdata",
+        label: "퀴즈",
+        pillLabel: "빅데이터 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/bigdata"],
+        status: "coming-soon",
+      },
+      {
+        href: "/bigdata/mindmap",
+        label: "마인드맵",
+        pillLabel: "빅데이터 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/bigdata/mindmap"],
+      },
+    ],
+  },
 ];
