@@ -37,6 +37,7 @@ export const applicationMindmap: MindmapSection = {
     secureCodingBox["시큐어코딩 7대 유형<br/>1) 입력데이터 검증 및 표현 — SQL Injection, XSS, CSRF, 경로 조작, OS 명령어 삽입<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
     robotsBox["robots.txt 문법(실기)<br/>1) User-agent: * — 모든 크롤러 대상<br/>2) Disallow: /admin — 해당 경로 크롤링 금지<br/>3) Allow: /public — 크롤링 허용"]
     redirectBox["Open Redirect 방지(실기)<br/>1) 취약 — 전달받은 파라미터를 그대로 리다이렉트에 사용<br/>2) 안전 — 화이트리스트 URL과 대조 후 리다이렉트<br/>3) 상대경로만 허용, http나 // 로 시작하는 값은 차단"]
+    sqlDefenseBox["SQL Injection 방어(실기)<br/>1) 취약 — 문자열 결합으로 쿼리 생성<br/>2) 안전 — PreparedStatement로 파라미터 바인딩<br/>3) 예: SELECT * FROM users WHERE id=? 사용"]
     데이터베이스 보안
       암호화 방식
         Plug In 방식

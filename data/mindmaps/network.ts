@@ -35,8 +35,10 @@ export const networkMindmap: MindmapSection = {
       허니팟 유인
       vpnBox["VPN 종류<br/>1) SSL VPN — 브라우저 기반, 별도 클라이언트 불필요<br/>2) IPSec VPN — 네트워크 계층 전체를 터널링<br/>3) PPTP·L2TP·MPLS — 2~3계층 터널링 프로토콜"]
       통합관리 UTM ESM SIEM
+    네트워크 실기 도구
       iptablesBox["iptables 기본 문법(실기)<br/>1) -A INPUT — 체인에 규칙 추가<br/>2) -s IP — 출발지 주소 지정<br/>3) -p tcp --dport 80 — 프로토콜·포트 지정<br/>4) -j DROP/ACCEPT — 차단 또는 허용 처리"]
       snortBox["Snort 룰 구조(실기)<br/>1) action — alert·log·pass·drop<br/>2) protocol — tcp·udp·icmp<br/>3) 출발지·목적지 IP/포트 지정<br/>4) rule options — msg, content 등 대괄호 안에 기술"]
+      tcpdumpBox["tcpdump 필터 문법(실기)<br/>1) -i eth0 — 캡처할 인터페이스 지정<br/>2) host 1.2.3.4 — 특정 호스트 필터<br/>3) port 80 — 특정 포트 필터"]
     무선랜 보안
       wlanBox["WEP·WPA·WPA2<br/>1) WEP — RC4, 40bit 고정키, 24bit IV, 무작위 공격에 취약<br/>2) WPA — 128bit 동적 암호화, TKIP, 802.1x·EAP 준수<br/>3) WPA2 — AES, 802.11i, CCMP 사용"]
       RFID 보안

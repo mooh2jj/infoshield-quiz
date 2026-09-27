@@ -22,7 +22,7 @@ export function MermaidDiagram({ id, chart }: MermaidDiagramProps) {
         startOnLoad: false,
         securityLevel: "strict",
         theme: resolvedTheme === "dark" ? "dark" : "default",
-        mindmap: { padding: 40, maxNodeWidth: 260 },
+        mindmap: { padding: 56, maxNodeWidth: 280 },
       });
 
       try {
