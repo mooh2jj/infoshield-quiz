@@ -60,7 +60,7 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     id: "bigdata",
-    label: "빅데이터분석기사",
+    label: "빅데이터분석기사+Adsp",
     items: [
       {
         href: "/bigdata",
@@ -76,6 +76,27 @@ export const NAV_GROUPS: NavGroup[] = [
         pillLabel: "빅데이터 마인드맵",
         icon: Network,
         matchPrefixes: ["/bigdata/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "linux",
+    label: "리눅스마스터 2급",
+    items: [
+      {
+        href: "/linux",
+        label: "퀴즈",
+        pillLabel: "리눅스 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/linux"],
+        status: "coming-soon",
+      },
+      {
+        href: "/linux/mindmap",
+        label: "마인드맵",
+        pillLabel: "리눅스 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/linux/mindmap"],
       },
     ],
   },
