@@ -11,9 +11,14 @@ export const databaseMindmap: MindmapSection = {
       relBox["릴레이션 구성요소<br/>1) 튜플(Tuple) — 행, 개수는 카디널리티<br/>2) 속성(Attribute) — 열, 개수는 차수(Degree)<br/>3) 도메인 — 속성이 가질 수 있는 값의 범위"]
       integrityBox["무결성 제약조건<br/>1) 개체 무결성 — 기본키는 NULL·중복 불가<br/>2) 참조 무결성 — 외래키는 참조 테이블에 존재해야 함<br/>3) 도메인 무결성 — 속성 값은 정의된 도메인 범위 내"]
       cardinalityBox["E-R 관계 카디널리티<br/>1) 1:1 — 한 개체가 다른 개체 하나와만 대응<br/>2) 1:N — 한 개체가 다른 개체 여러 개와 대응<br/>3) N:M — 양쪽 개체가 서로 여러 개와 대응"]
+      fdBox["함수적 종속(FD, 실기)<br/>1) X → Y 표기, X(결정자)가 Y(종속자)의 값을 유일하게 결정<br/>2) 완전 함수 종속 — 기본키 전체에 종속<br/>3) 부분 함수 종속 — 기본키의 일부에만 종속"]
     algebraBox["관계대수 연산자(실기)<br/>1) Select(σ) — 조건에 맞는 행(튜플) 추출<br/>2) Project(π) — 지정한 열(속성) 추출, 중복 제거<br/>3) Join(⋈) — 공통 속성으로 두 릴레이션 결합<br/>4) Division(÷) — R÷S, S의 모든 값을 포함하는 R의 튜플 반환"]
     normBox["정규화 단계(암기: 도-부-이-결-다-조, 실기)<br/>1) 1NF — 도메인이 원자값으로만 구성<br/>2) 2NF — 부분 함수 종속 제거<br/>3) 3NF — 이행적 함수 종속 제거<br/>4) BCNF — 결정자가 아닌 후보키 제거(모든 결정자=후보키)<br/>5) 4NF — 다치 종속 제거<br/>6) 5NF — 조인 종속성 제거"]
-    sqlBox["SQL 분류<br/>1) DDL — CREATE·ALTER·DROP·TRUNCATE, 구조 정의<br/>2) DML — SELECT·INSERT·UPDATE·DELETE, 데이터 조작<br/>3) DCL — GRANT·REVOKE, 권한 제어<br/>4) TCL — COMMIT·ROLLBACK, 트랜잭션 제어"]
+    SQL
+      sqlBox["SQL 분류<br/>1) DDL — CREATE·ALTER·DROP·TRUNCATE, 구조 정의<br/>2) DML — SELECT·INSERT·UPDATE·DELETE, 데이터 조작<br/>3) DCL — GRANT·REVOKE, 권한 제어<br/>4) TCL — COMMIT·ROLLBACK, 트랜잭션 제어"]
+      joinTypeBox["JOIN 종류(실기)<br/>1) INNER JOIN — 양쪽에 공통값이 있는 행만 반환<br/>2) LEFT/RIGHT OUTER JOIN — 한쪽 기준 전체 + 매칭되는 값<br/>3) FULL OUTER JOIN — 양쪽의 모든 행을 반환"]
+      aggBox["SQL 집계 함수(실기)<br/>1) COUNT·SUM·AVG·MAX·MIN — 그룹 데이터의 집계값 계산<br/>2) GROUP BY — 특정 열 기준으로 그룹화<br/>3) HAVING — 그룹화된 결과에 조건을 적용"]
+      triggerBox["트리거(Trigger, 실기)<br/>1) INSERT·UPDATE·DELETE 이벤트 발생 시 자동 실행<br/>2) 사용자가 직접 호출하지 않는 이벤트 기반 프로시저<br/>3) 데이터 무결성 유지나 로그 기록 등에 활용"]
     인덱스와 뷰
       indexBox["인덱스 자료구조(실기)<br/>1) B-Tree — 균형 트리 구조, 범위 검색에 유리<br/>2) Hash — 해시 함수 기반, 등가(=) 검색에 매우 빠름"]
       viewBox["뷰(View)<br/>1) 실제 데이터를 저장하지 않는 가상 테이블<br/>2) SELECT 결과를 기반으로 정의<br/>3) 복잡한 쿼리 단순화와 접근 제한(보안) 목적으로 사용"]

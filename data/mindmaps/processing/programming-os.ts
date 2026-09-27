@@ -9,6 +9,8 @@ export const programmingOsMindmap: MindmapSection = {
     언어별 핵심 문법
       cBox["C 언어 핵심(실기)<br/>1) *p — 포인터가 가리키는 값(역참조)<br/>2) &var — 변수의 메모리 주소<br/>3) 문자열은 널문자로 끝을 표시<br/>4) 2차원 배열은 메모리에 1차원으로 연속 배치"]
       cArrayPointerBox["C 배열·포인터 연산 예제(실기)<br/>1) int arr[3][3]과 int *p = &arr[0][0]<br/>2) *(p + i*3 + i)로 대각선 원소에 순서대로 접근<br/>3) 대각선 원소의 합 10+50+90 = 150"]
+      cRecursionBox["C 재귀 함수 코드 예제(실기)<br/>1) int fact(int n) { return n<=1 ? 1 : n*fact(n-1); }<br/>2) fact(4) 호출 시 4*3*2*1 순서로 계산되어 24 반환<br/>3) 재귀 호출마다 스택에 지역변수 n이 각각 저장됨"]
+      bitOpBox["C 비트 연산자(실기)<br/>1) & — 두 비트가 모두 1일 때 1(AND)<br/>2) | — 두 비트 중 하나라도 1이면 1(OR)<br/>3) ^ — 두 비트가 다르면 1(XOR)<br/>4) << n / >> n — 왼쪽·오른쪽으로 n비트 시프트"]
       javaBox["Java OOP 핵심<br/>1) 캡슐화·상속·다형성·추상화가 4대 특징<br/>2) 오버라이딩 — 상속 관계에서 메서드 재정의<br/>3) 오버로딩 — 같은 이름, 다른 매개변수로 재정의<br/>4) 동적 바인딩 — 실행 시점 실제 객체의 메서드 호출"]
       javaPolyBox["Java 다형성 코드 해석 예제(실기)<br/>1) Parent p = new Child(); — 참조형은 Parent, 실제 객체는 Child<br/>2) p.print() — 동적 바인딩으로 Child의 재정의 메서드 호출<br/>3) 다운캐스팅 후 super.x — 부모 클래스의 필드 값을 직접 참조"]
       pythonBox["Python 핵심 문법<br/>1) 슬라이싱 — 리스트를 구간·역순으로 반환<br/>2) list tuple set dict — 대표 컬렉션 자료형<br/>3) lambda — 이름 없는 익명 함수 정의<br/>4) 리스트 컴프리헨션 — 반복문을 한 줄로 축약"]
@@ -17,6 +19,8 @@ export const programmingOsMindmap: MindmapSection = {
       processBox["프로세스 상태 전이<br/>1) 생성 → 준비 — 프로세스가 생성되어 대기<br/>2) 준비 → 실행 — Dispatch로 CPU 할당<br/>3) 실행 → 대기 — I/O 요청 등으로 Block<br/>4) 대기 → 준비 — 이벤트 완료 후 Wakeup"]
       threadBox["프로세스 vs 스레드<br/>1) 프로세스 — 독립된 메모리 공간을 가지는 실행 단위<br/>2) 스레드 — 프로세스 내에서 자원을 공유하며 실행되는 단위<br/>3) 스레드는 문맥 전환 비용이 프로세스보다 적음"]
       schedulingBox["CPU 스케줄링 기법<br/>1) 비선점 — FCFS(선입선출), SJF(최단작업 우선), HRN<br/>2) 선점 — Round Robin(시분할), SRT(최단잔여시간)"]
+      schedulingCalcBox["CPU 스케줄링 계산(실기)<br/>1) 대기시간 = 실행 시작 시각 − 도착 시각<br/>2) 반환시간(총 소요시간) = 완료 시각 − 도착 시각<br/>3) 평균 대기시간 = 전체 대기시간 합 ÷ 프로세스 수"]
+      syncBox["프로세스 동기화(실기)<br/>1) 세마포어(Semaphore) — 공유자원 접근 수를 제어하는 카운터<br/>2) 뮤텍스(Mutex) — 임계구역에 하나의 프로세스만 진입 허용<br/>3) 두 기법 모두 경쟁 상태(Race Condition)를 방지"]
     memBox["메모리 관리 기법<br/>1) 페이징 — 고정 크기로 분할, 외부단편화 없음·내부단편화 있음<br/>2) 세그멘테이션 — 가변 크기로 분할, 논리적 단위 기준<br/>3) 페이지 교체 — FIFO·LRU·LFU·NUR 알고리즘 사용"]
     deadlockBox["교착상태(Deadlock, 실기)<br/>1) 발생 조건 — 상호배제·점유와대기·비선점·환형대기<br/>2) 예방 — 조건 중 하나를 제거<br/>3) 회피 — 은행가 알고리즘으로 안전 상태 유지<br/>4) 발견 및 회복 — 자원 할당 그래프로 탐지 후 프로세스 종료"]
     네트워크 기초
