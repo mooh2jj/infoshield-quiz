@@ -20,6 +20,7 @@ export const networkMindmap: MindmapSection = {
         ARP 스푸핑
         IP 스푸핑
         DNS 스푸핑
+        rCmdBox["IP 스푸핑과 r-command(실기)<br/>1) r-command — rlogin·rsh·rexec, IP 기반 신뢰관계로 인증<br/>2) .rhosts — 신뢰 호스트 목록, 잘못 설정 시 IP 스푸핑으로 무단 접근 허용"]
       dosBox["서비스 거부 공격<br/>1) SYN Flooding — 3way handshake 취약점으로 연결 자원 고갈<br/>2) Smurf — 브로드캐스트로 ICMP 응답 증폭<br/>3) Land Attack — 송신자·수신자 IP를 동일하게 위조<br/>4) Tear Drop — 시퀀스 번호를 조작해 재조립 방해"]
       Ping of Death
       Slowloris
@@ -31,7 +32,7 @@ export const networkMindmap: MindmapSection = {
       firewallBox["방화벽 아키텍처<br/>1) Screening Router — 패킷 필터링만 수행<br/>2) Dual Homed Gateway — 두 인터페이스를 가진 베스천 호스트<br/>3) Screened Host — 라우터 뒤에 베스천 호스트 배치<br/>4) Screened Subnet — 이중 라우터 사이에 DMZ 구성"]
       idsBox["IDS 탐지 방식<br/>1) 오용 탐지 — 알려진 패턴 기반, False Negative가 큼<br/>2) 이상 탐지 — 정상행위 프로파일 기반, False Positive가 큼"]
       인라인 실시간 차단 IPS
-      NAC 접근통제
+      endpointBox["엔드포인트 보안 솔루션<br/>1) NAC — 네트워크 접속 전 단말 상태 검사·통제<br/>2) EDR — 엔드포인트 행위를 탐지·대응<br/>3) DLP — 중요 데이터의 외부 유출 탐지·차단"]
       허니팟 유인
       vpnBox["VPN 종류<br/>1) SSL VPN — 브라우저 기반, 별도 클라이언트 불필요<br/>2) IPSec VPN — 네트워크 계층 전체를 터널링<br/>3) PPTP·L2TP·MPLS — 2~3계층 터널링 프로토콜"]
       통합관리 UTM ESM SIEM
@@ -39,6 +40,8 @@ export const networkMindmap: MindmapSection = {
       iptablesBox["iptables 기본 문법(실기)<br/>1) -A INPUT — 체인에 규칙 추가<br/>2) -s IP — 출발지 주소 지정<br/>3) -p tcp --dport 80 — 프로토콜·포트 지정<br/>4) -j DROP/ACCEPT — 차단 또는 허용 처리"]
       snortBox["Snort 룰 구조(실기)<br/>1) action — alert·log·pass·drop<br/>2) protocol — tcp·udp·icmp<br/>3) 출발지·목적지 IP/포트 지정<br/>4) rule options — msg, content 등 대괄호 안에 기술"]
       tcpdumpBox["tcpdump 필터 문법(실기)<br/>1) -i eth0 — 캡처할 인터페이스 지정<br/>2) host 1.2.3.4 — 특정 호스트 필터<br/>3) port 80 — 특정 포트 필터"]
+      sniffToolBox["스니핑 도구(실기)<br/>1) Wireshark — GUI 기반 패킷 캡처·분석<br/>2) dsniff — 스위치 환경에서 ARP 스푸핑 기반 스니핑<br/>3) Ettercap — ARP 스푸핑과 스니핑을 함께 수행"]
+      pentestBox["모의해킹 테스트 도구(실기)<br/>1) Kali Linux — 침투테스트 전용 배포판, Nmap·Metasploit 내장<br/>2) Ubuntu 등 — 취약점 실습용 테스트 대상 서버로 구성<br/>3) 대표 도구 — Nmap(스캐닝), Metasploit(익스플로잇), Wireshark(분석)"]
     무선랜 보안
       wlanBox["WEP·WPA·WPA2<br/>1) WEP — RC4, 40bit 고정키, 24bit IV, 무작위 공격에 취약<br/>2) WPA — 128bit 동적 암호화, TKIP, 802.1x·EAP 준수<br/>3) WPA2 — AES, 802.11i, CCMP 사용"]
       RFID 보안

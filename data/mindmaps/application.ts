@@ -23,6 +23,7 @@ export const applicationMindmap: MindmapSection = {
       DNSSEC
       DNS 스푸핑 캐시 변조
       dnsRecordBox["DNS 레코드 유형<br/>1) A — IPv4 주소<br/>2) AAAA — IPv6 주소<br/>3) PTR — 특수 이름 도메인(역방향)<br/>4) NS — DNS 서버<br/>5) MX — 메일 서버<br/>6) CNAME — 호스트의 다른 이름"]
+      dnsServerBox["DNS 서버 구조(실기)<br/>1) Primary(Master) — zone 파일 원본을 직접 관리<br/>2) Secondary(Slave) — Master로부터 Zone Transfer로 복제<br/>3) zone 파일 — 도메인의 리소스 레코드를 정의<br/>4) named.conf — BIND의 zone 목록·옵션 환경설정 파일"]
     전자상거래 보안
       SET 이중서명
       SSL TLS 핸드셰이크
@@ -34,13 +35,11 @@ export const applicationMindmap: MindmapSection = {
       DRM 저작권 관리
       워터마킹 정보은닉
       DOI 무결성 관리
-    secureCodingBox["시큐어코딩 7대 유형<br/>1) 입력데이터 검증 및 표현 — SQL Injection, XSS, CSRF, 경로 조작, OS 명령어 삽입<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
-    robotsBox["robots.txt 문법(실기)<br/>1) User-agent: * — 모든 크롤러 대상<br/>2) Disallow: /admin — 해당 경로 크롤링 금지<br/>3) Allow: /public — 크롤링 허용"]
-    redirectBox["Open Redirect 방지(실기)<br/>1) 취약 — 전달받은 파라미터를 그대로 리다이렉트에 사용<br/>2) 안전 — 화이트리스트 URL과 대조 후 리다이렉트<br/>3) 상대경로만 허용, http나 // 로 시작하는 값은 차단"]
-    sqlDefenseBox["SQL Injection 방어(실기)<br/>1) 취약 — 문자열 결합으로 쿼리 생성<br/>2) 안전 — PreparedStatement로 파라미터 바인딩<br/>3) 예: SELECT * FROM users WHERE id=? 사용"]
+    시큐어코딩 실무
+      secureCodingBox["시큐어코딩 7대 유형<br/>1) 입력데이터 검증 및 표현 — SQL Injection(PreparedStatement로 방어), XSS, CSRF, 경로 조작, OS 명령어 삽입<br/>2) 보안기능 — 하드코딩된 비밀번호, 약한 암호화<br/>3) 시간 및 상태 — 경쟁 조건<br/>4) 에러처리 — 정보 노출<br/>5) 코드오류 — 널 참조<br/>6) 캡슐화 — 세션 정보 노출<br/>7) API 오용"]
+      robotsBox["robots.txt 문법(실기)<br/>1) User-agent: * — 모든 크롤러 대상<br/>2) Disallow: /admin — 해당 경로 크롤링 금지<br/>3) Allow: /public — 크롤링 허용"]
+      redirectBox["Open Redirect 방지(실기)<br/>1) 취약 — 전달받은 파라미터를 그대로 리다이렉트에 사용<br/>2) 안전 — 화이트리스트 URL과 대조 후 리다이렉트<br/>3) 상대경로만 허용, http나 // 로 시작하는 값은 차단"]
     데이터베이스 보안
-      암호화 방식
-        Plug In 방식
-        API 방식
+      dbEncBox["DB 암호화 방식(실기)<br/>1) Plug-In 방식 — DBMS에 암호모듈 설치, DB 자체에서 암복호화<br/>2) API 방식 — 애플리케이션이 암호화 API를 호출한 뒤 저장<br/>3) TDE(Transparent Data Encryption) — DBMS가 투명하게 암복호화, 애플리케이션 수정 불필요"]
       접근제어와 감사로그`,
 };
