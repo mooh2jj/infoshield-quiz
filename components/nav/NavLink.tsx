@@ -14,6 +14,9 @@ const EXACT_ONLY_PREFIXES = new Set([
   "/telecom",
   "/netadmin",
   "/aws-saa",
+  "/electronics",
+  "/semicon-layout",
+  "/cppg",
 ]);
 
 function isPrefixActive(pathname: string, prefix: string): boolean {

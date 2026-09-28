@@ -59,6 +59,27 @@ const CERTIFICATIONS: CertificationCard[] = [
     href: "/aws-saa",
     status: "available",
   },
+  {
+    id: "electronics",
+    label: "전자기사",
+    description: "4대 과목 + 실기 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/electronics",
+    status: "coming-soon",
+  },
+  {
+    id: "semicon-layout",
+    label: "반도체커스텀레이아웃산업기사",
+    description: "3대 과목 + 실기 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/semicon-layout",
+    status: "coming-soon",
+  },
+  {
+    id: "cppg",
+    label: "CPPG(개인정보관리사)",
+    description: "5대 영역 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/cppg",
+    status: "coming-soon",
+  },
 ];
 
 export default function HomePage() {

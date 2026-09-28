@@ -162,4 +162,67 @@ export const NAV_GROUPS: NavGroup[] = [
       },
     ],
   },
+  {
+    id: "electronics",
+    label: "전자기사",
+    items: [
+      {
+        href: "/electronics",
+        label: "퀴즈",
+        pillLabel: "전자기사 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/electronics"],
+        status: "coming-soon",
+      },
+      {
+        href: "/electronics/mindmap",
+        label: "마인드맵",
+        pillLabel: "전자기사 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/electronics/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "semicon-layout",
+    label: "반도체커스텀레이아웃산업기사",
+    items: [
+      {
+        href: "/semicon-layout",
+        label: "퀴즈",
+        pillLabel: "반도체레이아웃 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/semicon-layout"],
+        status: "coming-soon",
+      },
+      {
+        href: "/semicon-layout/mindmap",
+        label: "마인드맵",
+        pillLabel: "반도체레이아웃 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/semicon-layout/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "cppg",
+    label: "CPPG(개인정보관리사)",
+    items: [
+      {
+        href: "/cppg",
+        label: "퀴즈",
+        pillLabel: "CPPG 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/cppg"],
+        status: "coming-soon",
+      },
+      {
+        href: "/cppg/mindmap",
+        label: "마인드맵",
+        pillLabel: "CPPG 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/cppg/mindmap"],
+      },
+    ],
+  },
 ];
