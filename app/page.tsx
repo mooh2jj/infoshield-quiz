@@ -80,6 +80,13 @@ const CERTIFICATIONS: CertificationCard[] = [
     href: "/cppg",
     status: "coming-soon",
   },
+  {
+    id: "aice",
+    label: "AICE Associate",
+    description: "3단계 프로세스 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/aice",
+    status: "coming-soon",
+  },
 ];
 
 export default function HomePage() {

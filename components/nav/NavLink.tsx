@@ -17,6 +17,7 @@ const EXACT_ONLY_PREFIXES = new Set([
   "/electronics",
   "/semicon-layout",
   "/cppg",
+  "/aice",
 ]);
 
 function isPrefixActive(pathname: string, prefix: string): boolean {

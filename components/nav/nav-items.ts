@@ -225,4 +225,25 @@ export const NAV_GROUPS: NavGroup[] = [
       },
     ],
   },
+  {
+    id: "aice",
+    label: "AICE Associate",
+    items: [
+      {
+        href: "/aice",
+        label: "퀴즈",
+        pillLabel: "AICE 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/aice"],
+        status: "coming-soon",
+      },
+      {
+        href: "/aice/mindmap",
+        label: "마인드맵",
+        pillLabel: "AICE 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/aice/mindmap"],
+      },
+    ],
+  },
 ];
