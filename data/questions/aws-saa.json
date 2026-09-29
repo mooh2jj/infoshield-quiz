@@ -548,5 +548,130 @@
       "devContext": "AWS SDK Enhanced Client(DynamoDB Enhanced Client for Java)로 엔티티를 매핑할 때 만료 시각 필드를 `Instant`나 epoch초로 저장해두고, 테이블 설정에서 해당 속성명을 TTL 속성으로 지정하기만 하면 되므로 Spring Data 리포지토리 코드에는 삭제 로직을 전혀 추가할 필요가 없다."
     },
     "tags": ["dynamodb-ttl", "cost-optimization", "no-code", "data-lifecycle"]
+  },
+  {
+    "id": "awssaa-023",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "여러 AZ에서 공유하는 Windows 파일 시스템",
+    "question": "회사가 여러 가용 영역에 걸친 Amazon EC2 Windows 인스턴스들이 함께 마운트해 사용할 공유 Windows 파일 시스템이 필요한 애플리케이션을 AWS로 마이그레이션하려 합니다. SMB 프로토콜을 지원하며 완전관리형으로 운영 부담이 가장 적은 솔루션은?",
+    "options": [
+      "AWS Storage Gateway를 볼륨 게이트웨이 모드로 구성하고 각 인스턴스에 iSCSI 볼륨을 마운트한다.",
+      "Amazon FSx for Windows File Server를 구성하고 파일 시스템을 각 Windows 인스턴스에 마운트한다.",
+      "Amazon EFS 파일 시스템을 구성하고 각 Windows 인스턴스에 마운트한다.",
+      "필요한 크기의 EBS 볼륨을 각 EC2 인스턴스에 개별 연결한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Amazon FSx for Windows File Server는 SMB 프로토콜을 지원하는 완전관리형 공유 스토리지로, 여러 가용 영역의 Windows 인스턴스에서 동시에 마운트해 사용할 수 있다.",
+      "optionsBreakdown": [
+        "① Storage Gateway 볼륨 게이트웨이는 iSCSI 블록 스토리지만 제공하며 SMB나 EC2 Windows 직접 마운트를 지원하지 않는다.",
+        "② FSx for Windows가 SMB 지원과 다중 AZ 공유를 모두 만족하는 정답이다.",
+        "③ EFS는 Linux 기반 NFS 파일시스템으로 SMB 프로토콜을 지원하지 않는다.",
+        "④ EBS는 단일 인스턴스 전용 블록 스토리지로 여러 인스턴스가 동시에 공유할 수 없다."
+      ],
+      "devContext": "Windows 기반 레거시 .NET이나 Spring Boot 혼합 환경에서 공유 네트워크 드라이브가 필요하다면, FSx for Windows를 UNC 경로(\\\\fs-xxxx\\share)로 마운트해 기존 온프레미스 파일서버 사용 방식과 거의 동일하게 전환할 수 있어 애플리케이션 코드 변경이 최소화된다."
+    },
+    "tags": ["fsx-windows", "storage-gateway", "efs", "shared-storage"]
+  },
+  {
+    "id": "awssaa-024",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "다중 리전 DB 자격증명 자동 교체",
+    "question": "회사가 여러 AWS 리전에 배포된 MySQL용 Amazon RDS 데이터베이스들의 자격증명을 매달 정기적으로 교체해야 합니다. 최소한의 운영 오버헤드로 이 요구사항을 충족하는 방법은?",
+    "options": [
+      "자격증명을 AWS Secrets Manager에 저장하고, 필요한 리전에 다중 리전 복제(Multi-Region Replication)를 설정한 뒤 일정에 따라 자동 교체(Rotation)되도록 구성한다.",
+      "자격증명을 AWS Systems Manager Parameter Store에 SecureString으로 저장하고, 필요한 리전에 복제한 뒤 일정에 따라 자동 교체되도록 구성한다.",
+      "각 리전마다 자격증명을 하드코딩한 Lambda 함수를 작성해 매달 수동으로 실행한다.",
+      "자격증명을 KMS로 암호화해 S3 버킷에 저장하고 각 리전에서 교차 리전 복제로 동기화한다."
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "AWS Secrets Manager는 다중 리전 비밀 복제와 RDS용 자동 교체(내장 Rotation Lambda)를 모두 네이티브로 지원해, 별도 개발 없이 여러 리전의 DB 자격증명을 주기적으로 교체할 수 있다.",
+      "optionsBreakdown": [
+        "① Secrets Manager의 다중 리전 복제 + 자동 교체 조합이 최소 오버헤드로 요구사항을 충족하는 정답이다.",
+        "② Parameter Store는 자동 교체 기능이 없어 로테이션용 Lambda를 직접 개발·운영해야 하므로 운영 오버헤드가 늘어난다.",
+        "③ 수동 실행과 하드코딩은 '최소 운영 오버헤드' 요건에 정면으로 위배된다.",
+        "④ 자격증명을 S3에 저장하는 것은 보안 안티패턴이며 자동 교체 기능도 없다."
+      ],
+      "devContext": "Spring Boot에서 `spring-cloud-aws-secrets-manager` 스타터를 사용하면 `spring.datasource.password`를 Secrets Manager ARN 참조로 대체할 수 있어, 교체된 새 비밀번호를 애플리케이션 재배포 없이도 다음 커넥션 풀 갱신 시점에 자동으로 반영할 수 있다."
+    },
+    "tags": ["secrets-manager", "multi-region", "rotation", "rds"]
+  },
+  {
+    "id": "awssaa-025",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "정적 동적 콘텐츠 지연시간 최적화 아키텍처",
+    "question": "글로벌 기업이 ALB 뒤 EC2에서 동적 콘텐츠를, S3 버킷에서 정적 콘텐츠를 서비스하는 웹 애플리케이션을 운영합니다. Route 53에 등록된 자체 도메인을 사용하는 상태에서 정적·동적 콘텐츠 모두의 지연시간을 줄이려면 어떤 아키텍처가 가장 적절한가?",
+    "options": [
+      "S3 버킷과 ALB를 모두 오리진으로 포함하는 CloudFront 배포를 하나 생성하고, Route 53이 이 CloudFront 배포로 트래픽을 라우팅하도록 구성한다.",
+      "ALB를 오리진으로 하는 CloudFront 배포를 만들고, S3 버킷을 엔드포인트로 하는 Global Accelerator 표준 액셀러레이터를 별도로 생성한다.",
+      "S3 버킷을 오리진으로 하는 CloudFront 배포와, ALB 및 그 CloudFront 배포를 엔드포인트로 하는 Global Accelerator를 함께 생성한다.",
+      "ALB를 오리진으로 하는 CloudFront 배포와 S3 버킷을 엔드포인트로 하는 Global Accelerator를 만든 뒤, 정적·동적 콘텐츠마다 서로 다른 도메인을 사용한다."
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "CloudFront는 S3와 ALB를 포함해 여러 오리진을 동시에 지정할 수 있는 L7 CDN이므로, 하나의 배포로 정적·동적 콘텐츠 모두의 캐싱·가속을 처리하고 Route 53으로 단일 진입점을 구성하는 것이 가장 단순하고 효과적이다. Global Accelerator는 TCP/UDP 기반 L4 가속기로 HTTP 애플리케이션 계층 최적화에는 CloudFront가 더 적합하다.",
+      "optionsBreakdown": [
+        "① S3와 ALB를 함께 오리진으로 묶은 단일 CloudFront 배포가 요구사항을 가장 단순하게 충족하는 정답이다.",
+        "② Global Accelerator를 S3 단독 엔드포인트로 쓰는 것은 L4 서비스를 애플리케이션 계층 콘텐츠에 부적절하게 적용한 것이다.",
+        "③ CloudFront와 Global Accelerator를 이중으로 결합하는 것은 불필요하게 복잡하며 이 시나리오에 부적합하다.",
+        "④ 정적·동적 콘텐츠를 두 개의 별도 도메인으로 분리하면 단일 진입점 요구를 저해하고 관리 복잡성만 커진다."
+      ],
+      "devContext": "Spring Boot로 동적 API를 서빙할 때 정적 자산(JS/CSS/이미지)은 S3+CloudFront로, API 경로(`/api/*`)는 CloudFront의 캐시 동작(Behavior)에서 ALB 오리진으로 라우팅하도록 Path Pattern을 나누면, 하나의 도메인과 배포로 정적·동적 콘텐츠를 함께 서비스할 수 있다."
+    },
+    "tags": ["cloudfront", "global-accelerator", "multi-origin", "latency"]
+  },
+  {
+    "id": "awssaa-026",
+    "category": "aws-cost",
+    "type": "multiple_choice",
+    "title": "워크로드별 최적 EC2 구매 옵션 조합",
+    "question": "3계층 웹 애플리케이션이 개발·테스트·프로덕션 환경의 EC2 인스턴스에서 실행됩니다. 프로덕션 인스턴스는 하루 24시간 끊김없이 실행되어야 하고, 개발·테스트 인스턴스는 자동화로 매일 최소 8시간 이상 필요할 때만 가동합니다. 가장 비용 효율적인 EC2 구매 옵션 조합은?",
+    "options": [
+      "프로덕션에는 스팟 인스턴스를, 개발·테스트에는 예약 인스턴스를 사용한다.",
+      "프로덕션에는 예약 인스턴스를, 개발·테스트에는 온디맨드 인스턴스를 사용한다.",
+      "프로덕션에는 정의된 기간의 스팟 블록을, 개발·테스트에는 예약 인스턴스를 사용한다.",
+      "프로덕션에는 온디맨드 인스턴스를, 개발·테스트에는 스팟 블록을 사용한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "24시간 상시 가동되는 프로덕션 워크로드는 1년·3년 약정으로 큰 폭 할인을 받는 예약 인스턴스가 가장 경제적이며, 중단되면 안 되는 워크로드에 언제든 회수될 수 있는 스팟 인스턴스는 부적합하다. 매일 필요 시간이 유동적인 개발·테스트 환경은 사용한 만큼만 지불하는 온디맨드가 예약보다 유연하고 비용 효율적이다.",
+      "optionsBreakdown": [
+        "① 상시 가동 프로덕션에 스팟 인스턴스를 쓰면 중단 위험으로 서비스 가용성이 위협받는다.",
+        "② 예약 인스턴스(프로덕션) + 온디맨드(개발·테스트) 조합이 각 워크로드 특성에 가장 적합한 정답이다.",
+        "③ 스팟 블록도 결국 스팟이라 상시 가동 프로덕션에 부적절하며, 이미 신규 지원이 종료된 상품이다.",
+        "④ 프로덕션에 온디맨드만 쓰면 예약 인스턴스 대비 불필요하게 높은 비용을 지불하게 된다."
+      ],
+      "devContext": "Spring Boot 애플리케이션을 배포하는 프로덕션 Auto Scaling Group의 최소 용량(min capacity)만큼은 예약 인스턴스로 커버하고, 트래픽 피크 시 추가되는 나머지 용량만 온디맨드나 스팟을 섞어 쓰는 것이 실무에서 흔히 쓰는 비용 최적화 패턴이다."
+    },
+    "tags": ["ec2-purchasing", "reserved-instance", "spot-instance", "cost-optimization"]
+  },
+  {
+    "id": "awssaa-027",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "온프레미스 오리진을 위한 CDN 가속",
+    "question": "한 회사의 동적 웹사이트가 미국 온프레미스 데이터센터에서 호스팅되고 있습니다. 며칠 내로 유럽에 제품을 출시해야 하며, 백엔드는 반드시 미국에 남아있어야 하는 제약 하에 유럽 사용자의 사이트 로딩 속도를 즉시 개선해야 합니다. 가장 적절한 솔루션은?",
+    "options": [
+      "us-east-1 리전에 EC2 인스턴스를 시작하고 사이트 전체를 마이그레이션한다.",
+      "웹사이트를 Amazon S3로 옮기고 리전 간 교차 리전 복제(CRR)를 구성한다.",
+      "온프레미스 서버를 사용자 지정 오리진(Custom Origin)으로 지정하는 Amazon CloudFront 배포를 생성한다.",
+      "온프레미스 서버를 가리키는 Route 53 지리 근접(Geoproximity) 라우팅 정책을 구성한다."
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "CloudFront는 S3뿐 아니라 EC2, ALB, 심지어 온프레미스 HTTP 서버까지 '사용자 지정 오리진(Custom Origin)'으로 지정할 수 있다. 백엔드를 이전하지 않고도 전 세계 엣지 로케이션에서 캐싱·가속만으로 유럽 사용자의 체감 지연시간을 즉시 줄일 수 있어, 마이그레이션 없이 가장 빠르게 적용 가능한 해법이다.",
+      "optionsBreakdown": [
+        "① EC2 마이그레이션은 '백엔드는 미국에 남아야 한다'는 제약과 '며칠 내 즉시 적용' 요건 모두에 위배된다.",
+        "② 동적 웹사이트를 정적 호스팅 서비스인 S3로 옮기는 것은 애플리케이션 특성에 맞지 않는다.",
+        "③ CloudFront 사용자 지정 오리진은 온프레미스 서버를 그대로 둔 채 즉시 엣지 가속을 적용할 수 있는 정답이다.",
+        "④ Route 53 지리 근접 라우팅은 여러 리전에 실제 존재하는 엔드포인트 간 트래픽을 분산하는 기능으로, 미국에만 있는 단일 온프레미스 서버 자체의 지연시간을 줄여주지는 못한다."
+      ],
+      "devContext": "온프레미스 레거시 Spring 애플리케이션을 단계적으로 클라우드로 전환(Strangler Pattern)할 때도, 먼저 CloudFront로 온프레미스 오리진을 감싸 정적 자산 캐싱과 엣지 가속부터 적용하고, 이후 트래픽 패턴을 보며 점진적으로 오리진을 AWS 리소스로 교체해나가는 전략이 실무에서 자주 쓰인다."
+    },
+    "tags": ["cloudfront", "custom-origin", "route53", "global-accelerator"]
   }
 ]
