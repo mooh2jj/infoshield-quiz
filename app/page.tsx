@@ -87,6 +87,20 @@ const CERTIFICATIONS: CertificationCard[] = [
     href: "/aice",
     status: "coming-soon",
   },
+  {
+    id: "robot-sw",
+    label: "로봇소프트웨어개발기사",
+    description: "4과목 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/robot-sw",
+    status: "coming-soon",
+  },
+  {
+    id: "embedded",
+    label: "임베디드기사",
+    description: "4과목 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/embedded",
+    status: "coming-soon",
+  },
 ];
 
 export default function HomePage() {

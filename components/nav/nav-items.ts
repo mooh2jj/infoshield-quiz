@@ -246,4 +246,46 @@ export const NAV_GROUPS: NavGroup[] = [
       },
     ],
   },
+  {
+    id: "robot-sw",
+    label: "로봇소프트웨어개발기사",
+    items: [
+      {
+        href: "/robot-sw",
+        label: "퀴즈",
+        pillLabel: "로봇SW 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/robot-sw"],
+        status: "coming-soon",
+      },
+      {
+        href: "/robot-sw/mindmap",
+        label: "마인드맵",
+        pillLabel: "로봇SW 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/robot-sw/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "embedded",
+    label: "임베디드기사",
+    items: [
+      {
+        href: "/embedded",
+        label: "퀴즈",
+        pillLabel: "임베디드 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/embedded"],
+        status: "coming-soon",
+      },
+      {
+        href: "/embedded/mindmap",
+        label: "마인드맵",
+        pillLabel: "임베디드 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/embedded/mindmap"],
+      },
+    ],
+  },
 ];
