@@ -5,7 +5,17 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const questionsDir = path.join(__dirname, "..", "data", "questions");
 
-const VALID_CATEGORIES = ["system", "network", "application", "general", "law"];
+const VALID_CATEGORIES = [
+  "system",
+  "network",
+  "application",
+  "general",
+  "law",
+  "aws-security",
+  "aws-resilient",
+  "aws-performance",
+  "aws-cost",
+];
 const VALID_TYPES = ["multiple_choice", "term_identification"];
 
 const files = readdirSync(questionsDir).filter((f) => f.endsWith(".json"));
