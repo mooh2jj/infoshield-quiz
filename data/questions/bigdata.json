@@ -1,0 +1,127 @@
+[
+  {
+    "id": "bigdata-001",
+    "category": "bigdata-evaluation",
+    "type": "multiple_choice",
+    "title": "혼동행렬 기반 정밀도·재현율·F1-Score 계산",
+    "question": "신용카드 사기 거래(Fraud)를 탐지하는 머신러닝 분류 모델을 평가하기 위해 총 1,000건의 테스트 데이터를 평가했습니다. 실제 사기 거래 100건 중 80건을 사기로 정확히 예측(TP)했고 20건은 정상으로 예측(FN)했습니다. 실제 정상 거래 900건 중 20건을 사기로 잘못 탐지(FP)했고 880건을 정상으로 올바르게 분류(TN)했습니다. 이 모델의 정밀도(Precision), 재현율(Recall), F1-Score는?",
+    "options": [
+      "정밀도 = 0.80, 재현율 = 0.80, F1-Score = 0.80",
+      "정밀도 = 0.80, 재현율 = 0.88, F1-Score = 0.84",
+      "정밀도 = 0.88, 재현율 = 0.80, F1-Score = 0.84",
+      "정밀도 = 0.96, 재현율 = 0.80, F1-Score = 0.87"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "정밀도(Precision)는 모델이 양성이라 예측한 것 중 실제 양성인 비율(TP/(TP+FP) = 80/100 = 0.80)이며, 재현율(Recall)은 실제 양성 중 모델이 맞춘 비율(TP/(TP+FN) = 80/100 = 0.80)이다. F1-Score는 정밀도와 재현율의 조화평균으로 2*(P*R)/(P+R) = 0.80이다.",
+      "optionsBreakdown": [
+        "① 정밀도 0.80, 재현율 0.80, 조화평균 F1-Score 0.80으로 모두 일치한다(정답).",
+        "② 재현율 분모를 TN(880)으로 오인한 잘못된 계산이다.",
+        "③ 정밀도와 재현율의 분모가 뒤바뀐 오답이다.",
+        "④ 0.96은 전체 정확도(Accuracy = (80+880)/1000)를 혼동한 것이다."
+      ],
+      "devContext": "Scikit-Learn에서 `classification_report(y_true, y_pred)`를 실행하면 클래스별 정밀도, 재현율, F1-score가 한 번에 출력된다. 사기 탐지나 의료 진단처럼 불균형 데이터에서는 전체 정확도(Accuracy)가 96%로 높아 보여도 소수 클래스인 사기 탐지 재현율이 낮으면 실무에서 치명적이므로 반드시 F1이나 PR-AUC를 모니터링해야 한다."
+    },
+    "tags": ["confusion-matrix", "precision", "recall", "f1-score", "evaluation"]
+  },
+  {
+    "id": "bigdata-002",
+    "category": "bigdata-planning",
+    "type": "multiple_choice",
+    "title": "분석 과제 4분면 유형 (Target × How)",
+    "question": "글로벌 OTT 기업에서 '구독 해지 위험도가 높은 고객군을 식별하여 선제적인 리텐션 프로모션을 제공한다'는 명확한 분석 대상(Target: Known)을 정의했습니다. 그러나 고객의 복합적인 이용 패턴과 리뷰 등 비정형 데이터로 인해 어떤 통계·머신러닝 방법론(How: Unknown)을 적용해야 최적일지 불명확한 상태입니다. 4분면 매트릭스상 이 과제의 유형은?",
+    "options": [
+      "최적화 (Optimization)",
+      "통찰 (Insight)",
+      "솔루션 (Solution)",
+      "발견 (Discovery)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "분석 대상(Target/What)과 분석 방법(How)의 인지 여부에 따라 4가지로 분류된다: 최적화(Target Known, How Known), 통찰(Target Known, How Unknown), 솔루션(Target Unknown, How Known), 발견(Target Unknown, How Unknown).",
+      "optionsBreakdown": [
+        "① 최적화는 분석 대상과 방법론이 모두 확립된 기존 프로세스 개선에 해당한다.",
+        "② 대상은 명확하나(Known) 방법이 불명확하여(Unknown) 새로운 알고리즘 탐색이 필요한 '통찰(Insight)' 과제다(정답).",
+        "③ 솔루션은 방법은 알지만 분석 대상 도메인이 새로운 경우다.",
+        "④ 발견은 대상과 방법 모두 모르는 상태에서 데이터 주도로 가치를 발굴하는 경우다."
+      ],
+      "devContext": "실무 프로젝트 기획 시 '통찰(Insight)' 유형은 PoC(개념 증명) 스프린트를 먼저 진행해 여러 알고리즘(XGBoost, LightGBM, 딥러닝 등)을 벤치마킹한 후 최종 프로덕션 아키텍처를 결정하는 애자일 방식이 적합하다."
+    },
+    "tags": ["adsp", "analysis-planning", "matrix", "target-how"]
+  },
+  {
+    "id": "bigdata-003",
+    "category": "bigdata-planning",
+    "type": "multiple_choice",
+    "title": "CRISP-DM 분석 방법론 6단계와 단계별 태스크",
+    "question": "산업 표준 데이터 마이닝 방법론인 CRISP-DM(Cross Industry Standard Process for Data Mining)의 6단계 프로세스에 대한 설명으로 가장 옳지 않은 것은?",
+    "options": [
+      "단계 순서는 업무 이해 → 데이터 이해 → 데이터 준비 → 모델링 → 평가 → 전개 순으로 순환 반복된다.",
+      "프로젝트 전체 시간의 약 60~80%가 소요되는 단계는 '데이터 준비(Data Preparation)' 단계이며 결측치 대체, 인코딩, 파생변수 생성이 수행된다.",
+      "모델링 단계에서 개발된 알고리즘의 비즈니스 목표 부합 여부와 재무적 타당성은 최종 '전개(Deployment)' 단계에서 처음으로 평가된다.",
+      "데이터 이해(Data Understanding) 단계에서는 초기 데이터 수집, 데이터 기술(Description), 탐색적 데이터 분석(EDA), 품질 검증이 진행된다."
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "CRISP-DM은 6단계(업무이해 → 데이터이해 → 데이터준비 → 모델링 → 평가 → 전개)로 구성된다. 모델이 비즈니스 목표를 실제로 달성했는지와 프로젝트 진행 과정을 총괄 검토하는 단계는 모델링 직후의 '평가(Evaluation)' 단계다.",
+      "optionsBreakdown": [
+        "① CRISP-DM의 표준 6단계 순서가 올바르게 기술되었다.",
+        "② 데이터 준비 단계는 데이터 정제 및 변환 작업으로 전체 프로젝트 기간의 60~80%를 차지하는 가장 많은 공수가 투입되는 단계다.",
+        "③ 비즈니스 성과 평가와 모델 승인은 '전개'가 아니라 5단계인 '평가(Evaluation)' 단계에서 수행되므로 옳지 않다(정답).",
+        "④ 데이터 이해 단계의 세부 태스크가 올바르게 설명되었다."
+      ],
+      "devContext": "MLOps 파이프라인에서 '데이터 준비' 단계는 Feature Store(Feast 등)와 dbt, Spark로 자동화하고, '평가' 단계는 MLflow 모델 레지스트리를 통해 검증된 지표 임계값을 통과해야만 Kubernetes 운영 클러스터로 '전개(Deployment)'되도록 CI/CD를 구성한다."
+    },
+    "tags": ["crisp-dm", "methodology", "data-preparation", "evaluation"]
+  },
+  {
+    "id": "bigdata-004",
+    "category": "bigdata-planning",
+    "type": "multiple_choice",
+    "title": "개인정보 비식별화 모델: k-익명성과 l-다양성",
+    "question": "의료 연구기관에서 환자 10,000명의 진료 데이터를 비식별 조치했습니다. 나이, 성별, 거주지역(준식별자)의 조합이 동일한 레코드가 데이터셋 내에 최소 5개 이상 존재하도록 하여 k-익명성(k=5)을 만족시켰습니다. 그러나 감사 결과, 동일한 준식별자를 갖는 5명의 환자가 모두 '위암'이라는 동일한 질병 진단 결과를 가지고 있어 특정인의 정보가 노출되는 취약점이 발견되었습니다. 이와 같은 '동질성 공격(Homogeneity Attack)'을 방어하기 위해 필요한 모델은?",
+    "options": [
+      "k-익명성 (k-Anonymity)",
+      "l-다양성 (l-Diversity)",
+      "t-근접성 (t-Closeness)",
+      "차분 프라이버시 (Differential Privacy)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "k-익명성은 동일한 준식별자를 갖는 레코드를 k개 이상 유지하지만, 군집 내 민감정보가 모두 같으면 발생하는 동질성 공격에 취약하다. l-다양성은 각 동질 집단 내에서 민감정보가 최소 l개 이상의 서로 다른 값을 갖도록 보장하여 이 취약점을 해결한다.",
+      "optionsBreakdown": [
+        "① k-익명성은 이미 적용되었으나 동질성 공격을 방어하지 못해 문제가 발생했다.",
+        "② l-다양성은 민감한 속성의 고유값 개수를 최소 l개 이상 확보하여 동질성 공격과 배경지식 공격을 방어하는 정답이다.",
+        "③ t-근접성은 군집 내 민감정보 분포와 전체 데이터셋 분포의 차이(거리)를 t 이하로 제한하여 쏠림 공격을 방어하는 모델이다.",
+        "④ 차분 프라이버시는 데이터베이스 쿼리 결과에 노이즈를 추가하여 개별 레코드 포함 여부를 숨기는 통계적 기법이다."
+      ],
+      "devContext": "개인정보보호법에 따른 데이터 3법 환경에서 외부 기관과 데이터를 결합·반출할 때, Python 가명화 파이프라인(ARX de-identifier 등)에서 k=5, l=3 이상을 기준치로 지정해 자동 검증 리포트를 생성하는 것이 표준 절차다."
+    },
+    "tags": ["k-anonymity", "l-diversity", "privacy", "de-identification"]
+  },
+  {
+    "id": "bigdata-005",
+    "category": "bigdata-modeling",
+    "type": "multiple_choice",
+    "title": "다중회귀분석의 다중공선성(Multicollinearity) 진단과 해결",
+    "question": "주택 가격 예측을 위해 다중선형회귀 모델을 학습시켰습니다. 모형 전체의 유의성을 나타내는 F-통계량의 p-값은 0.0001 미만이고 결정계수(R²)도 0.88로 매우 높게 나타났습니다. 그러나 개별 독립변수들의 t-검정 결과 대부분의 변수가 p-값 > 0.05로 통계적으로 유의하지 않았으며 회귀계수의 부호가 반대로 왜곡되었습니다. 이 현상의 원인과 가장 적절한 조치는?",
+    "options": [
+      "이상치(Outlier)가 많아 발생한 현상이므로 모든 이상치를 삭제하고 표본 크기를 대폭 축소한다.",
+      "독립변수 간 강한 상관관계로 인한 다중공선성(Multicollinearity) 문제이며, VIF(분산팽창계수)가 10 이상인 변수를 제거하거나 주성분 분석(PCA), 릿지/라쏘 정규화 회귀를 적용한다.",
+      "종속변수가 정규분포를 따르지 않기 때문이므로 비모수 검정인 윌콕슨 순위합 검정을 적용한다.",
+      "모델의 과소적합(Underfitting) 현상이므로 다항식 고차항 변수를 대거 추가해 모델 복잡도를 극대화한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "다중공선성은 설명변수들 사이에 강한 선형 상관관계가 존재할 때 발생한다. F-검정은 유의하고 R²은 높지만 개별 t-검정이 무의미해지고 계수 추정의 분산이 비정상적으로 커진다. 진단 지표로는 VIF(분산팽창계수)를 사용하며 VIF ≥ 10이면 다중공선성이 심각하다고 판단한다.",
+      "optionsBreakdown": [
+        "① 이상치 삭제만으로는 다중공선성 구조를 해소하지 못한다.",
+        "② VIF 10 이상 변수 선별 제거, 주성분 분석(PCA)을 통한 직교 변환, L2/L1 페널티를 부여하는 릿지(Ridge)/라쏘(Lasso) 회귀 적용이 표준 해결책이다(정답).",
+        "③ 윌콕슨 순위합 검정은 두 독립 표본의 중위수 차이를 비교하는 검정으로 다중회귀 다중공선성과 무관하다.",
+        "④ 고차항 변수를 추가하면 변수 간 상관성이 더 높아져 다중공선성이 극도로 악화된다."
+      ],
+      "devContext": "Python에서는 `statsmodels.stats.outliers_influence.variance_inflation_factor` 함수로 각 피처의 VIF를 계산할 수 있다. 머신러닝 파이프라인에서는 `StandardScaler` 적용 후 상관계수 0.8 이상인 피처 쌍 중 하나를 선제 드롭하거나 `Ridge(alpha=1.0)` 모델을 기본 베이스라인으로 활용하면 계수 불안정성을 안전하게 방어할 수 있다."
+    },
+    "tags": ["multicollinearity", "vif", "regression", "ridge", "lasso"]
+  }
+]

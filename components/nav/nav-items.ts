@@ -65,10 +65,9 @@ export const NAV_GROUPS: NavGroup[] = [
       {
         href: "/bigdata",
         label: "퀴즈",
-        pillLabel: "빅데이터 퀴즈 준비중",
+        pillLabel: "빅데이터 퀴즈",
         icon: ListChecks,
-        matchPrefixes: ["/bigdata"],
-        status: "coming-soon",
+        matchPrefixes: ["/bigdata", "/bigdata/quiz", "/bigdata/result"],
       },
       {
         href: "/bigdata/mindmap",

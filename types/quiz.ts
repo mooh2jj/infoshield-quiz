@@ -7,7 +7,11 @@ export type SubjectCategory =
   | "aws-security"
   | "aws-resilient"
   | "aws-performance"
-  | "aws-cost";
+  | "aws-cost"
+  | "bigdata-planning"
+  | "bigdata-exploration"
+  | "bigdata-modeling"
+  | "bigdata-evaluation";
 
 export type QuestionType = "multiple_choice" | "term_identification";
 
@@ -39,4 +43,8 @@ export const SUBJECT_LABELS: Record<SubjectCategory, string> = {
   "aws-resilient": "복원력 아키텍처",
   "aws-performance": "고성능 아키텍처",
   "aws-cost": "비용 최적화",
+  "bigdata-planning": "빅데이터 기획",
+  "bigdata-exploration": "빅데이터 탐색",
+  "bigdata-modeling": "빅데이터 모델링",
+  "bigdata-evaluation": "빅데이터 결과 해석",
 };

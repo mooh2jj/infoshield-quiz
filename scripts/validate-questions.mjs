@@ -15,6 +15,10 @@ const VALID_CATEGORIES = [
   "aws-resilient",
   "aws-performance",
   "aws-cost",
+  "bigdata-planning",
+  "bigdata-exploration",
+  "bigdata-modeling",
+  "bigdata-evaluation",
 ];
 const VALID_TYPES = ["multiple_choice", "term_identification"];
 

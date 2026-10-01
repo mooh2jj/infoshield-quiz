@@ -27,9 +27,9 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "bigdata",
     label: "빅데이터분석기사+Adsp",
-    description: "5개 챕터 마인드맵 공개 · 퀴즈는 준비 중",
+    description: "5개 챕터 마인드맵 · 핵심 ROI 실전 퀴즈",
     href: "/bigdata",
-    status: "coming-soon",
+    status: "available",
   },
   {
     id: "linux",
