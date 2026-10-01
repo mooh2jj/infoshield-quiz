@@ -163,6 +163,27 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: "electrical",
+    label: "전기기사",
+    items: [
+      {
+        href: "/electrical",
+        label: "퀴즈",
+        pillLabel: "전기기사 퀴즈 준비중",
+        icon: ListChecks,
+        matchPrefixes: ["/electrical"],
+        status: "coming-soon",
+      },
+      {
+        href: "/electrical/mindmap",
+        label: "마인드맵",
+        pillLabel: "전기기사 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/electrical/mindmap"],
+      },
+    ],
+  },
+  {
     id: "electronics",
     label: "전자기사",
     items: [

@@ -60,6 +60,13 @@ const CERTIFICATIONS: CertificationCard[] = [
     status: "available",
   },
   {
+    id: "electrical",
+    label: "전기기사",
+    description: "5개 과목 마인드맵 공개 · 퀴즈는 준비 중",
+    href: "/electrical",
+    status: "coming-soon",
+  },
+  {
     id: "electronics",
     label: "전자기사",
     description: "4대 과목 + 실기 마인드맵 공개 · 퀴즈는 준비 중",
