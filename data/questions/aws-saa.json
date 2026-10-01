@@ -748,5 +748,80 @@
       "devContext": "CI/CD 정적 배포 시 index.html은 'Cache-Control: no-cache', 해시가 포함된 JS/CSS/이미지 번들은 'Cache-Control: max-age=31536000, immutable' 헤더를 붙여 S3에 업로드하면 CloudFront 엣지 캐시 적중률(Hit Ratio)을 극대화할 수 있다. 배포 후에는 index.html 대상의 CloudFront Invalidation만 실행하면 즉시 무중단 반영된다."
     },
     "tags": ["cloudfront", "oac", "s3-security", "cost-optimization", "caching"]
+  },
+  {
+    "id": "awssaa-031",
+    "category": "aws-security",
+    "type": "multiple_choice",
+    "title": "Secrets Manager를 활용한 데이터베이스 자격증명 자동 로테이션",
+    "question": "마이크로서비스 아키텍처 기반의 웹 애플리케이션이 프라이빗 서브넷의 Amazon RDS for PostgreSQL 데이터베이스에 연결됩니다. 보안 컴플라이언스 팀은 DB 접속 패스워드를 30일마다 자동으로 교체해야 하며, 교체 과정에서 애플리케이션의 다운타임이나 수동 개입이 발생하지 않아야 한다는 지침을 전달했습니다. 최소한의 관리 오버헤드로 이를 구현하는 방안은?",
+    "options": [
+      "AWS Systems Manager Parameter Store의 표준 파라미터에 DB 비밀번호를 SecureString으로 저장하고, EventBridge로 매월 CloudWatch 경보를 트리거한다.",
+      "AWS Secrets Manager에 데이터베이스 자격증명을 저장하고, 기본 제공되는 RDS 자동 로테이션(Lambda 기반) 기능을 활성화하여 30일 주기로 교체하도록 구성한다.",
+      "EC2 인스턴스의 환경 변수 파일에 암호화된 비밀번호를 저장하고, 배포 파이프라인에서 매달 인스턴스를 재부팅한다.",
+      "AWS KMS에 CMK를 생성하고, 애플리케이션 코드 내부에서 매달 비대칭 키 쌍을 새로 생성하도록 스케줄러를 등록한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "AWS Secrets Manager는 RDS, DocumentDB, Redshift 등의 데이터베이스 자격증명을 기본 제공 Lambda 함수 템플릿을 통해 주기적으로 자동 로테이션(Automatic Rotation)하는 기능을 네이티브로 지원한다. 교체 중에도 이전 비밀번호와 신규 비밀번호를 교차 검증하여 무중단 전환을 보장한다.",
+      "optionsBreakdown": [
+        "① Parameter Store는 비밀번호 암호화 저장은 지원하지만 자체적인 자동 로테이션 기능이 없어 람다 로직을 직접 개발·관리해야 한다.",
+        "② Secrets Manager는 RDS 자동 교체 템플릿을 기본 제공하여 별도 코드 작성 없이 30일 주기 무중단 교체를 즉시 구성할 수 있다(정답).",
+        "③ 환경 변수 파일 저장은 하드코딩 위험이 있으며 재부팅에 따른 서비스 중단이 발생한다.",
+        "④ KMS는 암호화 키를 관리하는 서비스일 뿐 DB 자격증명의 자동 갱신 및 DB 접속 계정 동기화를 수행하지 못한다."
+      ],
+      "devContext": "Spring Boot나 Node.js 백엔드에서는 애플리케이션 기동 시 환경 변수로 주입받는 대신 AWS Secrets Manager SDK나 Spring Cloud AWS Secrets Manager 라이브러리를 연동하면, DB 비밀번호가 로테이션되어도 연결 풀(HikariCP 등) 재시도 시 최신 비밀번호를 자동으로 조회하여 다운타임 없이 안정적으로 운영할 수 있다."
+    },
+    "tags": ["secrets-manager", "rds", "rotation", "iam", "compliance"]
+  },
+  {
+    "id": "awssaa-032",
+    "category": "aws-resilient",
+    "type": "multiple_choice",
+    "title": "Aurora 복제본 오토스케일링 및 우선순위 장애 조치(Failover Tier)",
+    "question": "글로벌 전자상거래 서비스가 Amazon Aurora MySQL 클러스터를 백엔드로 사용하고 있습니다. 평소에는 읽기 복제본 2대로 충분하지만, 대규모 프로모션 기간에는 읽기 쿼리가 10배 이상 폭증합니다. 또한 기본(Primary) 인스턴스에 장애가 발생할 경우, 분석용으로 사양이 낮게 설정된 인스턴스가 쓰기 인스턴스로 잘못 승격되는 것을 방지하고 가장 고사양 복제본이 1분 이내에 자동 승격되어야 합니다. 가장 적합한 고가용성 구성은?",
+    "options": [
+      "기본 인스턴스 사양을 최대로 스케일업(Scale-up)하고, 읽기 복제본 생성을 비활성화한다.",
+      "Aurora Read Replica Auto Scaling 정책을 등록해 평균 CPU 사용률에 따라 복제본을 자동 증설하고, 고사양 복제본에는 장애 조치 티어 Tier-0 또는 Tier-1을 부여하며 분석용 인스턴스에는 하위 티어(Tier-15)를 지정한다.",
+      "읽기 트래픽 분산을 위해 클러스터 외부에 EC2 MySQL 복제본을 구축하고 Route 53 가중치 라우팅을 적용한다.",
+      "모든 복제본에 동일한 티어(Tier-0)를 지정하고 읽기 쿼리는 기본 인스턴스 엔드포인트로만 전송하도록 애플리케이션 코드를 수정한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "Amazon Aurora는 Aurora 복제본(Read Replica)을 최대 15개까지 Target Tracking 정책으로 오토스케일링할 수 있다. 또한 장애 조치 우선순위 티어(Tier 0~15)를 설정할 수 있어, 장애 발생 시 가장 낮은 번호(Tier-0 우선)를 가진 복제본이 새로운 Primary 인스턴스로 자동 승격(Failover)된다.",
+      "optionsBreakdown": [
+        "① 스케일업만으로는 수평적 읽기 부하를 분산할 수 없으며 단일 장애점(SPOF)이 된다.",
+        "② Auto Scaling으로 동적 부하를 처리하고 Failover Tier로 승격 우선순위를 완벽히 제어하는 최적의 정답이다.",
+        "③ Aurora 클러스터 외부의 자체 관리형 복제본은 Aurora 네이티브 초고속 자동 페일오버의 혜택을 받지 못한다.",
+        "④ 기본 인스턴스 엔드포인트로 읽기를 집중시키면 복제본을 활용하지 못하고 과부하가 발생한다."
+      ],
+      "devContext": "Spring Data JPA 환경에서는 DataSource를 분리하여 쓰기 트랜잭션(@Transactional)은 Aurora Cluster Endpoint(쓰기 전용)로, 단순 조회(@Transactional(readOnly = true))는 Reader Endpoint(읽기 전용 로드밸런싱)로 전달하도록 다중 데이터소스(RoutingDataSource)를 구성하는 것이 정석이다."
+    },
+    "tags": ["aurora", "read-replica", "auto-scaling", "failover-tier", "high-availability"]
+  },
+  {
+    "id": "awssaa-033",
+    "category": "aws-performance",
+    "type": "multiple_choice",
+    "title": "서버리스 API의 콜드 스타트 제거와 초저지연 캐싱",
+    "question": "모바일 게임 기업이 Amazon API Gateway와 AWS Lambda, Amazon DynamoDB 기반의 완전 서버리스 아키텍처로 실시간 랭킹 시스템을 운영하고 있습니다. 마케팅 푸시 알림 발송 시 수만 명의 사용자가 동시에 접속하면서 첫 요청의 지연시간이 급격히 증가(Cold Start)하고, DynamoDB 읽기 요청이 급증하여 스로틀링(Throttling)이 발생했습니다. 10밀리초 이내의 일관된 응답 속도를 유지하면서 스로틀링을 원천 차단하는 솔루션은?",
+    "options": [
+      "Lambda 함수의 메모리를 128MB로 축소하고, DynamoDB 테이블의 용량 모드를 프로비저닝 10 RCU로 고정한다.",
+      "Lambda 함수에 프로비저닝된 동시성(Provisioned Concurrency)을 구성하여 실행 환경을 사전 준비하고, DynamoDB 앞단에 DAX(DynamoDB Accelerator)를 도입해 읽기 쿼리를 마이크로초 단위로 인메모리 캐싱한다.",
+      "API Gateway 대신 Classic Load Balancer를 배치하고 백엔드를 단일 EC2 인스턴스로 교체한다.",
+      "모든 랭킹 조회 요청을 SQS 대기열에 집어넣고 Lambda가 10분 주기로 일괄 배치 처리하도록 변경한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "AWS Lambda의 프로비저닝된 동시성(Provisioned Concurrency)은 초기화된 실행 환경을 항상 대기시켜 콜드 스타트(Cold Start) 없이 즉각적인 응답을 보장한다. Amazon DynamoDB Accelerator(DAX)는 완전관리형 인메모리 캐시로, 밀리초 단위의 DynamoDB 조회를 마이크로초(μs) 단위로 단축시키며 데이터베이스 핫키 스로틀링을 방지한다.",
+      "optionsBreakdown": [
+        "① 메모리 축소와 프로비저닝 10 RCU 고정은 성능 저하 및 대규모 스로틀링 에러를 가중시킨다.",
+        "② 프로비저닝된 동시성(콜드스타트 제거) + DAX(마이크로초 캐싱 및 스로틀링 방지)가 성능 및 지연시간 요구를 완벽히 해결한다(정답).",
+        "③ 단일 EC2 교체는 서버리스의 확장성을 포기하는 잘못된 설계다.",
+        "④ SQS 10분 지연 배치는 '실시간 랭킹 조회'라는 서비스 요구사항에 완전히 어긋난다."
+      ],
+      "devContext": "Node.js나 Python Lambda 함수에서는 DB 클라이언트 객체(DynamoDB DocumentClient 등)를 핸들러 함수 내부가 아닌 핸들러 외부(글로벌 스코프)에서 선언해야 컨테이너 재사용 시 연결 객체 재초기화 비용을 아낄 수 있다. 또한 랭킹 조회처럼 읽기 비율이 90% 이상인 경우 DAX를 적용하면 DynamoDB의 RCU 소비를 획기적으로 줄여 비용까지 대폭 절감된다."
+    },
+    "tags": ["lambda", "provisioned-concurrency", "dynamodb", "dax", "cold-start", "serverless"]
   }
 ]
