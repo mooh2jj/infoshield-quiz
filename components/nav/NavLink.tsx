@@ -60,16 +60,16 @@ export function NavLink({ item, variant }: NavLinkProps) {
       href={item.href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-sm font-medium transition-colors",
+        "flex min-h-8 items-center gap-2 rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
         isActive
-          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground"
       )}
     >
-      <Icon className="size-4" />
-      {item.label}
+      <Icon className="size-3.5 shrink-0" />
+      <span className="truncate">{item.label}</span>
       {item.status === "coming-soon" && (
-        <span className="ml-auto rounded-full bg-sidebar-accent px-1.5 py-0.5 text-[10px] font-medium text-sidebar-accent-foreground/70">
+        <span className="ml-auto rounded bg-sidebar-accent/80 px-1 py-0.2 text-[9px] font-medium text-sidebar-foreground/60">
           준비중
         </span>
       )}
