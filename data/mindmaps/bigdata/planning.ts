@@ -1,4 +1,5 @@
 import type { MindmapSection } from "@/types/mindmap";
+import { PLANNING_NOTES } from "@/data/mindmaps/bigdata/planning-notes";
 
 export const planningMindmap: MindmapSection = {
   id: "planning",
@@ -29,4 +30,5 @@ export const planningMindmap: MindmapSection = {
       seciBox["SECI 지식창조 모델(ADsP)<br/>1) 공통화 — 암묵지→암묵지, 경험·관찰로 공유<br/>2) 표출화 — 암묵지→형식지, 노하우를 문서로 기록<br/>3) 연결화 — 형식지→형식지, 문서·지식을 결합·재구성<br/>4) 내면화 — 형식지→암묵지, 학습해 개인 역량으로 체화"]
       paradigmBox["빅데이터 4대 패러다임 변화(ADsP)<br/>1) 사전처리 → 사후처리 — 먼저 적재한 뒤 필요할 때 가공<br/>2) 표본조사 → 전수조사 — 인프라 발전으로 전체 데이터 처리 가능<br/>3) 품질(Quality) → 양(Quantity) — 대량의 비정형 데이터도 포용<br/>4) 인과관계 → 상관관계 — 통계적 상관성 발견에 주력"]
       crisisBox["빅데이터 3대 위기 요인과 통제(ADsP)<br/>1) 사생활 침해 — 동의제에서 책임제로 전환해 대응<br/>2) 책임 원칙 훼손 — 예측만으로 불이익을 주지 않는 결과 기반 책임 원칙 고수<br/>3) 데이터 오용(알고리즘 맹신) — 알고리즈미스트가 판단 근거를 설명"]`,
+  notes: PLANNING_NOTES,
 };

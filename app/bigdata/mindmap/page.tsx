@@ -35,7 +35,11 @@ export default function BigdataMindmapPage() {
                 {section.description}
               </p>
             </div>
-            <MermaidDiagram id={`mindmap-bigdata-${section.id}`} chart={section.chart} />
+            <MermaidDiagram
+              id={`mindmap-bigdata-${section.id}`}
+              chart={section.chart}
+              notes={section.notes}
+            />
           </section>
         ))}
       </div>
