@@ -84,10 +84,10 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       {
         href: "/sqld",
-        label: "소개",
-        pillLabel: "SQLD 소개",
+        label: "퀴즈",
+        pillLabel: "SQLD 퀴즈",
         icon: ListChecks,
-        matchPrefixes: ["/sqld"],
+        matchPrefixes: ["/sqld", "/sqld/quiz", "/sqld/result"],
       },
       {
         href: "/sqld/mindmap",

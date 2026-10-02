@@ -1,0 +1,79 @@
+[
+  {
+    "id": "sqld-001",
+    "category": "sqld-sql",
+    "type": "multiple_choice",
+    "title": "NOT IN 서브쿼리의 NULL 평가와 공집합 함정",
+    "question": "온라인 커머스 서비스에서 활성 유저(USERS) 중 탈퇴 예정 목록(INACTIVE_USERS)에 포함되지 않은 유저 수를 집계하려고 합니다. 아래 테이블 데이터와 SQL 쿼리를 실행했을 때 반환되는 COUNT(*) 결과값으로 올바른 것은?",
+    "codeSnippet": "-- [USERS 테이블]\n-- ID: (1, 2, 3)\n\n-- [INACTIVE_USERS 테이블]\n-- USER_ID: (2, 3, NULL)\n\nSELECT COUNT(*)\nFROM USERS\nWHERE ID NOT IN (SELECT USER_ID FROM INACTIVE_USERS);",
+    "options": [
+      "0건",
+      "1건 (ID = 1)",
+      "2건 (ID = 1, 2)",
+      "3건"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "NOT IN 서브쿼리 결과 집합에 단 하나의 NULL 값이라도 포함되어 있으면, 논리적으로 (ID <> 2) AND (ID <> 3) AND (ID <> NULL)로 전개된다. 이때 ID <> NULL 연산 결과는 항상 UNKNOWN이며, AND 결합 조건 전체가 TRUE가 될 수 없으므로 최종 결과는 항상 0건(공집합)을 반환한다.",
+      "optionsBreakdown": [
+        "① 서브쿼리에 NULL이 존재하면 NOT IN 조건 전체가 UNKNOWN으로 평가되어 어떤 행도 반환되지 않는다(정답).",
+        "② ID=1이 유효하게 남을 것이라 예상하기 쉽지만, NULL과의 비교 불능으로 인해 탈락한다.",
+        "③ INACTIVE_USERS의 2, 3과 무관하게 NULL 때문에 평가가 불가능하다.",
+        "④ 전체 행이 반환되지 않는다."
+      ],
+      "devContext": "실무 백엔드 개발(JPA Native Query, MyBatis, 데이터 정산 배치)에서 가장 치명적인 데이터 누락 버그의 원인 1위입니다. 서브쿼리 컬럼에 Nullable 제약조건이 있거나 데이터에 NULL이 포함될 수 있는 경우, NOT IN 대신 반드시 NOT EXISTS를 사용하거나 서브쿼리 조건에 WHERE USER_ID IS NOT NULL을 명시해야 합니다."
+    },
+    "tags": ["not-in", "null", "subquery", "sqld-sql"]
+  },
+  {
+    "id": "sqld-002",
+    "category": "sqld-sql",
+    "type": "multiple_choice",
+    "title": "대용량 데이터 삭제 DDL/DML 비교 (DELETE vs TRUNCATE vs DROP)",
+    "question": "대용량 결제 로그 테이블(PAYMENT_LOGS)의 데이터 정리 및 보관 정책을 수립하던 중, 데이터 삭제 명령어의 작동 원리와 트랜잭션 롤백 가능성에 대해 검토하고 있습니다. DDL 및 DML 명령어에 대한 설명으로 가장 옳지 않은 것은?",
+    "options": [
+      "DELETE FROM PAYMENT_LOGS;는 DML 명령어로 Undo(Rollback) 세그먼트에 변경 내역을 기록하며, 필요 시 ROLLBACK으로 데이터를 복구할 수 있다.",
+      "TRUNCATE TABLE PAYMENT_LOGS;는 DDL 명령어로 테이블 스키마 구조와 인덱스 정의는 유지한 채 모든 데이터 저장 공간(HWM)을 초기화하여 고속으로 비운다.",
+      "Oracle 환경에서 대용량 데이터를 빠르게 비우기 위해 TRUNCATE TABLE PAYMENT_LOGS;를 수행한 후, 시스템 오류 발생 시 즉시 ROLLBACK;을 실행하면 삭제된 데이터를 원상 복구할 수 있다.",
+      "DROP TABLE PAYMENT_LOGS;는 DDL 명령어로 테이블에 정의된 제약조건, 관련 인덱스 및 스키마 구조 전체를 데이터베이스 딕셔너리에서 영구 삭제한다."
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "TRUNCATE TABLE은 DML이 아닌 DDL 명령어이다. DDL은 실행 시 암묵적인 Auto-Commit이 즉시 발생하여 현재 트랜잭션을 영구 반영하므로, ROLLBACK을 실행하더라도 삭제된 데이터를 되돌릴 수 없다.",
+      "optionsBreakdown": [
+        "① DELETE는 DML이므로 행 단위 로깅과 Undo 세그먼트를 사용하여 ROLLBACK이 가능하다.",
+        "② TRUNCATE는 테이블 구조를 남기고 최초 할당 저장 공간 크기(HWM)로 초기화하므로 대용량 데이터 삭제 시 탁월하게 빠르다.",
+        "③ TRUNCATE는 DDL이므로 실행 즉시 Auto-Commit되어 ROLLBACK이 불가능하다(가장 옳지 않은 설명, 정답).",
+        "④ DROP은 테이블 정의 자체를 제거하므로 연관 인덱스와 제약조건까지 모두 삭제된다."
+      ],
+      "devContext": "운영 DB 작업 시 개발자가 실수로 테스트 테이블 대신 운영 테이블에 TRUNCATE를 치는 순간 트랜잭션 롤백이 불가능하여 즉각적인 대형 장애(Sev 1)로 이어집니다. 또한 Oracle에서는 DML 작업 도중 DDL(CREATE, TRUNCATE 등)을 호출하면 이전 DML 작업까지 한꺼번에 강제 커밋되므로, 배치 트랜잭션 설계 시 DDL 호출 위치에 각별히 유의해야 합니다."
+    },
+    "tags": ["truncate", "delete", "drop", "ddl", "dml", "auto-commit"]
+  },
+  {
+    "id": "sqld-003",
+    "category": "sqld-modeling",
+    "type": "multiple_choice",
+    "title": "함수적 종속성과 제2정규화(2NF) 판별",
+    "question": "이커머스 주문 도메인에서 주문 상세 정보를 저장하는 아래 테이블 구조를 분석하고 있습니다. 데이터 중복과 삽입·갱신·삭제 이상(Anomaly)을 해결하기 위해 '제2정규화(2NF)'를 수행할 때 분리해야 하는 함수적 종속성으로 올바른 것은?",
+    "codeSnippet": "[ORDER_DETAIL 테이블]\n- PK (복합키): (ORDER_NO, PRODUCT_NO)\n- 일반 속성: ORDER_QTY, UNIT_PRICE, PRODUCT_NAME, PRODUCT_CATEGORY\n* 업무 규칙: PRODUCT_NAME과 PRODUCT_CATEGORY는 'PRODUCT_NO'에 의해서만 고유하게 결정된다.",
+    "options": [
+      "(ORDER_NO, PRODUCT_NO) → ORDER_QTY",
+      "PRODUCT_NO → (PRODUCT_NAME, PRODUCT_CATEGORY)",
+      "ORDER_NO → ORDER_QTY",
+      "PRODUCT_NAME → PRODUCT_CATEGORY"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "제2정규화(2NF)는 제1정규형을 만족하는 테이블에서, 복합 기본키의 일부 컬럼에 종속되는 '부분 함수 종속성(Partial Functional Dependency)'을 제거하여 주식별자 전체에 종속되는 완전 함수 종속(Complete Functional Dependency)을 달성하는 과정이다.",
+      "optionsBreakdown": [
+        "① (ORDER_NO, PRODUCT_NO) → ORDER_QTY는 복합키 전체에 종속되는 완전 함수 종속이므로 2정규화 대상이 아니다.",
+        "② PRODUCT_NO → (PRODUCT_NAME, PRODUCT_CATEGORY)는 복합키의 일부인 PRODUCT_NO에 종속되는 부분 함수 종속이므로 별도의 [PRODUCT] 엔터티로 분리해야 한다(정답).",
+        "③ ORDER_NO 단독으로 ORDER_QTY를 결정할 수 없다.",
+        "④ 일반 컬럼 간의 종속은 제3정규화(이행 종속) 대상이다."
+      ],
+      "devContext": "RDBMS 스키마 설계 및 JPA Entity 매핑 시, 주문상세(OrderItem) 엔티티에 상품명(productName), 카테고리(category)를 정규화 없이 복사해 넣으면 상품명이 바뀔 때마다 모든 과거 주문상세 행을 UPDATE 치거나 불일치가 발생하는 '갱신 이상'이 발생합니다. 복합키의 일부에 종속되는 데이터는 반드시 독립된 마스터 테이블(Product)로 정규화하고 외래키(FK) 관계로 관리해야 정합성이 유지됩니다."
+    },
+    "tags": ["normalization", "2nf", "functional-dependency", "modeling"]
+  }
+]

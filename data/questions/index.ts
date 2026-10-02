@@ -6,6 +6,7 @@ import general from "./general.json";
 import law from "./law.json";
 import awsSaa from "./aws-saa.json";
 import bigdata from "./bigdata.json";
+import sqld from "./sqld.json";
 
 export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   system: system as QuizItem[],
@@ -36,6 +37,12 @@ export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   ),
   "bigdata-evaluation": (bigdata as QuizItem[]).filter(
     (item) => item.category === "bigdata-evaluation"
+  ),
+  "sqld-modeling": (sqld as QuizItem[]).filter(
+    (item) => item.category === "sqld-modeling"
+  ),
+  "sqld-sql": (sqld as QuizItem[]).filter(
+    (item) => item.category === "sqld-sql"
   ),
 };
 

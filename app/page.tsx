@@ -34,7 +34,7 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "sqld",
     label: "SQLD (SQL 개발자)",
-    description: "4개 파트 마인드맵 · 핵심 시험 중요도 인터랙티브 메모장",
+    description: "4개 파트 마인드맵 · 핵심 ROI 실전 퀴즈",
     href: "/sqld",
     status: "available",
   },
