@@ -79,6 +79,26 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: "sqld",
+    label: "SQLD(SQL개발자)",
+    items: [
+      {
+        href: "/sqld",
+        label: "소개",
+        pillLabel: "SQLD 소개",
+        icon: ListChecks,
+        matchPrefixes: ["/sqld"],
+      },
+      {
+        href: "/sqld/mindmap",
+        label: "마인드맵",
+        pillLabel: "SQLD 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/sqld/mindmap"],
+      },
+    ],
+  },
+  {
     id: "linux",
     label: "리눅스마스터 2급",
     items: [

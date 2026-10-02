@@ -32,6 +32,13 @@ const CERTIFICATIONS: CertificationCard[] = [
     status: "available",
   },
   {
+    id: "sqld",
+    label: "SQLD (SQL 개발자)",
+    description: "4개 파트 마인드맵 · 핵심 시험 중요도 인터랙티브 메모장",
+    href: "/sqld",
+    status: "available",
+  },
+  {
     id: "linux",
     label: "리눅스마스터 2급",
     description: "5개 챕터 마인드맵 공개 · 퀴즈는 준비 중",
