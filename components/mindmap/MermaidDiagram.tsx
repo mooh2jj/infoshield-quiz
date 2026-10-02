@@ -45,16 +45,13 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
           const svgEl = containerRef.current.querySelector("svg");
           if (!svgEl) return;
 
-          // Mermaid mindmap에서 실제 개별 노드(mindmap-node 또는 text를 직접 품은 g) 선택
-          // 부모 컨테이너 g는 제외하기 위해, 자식 중에 또 다른 .mindmap-node가 있는 엘리먼트는 제외
+          // Mermaid mindmap에서 실제 개별 leaf 노드만 선별
           const potentialNodes = Array.from(
             svgEl.querySelectorAll("g.mindmap-node, g[class*='node']")
           ).filter((el) => {
-            // 하위에 또 다른 mindmap-node가 있다면 상위 브랜치 그룹이므로 제외
             return el.querySelectorAll("g.mindmap-node, g[class*='node']").length === 0;
           });
 
-          // 만약 클래스 기반으로 안 잡히면 text 요소를 직접 감싸는 부모 g를 타겟팅
           const targetNodes =
             potentialNodes.length > 0
               ? potentialNodes
@@ -63,7 +60,6 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                   .filter((g, idx, arr): g is SVGGElement => Boolean(g) && arr.indexOf(g) === idx);
 
           targetNodes.forEach((nodeEl) => {
-            // 이 노드 자체의 텍스트만 추출
             const textContent = nodeEl.textContent || "";
             if (!textContent.trim()) return;
 
@@ -80,12 +76,10 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
               const noteData = notes[matchedKey];
               const htmlNode = nodeEl as HTMLElement;
 
-              // 호버 대상인 노드 내부의 배경 shape (rect, path, circle, polygon) 탐색
               const bkgShape = nodeEl.querySelector(
                 "rect, path, circle, polygon"
               ) as SVGGraphicsElement | null;
 
-              // 스타일 부여: 마우스 커서 및 시각적 안내
               htmlNode.style.cursor = "pointer";
 
               // 마우스 진입 시 해당 단일 노드에만 하이라이트 & 팝오버 표시
@@ -143,8 +137,8 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
   // 팝오버가 뷰포트 바깥으로 나가지 않도록 좌표 보정
   const popoverStyle = popoverPos
     ? {
-        left: Math.min(popoverPos.x + 16, (typeof window !== "undefined" ? window.innerWidth : 1000) - 340),
-        top: Math.min(popoverPos.y + 16, (typeof window !== "undefined" ? window.innerHeight : 800) - 320),
+        left: Math.max(16, Math.min(popoverPos.x + 16, (typeof window !== "undefined" ? window.innerWidth : 1000) - 340)),
+        top: Math.max(16, Math.min(popoverPos.y + 16, (typeof window !== "undefined" ? window.innerHeight : 800) - 320)),
       }
     : undefined;
 
@@ -155,7 +149,7 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
         className="min-h-60 overflow-x-auto overflow-y-hidden rounded-lg border border-border bg-card p-4 [&_svg]:mx-auto [&_svg]:max-w-none"
       />
 
-      {/* 시험 중요도 및 상세 메모 팝오버 카드 (호버 시 표시) */}
+      {/* 시험 중요도 및 상세 메모 팝오버 카드 (순수 호버 툴팁) */}
       {activeNote && popoverStyle && (
         <div
           style={popoverStyle}

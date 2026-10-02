@@ -1,4 +1,5 @@
 import type { MindmapSection } from "@/types/mindmap";
+import { SECURITY_NOTES } from "@/data/mindmaps/aws-saa/security-notes";
 
 export const securityMindmap: MindmapSection = {
   id: "security",
@@ -21,4 +22,5 @@ export const securityMindmap: MindmapSection = {
     운영 관리와 구성 감사
       ssmBox["Systems Manager 운영 관리<br/>1) Run Command — 인바운드 포트 개방 없이 대규모 인스턴스 플릿에 즉시(ad-hoc) 명령 실행, 제로데이 긴급 패치에 적합<br/>2) Patch Manager — 정기 유지보수 기간(Maintenance Window)에 맞춰 패치 기준선(Baseline)을 스케줄 배포<br/>3) State Manager — 인스턴스 구성을 원하는 상태로 지속 강제 유지(Configuration Drift 방지)"]
       auditBox["구성 감사와 API 활동 로그<br/>1) AWS Config — 리소스 구성 변경 이력 추적, 규정 준수 규칙 위반 탐지<br/>2) AWS CloudTrail — 누가 언제 어떤 API를 호출했는지 사용자·활동 로그를 기록"]`,
+  notes: SECURITY_NOTES,
 };

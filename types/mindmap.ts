@@ -14,3 +14,4 @@ export interface MindmapSection {
   chart: string;
   notes?: Record<string, MindmapNodeNote>;
 }
+

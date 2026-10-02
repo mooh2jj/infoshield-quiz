@@ -35,7 +35,11 @@ export default function AwsSaaMindmapPage() {
                 {section.description}
               </p>
             </div>
-            <MermaidDiagram id={`mindmap-aws-saa-${section.id}`} chart={section.chart} />
+            <MermaidDiagram
+              id={`mindmap-aws-saa-${section.id}`}
+              chart={section.chart}
+              notes={section.notes}
+            />
           </section>
         ))}
       </div>
