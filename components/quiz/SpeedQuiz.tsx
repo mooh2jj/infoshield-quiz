@@ -1,0 +1,759 @@
+"use client";
+
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import Link from "next/link";
+import {
+  Zap,
+  Pause,
+  Play,
+  X,
+  RotateCcw,
+  CheckCircle2,
+  SlidersHorizontal,
+  ChevronRight,
+  BookOpen,
+  Layers,
+  Shuffle,
+} from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import {
+  QUIZ_LIST,
+  ADSP_CHAPTERS,
+  type SpeedQuizItem,
+  type AdspChapterId,
+} from "@/data/speed-quiz/adsp";
+
+// 3. 시간 설정 옵션 (상수 분리)
+export const CONFIG = {
+  COUNTDOWN_SECONDS: 3, // 시작 전 카운트다운 (초)
+  QUESTION_TIME: 3,     // 문제 제한 시간 기본값 (초)
+  ANSWER_TIME: 2,       // 정답 확인 시간 기본값 (초)
+};
+
+export type QuizStatus =
+  | "READY"
+  | "START_COUNT"
+  | "QUESTION"
+  | "SHOW_ANSWER"
+  | "FINISHED";
+
+interface SpeedQuizProps {
+  quizList?: SpeedQuizItem[];
+  defaultQuestionTime?: number;
+  defaultAnswerTime?: number;
+  exitHref?: string;
+}
+
+export function SpeedQuiz({
+  quizList = QUIZ_LIST,
+  defaultQuestionTime = CONFIG.QUESTION_TIME,
+  defaultAnswerTime = CONFIG.ANSWER_TIME,
+  exitHref = "/bigdata",
+}: SpeedQuizProps) {
+  // 상태 관리
+  const [status, setStatus] = useState<QuizStatus>("READY");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [countdown, setCountdown] = useState(CONFIG.COUNTDOWN_SECONDS);
+
+  // 챕터 선택 및 문제 수 설정
+  const [selectedChapter, setSelectedChapter] = useState<AdspChapterId>("all");
+  const [questionCount, setQuestionCount] = useState<number>(10);
+  const [isShuffle, setIsShuffle] = useState<boolean>(true);
+
+  // 실행 중인 세션의 문제 목록
+  const [activeQueue, setActiveQueue] = useState<SpeedQuizItem[]>([]);
+
+  // 시간 설정 (상수 기반 조정 가능)
+  const [questionTime, setQuestionTime] = useState(defaultQuestionTime);
+  const [answerTime, setAnswerTime] = useState(defaultAnswerTime);
+  const [showSettings, setShowSettings] = useState(false);
+
+  // 남은 시간(밀리초) 및 총 기준 시간
+  const [timerMs, setTimerMs] = useState(defaultQuestionTime * 1000);
+  const [totalTimerMs, setTotalTimerMs] = useState(defaultQuestionTime * 1000);
+
+  // 선택된 챕터에 따른 문제 풀(Pool)
+  const filteredPool = useMemo(() => {
+    if (selectedChapter === "all") return quizList;
+    return quizList.filter((item) => item.chapterId === selectedChapter);
+  }, [quizList, selectedChapter]);
+
+  // 유효 문제 수 (선택된 풀 크기 이하로 자동 보정)
+  const effectiveCount = Math.min(questionCount, filteredPool.length);
+
+  // 최신 상태를 ref로 보관하여 타이머 및 이벤트 리스너의 클로저 이슈 방지
+  const stateRef = useRef({
+    status,
+    isPaused,
+    currentIndex,
+    questionTime,
+    answerTime,
+    totalCount: activeQueue.length,
+  });
+
+  useEffect(() => {
+    stateRef.current = {
+      status,
+      isPaused,
+      currentIndex,
+      questionTime,
+      answerTime,
+      totalCount: activeQueue.length,
+    };
+  }, [status, isPaused, currentIndex, questionTime, answerTime, activeQueue.length]);
+
+  // 퀴즈 시작 함수
+  const startQuiz = useCallback(() => {
+    // 1. 문제 풀에서 문제 수만큼 추출 (옵션에 따라 셔플)
+    let pool = [...filteredPool];
+    if (isShuffle) {
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+    }
+    const queue = pool.slice(0, effectiveCount);
+    setActiveQueue(queue);
+    setCurrentIndex(0);
+    setCountdown(CONFIG.COUNTDOWN_SECONDS);
+    setIsPaused(false);
+    setStatus("START_COUNT");
+  }, [filteredPool, isShuffle, effectiveCount]);
+
+  // 화면 클릭 / 스페이스바 통합 인터랙션
+  const handleInteraction = useCallback(() => {
+    const {
+      status: curStatus,
+      isPaused: curPaused,
+      currentIndex: curIdx,
+      totalCount,
+      questionTime: qTime,
+      answerTime: aTime,
+    } = stateRef.current;
+
+    // 일시정지 중이면 조작 차단 (재개 유도)
+    if (curPaused) return;
+
+    if (curStatus === "READY") {
+      startQuiz();
+    } else if (curStatus === "QUESTION") {
+      // 3. 문제 노출 중 클릭/스페이스바: 남은 시간 상관없이 즉시 SHOW_ANSWER 상태로 스킵
+      setStatus("SHOW_ANSWER");
+      setTimerMs(aTime * 1000);
+      setTotalTimerMs(aTime * 1000);
+    } else if (curStatus === "SHOW_ANSWER") {
+      // 정답 노출 중 클릭/스페이스바: 대기 시간 없이 즉시 다음 문제로 스킵
+      if (curIdx + 1 < totalCount) {
+        setCurrentIndex((prev) => prev + 1);
+        setStatus("QUESTION");
+        setTimerMs(qTime * 1000);
+        setTotalTimerMs(qTime * 1000);
+      } else {
+        setStatus("FINISHED");
+      }
+    } else if (curStatus === "FINISHED") {
+      startQuiz();
+    }
+  }, [startQuiz]);
+
+  // 일시정지 토글
+  const togglePause = useCallback(() => {
+    if (status === "QUESTION" || status === "SHOW_ANSWER" || status === "START_COUNT") {
+      setIsPaused((prev) => !prev);
+    }
+  }, [status]);
+
+  // 키보드 이벤트 핸들러 (Space: 인터랙션, P: 일시정지)
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      const target = e.target as HTMLElement;
+      if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA" || target?.isContentEditable) {
+        return;
+      }
+
+      // 'P' 키 (영문/한글 ㅔ) 일시정지 토글
+      if (e.key === "p" || e.key === "P" || e.key === "ㅔ" || e.key === "ㅖ") {
+        e.preventDefault();
+        togglePause();
+        return;
+      }
+
+      // 스페이스바 조작
+      if (e.code === "Space") {
+        e.preventDefault();
+        handleInteraction();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleInteraction, togglePause]);
+
+  // 카운트다운 타이머 (3 -> 2 -> 1)
+  useEffect(() => {
+    if (status !== "START_COUNT" || isPaused) return;
+
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setStatus("QUESTION");
+          setTimerMs(questionTime * 1000);
+          setTotalTimerMs(questionTime * 1000);
+          return CONFIG.COUNTDOWN_SECONDS;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [status, isPaused, questionTime]);
+
+  // 문제 및 정답 노출 타이머 (고정밀 performance.now 기반)
+  useEffect(() => {
+    if ((status !== "QUESTION" && status !== "SHOW_ANSWER") || isPaused) return;
+
+    let lastTick = performance.now();
+
+    const interval = setInterval(() => {
+      const now = performance.now();
+      const delta = now - lastTick;
+      lastTick = now;
+
+      setTimerMs((prev) => {
+        const next = prev - delta;
+        if (next <= 0) {
+          if (status === "QUESTION") {
+            // 문제 시간 종료 -> 정답 공개
+            setStatus("SHOW_ANSWER");
+            setTotalTimerMs(answerTime * 1000);
+            return answerTime * 1000;
+          } else {
+            // 정답 노출 시간 종료 -> 다음 문제 또는 종료
+            if (currentIndex + 1 < activeQueue.length) {
+              setCurrentIndex((idx) => idx + 1);
+              setStatus("QUESTION");
+              setTotalTimerMs(questionTime * 1000);
+              return questionTime * 1000;
+            } else {
+              setStatus("FINISHED");
+              return 0;
+            }
+          }
+        }
+        return next;
+      });
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, [status, isPaused, currentIndex, questionTime, answerTime, activeQueue.length]);
+
+  const currentQuiz = activeQueue[currentIndex] ?? activeQueue[0] ?? quizList[0];
+  const totalCount = activeQueue.length > 0 ? activeQueue.length : effectiveCount;
+  const progressRatio = totalCount > 0 ? (currentIndex + 1) / totalCount : 0;
+  const timeProgressRatio = totalTimerMs > 0 ? Math.max(0, Math.min(1, timerMs / totalTimerMs)) : 0;
+  const timerSecondsDisplay = (Math.max(0, timerMs) / 1000).toFixed(1);
+
+  return (
+    <div className="flex min-h-[calc(100dvh-5rem)] w-full items-center justify-center p-4 sm:p-6">
+      {/* 화면 정중앙 미니멀 집중형 카드 */}
+      <div
+        onClick={handleInteraction}
+        className={cn(
+          "relative flex w-full max-w-[640px] flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-xl transition-all select-none",
+          status === "QUESTION" && "cursor-pointer hover:border-primary/50",
+          status === "SHOW_ANSWER" && "cursor-pointer hover:border-emerald-500/50"
+        )}
+      >
+        {/* 상단 헤더: 타이틀 + 진행률 + 컨트롤 버튼 */}
+        <div
+          className="flex items-center justify-between border-b border-border/60 pb-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center gap-2">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
+              <Zap className="size-4 fill-amber-500" />
+            </span>
+            <div>
+              <h1 className="text-sm sm:text-base font-semibold tracking-tight text-foreground">
+                ADsP 단답형 스피드 퀴즈
+              </h1>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* 진행률 게이지 텍스트 (예: 3 / 20) */}
+            {(status === "QUESTION" || status === "SHOW_ANSWER" || status === "START_COUNT") && (
+              <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground tabular-nums">
+                {currentIndex + 1} / {totalCount}
+              </span>
+            )}
+
+            {/* 일시정지 아이콘 버튼 */}
+            {(status === "QUESTION" || status === "SHOW_ANSWER" || status === "START_COUNT") && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={togglePause}
+                className="size-8 text-muted-foreground hover:text-foreground"
+                title={isPaused ? "재개 (P)" : "일시정지 (P)"}
+                aria-label="일시정지 토글"
+              >
+                {isPaused ? <Play className="size-4" /> : <Pause className="size-4" />}
+              </Button>
+            )}
+
+            {/* 나가기 버튼 */}
+            <Link
+              href={exitHref}
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "icon" }),
+                "size-8 text-muted-foreground hover:text-foreground"
+              )}
+              title="나가기"
+              aria-label="나가기"
+            >
+              <X className="size-4" />
+            </Link>
+          </div>
+        </div>
+
+        {/* 상단 전체 진행률 게이지 바 (START_COUNT, QUESTION, SHOW_ANSWER 상태) */}
+        {(status === "QUESTION" || status === "SHOW_ANSWER" || status === "START_COUNT") && (
+          <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full bg-primary transition-all duration-300 ease-out"
+              style={{ width: `${progressRatio * 100}%` }}
+            />
+          </div>
+        )}
+
+        {/* 중앙: 상태별 콘텐츠 영역 */}
+        <div className="my-auto flex min-h-[300px] flex-col items-center justify-center py-6 text-center">
+          {/* 1. READY (대기 화면) */}
+          {status === "READY" && (
+            <div className="flex w-full flex-col items-center gap-4">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500">
+                <Zap className="size-7 fill-amber-500" />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
+                  ⚡ ADsP 단답형 스피드 퀴즈
+                </h2>
+                <p className="text-xs sm:text-sm text-muted-foreground max-w-[460px]">
+                  3초 안에 정답을 떠올리는 핵심 ROI 빈출 플래시카드 암기 트레이닝
+                </p>
+              </div>
+
+              {/* 챕터(과목) 선택 섹션 */}
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    <BookOpen className="size-3.5 text-amber-500" />
+                    과목 선택
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
+                    총 {filteredPool.length}문항 준비됨
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedChapter("all")}
+                    className={cn(
+                      "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all text-left",
+                      selectedChapter === "all"
+                        ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                        : "bg-background border border-border/70 text-foreground hover:bg-muted/60"
+                    )}
+                  >
+                    <span>전체 과목 통합</span>
+                    <span className={cn(
+                      "text-[11px] rounded px-1.5 py-0.5",
+                      selectedChapter === "all"
+                        ? "bg-primary-foreground/20 text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
+                    )}>
+                      {quizList.length}문항
+                    </span>
+                  </button>
+                  {ADSP_CHAPTERS.map((ch) => {
+                    const count = quizList.filter((q) => q.chapterId === ch.id).length;
+                    const isSelected = selectedChapter === ch.id;
+                    return (
+                      <button
+                        key={ch.id}
+                        type="button"
+                        onClick={() => setSelectedChapter(ch.id)}
+                        className={cn(
+                          "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all text-left",
+                          isSelected
+                            ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                            : "bg-background border border-border/70 text-foreground hover:bg-muted/60"
+                        )}
+                      >
+                        <span>{ch.name}</span>
+                        <span className={cn(
+                          "text-[11px] rounded px-1.5 py-0.5",
+                          isSelected
+                            ? "bg-primary-foreground/20 text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
+                        )}>
+                          {count}문항
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 퀴즈 문제 수 설정 섹션 */}
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    <Layers className="size-3.5 text-amber-500" />
+                    문제 수 설정
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsShuffle((prev) => !prev)}
+                      className={cn(
+                        "flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors",
+                        isShuffle
+                          ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                      title="문제 순서 무작위 셔플"
+                    >
+                      <Shuffle className="size-3" />
+                      <span>무작위 셔플</span>
+                    </button>
+                    <span className="text-xs font-bold tabular-nums text-foreground">
+                      {effectiveCount}문항 출제
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {[5, 10, 15, 20, 30].map((preset) => {
+                    const isDisabled = preset > filteredPool.length;
+                    const isSelected = questionCount === preset && !isDisabled;
+                    return (
+                      <button
+                        key={preset}
+                        type="button"
+                        disabled={isDisabled}
+                        onClick={() => setQuestionCount(preset)}
+                        className={cn(
+                          "flex-1 rounded-lg py-1.5 text-xs font-medium transition-all text-center",
+                          isSelected
+                            ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                            : isDisabled
+                            ? "cursor-not-allowed opacity-30 bg-muted/40 text-muted-foreground"
+                            : "bg-background border border-border/70 text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        {preset}개
+                      </button>
+                    );
+                  })}
+                  <button
+                    type="button"
+                    onClick={() => setQuestionCount(filteredPool.length)}
+                    className={cn(
+                      "flex-1 rounded-lg py-1.5 text-xs font-medium transition-all text-center",
+                      questionCount >= filteredPool.length
+                        ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                        : "bg-background border border-border/70 text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    전체
+                  </button>
+                </div>
+              </div>
+
+              {/* 시간 설정 드롭다운/토글 버튼 */}
+              <div onClick={(e) => e.stopPropagation()} className="w-full">
+                <button
+                  type="button"
+                  onClick={() => setShowSettings((v) => !v)}
+                  className="flex w-full items-center justify-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <SlidersHorizontal className="size-3.5" />
+                  <span>타이머 시간 설정 ({questionTime}초 / {answerTime}초)</span>
+                </button>
+
+                {showSettings && (
+                  <div className="mt-2.5 flex flex-col gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">문제 제한 시간</span>
+                      <div className="flex items-center gap-1">
+                        {[2, 3, 5, 7].map((sec) => (
+                          <button
+                            key={sec}
+                            type="button"
+                            onClick={() => setQuestionTime(sec)}
+                            className={cn(
+                              "rounded px-2 py-1 font-medium transition-colors",
+                              questionTime === sec
+                                ? "bg-primary text-primary-foreground font-semibold"
+                                : "bg-card text-foreground hover:bg-muted"
+                            )}
+                          >
+                            {sec}초
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">정답 노출 시간</span>
+                      <div className="flex items-center gap-1">
+                        {[1, 2, 3, 4].map((sec) => (
+                          <button
+                            key={sec}
+                            type="button"
+                            onClick={() => setAnswerTime(sec)}
+                            className={cn(
+                              "rounded px-2 py-1 font-medium transition-colors",
+                              answerTime === sec
+                                ? "bg-primary text-primary-foreground font-semibold"
+                                : "bg-card text-foreground hover:bg-muted"
+                            )}
+                          >
+                            {sec}초
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col items-center gap-2 pt-1">
+                <Button
+                  size="lg"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startQuiz();
+                  }}
+                  className="h-12 w-48 text-base font-semibold shadow-md bg-amber-600 hover:bg-amber-700 text-white"
+                >
+                  퀴즈 시작
+                </Button>
+                <span className="text-xs text-muted-foreground">
+                  키보드 <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-foreground">Space</kbd> 키를 눌러도 시작됩니다
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* 2. START_COUNT (카운트다운: 3 -> 2 -> 1) */}
+          {status === "START_COUNT" && (
+            <div className="flex flex-col items-center justify-center gap-4">
+              <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Get Ready
+              </span>
+              <div
+                key={countdown}
+                className="flex size-32 items-center justify-center text-8xl font-black text-amber-500 animate-in zoom-in-50 duration-300 select-none tabular-nums"
+              >
+                {countdown}
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-600 dark:text-amber-400">
+                  {selectedChapter === "all" ? "전체 과목 통합" : ADSP_CHAPTERS.find((c) => c.id === selectedChapter)?.name}
+                </span>
+                <p className="text-xs text-muted-foreground">
+                  총 {totalCount}문항 출제 · 곧 시작됩니다!
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* 3. QUESTION (문제 출제) */}
+          {status === "QUESTION" && (
+            <div className="flex w-full flex-col items-center justify-center gap-4 px-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                  {currentQuiz.chapterName}
+                </span>
+                <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                  문제 {currentIndex + 1}
+                </span>
+              </div>
+              <p className="text-lg sm:text-2xl font-bold leading-relaxed tracking-tight text-foreground break-keep max-w-[540px]">
+                {currentQuiz.question}
+              </p>
+              <p className="text-xs text-muted-foreground/75">
+                화면을 클릭하거나 <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Space</kbd>를 누르면 즉시 정답 공개
+              </p>
+            </div>
+          )}
+
+          {/* 4. SHOW_ANSWER (정답 공개) */}
+          {status === "SHOW_ANSWER" && (
+            <div className="flex w-full flex-col items-center justify-center gap-3 px-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                  {currentQuiz.chapterName}
+                </span>
+                <span className="text-xs text-muted-foreground line-clamp-1 max-w-[360px]">
+                  {currentQuiz.question}
+                </span>
+              </div>
+
+              {/* 강조 색상(Emerald/Sky Blue) 정답 영역 */}
+              <div className="w-full max-w-[520px] rounded-2xl border border-emerald-500/40 bg-emerald-500/10 dark:bg-emerald-950/30 p-6 text-center shadow-lg transition-all animate-in fade-in zoom-in-95 duration-200">
+                <span className="mb-2 inline-block rounded-md bg-emerald-500/20 px-2.5 py-0.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                  정답
+                </span>
+                <p className="text-xl sm:text-3xl font-black tracking-tight text-emerald-600 dark:text-emerald-400 break-keep">
+                  {currentQuiz.answer}
+                </p>
+              </div>
+
+              <p className="text-xs text-muted-foreground/75">
+                화면을 클릭하거나 <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Space</kbd>를 누르면 다음 문제로 즉시 이동
+              </p>
+            </div>
+          )}
+
+          {/* 5. FINISHED (완료 화면) */}
+          {status === "FINISHED" && (
+            <div className="flex flex-col items-center gap-5">
+              <div className="flex size-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-500">
+                <CheckCircle2 className="size-10" />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <h2 className="text-2xl font-bold tracking-tight">
+                  스피드 퀴즈 완료!
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">
+                    {selectedChapter === "all" ? "전체 과목 통합" : ADSP_CHAPTERS.find((c) => c.id === selectedChapter)?.name}
+                  </span>
+                  에서 총 <span className="font-semibold text-foreground">{totalCount}문항</span>의 핵심 단답형 문제를 모두 완주하셨습니다.
+                </p>
+              </div>
+
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="flex flex-col sm:flex-row items-center gap-3 pt-2 w-full sm:w-auto"
+              >
+                <Button
+                  size="lg"
+                  onClick={() => setStatus("READY")}
+                  className="h-11 w-full sm:w-auto gap-2 text-sm font-semibold bg-primary"
+                >
+                  <RotateCcw className="size-4" />
+                  조건 변경 및 다시 풀기
+                </Button>
+                <Link
+                  href={exitHref}
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "lg" }),
+                    "h-11 w-full sm:w-auto gap-1 text-sm font-semibold"
+                  )}
+                >
+                  빅데이터 퀴즈 홈
+                  <ChevronRight className="size-4" />
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 하단: 시각적 타이머 게이지 바 및 조작 가이드 안내 */}
+        <div className="mt-auto border-t border-border/60 pt-4">
+          {(status === "QUESTION" || status === "SHOW_ANSWER") ? (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs font-medium tabular-nums">
+                <span className="text-muted-foreground">
+                  {status === "QUESTION" ? "생각할 시간" : "정답 확인 중"}
+                </span>
+                <span
+                  className={cn(
+                    "font-bold",
+                    status === "QUESTION"
+                      ? timeProgressRatio > 0.3
+                        ? "text-amber-500"
+                        : "text-rose-500 animate-pulse"
+                      : "text-emerald-500"
+                  )}
+                >
+                  {timerSecondsDisplay}s
+                </span>
+              </div>
+
+              {/* 시각적 타이머 게이지 바 (Progress Bar) */}
+              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                <div
+                  className={cn(
+                    "h-full transition-all duration-75 ease-linear",
+                    status === "QUESTION"
+                      ? timeProgressRatio > 0.4
+                        ? "bg-amber-500"
+                        : "bg-rose-500"
+                      : "bg-emerald-500"
+                  )}
+                  style={{ width: `${timeProgressRatio * 100}%` }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between pt-1 text-[11px] text-muted-foreground">
+                <span>
+                  {status === "QUESTION"
+                    ? "스페이스바 / 클릭: 정답 확인"
+                    : "스페이스바 / 클릭: 다음 문제"}
+                </span>
+                <span>'P' 키: 일시정지</span>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+              <span>단축키 가이드: 스페이스바 [Space]</span>
+              <span>일시정지: 'P' 키</span>
+            </div>
+          )}
+        </div>
+
+        {/* 일시정지 오버레이 */}
+        {isPaused && (
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-background/85 backdrop-blur-sm p-6 text-center animate-in fade-in duration-200"
+          >
+            <div className="flex size-14 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500">
+              <Pause className="size-7" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <h3 className="text-xl font-bold tracking-tight">일시정지</h3>
+              <p className="text-xs text-muted-foreground">
+                타이머가 멈춰있습니다. 계속 진행하려면 아래 버튼이나 'P' 키를 누르세요.
+              </p>
+            </div>
+            <Button
+              type="button"
+              onClick={togglePause}
+              className="mt-2 h-10 gap-2 px-6 font-semibold"
+            >
+              <Play className="size-4" />
+              계속하기
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

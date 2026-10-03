@@ -1,4 +1,4 @@
-import { ListChecks, Network } from "lucide-react";
+import { ListChecks, Network, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -68,6 +68,13 @@ export const NAV_GROUPS: NavGroup[] = [
         pillLabel: "빅데이터 퀴즈",
         icon: ListChecks,
         matchPrefixes: ["/bigdata", "/bigdata/quiz", "/bigdata/result"],
+      },
+      {
+        href: "/bigdata/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/bigdata/speed-quiz"],
       },
       {
         href: "/bigdata/mindmap",
