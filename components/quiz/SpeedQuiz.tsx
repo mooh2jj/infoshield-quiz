@@ -21,9 +21,8 @@ import { cn } from "@/lib/utils";
 import {
   QUIZ_LIST,
   ADSP_CHAPTERS,
-  type SpeedQuizItem,
-  type AdspChapterId,
 } from "@/data/speed-quiz/adsp";
+import type { SpeedQuizChapter, SpeedQuizItem } from "@/data/speed-quiz/types";
 
 // 3. 시간 설정 옵션 (상수 분리)
 export const CONFIG = {
@@ -40,6 +39,9 @@ export type QuizStatus =
   | "FINISHED";
 
 interface SpeedQuizProps {
+  title?: string;
+  subtitle?: string;
+  chapters?: SpeedQuizChapter[];
   quizList?: SpeedQuizItem[];
   defaultQuestionTime?: number;
   defaultAnswerTime?: number;
@@ -47,6 +49,9 @@ interface SpeedQuizProps {
 }
 
 export function SpeedQuiz({
+  title = "ADsP 단답형 스피드 퀴즈",
+  subtitle = "문제를 보고 정답을 빠르게 떠올리는 핵심 ROI 빈출 플래시카드 암기 트레이닝",
+  chapters = ADSP_CHAPTERS,
   quizList = QUIZ_LIST,
   defaultQuestionTime = CONFIG.QUESTION_TIME,
   defaultAnswerTime = CONFIG.ANSWER_TIME,
@@ -59,7 +64,7 @@ export function SpeedQuiz({
   const [countdown, setCountdown] = useState(CONFIG.COUNTDOWN_SECONDS);
 
   // 챕터 선택 및 문제 수 설정
-  const [selectedChapter, setSelectedChapter] = useState<AdspChapterId>("all");
+  const [selectedChapter, setSelectedChapter] = useState<string>("all");
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [isShuffle, setIsShuffle] = useState<boolean>(true);
 
@@ -291,7 +296,7 @@ export function SpeedQuiz({
             </span>
             <div>
               <h1 className="text-sm sm:text-base font-semibold tracking-tight text-foreground">
-                ADsP 단답형 스피드 퀴즈
+                {title}
               </h1>
             </div>
           </div>
@@ -355,10 +360,10 @@ export function SpeedQuiz({
 
               <div className="flex flex-col gap-1">
                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight">
-                  ⚡ ADsP 단답형 스피드 퀴즈
+                  ⚡ {title}
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-[460px]">
-                  문제를 보고 정답을 빠르게 떠올리는 핵심 ROI 빈출 플래시카드 암기 트레이닝
+                  {subtitle}
                 </p>
               </div>
 
@@ -397,7 +402,7 @@ export function SpeedQuiz({
                       {quizList.length}문항
                     </span>
                   </button>
-                  {ADSP_CHAPTERS.map((ch) => {
+                  {chapters.map((ch) => {
                     const count = quizList.filter((q) => q.chapterId === ch.id).length;
                     const isSelected = selectedChapter === ch.id;
                     return (
@@ -602,7 +607,7 @@ export function SpeedQuiz({
               </div>
               <div className="flex flex-col items-center gap-1.5">
                 <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-600 dark:text-amber-400">
-                  {selectedChapter === "all" ? "전체 과목 통합" : ADSP_CHAPTERS.find((c) => c.id === selectedChapter)?.name}
+                  {selectedChapter === "all" ? "전체 과목 통합" : chapters.find((c) => c.id === selectedChapter)?.name}
                 </span>
                 <p className="text-xs text-muted-foreground">
                   총 {totalCount}문항 출제 · 제한시간 {questionTime}초
@@ -672,7 +677,7 @@ export function SpeedQuiz({
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">
-                    {selectedChapter === "all" ? "전체 과목 통합" : ADSP_CHAPTERS.find((c) => c.id === selectedChapter)?.name}
+                    {selectedChapter === "all" ? "전체 과목 통합" : chapters.find((c) => c.id === selectedChapter)?.name}
                   </span>
                   에서 총 <span className="font-semibold text-foreground">{totalCount}문항</span>의 핵심 단답형 문제를 모두 완주하셨습니다.
                 </p>

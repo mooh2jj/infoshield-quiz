@@ -29,6 +29,13 @@ export const NAV_GROUPS: NavGroup[] = [
         matchPrefixes: ["/security", "/security/quiz", "/security/result"],
       },
       {
+        href: "/security/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "보안 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/security/speed-quiz"],
+      },
+      {
         href: "/security/mindmap",
         label: "마인드맵",
         pillLabel: "보안 마인드맵",

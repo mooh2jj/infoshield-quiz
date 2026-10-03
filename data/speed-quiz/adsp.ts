@@ -226,7 +226,7 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
   },
 
   // =================================================================
-  // === [제3과목] 데이터 분석 (19문항)
+  // === [제3과목] 데이터 분석 (29문항)
   // =================================================================
   {
     id: 29,
@@ -360,5 +360,75 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     chapterName: "제3과목 데이터 분석",
     question: "모델이 학습 데이터의 노이즈까지 지나치게 외워버려 훈련 오차는 낮으나 실제 테스트 데이터의 성능이 급격히 저하되는 현상은?",
     answer: "과적합 (Overfitting)"
+  },
+  {
+    id: 48,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "연관성 분석에서 품목 A와 B가 우연히 독립적으로 팔릴 확률 대비 함께 팔릴 확률의 비율로, 1보다 클 때 유의미한 양의 상관관계를 나타내는 지표는?",
+    answer: "향상도 (Lift)"
+  },
+  {
+    id: 49,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "원천 데이터를 데이터 마트에 적합하도록 집계(합계, 횟수, 평균 등)하여 특정 기간이나 대상별로 간단히 요약해 놓은 변수는?",
+    answer: "요약변수 (Summary Variable)"
+  },
+  {
+    id: 50,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "회귀모형에서 전체 변동(SST) 중 회귀식에 의해 설명되는 변동(SSR)의 비율로, 모형의 적합도와 설명력을 나타내는 0과 1 사이의 지표는?",
+    answer: "결정계수 (R-squared)"
+  },
+  {
+    id: 51,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "회귀분석 잔차의 독립성을 검정하기 위한 방법으로, 값이 2에 가까울수록 자기상관(Autocorrelation)이 없다고 판단하는 검정법은?",
+    answer: "더빈-왓슨 검정 (Durbin-Watson Test)"
+  },
+  {
+    id: 52,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "가설검정에서 실제로는 귀무가설(H0)이 참임에도 불구하고 귀무가설을 잘못 기각하여 발생하는 오류는?",
+    answer: "제1종 오류 (알파 오류)"
+  },
+  {
+    id: 53,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "이전 단계에서 잘못 분류된 오차 데이터에 더 큰 가중치를 부여하면서 순차적으로 약한 학습기들을 결합해 나가는 앙상블 기법은?",
+    answer: "부스팅 (Boosting)"
+  },
+  {
+    id: 54,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "주성분 분석(PCA)에서 각 주성분의 고윳값 크기를 내림차순으로 연결하여 곡선이 완만해지는 엘보우 지점에서 주성분 수를 결정하는 그래프는?",
+    answer: "스크리 산점도 (Scree Plot)"
+  },
+  {
+    id: 55,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "군집의 중심점(Centroid)과 데이터 사이의 거리를 계산하여 가장 가까운 중심점에 할당하고 갱신을 반복하는 대표적 비계층 군집화 알고리즘은?",
+    answer: "k-평균 군집화 (k-Means)"
+  },
+  {
+    id: 56,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "전체 데이터셋을 훈련용(Training)과 테스트용(Testing)으로 독립적으로 분할하여 모델의 일반화 성능을 객관적으로 평가하는 기법은?",
+    answer: "홀드아웃 (Hold-out) 기법"
+  },
+  {
+    id: 57,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "비정상 시계열을 차분(Differencing)하여 정상화한 후, 자기회귀(AR)와 이동평균(MA)을 결합하여 예측하는 대표적 시계열 모델은?",
+    answer: "ARIMA 모형"
   }
 ];

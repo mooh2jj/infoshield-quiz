@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Minus, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Minus, Plus, Zap } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { SubjectChip } from "@/components/quiz/SubjectChip";
 import { useQuizStore } from "@/lib/store/quizStore";
+import { cn } from "@/lib/utils";
 import type { SubjectCategory } from "@/types/quiz";
 
 const ALL_SUBJECTS: SubjectCategory[] = [
@@ -59,6 +61,41 @@ export default function HomePage() {
         <p className="text-muted-foreground">
           웹 개발자를 위한 정보보안기사 1분 트레이닝
         </p>
+      </div>
+
+      {/* 정보보안기사 단답형 스피드 퀴즈 배너 */}
+      <div className="relative overflow-hidden rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="flex size-5 items-center justify-center rounded-md bg-amber-500/20 text-amber-500">
+                <Zap className="size-3.5 fill-amber-500" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                SPEED QUIZ
+              </span>
+              <span className="rounded bg-amber-500/20 px-1.5 py-0.2 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
+                신규
+              </span>
+            </div>
+            <h2 className="text-base font-semibold tracking-tight text-foreground">
+              정보보안기사 단답형 스피드 퀴즈
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              3초 안에 정답을 떠올리는 플래시카드형 스피드 집중 암기 트레이닝
+            </p>
+          </div>
+          <Link
+            href="/security/speed-quiz"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "h-10 shrink-0 gap-1.5 bg-amber-600 font-semibold text-white hover:bg-amber-700 shadow-sm"
+            )}
+          >
+            <Zap className="size-3.5 fill-current" />
+            스피드 퀴즈 시작
+          </Link>
+        </div>
       </div>
 
       <section className="flex flex-col gap-3">
