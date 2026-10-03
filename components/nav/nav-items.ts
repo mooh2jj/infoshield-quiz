@@ -187,6 +187,13 @@ export const NAV_GROUPS: NavGroup[] = [
         matchPrefixes: ["/aws-saa", "/aws-saa/quiz", "/aws-saa/result"],
       },
       {
+        href: "/aws-saa/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "AWS SAA 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/aws-saa/speed-quiz"],
+      },
+      {
         href: "/aws-saa/mindmap",
         label: "마인드맵",
         pillLabel: "AWS SAA 마인드맵",
