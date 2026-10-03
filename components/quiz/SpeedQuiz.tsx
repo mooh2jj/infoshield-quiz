@@ -14,6 +14,7 @@ import {
   BookOpen,
   Layers,
   Shuffle,
+  Clock,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -27,7 +28,7 @@ import {
 // 3. 시간 설정 옵션 (상수 분리)
 export const CONFIG = {
   COUNTDOWN_SECONDS: 3, // 시작 전 카운트다운 (초)
-  QUESTION_TIME: 3,     // 문제 제한 시간 기본값 (초)
+  QUESTION_TIME: 3,     // 문제 제한 시간 기본값 (원래 기준: 3초)
   ANSWER_TIME: 2,       // 정답 확인 시간 기본값 (초)
 };
 
@@ -65,14 +66,27 @@ export function SpeedQuiz({
   // 실행 중인 세션의 문제 목록
   const [activeQueue, setActiveQueue] = useState<SpeedQuizItem[]>([]);
 
-  // 시간 설정 (상수 기반 조정 가능)
+  // 시간 설정 (기본: 문제 3초, 정답 2초)
   const [questionTime, setQuestionTime] = useState(defaultQuestionTime);
   const [answerTime, setAnswerTime] = useState(defaultAnswerTime);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showExtraSettings, setShowExtraSettings] = useState(false);
 
   // 남은 시간(밀리초) 및 총 기준 시간
   const [timerMs, setTimerMs] = useState(defaultQuestionTime * 1000);
   const [totalTimerMs, setTotalTimerMs] = useState(defaultQuestionTime * 1000);
+
+  // 퀴즈 진행 도중 실시간 슬라이더 바 조작 핸들러
+  const handleQuestionTimeChange = useCallback((newSec: number) => {
+    setQuestionTime(newSec);
+    if (status === "QUESTION") {
+      // 진행 중인 현재 문제의 타이머도 늘어난 비율에 맞추어 즉시 동적 확장!
+      setTimerMs((prev) => {
+        const prevRatio = totalTimerMs > 0 ? prev / totalTimerMs : 1;
+        return Math.max(100, newSec * 1000 * prevRatio);
+      });
+      setTotalTimerMs(newSec * 1000);
+    }
+  }, [status, totalTimerMs]);
 
   // 선택된 챕터에 따른 문제 풀(Pool)
   const filteredPool = useMemo(() => {
@@ -106,7 +120,6 @@ export function SpeedQuiz({
 
   // 퀴즈 시작 함수
   const startQuiz = useCallback(() => {
-    // 1. 문제 풀에서 문제 수만큼 추출 (옵션에 따라 셔플)
     let pool = [...filteredPool];
     if (isShuffle) {
       for (let i = pool.length - 1; i > 0; i--) {
@@ -139,7 +152,7 @@ export function SpeedQuiz({
     if (curStatus === "READY") {
       startQuiz();
     } else if (curStatus === "QUESTION") {
-      // 3. 문제 노출 중 클릭/스페이스바: 남은 시간 상관없이 즉시 SHOW_ANSWER 상태로 스킵
+      // 문제 노출 중 클릭/스페이스바: 남은 시간 상관없이 즉시 SHOW_ANSWER 상태로 스킵
       setStatus("SHOW_ANSWER");
       setTimerMs(aTime * 1000);
       setTotalTimerMs(aTime * 1000);
@@ -345,7 +358,7 @@ export function SpeedQuiz({
                   ⚡ ADsP 단답형 스피드 퀴즈
                 </h2>
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-[460px]">
-                  3초 안에 정답을 떠올리는 핵심 ROI 빈출 플래시카드 암기 트레이닝
+                  문제를 보고 정답을 빠르게 떠올리는 핵심 ROI 빈출 플래시카드 암기 트레이닝
                 </p>
               </div>
 
@@ -482,43 +495,61 @@ export function SpeedQuiz({
                 </div>
               </div>
 
-              {/* 시간 설정 드롭다운/토글 버튼 */}
+              {/* 제한시간 슬라이더 바 섹션 (기본값: 3초) */}
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                    <Clock className="size-3.5 text-amber-500" />
+                    제한시간 슬라이더
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold tabular-nums text-amber-600 dark:text-amber-400">
+                      {questionTime}초
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">
+                      (기본 기준: 3초)
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="range"
+                    min={2}
+                    max={10}
+                    step={0.5}
+                    value={questionTime}
+                    onChange={(e) => handleQuestionTimeChange(parseFloat(e.target.value))}
+                    className="h-2 w-full cursor-pointer accent-amber-500 bg-muted-foreground/20 rounded-lg"
+                    aria-label="문제 제한시간 슬라이더"
+                  />
+                </div>
+                <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+                  <span>빠름 (2초)</span>
+                  <span className="font-semibold text-amber-600 dark:text-amber-400">원래 기준: 3초</span>
+                  <span>여유 (10초)</span>
+                </div>
+              </div>
+
+              {/* 추가 상세 설정 (정답 노출 시간 등) 접기/펼치기 */}
               <div onClick={(e) => e.stopPropagation()} className="w-full">
                 <button
                   type="button"
-                  onClick={() => setShowSettings((v) => !v)}
+                  onClick={() => setShowExtraSettings((v) => !v)}
                   className="flex w-full items-center justify-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <SlidersHorizontal className="size-3.5" />
-                  <span>타이머 시간 설정 ({questionTime}초 / {answerTime}초)</span>
+                  <span>상세 설정 (정답 확인 {answerTime}초)</span>
                 </button>
 
-                {showSettings && (
+                {showExtraSettings && (
                   <div className="mt-2.5 flex flex-col gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs animate-in fade-in duration-150">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">문제 제한 시간</span>
-                      <div className="flex items-center gap-1">
-                        {[2, 3, 5, 7].map((sec) => (
-                          <button
-                            key={sec}
-                            type="button"
-                            onClick={() => setQuestionTime(sec)}
-                            className={cn(
-                              "rounded px-2 py-1 font-medium transition-colors",
-                              questionTime === sec
-                                ? "bg-primary text-primary-foreground font-semibold"
-                                : "bg-card text-foreground hover:bg-muted"
-                            )}
-                          >
-                            {sec}초
-                          </button>
-                        ))}
-                      </div>
-                    </div>
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">정답 노출 시간</span>
                       <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4].map((sec) => (
+                        {[1, 2, 3, 4, 5].map((sec) => (
                           <button
                             key={sec}
                             type="button"
@@ -574,7 +605,7 @@ export function SpeedQuiz({
                   {selectedChapter === "all" ? "전체 과목 통합" : ADSP_CHAPTERS.find((c) => c.id === selectedChapter)?.name}
                 </span>
                 <p className="text-xs text-muted-foreground">
-                  총 {totalCount}문항 출제 · 곧 시작됩니다!
+                  총 {totalCount}문항 출제 · 제한시간 {questionTime}초
                 </p>
               </div>
             </div>
@@ -674,44 +705,74 @@ export function SpeedQuiz({
           )}
         </div>
 
-        {/* 하단: 시각적 타이머 게이지 바 및 조작 가이드 안내 */}
-        <div className="mt-auto border-t border-border/60 pt-4">
+        {/* 하단: 시각적 타이머 게이지 바 및 실시간 속도 조절 슬라이더 바 */}
+        <div className="mt-auto border-t border-border/60 pt-3">
           {(status === "QUESTION" || status === "SHOW_ANSWER") ? (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between text-xs font-medium tabular-nums">
-                <span className="text-muted-foreground">
-                  {status === "QUESTION" ? "생각할 시간" : "정답 확인 중"}
-                </span>
-                <span
-                  className={cn(
-                    "font-bold",
-                    status === "QUESTION"
-                      ? timeProgressRatio > 0.3
-                        ? "text-amber-500"
-                        : "text-rose-500 animate-pulse"
-                      : "text-emerald-500"
-                  )}
-                >
-                  {timerSecondsDisplay}s
-                </span>
+            <div className="flex flex-col gap-2.5">
+              {/* 퀴즈 도중 실시간 제한시간 조절 슬라이더 바 */}
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/40 px-3.5 py-1.5 transition-colors hover:bg-muted/70"
+              >
+                <div className="flex items-center gap-1.5 shrink-0 text-xs font-medium text-muted-foreground">
+                  <Clock className="size-3.5 text-amber-500" />
+                  <span className="hidden sm:inline">속도 조절</span>
+                  <span>(제한시간)</span>
+                </div>
+                <div className="flex items-center gap-2.5 flex-1 max-w-[260px]">
+                  <input
+                    type="range"
+                    min={2}
+                    max={10}
+                    step={0.5}
+                    value={questionTime}
+                    onChange={(e) => handleQuestionTimeChange(parseFloat(e.target.value))}
+                    className="h-1.5 w-full cursor-pointer accent-amber-500 bg-muted-foreground/25 rounded-lg"
+                    aria-label="문제 제한시간 조절 슬라이더 바"
+                  />
+                  <span className="shrink-0 text-xs font-bold tabular-nums text-foreground min-w-[2.5rem] text-right">
+                    {questionTime}초
+                  </span>
+                </div>
               </div>
 
-              {/* 시각적 타이머 게이지 바 (Progress Bar) */}
-              <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                <div
-                  className={cn(
-                    "h-full transition-all duration-75 ease-linear",
-                    status === "QUESTION"
-                      ? timeProgressRatio > 0.4
-                        ? "bg-amber-500"
-                        : "bg-rose-500"
-                      : "bg-emerald-500"
-                  )}
-                  style={{ width: `${timeProgressRatio * 100}%` }}
-                />
+              {/* 남은 시간 표시 및 시각적 타이머 게이지 바 */}
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between text-xs font-medium tabular-nums">
+                  <span className="text-muted-foreground">
+                    {status === "QUESTION" ? "생각할 시간" : "정답 확인 중"}
+                  </span>
+                  <span
+                    className={cn(
+                      "font-bold",
+                      status === "QUESTION"
+                        ? timeProgressRatio > 0.3
+                          ? "text-amber-500"
+                          : "text-rose-500 animate-pulse"
+                        : "text-emerald-500"
+                    )}
+                  >
+                    {timerSecondsDisplay}s
+                  </span>
+                </div>
+
+                {/* 시각적 타이머 게이지 바 (Progress Bar) */}
+                <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                  <div
+                    className={cn(
+                      "h-full transition-all duration-75 ease-linear",
+                      status === "QUESTION"
+                        ? timeProgressRatio > 0.4
+                          ? "bg-amber-500"
+                          : "bg-rose-500"
+                        : "bg-emerald-500"
+                    )}
+                    style={{ width: `${timeProgressRatio * 100}%` }}
+                  />
+                </div>
               </div>
 
-              <div className="flex items-center justify-between pt-1 text-[11px] text-muted-foreground">
+              <div className="flex items-center justify-between pt-0.5 text-[11px] text-muted-foreground">
                 <span>
                   {status === "QUESTION"
                     ? "스페이스바 / 클릭: 정답 확인"
@@ -740,13 +801,31 @@ export function SpeedQuiz({
             <div className="flex flex-col gap-1">
               <h3 className="text-xl font-bold tracking-tight">일시정지</h3>
               <p className="text-xs text-muted-foreground">
-                타이머가 멈춰있습니다. 계속 진행하려면 아래 버튼이나 'P' 키를 누르세요.
+                타이머가 멈춰있습니다. 속도를 조절하거나 계속 진행하세요.
               </p>
             </div>
+
+            {/* 일시정지 창에서도 슬라이더 조절 가능 */}
+            <div className="w-full max-w-[280px] rounded-xl border border-border bg-card p-3 text-xs">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-muted-foreground">문제 제한시간</span>
+                <span className="font-bold text-amber-500">{questionTime}초</span>
+              </div>
+              <input
+                type="range"
+                min={2}
+                max={10}
+                step={0.5}
+                value={questionTime}
+                onChange={(e) => handleQuestionTimeChange(parseFloat(e.target.value))}
+                className="h-1.5 w-full cursor-pointer accent-amber-500 bg-muted-foreground/20 rounded-lg"
+              />
+            </div>
+
             <Button
               type="button"
               onClick={togglePause}
-              className="mt-2 h-10 gap-2 px-6 font-semibold"
+              className="mt-1 h-10 gap-2 px-6 font-semibold"
             >
               <Play className="size-4" />
               계속하기
