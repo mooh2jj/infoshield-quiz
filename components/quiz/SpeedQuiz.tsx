@@ -109,14 +109,17 @@ export function SpeedQuiz({
   // 유효 문제 수 (선택된 풀 크기 이하로 자동 보정)
   const effectiveCount = Math.min(questionCount, filteredPool.length);
 
-  // 최신 상태를 ref로 보관하여 타이머 및 이벤트 리스너의 클로저 이슈 방지
+  // 연타 및 더블클릭 방지를 위한 마지막 조작 시각 ref
+  const lastActionTimeRef = useRef(0);
+
+  // 최신 상태를 ref로 보관하여 비동기 핸들러 등에서 참조
   const stateRef = useRef({
     status,
     isPaused,
     currentIndex,
     questionTime,
     answerTime,
-    totalCount: activeQueue.length,
+    queueLength: activeQueue.length,
   });
 
   useEffect(() => {
@@ -126,9 +129,40 @@ export function SpeedQuiz({
       currentIndex,
       questionTime,
       answerTime,
-      totalCount: activeQueue.length,
+      queueLength: activeQueue.length,
     };
   }, [status, isPaused, currentIndex, questionTime, answerTime, activeQueue.length]);
+
+  // 정답 공개 단계로 전환 (QUESTION -> SHOW_ANSWER)
+  const revealAnswer = useCallback(() => {
+    setStatus("SHOW_ANSWER");
+    const duration = stateRef.current.answerTime * 1000;
+    setTimerMs(duration);
+    setTotalTimerMs(duration);
+  }, []);
+
+  // 다음 문제로 이동 또는 전체 종료 (SHOW_ANSWER -> QUESTION or FINISHED)
+  const nextQuestionOrFinish = useCallback(() => {
+    const queueLen = stateRef.current.queueLength;
+    if (queueLen === 0) {
+      setStatus("FINISHED");
+      return;
+    }
+
+    setCurrentIndex((prev) => {
+      const next = prev + 1;
+      // 정해진 문제 수를 모두 완주했으면 즉시 FINISHED 전환 (인덱스는 초과 증가 방지)
+      if (next >= queueLen) {
+        setStatus("FINISHED");
+        return prev;
+      }
+      setStatus("QUESTION");
+      const duration = stateRef.current.questionTime * 1000;
+      setTimerMs(duration);
+      setTotalTimerMs(duration);
+      return next;
+    });
+  }, []);
 
   // 퀴즈 시작 함수
   const startQuiz = useCallback(() => {
@@ -141,6 +175,7 @@ export function SpeedQuiz({
         [pool[i], pool[j]] = [pool[j], pool[i]];
       }
     }
+    // 사용자가 선택한 정확한 개수만큼 큐 구성
     const queue = pool.slice(0, effectiveCount);
     setActiveQueue(queue);
     setCurrentIndex(0);
@@ -149,41 +184,25 @@ export function SpeedQuiz({
     setStatus("START_COUNT");
   }, [filteredPool, isShuffle, effectiveCount]);
 
-  // 화면 클릭 / 스페이스바 통합 인터랙션
+  // 화면 클릭 / 스페이스바 통합 인터랙션 (120ms 디바운스 적용)
   const handleInteraction = useCallback(() => {
-    const {
-      status: curStatus,
-      isPaused: curPaused,
-      currentIndex: curIdx,
-      totalCount,
-      questionTime: qTime,
-      answerTime: aTime,
-    } = stateRef.current;
-
-    // 일시정지 중이면 조작 차단 (재개 유도)
+    const { status: curStatus, isPaused: curPaused } = stateRef.current;
     if (curPaused) return;
+
+    const now = performance.now();
+    if (now - lastActionTimeRef.current < 120) return;
+    lastActionTimeRef.current = now;
 
     if (curStatus === "READY") {
       startQuiz();
     } else if (curStatus === "QUESTION") {
-      // 문제 노출 중 클릭/스페이스바: 남은 시간 상관없이 즉시 SHOW_ANSWER 상태로 스킵
-      setStatus("SHOW_ANSWER");
-      setTimerMs(aTime * 1000);
-      setTotalTimerMs(aTime * 1000);
+      revealAnswer();
     } else if (curStatus === "SHOW_ANSWER") {
-      // 정답 노출 중 클릭/스페이스바: 대기 시간 없이 즉시 다음 문제로 스킵
-      if (curIdx + 1 < totalCount) {
-        setCurrentIndex((prev) => prev + 1);
-        setStatus("QUESTION");
-        setTimerMs(qTime * 1000);
-        setTotalTimerMs(qTime * 1000);
-      } else {
-        setStatus("FINISHED");
-      }
+      nextQuestionOrFinish();
     } else if (curStatus === "FINISHED") {
       startQuiz();
     }
-  }, [startQuiz]);
+  }, [startQuiz, revealAnswer, nextQuestionOrFinish]);
 
   // 일시정지 토글
   const togglePause = useCallback(() => {
@@ -195,6 +214,9 @@ export function SpeedQuiz({
   // 키보드 이벤트 핸들러 (Space: 인터랙션, P: 일시정지)
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
+      // 키보드 꾹 누름(repeat) 중복 입력 방지
+      if (e.repeat) return;
+
       const target = e.target as HTMLElement;
       if (target?.tagName === "INPUT" || target?.tagName === "TEXTAREA" || target?.isContentEditable) {
         return;
@@ -243,43 +265,37 @@ export function SpeedQuiz({
     if ((status !== "QUESTION" && status !== "SHOW_ANSWER") || isPaused) return;
 
     let lastTick = performance.now();
+    let currentRemaining = timerMs;
 
     const interval = setInterval(() => {
       const now = performance.now();
       const delta = now - lastTick;
       lastTick = now;
 
-      setTimerMs((prev) => {
-        const next = prev - delta;
-        if (next <= 0) {
-          if (status === "QUESTION") {
-            // 문제 시간 종료 -> 정답 공개
-            setStatus("SHOW_ANSWER");
-            setTotalTimerMs(answerTime * 1000);
-            return answerTime * 1000;
-          } else {
-            // 정답 노출 시간 종료 -> 다음 문제 또는 종료
-            if (currentIndex + 1 < activeQueue.length) {
-              setCurrentIndex((idx) => idx + 1);
-              setStatus("QUESTION");
-              setTotalTimerMs(questionTime * 1000);
-              return questionTime * 1000;
-            } else {
-              setStatus("FINISHED");
-              return 0;
-            }
-          }
+      currentRemaining -= delta;
+      if (currentRemaining <= 0) {
+        clearInterval(interval);
+        // 타이머 만료 시 안전한 단일 상태 전이 실행
+        if (status === "QUESTION") {
+          revealAnswer();
+        } else if (status === "SHOW_ANSWER") {
+          nextQuestionOrFinish();
         }
-        return next;
-      });
+        return;
+      }
+
+      setTimerMs(currentRemaining);
     }, 25);
 
     return () => clearInterval(interval);
-  }, [status, isPaused, currentIndex, questionTime, answerTime, activeQueue.length]);
+  }, [status, isPaused, revealAnswer, nextQuestionOrFinish]);
 
-  const currentQuiz = activeQueue[currentIndex] ?? activeQueue[0] ?? quizList[0];
+  // 안전한 총 문제 수 및 현재 인덱스 클램핑
   const totalCount = activeQueue.length > 0 ? activeQueue.length : effectiveCount;
-  const progressRatio = totalCount > 0 ? (currentIndex + 1) / totalCount : 0;
+  const safeIndex = totalCount > 0 ? Math.min(currentIndex, totalCount - 1) : 0;
+  const currentQuiz = activeQueue[safeIndex] ?? quizList[0];
+  const displayQuestionNumber = totalCount > 0 ? Math.min(currentIndex + 1, totalCount) : 1;
+  const progressRatio = totalCount > 0 ? displayQuestionNumber / totalCount : 0;
   const timeProgressRatio = totalTimerMs > 0 ? Math.max(0, Math.min(1, timerMs / totalTimerMs)) : 0;
   const timerSecondsDisplay = (Math.max(0, timerMs) / 1000).toFixed(1);
 
@@ -320,7 +336,7 @@ export function SpeedQuiz({
             {/* 진행률 게이지 텍스트 (예: 3 / 20) */}
             {(status === "QUESTION" || status === "SHOW_ANSWER" || status === "START_COUNT") && (
               <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-muted-foreground tabular-nums">
-                {currentIndex + 1} / {totalCount}
+                {displayQuestionNumber} / {totalCount}
               </span>
             )}
 
@@ -657,7 +673,7 @@ export function SpeedQuiz({
                   </span>
                 )}
                 <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-                  문제 {currentIndex + 1}
+                  문제 {displayQuestionNumber}
                 </span>
               </div>
               <p className="text-lg sm:text-2xl font-bold leading-relaxed tracking-tight text-foreground break-keep max-w-[540px]">
