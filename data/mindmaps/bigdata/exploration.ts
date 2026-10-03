@@ -1,4 +1,5 @@
 import type { MindmapSection } from "@/types/mindmap";
+import { EXPLORATION_NOTES } from "@/data/mindmaps/bigdata/exploration-notes";
 
 export const explorationMindmap: MindmapSection = {
   id: "exploration",
@@ -27,4 +28,5 @@ export const explorationMindmap: MindmapSection = {
     가설검정 심화
       nonparametricBox["비모수 검정 기법(ADsP)<br/>1) 부호검정 — 중앙값을 비교<br/>2) 윌콕슨 순위합·부호순위검정<br/>3) 만-휘트니 U검정 — 두 독립표본 비교<br/>4) 크루스칼-왈리스 검정 — 3개 이상 집단 비교<br/>5) 모집단 분포를 가정할 수 없을 때 사용"]
       errorTypeBox["가설검정 오류와 검정력(ADsP)<br/>1) 1종 오류(α) — 참인 귀무가설을 잘못 기각<br/>2) 2종 오류(β) — 거짓인 귀무가설을 잘못 채택<br/>3) 검정력(Power) = 1 − β<br/>4) 표본 크기가 고정이면 α를 줄일수록 β는 커지는 상충 관계"]`,
+  notes: EXPLORATION_NOTES,
 };
