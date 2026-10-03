@@ -15,20 +15,17 @@ import {
   Layers,
   Shuffle,
   Clock,
+  AlertCircle,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  QUIZ_LIST,
-  ADSP_CHAPTERS,
-} from "@/data/speed-quiz/adsp";
 import type { SpeedQuizChapter, SpeedQuizItem } from "@/data/speed-quiz/types";
 
-// 3. 시간 설정 옵션 (상수 분리)
+// 기본 시간 설정 상수
 export const CONFIG = {
   COUNTDOWN_SECONDS: 3, // 시작 전 카운트다운 (초)
-  QUESTION_TIME: 3,     // 문제 제한 시간 기본값 (원래 기준: 3초)
-  ANSWER_TIME: 2,       // 정답 확인 시간 기본값 (초)
+  QUESTION_TIME: 3,     // 문제 제한 시간 기본값 (3초)
+  ANSWER_TIME: 2,       // 정답 확인 시간 기본값 (2초)
 };
 
 export type QuizStatus =
@@ -38,24 +35,34 @@ export type QuizStatus =
   | "SHOW_ANSWER"
   | "FINISHED";
 
-interface SpeedQuizProps {
+export interface SpeedQuizProps {
+  /** 퀴즈 헤더 및 카드 타이틀 (예: 'ADsP 단답형 스피드 퀴즈', '정보보안기사 단답형 스피드 퀴즈') */
   title?: string;
+  /** 퀴즈 설명 부제목 */
   subtitle?: string;
+  /** 자격증별 챕터/과목 목록 (선택 사항, 없으면 단일 전체 과목으로 처리) */
   chapters?: SpeedQuizChapter[];
-  quizList?: SpeedQuizItem[];
+  /** 문제 데이터 배열 */
+  quizList: SpeedQuizItem[];
+  /** 문제당 제한 시간 (기본 3초) */
   defaultQuestionTime?: number;
+  /** 정답 공개 유지 시간 (기본 2초) */
   defaultAnswerTime?: number;
+  /** 나가기 및 완료 후 이동할 링크 URL */
   exitHref?: string;
+  /** 완료 후 복귀 버튼 텍스트 (예: '정보보안기사 홈', '빅데이터 퀴즈 홈') */
+  exitLabel?: string;
 }
 
 export function SpeedQuiz({
-  title = "ADsP 단답형 스피드 퀴즈",
-  subtitle = "문제를 보고 정답을 빠르게 떠올리는 핵심 ROI 빈출 플래시카드 암기 트레이닝",
-  chapters = ADSP_CHAPTERS,
-  quizList = QUIZ_LIST,
+  title = "단답형 스피드 퀴즈",
+  subtitle = "3초 안에 정답을 빠르게 떠올리는 핵심 플래시카드 암기 트레이닝",
+  chapters = [],
+  quizList = [],
   defaultQuestionTime = CONFIG.QUESTION_TIME,
   defaultAnswerTime = CONFIG.ANSWER_TIME,
-  exitHref = "/bigdata",
+  exitHref = "/",
+  exitLabel = "퀴즈 홈으로",
 }: SpeedQuizProps) {
   // 상태 관리
   const [status, setStatus] = useState<QuizStatus>("READY");
@@ -84,7 +91,7 @@ export function SpeedQuiz({
   const handleQuestionTimeChange = useCallback((newSec: number) => {
     setQuestionTime(newSec);
     if (status === "QUESTION") {
-      // 진행 중인 현재 문제의 타이머도 늘어난 비율에 맞추어 즉시 동적 확장!
+      // 진행 중인 현재 문제의 타이머도 늘어난 비율에 맞추어 즉시 동적 확장
       setTimerMs((prev) => {
         const prevRatio = totalTimerMs > 0 ? prev / totalTimerMs : 1;
         return Math.max(100, newSec * 1000 * prevRatio);
@@ -95,9 +102,9 @@ export function SpeedQuiz({
 
   // 선택된 챕터에 따른 문제 풀(Pool)
   const filteredPool = useMemo(() => {
-    if (selectedChapter === "all") return quizList;
+    if (selectedChapter === "all" || chapters.length === 0) return quizList;
     return quizList.filter((item) => item.chapterId === selectedChapter);
-  }, [quizList, selectedChapter]);
+  }, [quizList, selectedChapter, chapters.length]);
 
   // 유효 문제 수 (선택된 풀 크기 이하로 자동 보정)
   const effectiveCount = Math.min(questionCount, filteredPool.length);
@@ -125,6 +132,8 @@ export function SpeedQuiz({
 
   // 퀴즈 시작 함수
   const startQuiz = useCallback(() => {
+    if (filteredPool.length === 0) return;
+
     let pool = [...filteredPool];
     if (isShuffle) {
       for (let i = pool.length - 1; i > 0; i--) {
@@ -274,6 +283,12 @@ export function SpeedQuiz({
   const timeProgressRatio = totalTimerMs > 0 ? Math.max(0, Math.min(1, timerMs / totalTimerMs)) : 0;
   const timerSecondsDisplay = (Math.max(0, timerMs) / 1000).toFixed(1);
 
+  // 현재 선택된 챕터 이름
+  const currentChapterName = useMemo(() => {
+    if (selectedChapter === "all" || chapters.length === 0) return "전체 과목 통합";
+    return chapters.find((c) => c.id === selectedChapter)?.name ?? "전체 과목 통합";
+  }, [selectedChapter, chapters]);
+
   return (
     <div className="flex min-h-[calc(100dvh-5rem)] w-full items-center justify-center p-4 sm:p-6">
       {/* 화면 정중앙 미니멀 집중형 카드 */}
@@ -367,229 +382,245 @@ export function SpeedQuiz({
                 </p>
               </div>
 
-              {/* 챕터(과목) 선택 섹션 */}
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                    <BookOpen className="size-3.5 text-amber-500" />
-                    과목 선택
-                  </span>
-                  <span className="text-[11px] text-muted-foreground">
-                    총 {filteredPool.length}문항 준비됨
-                  </span>
+              {/* 문제가 없는 경우 예외 처리 */}
+              {quizList.length === 0 ? (
+                <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border p-6 text-sm text-muted-foreground">
+                  <AlertCircle className="size-6 text-amber-500" />
+                  <p>등록된 스피드 퀴즈가 준비 중입니다.</p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedChapter("all")}
-                    className={cn(
-                      "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all text-left",
-                      selectedChapter === "all"
-                        ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                        : "bg-background border border-border/70 text-foreground hover:bg-muted/60"
-                    )}
-                  >
-                    <span>전체 과목 통합</span>
-                    <span className={cn(
-                      "text-[11px] rounded px-1.5 py-0.5",
-                      selectedChapter === "all"
-                        ? "bg-primary-foreground/20 text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                    )}>
-                      {quizList.length}문항
-                    </span>
-                  </button>
-                  {chapters.map((ch) => {
-                    const count = quizList.filter((q) => q.chapterId === ch.id).length;
-                    const isSelected = selectedChapter === ch.id;
-                    return (
-                      <button
-                        key={ch.id}
-                        type="button"
-                        onClick={() => setSelectedChapter(ch.id)}
-                        className={cn(
-                          "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all text-left",
-                          isSelected
-                            ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                            : "bg-background border border-border/70 text-foreground hover:bg-muted/60"
-                        )}
-                      >
-                        <span>{ch.name}</span>
-                        <span className={cn(
-                          "text-[11px] rounded px-1.5 py-0.5",
-                          isSelected
-                            ? "bg-primary-foreground/20 text-primary-foreground"
-                            : "bg-muted text-muted-foreground"
-                        )}>
-                          {count}문항
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 퀴즈 문제 수 설정 섹션 */}
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                    <Layers className="size-3.5 text-amber-500" />
-                    문제 수 설정
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsShuffle((prev) => !prev)}
-                      className={cn(
-                        "flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors",
-                        isShuffle
-                          ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold"
-                          : "text-muted-foreground hover:text-foreground"
-                      )}
-                      title="문제 순서 무작위 셔플"
+              ) : (
+                <>
+                  {/* 챕터(과목) 선택 섹션 (챕터가 정의되어 있을 때만 렌더링) */}
+                  {chapters.length > 0 && (
+                    <div
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
                     >
-                      <Shuffle className="size-3" />
-                      <span>무작위 셔플</span>
-                    </button>
-                    <span className="text-xs font-bold tabular-nums text-foreground">
-                      {effectiveCount}문항 출제
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  {[5, 10, 15, 20, 30].map((preset) => {
-                    const isDisabled = preset > filteredPool.length;
-                    const isSelected = questionCount === preset && !isDisabled;
-                    return (
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                          <BookOpen className="size-3.5 text-amber-500" />
+                          과목 선택
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">
+                          총 {filteredPool.length}문항 준비됨
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedChapter("all")}
+                          className={cn(
+                            "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all text-left",
+                            selectedChapter === "all"
+                              ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                              : "bg-background border border-border/70 text-foreground hover:bg-muted/60"
+                          )}
+                        >
+                          <span>전체 과목 통합</span>
+                          <span
+                            className={cn(
+                              "text-[11px] rounded px-1.5 py-0.5",
+                              selectedChapter === "all"
+                                ? "bg-primary-foreground/20 text-primary-foreground"
+                                : "bg-muted text-muted-foreground"
+                            )}
+                          >
+                            {quizList.length}문항
+                          </span>
+                        </button>
+                        {chapters.map((ch) => {
+                          const count = quizList.filter((q) => q.chapterId === ch.id).length;
+                          const isSelected = selectedChapter === ch.id;
+                          return (
+                            <button
+                              key={ch.id}
+                              type="button"
+                              onClick={() => setSelectedChapter(ch.id)}
+                              className={cn(
+                                "flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all text-left",
+                                isSelected
+                                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                                  : "bg-background border border-border/70 text-foreground hover:bg-muted/60"
+                              )}
+                            >
+                              <span>{ch.name}</span>
+                              <span
+                                className={cn(
+                                  "text-[11px] rounded px-1.5 py-0.5",
+                                  isSelected
+                                    ? "bg-primary-foreground/20 text-primary-foreground"
+                                    : "bg-muted text-muted-foreground"
+                                )}
+                              >
+                                {count}문항
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 퀴즈 문제 수 설정 섹션 */}
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
+                  >
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                        <Layers className="size-3.5 text-amber-500" />
+                        문제 수 설정
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setIsShuffle((prev) => !prev)}
+                          className={cn(
+                            "flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] font-medium transition-colors",
+                            isShuffle
+                              ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold"
+                              : "text-muted-foreground hover:text-foreground"
+                          )}
+                          title="문제 순서 무작위 셔플"
+                        >
+                          <Shuffle className="size-3" />
+                          <span>무작위 셔플</span>
+                        </button>
+                        <span className="text-xs font-bold tabular-nums text-foreground">
+                          {effectiveCount}문항 출제
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {[5, 10, 15, 20, 30].map((preset) => {
+                        const isDisabled = preset > filteredPool.length;
+                        const isSelected = questionCount === preset && !isDisabled;
+                        return (
+                          <button
+                            key={preset}
+                            type="button"
+                            disabled={isDisabled}
+                            onClick={() => setQuestionCount(preset)}
+                            className={cn(
+                              "flex-1 rounded-lg py-1.5 text-xs font-medium transition-all text-center",
+                              isSelected
+                                ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                                : isDisabled
+                                ? "cursor-not-allowed opacity-30 bg-muted/40 text-muted-foreground"
+                                : "bg-background border border-border/70 text-muted-foreground hover:text-foreground"
+                            )}
+                          >
+                            {preset}개
+                          </button>
+                        );
+                      })}
                       <button
-                        key={preset}
                         type="button"
-                        disabled={isDisabled}
-                        onClick={() => setQuestionCount(preset)}
+                        onClick={() => setQuestionCount(filteredPool.length)}
                         className={cn(
                           "flex-1 rounded-lg py-1.5 text-xs font-medium transition-all text-center",
-                          isSelected
+                          questionCount >= filteredPool.length
                             ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                            : isDisabled
-                            ? "cursor-not-allowed opacity-30 bg-muted/40 text-muted-foreground"
                             : "bg-background border border-border/70 text-muted-foreground hover:text-foreground"
                         )}
                       >
-                        {preset}개
+                        전체
                       </button>
-                    );
-                  })}
-                  <button
-                    type="button"
-                    onClick={() => setQuestionCount(filteredPool.length)}
-                    className={cn(
-                      "flex-1 rounded-lg py-1.5 text-xs font-medium transition-all text-center",
-                      questionCount >= filteredPool.length
-                        ? "bg-primary text-primary-foreground font-semibold shadow-xs"
-                        : "bg-background border border-border/70 text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    전체
-                  </button>
-                </div>
-              </div>
-
-              {/* 제한시간 슬라이더 바 섹션 (기본값: 3초) */}
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
-              >
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                    <Clock className="size-3.5 text-amber-500" />
-                    제한시간 슬라이더
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold tabular-nums text-amber-600 dark:text-amber-400">
-                      {questionTime}초
-                    </span>
-                    <span className="text-[10px] text-muted-foreground">
-                      (기본 기준: 3초)
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="range"
-                    min={2}
-                    max={10}
-                    step={0.5}
-                    value={questionTime}
-                    onChange={(e) => handleQuestionTimeChange(parseFloat(e.target.value))}
-                    className="h-2 w-full cursor-pointer accent-amber-500 bg-muted-foreground/20 rounded-lg"
-                    aria-label="문제 제한시간 슬라이더"
-                  />
-                </div>
-                <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span>빠름 (2초)</span>
-                  <span className="font-semibold text-amber-600 dark:text-amber-400">원래 기준: 3초</span>
-                  <span>여유 (10초)</span>
-                </div>
-              </div>
-
-              {/* 추가 상세 설정 (정답 노출 시간 등) 접기/펼치기 */}
-              <div onClick={(e) => e.stopPropagation()} className="w-full">
-                <button
-                  type="button"
-                  onClick={() => setShowExtraSettings((v) => !v)}
-                  className="flex w-full items-center justify-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <SlidersHorizontal className="size-3.5" />
-                  <span>상세 설정 (정답 확인 {answerTime}초)</span>
-                </button>
-
-                {showExtraSettings && (
-                  <div className="mt-2.5 flex flex-col gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs animate-in fade-in duration-150">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">정답 노출 시간</span>
-                      <div className="flex items-center gap-1">
-                        {[1, 2, 3, 4, 5].map((sec) => (
-                          <button
-                            key={sec}
-                            type="button"
-                            onClick={() => setAnswerTime(sec)}
-                            className={cn(
-                              "rounded px-2 py-1 font-medium transition-colors",
-                              answerTime === sec
-                                ? "bg-primary text-primary-foreground font-semibold"
-                                : "bg-card text-foreground hover:bg-muted"
-                            )}
-                          >
-                            {sec}초
-                          </button>
-                        ))}
-                      </div>
                     </div>
                   </div>
-                )}
-              </div>
 
-              <div className="flex flex-col items-center gap-2 pt-1">
-                <Button
-                  size="lg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    startQuiz();
-                  }}
-                  className="h-12 w-48 text-base font-semibold shadow-md bg-amber-600 hover:bg-amber-700 text-white"
-                >
-                  퀴즈 시작
-                </Button>
-                <span className="text-xs text-muted-foreground">
-                  키보드 <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-foreground">Space</kbd> 키를 눌러도 시작됩니다
-                </span>
-              </div>
+                  {/* 제한시간 슬라이더 바 섹션 (기본값: 3초) */}
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full rounded-xl border border-border/70 bg-muted/30 p-3.5 text-left"
+                  >
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                        <Clock className="size-3.5 text-amber-500" />
+                        제한시간 슬라이더
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold tabular-nums text-amber-600 dark:text-amber-400">
+                          {questionTime}초
+                        </span>
+                        <span className="text-[10px] text-muted-foreground">
+                          (기본 기준: 3초)
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="range"
+                        min={2}
+                        max={10}
+                        step={0.5}
+                        value={questionTime}
+                        onChange={(e) => handleQuestionTimeChange(parseFloat(e.target.value))}
+                        className="h-2 w-full cursor-pointer accent-amber-500 bg-muted-foreground/20 rounded-lg"
+                        aria-label="문제 제한시간 슬라이더"
+                      />
+                    </div>
+                    <div className="mt-1 flex items-center justify-between text-[11px] text-muted-foreground">
+                      <span>빠름 (2초)</span>
+                      <span className="font-semibold text-amber-600 dark:text-amber-400">원래 기준: 3초</span>
+                      <span>여유 (10초)</span>
+                    </div>
+                  </div>
+
+                  {/* 추가 상세 설정 (정답 노출 시간 등) 접기/펼치기 */}
+                  <div onClick={(e) => e.stopPropagation()} className="w-full">
+                    <button
+                      type="button"
+                      onClick={() => setShowExtraSettings((v) => !v)}
+                      className="flex w-full items-center justify-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <SlidersHorizontal className="size-3.5" />
+                      <span>상세 설정 (정답 확인 {answerTime}초)</span>
+                    </button>
+
+                    {showExtraSettings && (
+                      <div className="mt-2.5 flex flex-col gap-2 rounded-xl border border-border bg-muted/40 p-3 text-xs animate-in fade-in duration-150">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">정답 노출 시간</span>
+                          <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((sec) => (
+                              <button
+                                key={sec}
+                                type="button"
+                                onClick={() => setAnswerTime(sec)}
+                                className={cn(
+                                  "rounded px-2 py-1 font-medium transition-colors",
+                                  answerTime === sec
+                                    ? "bg-primary text-primary-foreground font-semibold"
+                                    : "bg-card text-foreground hover:bg-muted"
+                                )}
+                              >
+                                {sec}초
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2 pt-1">
+                    <Button
+                      size="lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        startQuiz();
+                      }}
+                      className="h-12 w-48 text-base font-semibold shadow-md bg-amber-600 hover:bg-amber-700 text-white"
+                    >
+                      퀴즈 시작
+                    </Button>
+                    <span className="text-xs text-muted-foreground">
+                      키보드 <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-foreground">Space</kbd> 키를 눌러도 시작됩니다
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -607,7 +638,7 @@ export function SpeedQuiz({
               </div>
               <div className="flex flex-col items-center gap-1.5">
                 <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-600 dark:text-amber-400">
-                  {selectedChapter === "all" ? "전체 과목 통합" : chapters.find((c) => c.id === selectedChapter)?.name}
+                  {currentChapterName}
                 </span>
                 <p className="text-xs text-muted-foreground">
                   총 {totalCount}문항 출제 · 제한시간 {questionTime}초
@@ -617,12 +648,14 @@ export function SpeedQuiz({
           )}
 
           {/* 3. QUESTION (문제 출제) */}
-          {status === "QUESTION" && (
+          {status === "QUESTION" && currentQuiz && (
             <div className="flex w-full flex-col items-center justify-center gap-4 px-2">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                  {currentQuiz.chapterName}
-                </span>
+                {currentQuiz.chapterName && (
+                  <span className="inline-flex items-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    {currentQuiz.chapterName}
+                  </span>
+                )}
                 <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
                   문제 {currentIndex + 1}
                 </span>
@@ -637,12 +670,14 @@ export function SpeedQuiz({
           )}
 
           {/* 4. SHOW_ANSWER (정답 공개) */}
-          {status === "SHOW_ANSWER" && (
+          {status === "SHOW_ANSWER" && currentQuiz && (
             <div className="flex w-full flex-col items-center justify-center gap-3 px-2">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  {currentQuiz.chapterName}
-                </span>
+                {currentQuiz.chapterName && (
+                  <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                    {currentQuiz.chapterName}
+                  </span>
+                )}
                 <span className="text-xs text-muted-foreground line-clamp-1 max-w-[360px]">
                   {currentQuiz.question}
                 </span>
@@ -677,7 +712,7 @@ export function SpeedQuiz({
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">
-                    {selectedChapter === "all" ? "전체 과목 통합" : chapters.find((c) => c.id === selectedChapter)?.name}
+                    {currentChapterName}
                   </span>
                   에서 총 <span className="font-semibold text-foreground">{totalCount}문항</span>의 핵심 단답형 문제를 모두 완주하셨습니다.
                 </p>
@@ -702,7 +737,7 @@ export function SpeedQuiz({
                     "h-11 w-full sm:w-auto gap-1 text-sm font-semibold"
                   )}
                 >
-                  빅데이터 퀴즈 홈
+                  {exitLabel}
                   <ChevronRight className="size-4" />
                 </Link>
               </div>

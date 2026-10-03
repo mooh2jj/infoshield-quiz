@@ -19,6 +19,7 @@ export default function SecuritySpeedQuizPage() {
         chapters={SECURITY_CHAPTERS}
         quizList={SECURITY_QUIZ_LIST}
         exitHref="/security"
+        exitLabel="정보보안기사 홈"
       />
     </main>
   );
