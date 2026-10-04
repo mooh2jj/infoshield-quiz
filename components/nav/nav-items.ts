@@ -57,6 +57,13 @@ export const NAV_GROUPS: NavGroup[] = [
         status: "coming-soon",
       },
       {
+        href: "/processing/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "처리 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/processing/speed-quiz"],
+      },
+      {
         href: "/processing/mindmap",
         label: "마인드맵",
         pillLabel: "처리 마인드맵",
