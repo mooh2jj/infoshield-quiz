@@ -1684,4 +1684,148 @@ account     required      pam_faillock.so`,
         Note_Syn["세션을 맺지 않아 웹 서버 접속 로그 미기록!"]
     end`,
   },
+
+  // =================================================================
+  // [문제 32] 서술·작업형 (14점) - 애플리케이션 보안 / SQL 인젝션
+  // =================================================================
+  {
+    id: 32,
+    subjectId: "application",
+    type: "practical",
+    score: 14,
+    domain: "애플리케이션 보안 / 데이터베이스 보안",
+    title: "SQL 인젝션(SQLi) 4대 공격 유형 및 데이터 추출 메커니즘",
+    description:
+      "웹 애플리케이션의 입력값 검증 미흡으로 발생하는 SQL 인젝션(SQL Injection)의 세부 공격 기법에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "기존 쿼리의 결과에 공격자가 원하는 임의의 SELECT 쿼리 결과를 결합하여 데이터를 탈취하는 'Union-based SQL Injection' 공격을 성공시키기 위해 충족해야 하는 필수 전제 조건 2가지를 기술하시오.",
+        answer:
+          "1. 원래의 기존 SELECT 쿼리와 UNION으로 결합하는 악의적인 SELECT 쿼리의 '컬럼(열)의 개수'가 정확히 일치해야 한다.\n2. 각 대응하는 컬럼 간의 '데이터 타입(문자열, 숫자, 날짜 등)'이 상호 호환되어야 한다.",
+        scoringCriteria: "컬럼 개수 일치(2.5점), 데이터 타입 호환성(2.5점) 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "웹 화면에 데이터베이스 오류 메시지나 조회 결과가 일체 출력되지 않는 환경에서 데이터를 유출하는 'Blind SQL Injection'의 2가지 세부 유형(Boolean-based, Time-based)의 동작 원리를 각각 비교 설명하시오.",
+        answer:
+          "• 참/거짓 기반(Boolean-based Blind SQLi): 조건식(참/거짓)을 주입한 뒤, 서버의 HTTP 응답 페이지 내용(성공 문구, 특정 텍스트 존재 여부, HTTP 상태 코드 등)의 미세한 변화를 관찰하여 참/거짓 여부를 한 글자씩 추론함\n• 시간 지연 기반(Time-based Blind SQLi): 서버의 응답 내용에 전혀 차이가 없는 경우, 조건식이 참일 때 `SLEEP()`(MySQL) 또는 `WAITFOR DELAY`(MSSQL) 같은 시간 지연 함수를 실행시켜 서버의 HTTP 응답 지연 시간(초)을 측정함으로써 참/거짓을 판별함",
+        scoringCriteria: "Boolean-based 원리(2.5점), Time-based 시간 지연 함수 및 응답 시간 측정 원리(2.5점) 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "공격자가 입력한 악의적인 SQL 구문이 1차 입력 시점에는 실행되지 않고 DB에 안전하게 저장된 후, 추후 다른 정상적인 관리자 기능이나 배치 작업에서 호출되어 쿼리가 실행될 때 비로소 인젝션이 발생하는 고난도 공격 기법의 명칭을 쓰시오.",
+        answer: "2차 SQL 인젝션 (Second-Order SQL Injection 또는 Stored SQL Injection)",
+        scoringCriteria: "2차 SQL 인젝션 또는 Second-Order SQLi 정확히 기술 시 4점",
+      },
+    ],
+    answer: [
+      "1. UNION SQLi 전제조건: 1) 컬럼 수 일치, 2) 컬럼 데이터 타입 호환",
+      "2. Blind SQLi 2종:\n• Boolean-based: 조건식 참/거짓에 따른 응답 페이지 변화 관찰\n• Time-based: SLEEP/WAITFOR 함수를 통한 서버 응답 지연 시간 측정",
+      "3. 공격 기법: 2차 SQL 인젝션 (Second-Order SQL Injection)",
+    ],
+    scoringPoints: [
+      "UNION 문의 컬럼 개수 및 데이터 타입 일치 조건 (5점)",
+      "Boolean-based 및 Time-based Blind SQLi 원리 비교 (5점)",
+      "Second-Order SQL Injection(2차 SQL 인젝션) 명칭 (4점)",
+    ],
+    explanation:
+      "• SQL Injection 공격 분류 체계:\n1) In-band SQLi (동일 채널): Error-based(오류 유발을 통한 데이터 노출), Union-based(화면에 다른 테이블 결과 결합 노출)\n2) Inferential / Blind SQLi (추론 채널): 화면 출력이 없을 때, Boolean-based(참/거짓 반응 분기), Time-based(시간 지연 반응)\n3) Out-of-band SQLi (외부 채널): DNS 질의나 HTTP 역방향 요청을 통해 공격자의 외부 서버로 데이터를 전송시키는 기법",
+    examTips:
+      "Blind SQLi에서 사용되는 SUBSTRING, ASCII, LENGTH 함수와 SLEEP() 함수의 조합, 그리고 UNION 문의 컬럼 개수 맞추기(ORDER BY 1, 2, 3...) 테크닉은 실기 시험의 단골 서술형 문항입니다.",
+    mermaidChart: `flowchart TD
+    SQLi["SQL Injection 분류 체계"] --> InBand["1. 인밴드(In-Band) SQLi<br/>요청과 응답이 동일 채널"]
+    SQLi --> Blind["2. 블라인드(Blind) SQLi<br/>응답 화면에 결과 노출 없음"]
+    SQLi --> OutOfBand["3. 아웃오브밴드(OOB) SQLi<br/>외부 DNS/HTTP 채널 유출"]
+
+    InBand --> Union["Union-based (컬럼수/타입 일치 필요)"]
+    InBand --> Error["Error-based (DB 에러 메시지 활용)"]
+
+    Blind --> Bool["Boolean-based (참/거짓 응답 페이지 비교)"]
+    Blind --> Time["Time-based (SLEEP 시간 지연 함수 측정)"]`,
+  },
+
+  // =================================================================
+  // [문제 33] 서술·작업형 (14점) - 애플리케이션 보안 / 웹쉘 대응
+  // =================================================================
+  {
+    id: 33,
+    subjectId: "application",
+    type: "practical",
+    score: 14,
+    domain: "애플리케이션 보안 / 파일 업로드 보안",
+    title: "웹쉘(Webshell) 파일 업로드 취약점 및 다계층 방어 대책",
+    description:
+      "게시판이나 프로필 첨부파일 기능에서 발생하는 악성 웹쉘(Webshell) 업로드 취약점과 이를 방어하기 위한 시큐어 코딩 및 웹 서버 인프라 보안 설정에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "공격자가 웹쉘 파일(예: `shell.php`)을 업로드하기 위해 전송하는 HTTP 요청에서, 클라이언트 측 자바스크립트 확장자 검증이나 Content-Type 검증을 우회하기 위해 흔히 악용하는 기법 2가지를 기술하시오.",
+        answer:
+          "1. 프록시 도구(Burp Suite 등)를 이용하여 웹 브라우저의 클라이언트 측 스크립트 검증을 통과한 후, 전송 패킷의 확장자나 `Content-Type` 헤더(예: `image/jpeg`로 위장)를 가로채어 변조 전송\n2. 확장자 우회 기법 악용 (대소문자 혼용 `.pHP`, 실행 가능한 대체 확장자 `.php5`, `.phtml`, `.inc` 사용, 또는 이중 확장자 `shell.php.jpg` 사용)",
+        scoringCriteria: "프록시를 통한 Content-Type 변조 및 대체 확장자 우회 기법 명시 시 4점",
+      },
+      {
+        number: 2,
+        question:
+          "서버 측 소스코드(애플리케이션 레벨)에서 위험한 확장자를 차단할 때 '블랙리스트 방식'을 사용하면 안 되는 이유와 올바른 '화이트리스트 방식' 검증의 원리를 서술하시오.",
+        answer:
+          "• 블랙리스트의 한계: 위험하다고 정의된 특정 확장자(asp, php, jsp 등)만 차단하므로, 새로운 실행 확장자(php7, phtml, war, jspx, cer)나 아파치 설정에 의해 실행 가능한 변종 확장자를 모두 완벽히 나열하여 차단하는 것이 원천적으로 불가능함\n• 화이트리스트 검증 원리: 오직 비실행 안전 확장자(예: jpg, png, pdf, zip)만을 명시적으로 사전 정의하여 허용하고, 허용 목록에 없는 그 밖의 모든 확장자는 기본 거부(Default Deny)함으로써 알려지지 않은 변종 실행 파일의 유입을 원천 차단함",
+        scoringCriteria: "블랙리스트의 변종 우회 취약점(2.5점), 화이트리스트의 허용 목록 외 기본 거부 원리(2.5점) 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "공격자가 파일 확장자 검증을 우회하여 웹쉘을 업로드하는 데 성공하더라도, 서버 상에서 스크립트가 절대 실행되지 못하도록 인프라 및 웹 서버(Apache 등) 레벨에서 구축해야 하는 핵심 보안 조치 2가지를 서술하시오.",
+        answer:
+          "1. 업로드된 파일이 저장되는 디렉터리의 '스크립트 실행 권한(Execute Permission)'을 제거하여, URL 직접 호출 시에도 웹 서버가 스크립트 해석 엔진(PHP/JSP)을 구동하지 않고 단순 텍스트로 처리하거나 403 Forbidden 차단하도록 설정한다. (예: Apache 설정에서 `php_flag engine off`, `Options -ExecCGI` 적용)\n2. 업로드 저장 디렉터리를 웹 서버의 문서 루트(DocumentRoot) 외부에 격리하여 외부 브라우저에서 직접 URL 경로로 접근할 수 없도록 격리하고, 파일명을 난수(UUID 등)로 변경하여 저장한다.",
+        scoringCriteria: "업로드 디렉터리 실행 권한 제거(2.5점), 웹 루트 외부 격리 또는 파일명 난수화(2.5점) 총 5점",
+      },
+    ],
+    answer: [
+      "1. 우회 기법: Burp Suite를 통한 Content-Type 헤더 변조(image/jpeg), 대체 확장자(.php5, .phtml) 사용",
+      "2. 화이트리스트: 허용된 안전 확장자(jpg, png 등)만 통과시키고 나머지는 Default Deny 처리",
+      "3. 실행 차단 조치: 업로드 디렉터리 실행 권한 제거(php_flag engine off), 웹 루트 외부 저장 및 UUID 난수화 파일명 저장",
+    ],
+    codeBlock: {
+      language: "apache",
+      code: `# Apache 업로드 디렉터리 (.htaccess) 실행 권한 차단 설정
+<Directory "/var/www/html/uploads">
+    # 1. CGI 및 스크립트 실행 금지
+    Options -ExecCGI
+    
+    # 2. PHP 해석 엔진 비활성화 (스크립트가 평문으로도 미실행)
+    php_flag engine off
+    
+    # 3. 브라우저에서 .php, .jsp 등 실행 확장자 직접 호출 차단
+    <FilesMatch "\\.(?i:php|phtml|php3|php5|jsp|asp|aspx)$">
+        Require all denied
+    </FilesMatch>
+</Directory>`,
+    },
+    scoringPoints: [
+      "Content-Type 변조 및 대체 확장자 우회 기법 서술 (4점)",
+      "블랙리스트 한계 및 화이트리스트(Default Deny) 원리 서술 (5점)",
+      "업로드 디렉터리 실행 권한 제거 및 웹 루트 외부 격리 (5점)",
+    ],
+    explanation:
+      "• 웹쉘(Webshell) 4중 방어벽 (Defense-in-Depth):\n1단계: 클라이언트 및 서버 측 화이트리스트 확장자 검증 (대소문자 소문자 변환 후 검사)\n2단계: 파일 시그니처(Magic Number) 검사로 페이크 이미지 차단\n3단계: 저장 시 원본 파일명을 무작위 난수(UUID)로 변경하고 확장자 고정\n4단계: 업로드 디렉터리의 실행 권한 박탈 및 웹 루트(DocRoot) 외부 격리 저장",
+    examTips:
+      "실기 14점 배점으로 매년 출제되는 최우선 순위 문제입니다. '화이트리스트 확장자 검증'과 아파치/Nginx의 '업로드 디렉터리 실행 권한 제거' 키워드는 서술형 답안에 반드시 포함되어야 합니다.",
+    mermaidChart: `flowchart TD
+    Attacker["공격자 (웹쉘 업로드 시도)"] --> Step1{"1단계: 파일 확장자 검사"}
+    
+    Step1 -->|"화이트리스트 통과 (jpg, png 등)"| Step2{"2단계: 파일 시그니처 검사"}
+    Step1 -->|"위험 확장자 (php, jsp 등)"| Block1["🚨 즉시 차단 (Default Deny)"]
+
+    Step2 -->|"매직 넘버 위조 탐지"| Block2["🚨 파일 위변조 차단"]
+    Step2 -->|"정상 파일 확인"| Step3["3단계: 파일명 난수화 (UUID)<br/>웹 루트 외부 디렉터리에 저장"]
+
+    Step3 --> Step4["4단계: 업로드 디렉터리 보호<br/>실행 권한(Execute) 제거 (php_flag engine off)"]
+    Step4 --> Safe["✔️ 웹쉘 업로드 및 실행 원천 무력화!"]`,
+  },
 ];
