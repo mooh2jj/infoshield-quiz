@@ -1,4 +1,4 @@
-import { ListChecks, Network, Zap } from "lucide-react";
+import { FileCheck2, ListChecks, Network, Zap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -27,6 +27,13 @@ export const NAV_GROUPS: NavGroup[] = [
         pillLabel: "보안 퀴즈",
         icon: ListChecks,
         matchPrefixes: ["/security", "/security/quiz", "/security/result"],
+      },
+      {
+        href: "/security/practical",
+        label: "실기 모의고사",
+        pillLabel: "보안 실기",
+        icon: FileCheck2,
+        matchPrefixes: ["/security/practical"],
       },
       {
         href: "/security/speed-quiz",

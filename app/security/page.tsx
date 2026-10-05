@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Minus, Plus, Zap } from "lucide-react";
+import { Minus, Plus, Zap, FileCheck2 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SubjectChip } from "@/components/quiz/SubjectChip";
 import { useQuizStore } from "@/lib/store/quizStore";
@@ -53,7 +53,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="mx-auto flex w-full max-w-[680px] flex-1 flex-col gap-10 px-6 py-12 pb-28 sm:pb-12">
+    <main className="mx-auto flex w-full max-w-[680px] flex-1 flex-col gap-8 px-6 py-12 pb-28 sm:pb-12">
       <div className="flex flex-col gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">
           infoshield-quiz
@@ -61,6 +61,41 @@ export default function HomePage() {
         <p className="text-muted-foreground">
           웹 개발자를 위한 정보보안기사 1분 트레이닝
         </p>
+      </div>
+
+      {/* 정보보안기사 실기 실전 모의고사 배너 */}
+      <div className="relative overflow-hidden rounded-xl border border-primary/30 bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="flex size-5 items-center justify-center rounded-md bg-primary/20 text-primary">
+                <FileCheck2 className="size-3.5" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                PRACTICAL EXAM
+              </span>
+              <span className="rounded bg-primary/20 px-1.5 py-0.2 text-[10px] font-semibold text-primary">
+                신규
+              </span>
+            </div>
+            <h2 className="text-base font-semibold tracking-tight text-foreground">
+              정보보안기사 실기 실전 모의고사
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              최신 기출 분석 기반 단답형 및 14점 서술·작업형 핵심 모의고사 (토글 정답 & 모범답안)
+            </p>
+          </div>
+          <Link
+            href="/security/practical"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "h-10 shrink-0 gap-1.5 font-semibold shadow-sm"
+            )}
+          >
+            <FileCheck2 className="size-3.5" />
+            실기 모의고사 시작
+          </Link>
+        </div>
       </div>
 
       {/* 정보보안기사 단답형 스피드 퀴즈 배너 */}
