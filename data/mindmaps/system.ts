@@ -1,9 +1,11 @@
 import type { MindmapSection } from "@/types/mindmap";
+import { SYSTEM_NOTES } from "./system-notes";
 
 export const systemMindmap: MindmapSection = {
   id: "system",
   title: "시스템 보안",
   description: "유닉스·윈도우 실무 보안 — 컴퓨터구조·운영체제 지식을 전제로 함",
+  notes: SYSTEM_NOTES,
   chart: `mindmap
   root((시스템 보안))
     유닉스 파일시스템

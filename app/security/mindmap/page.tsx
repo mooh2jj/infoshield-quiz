@@ -35,7 +35,11 @@ export default function MindmapPage() {
                 {section.description}
               </p>
             </div>
-            <MermaidDiagram id={`mindmap-${section.id}`} chart={section.chart} />
+            <MermaidDiagram
+              id={`mindmap-${section.id}`}
+              chart={section.chart}
+              notes={section.notes}
+            />
           </section>
         ))}
       </div>
