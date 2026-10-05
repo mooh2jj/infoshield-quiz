@@ -637,5 +637,1051 @@ export const SECURITY_PRACTICAL_QUESTIONS: PracticalQuestion[] = [
       "2023~2024 개정 개인정보보호법 핵심 변경 사항:\n• 정보주체 통지 및 전문기관 신고 기한이 기존 '24시간'에서 글로벌 기준(GDPR 등)에 맞추어 '72시간 이내'로 통일되었습니다.\n• 접속기록 점검 주기는 월 1회 이상이며, 5만 명 이상 고유식별정보 처리 시스템은 2년 이상 보관해야 합니다.",
     examTips:
       "법률 개정 사항(72시간)과 접속기록 보관 기간(1년/2년)은 실기 시험 법률 파트에서 단골로 출제되는 핵심 숫자 문제입니다.",
+    mermaidChart: `flowchart TD
+    Leak["개인정보 유출 인지"] --> Time{"인지 시점부터<br/>72시간 이내"}
+
+    Time --> Notice["정보주체 통지 (원칙)<br/>1) 유출 항목, 2) 시점·경위<br/>3) 피해 최소화 방법, 4) 대응조치<br/>5) 담당부서 및 연락처"]
+
+    Time --> CheckScale{"유출 규모 검토"}
+    CheckScale -->|"1천 명 이상 유출"| Report["전문기관 의무 신고<br/>개인정보보호위원회 또는 KISA<br/>(72시간 이내 전자문서/웹)"]
+    CheckScale -->|"1천 명 미만 유출"| Internal["자체 대응 및 기록 보존<br/>(홈페이지 공지 등)"]`,
+  },
+
+  // =================================================================
+  // [문제 14] 단답형 (3점) - 애플리케이션 보안 / 웹 표준
+  // =================================================================
+  {
+    id: 14,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "CORS 사전 요청(Preflight) 메커니즘 및 보안 헤더",
+    description:
+      "웹 브라우저의 동일 출처 정책(SOP)을 안전하게 완화하여 다른 출처의 리소스를 요청할 때 동작하는 CORS(Cross-Origin Resource Sharing)에 관한 물음이다. 빈칸 (A), (B)를 각각 기술하시오.",
+    scenario:
+      "웹 브라우저는 'PUT', 'DELETE' 메소드를 사용하거나 커스텀 HTTP 헤더를 포함하는 교차 출처 요청을 전송하기 전, 실제 요청이 안전한지 서버에 미리 확인하기 위해 HTTP (  A  ) 메소드를 사용한 사전 요청(Preflight Request)을 보낸다. 서버가 해당 출처를 신뢰하여 요청을 허용하고자 할 때 응답 헤더에 (  B  ) 헤더를 포함하여 반환해야 한다.",
+    answer: [
+      "(A): OPTIONS",
+      "(B): Access-Control-Allow-Origin",
+    ],
+    scoringPoints: [
+      "(A): OPTIONS 메소드 정확히 기재 시 1.5점",
+      "(B): Access-Control-Allow-Origin 헤더 정확히 기재 시 1.5점",
+    ],
+    explanation:
+      "• Preflight Request(사전 요청):\n브라우저가 본 요청(Actual Request)을 보내기 전, 서버가 허용하는 Origin, Method, Header를 확인하기 위해 'OPTIONS' 메소드로 날리는 가벼운 사전 질의입니다.\n• 핵심 CORS 응답 헤더:\n1) Access-Control-Allow-Origin: 허용할 Origin 지정 (와일드카드 '*' 사용 시 보안 위험 발생)\n2) Access-Control-Allow-Methods: 허용할 HTTP 메소드 목록 (GET, POST, PUT, DELETE 등)\n3) Access-Control-Allow-Headers: 허용할 커스텀 헤더\n4) Access-Control-Allow-Credentials: 쿠키 등 인증 정보 포함 허용 여부 ('true' 설정 시 Allow-Origin에 '*' 사용 불가)",
+    examTips:
+      "Preflight 요청에 사용되는 메소드(OPTIONS)와 와일드카드(*) 사용 시 쿠키(Credentials) 전송 불가 제약 조건이 서술형/단답형 단골 기출입니다.",
+    mermaidChart: `sequenceDiagram
+    autonumber
+    actor Browser as 브라우저 (Origin: a.com)
+    participant Server as 교차 출처 서버 (Origin: b.com)
+
+    Note over Browser,Server: 1단계: 사전 검증 (Preflight Request)
+    Browser->>Server: OPTIONS /api/data (Origin: a.com, Access-Control-Request-Method: PUT)
+    Server-->>Browser: 200 OK (Access-Control-Allow-Origin: https://a.com, Allow-Methods: PUT)
+
+    Note over Browser,Server: 2단계: 본 요청 (Actual Request) 전송
+    Browser->>Server: PUT /api/data (실제 데이터 페이로드 전송)
+    Server-->>Browser: 200 OK (처리 결과 반환)`,
+  },
+
+  // =================================================================
+  // [문제 15] 단답형 (3점) - 암호학 & PKI / 블록 암호 운영 모드
+  // =================================================================
+  {
+    id: 15,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "암호학 & PKI",
+    title: "대칭키 블록 암호 운영 모드 (CBC 모드와 초기화 벡터)",
+    description:
+      "현대 대칭키 블록 암호 알고리즘(AES, SEED 등)의 운영 모드(Operation Mode)에 관한 설명이다. 빈칸 (A), (B)를 각각 채우시오.",
+    scenario:
+      "1. ECB(Electronic Codebook) 모드의 패턴 노출 취약점을 방지하기 위하여, 첫 번째 평문 블록을 암호화하기 직전에 XOR 연산을 수행하기 위해 도입된 임의의 난수 블록: (  A  )\n2. 이전 단계에서 생성된 암호문 블록을 다음 평문 블록과 연속적으로 XOR 연산한 후 암호화를 수행하는 체이닝(Chaining) 방식의 대표적인 블록 암호 운영 모드: (  B  )",
+    answer: [
+      "(A): 초기화 벡터 (IV / Initialization Vector)",
+      "(B): CBC (Cipher Block Chaining)",
+    ],
+    scoringPoints: [
+      "(A): IV 또는 초기화 벡터 (Initialization Vector) 1.5점",
+      "(B): CBC 또는 Cipher Block Chaining 1.5점",
+    ],
+    explanation:
+      "블록 암호 운영 모드 비교:\n• ECB(Electronic Codebook): 평문 블록마다 독립 암호화. 동일 평문=동일 암호문이 되어 패턴이 그대로 노출되므로 기밀성이 낮음 (사용 금지 권고)\n• CBC(Cipher Block Chaining): 이전 암호문 블록과 현재 평문 블록을 XOR한 뒤 암호화. 첫 블록을 위해 IV(Initialization Vector)가 필수적임\n• CTR(Counter) & GCM(Galois/Counter Mode): 카운터 값을 암호화하여 스트림 암호처럼 동작하며, 병렬 연산이 가능하고 GCM의 경우 인증 암호화(AEAD)를 제공함",
+    examTips:
+      "초기화 벡터(IV)의 필요성과 CBC 모드의 연쇄 구조는 단답형 및 암호학 기초 문항으로 매년 반복 출제됩니다.",
+    mermaidChart: `flowchart LR
+    subgraph Block1["첫 번째 블록"]
+        P1["평문 블록 1"]
+        IV["초기화 벡터 (IV)"]
+        XOR1((XOR))
+        ENC1["블록 암호화 (Key)"]
+        C1["암호문 블록 1"]
+        P1 --> XOR1
+        IV --> XOR1
+        XOR1 --> ENC1 --> C1
+    end
+
+    subgraph Block2["두 번째 블록 (체이닝)"]
+        P2["평문 블록 2"]
+        XOR2((XOR))
+        ENC2["블록 암호화 (Key)"]
+        C2["암호문 블록 2"]
+        P2 --> XOR2
+        C1 -.->|"이전 암호문 전달"| XOR2
+        XOR2 --> ENC2 --> C2
+    end`,
+  },
+
+  // =================================================================
+  // [문제 16] 서술·작업형 (14점) - 네트워크 보안 / DNS 침해사고
+  // =================================================================
+  {
+    id: 16,
+    subjectId: "network",
+    type: "practical",
+    score: 14,
+    domain: "네트워크 보안 / 침해사고 분석",
+    title: "DNS 캐시 포이즈닝(Kaminsky 공격) 분석 및 BIND 방어",
+    description:
+      "도메인 네임 시스템(DNS)을 대상으로 가짜 IP 주소를 주입하는 DNS 캐시 포이즈닝(DNS Cache Poisoning) 공격과 대응 방안에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "공격자가 로컬 DNS 캐시 서버에 위조된 DNS 응답 패킷을 주입(Poisoning)하여 성공시키기 위해 반드시 일치시켜야 하는 DNS/UDP 헤더 필드 2가지를 쓰시오.",
+        answer:
+          "1. Transaction ID (16비트 질의 식별자 번호)\n2. UDP Source Port (질의 패킷의 출발지 포트 번호)",
+        scoringCriteria: "Transaction ID(2.5점), UDP Source Port(2.5점) 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "DNS 응답 데이터의 위·변조를 원천 방지하기 위해 공개키 기반 디지털 서명을 도입하여 응답의 출처 인증과 무결성을 보장하는 보안 확장 기술의 명칭을 쓰시오.",
+        answer: "DNSSEC (DNS Security Extensions)",
+        scoringCriteria: "DNSSEC 또는 DNS Security Extensions 정확히 기술 시 4점",
+      },
+      {
+        number: 3,
+        question:
+          "리눅스 BIND DNS 서버(`named.conf`)에서 외부의 불특정 호스트가 자사 DNS 서버를 재귀적 질의 서버(Open Resolver)로 악용하여 캐시 포이즈닝이나 증폭 DDoS 공격을 유발하지 못하도록 재귀 질의를 차단하거나 사내 네트워크로만 제한하는 지시자 설정 구문을 작성하시오.",
+        answer:
+          "recursion no; (외부 전체 차단) 또는 allow-recursion { 127.0.0.1; 192.168.1.0/24; }; (특정 내부망만 허용)",
+        scoringCriteria: "recursion no; 또는 allow-recursion 설정 구문 정확히 기술 시 5점",
+      },
+    ],
+    answer: [
+      "1. 일치 필드: Transaction ID, UDP Source Port (출발지 포트)",
+      "2. 보안 확장 프로토콜: DNSSEC (DNS Security Extensions)",
+      "3. BIND 설정: recursion no; 또는 allow-recursion { 내부 대역; };",
+    ],
+    codeBlock: {
+      language: "bind",
+      code: `options {
+    directory "/var/named";
+    recursion no;                       // 외부 재귀 질의 전면 비활성화 (권장)
+    // 또는 내부 인가된 대역만 허용:
+    // allow-recursion { 127.0.0.1; 192.168.10.0/24; };
+};`,
+    },
+    scoringPoints: [
+      "Transaction ID 및 UDP Port 무작위화(Randomization) 공격 매칭 (5점)",
+      "DNSSEC 명칭 및 디지털 서명 무결성 검증 원리 (4점)",
+      "BIND named.conf의 recursion 설정 구문 (5점)",
+    ],
+    explanation:
+      "• DNS Cache Poisoning 원리:\n로컬 DNS가 외부 권한 DNS로 도메인 질의를 보낸 직후, 공격자가 권한 DNS보다 먼저 위조된 IP 응답을 쏟아붓습니다. 16비트 Transaction ID와 질의 출발지 포트가 일치하면 위조 IP가 캐시에 등록되어 모든 내부 사용자가 피싱 사이트로 유도됩니다.\n• 방어책:\n1) 소스 포트 무작위화 (Source Port Randomization, 53번 고정 방지)\n2) Open Resolver 차단 (`recursion no;`)\n3) DNSSEC 적용 (RRSIG 레코드를 통한 전자서명 검증)",
+    examTips:
+      "실기 14점 단골 문제입니다. Transaction ID와 출발지 포트 번호 2가지 필드명과 named.conf의 recursion 지시자는 반드시 손으로 적을 수 있어야 합니다.",
+    mermaidChart: `sequenceDiagram
+    autonumber
+    actor Victim as 사용자
+    participant LocalDNS as 로컬 DNS 캐시 서버
+    actor Attacker as 공격자 (스푸핑)
+    participant AuthDNS as 정상 권한 DNS 서버
+
+    Victim->>LocalDNS: bank.com 질의
+    LocalDNS->>AuthDNS: bank.com 질의 (TXID: 0x4A1F, Port: 54321)
+    critical 응답 경합 (Race Condition)
+        Attacker-->>LocalDNS: 위조 응답 대량 전송 (TXID 0x4A1F 추측 + 피싱 IP)
+        Note over LocalDNS: 위조 패킷이 먼저 도착하여 캐시에 가짜 IP 저장!
+    option 정상 응답
+        AuthDNS-->>LocalDNS: 정상 응답 도착 (이미 캐시되어 무시됨)
+    end
+    LocalDNS-->>Victim: 피싱 IP 주소 반환 (파밍 공격 피해)`,
+  },
+
+  // =================================================================
+  // [문제 17] 서술·작업형 (14점) - 시스템 보안 / 리눅스 권한
+  // =================================================================
+  {
+    id: 17,
+    subjectId: "system",
+    type: "practical",
+    score: 14,
+    domain: "시스템 보안 / 리눅스 계정·권한 관리",
+    title: "리눅스 특수 권한(SetUID/SetGID/Sticky Bit) 및 권한 상승 점검",
+    description:
+      "리눅스 시스템의 특수 권한 설정 및 이를 악용한 권한 상승(Privilege Escalation) 보안 취약점 점검에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "리눅스 3대 특수 권한인 SetUID, SetGID, Sticky Bit의 의미와 각각을 8진수로 표기할 때의 숫자를 쓰시오.",
+        answer:
+          "1. SetUID (4000): 실행 파일 실행 시 해당 프로세스가 파일 소유자(User)의 권한으로 동작함\n2. SetGID (2000): 실행 시 파일 그룹(Group) 권한으로 동작하거나 디렉터리 내 생성 파일이 상위 디렉터리 그룹을 상속받음\n3. Sticky Bit (1000): 공용 디렉터리(예: /tmp)에서 누구나 파일 생성이 가능하지만 삭제·수정은 파일 소유자와 root만 가능함",
+        scoringCriteria: "각 권한별 설명 및 8진수(4000, 2000, 1000) 정확도 각 2점씩 총 6점",
+      },
+      {
+        number: 2,
+        question:
+          "루트(root) 소유이면서 SetUID 권한이 설정되어 있는 시스템 내 모든 일반 파일을 검색하여 보안 점검을 수행하고자 한다. 이를 수행하는 `find` 명령어 전체 구문을 작성하시오.",
+        answer:
+          "find / -user root -perm -4000 -print (또는 find / -user root -perm /4000 -type f 2>/dev/null)",
+        scoringCriteria: "경로(/), -user root, -perm -4000 (또는 /4000) 옵션 정확히 기술 시 4점",
+      },
+      {
+        number: 3,
+        question:
+          "보안 점검 결과 취약한 백도어로 판명된 `/usr/local/bin/backup_tool` 파일의 SetUID 권한만을 안전하게 제거하는 `chmod` 명령어를 기호 모드(Symbolic)와 8진수 숫자 모드로 각각 작성하시오. (기존 권한은 4755라고 가정)",
+        answer:
+          "• 기호 모드: chmod u-s /usr/local/bin/backup_tool\n• 숫자 모드: chmod 0755 /usr/local/bin/backup_tool (또는 chmod 755)",
+        scoringCriteria: "기호 모드(2점), 숫자 모드(2점) 총 4점",
+      },
+    ],
+    answer: [
+      "1. 특수 권한: SetUID(4000, 소유자 권한 실행), SetGID(2000, 그룹 권한 실행), Sticky Bit(1000, 소유자만 삭제 가능)",
+      "2. find 명령어: find / -user root -perm -4000 -print (또는 -type f)",
+      "3. chmod 제거: chmod u-s /경로 또는 chmod 0755 /경로",
+    ],
+    codeBlock: {
+      language: "bash",
+      code: `# 1. root 소유의 SetUID 파일 전수 점검
+find / -user root -perm -4000 -type f 2>/dev/null
+
+# 2. 불필요한 SetUID 제거 조치
+chmod u-s /usr/local/bin/backup_tool
+# 확인: ls -l /usr/local/bin/backup_tool (rwsr-xr-x -> rwxr-xr-x)`,
+    },
+    scoringPoints: [
+      "SetUID(4000), SetGID(2000), Sticky Bit(1000) 개념 및 진수 (6점)",
+      "find 옵션(-user root, -perm -4000) 정확도 (4점)",
+      "chmod u-s 및 0755 문법 정확도 (4점)",
+    ],
+    explanation:
+      "• SetUID의 양날의 검:\n`/usr/bin/passwd`처럼 일반 사용자가 자신의 암호를 바꿀 때 일시적으로 root 권한이 필요한 경우 필수적이지만, 공격자가 root 권한의 SetUID 셸(Shell)이나 프로그램을 심어두면 임의의 일반 계정으로 접속 후 루트 권한을 획득(Privilege Escalation)할 수 있습니다.\n• 표기법:\n실행 권한(x) 자리에 소문자 `s`가 오면 실행권한+SetUID, 대문자 `S`가 오면 실행권한이 없는 상태에서 SetUID만 켜진 비정상 상태입니다.",
+    examTips:
+      "find 명령어 옵션(-perm -4000)과 권한 회수 명령어(chmod u-s)는 시스템 실무 작업형 14점 단골 문제입니다.",
+    mermaidChart: `flowchart TD
+    User["일반 사용자 (UID: 1001, RUID: 1001)"] --> Exec["SetUID 바이너리 실행 (/usr/bin/passwd)"]
+
+    Exec --> Process["프로세스 메모리 적재 (Process)"]
+    Process --> Check{"파일에 SetUID(4000)<br/>비트가 설정되어 있는가?"}
+
+    Check -->|"YES (소유자: root)"| RootEUID["EUID = 0 (root 권한 획득!)<br/>시스템 파일(/etc/shadow) 수정 가능"]
+    Check -->|"NO"| NormalEUID["EUID = 1001 (일반 사용자 권한 유지)"]`,
+  },
+
+  // =================================================================
+  // [문제 18] 서술·작업형 (14점) - 보안 관리 & 법률 / 침해사고 대응
+  // =================================================================
+  {
+    id: 18,
+    subjectId: "law",
+    type: "descriptive",
+    score: 14,
+    domain: "보안 관리 & 법률 / 침해사고 대응",
+    title: "침해사고 대응 절차 6단계 및 디지털 포렌식 5대 원칙",
+    description:
+      "한국인터넷진흥원(KISA) 침해사고 대응 가이드 및 디지털 포렌식 증거 수집 원칙에 관한 다음 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "일반적인 침해사고 처리 절차(라이프사이클) 6단계를 순서대로 명확히 나열하시오.",
+        answer:
+          "1단계: 사고 전 준비 (Preparation)\n2단계: 사고 탐지 (Detection)\n3단계: 초기 대응 (Containment/Triage - 증거 확보)\n4단계: 대응 전략 수립 및 억제 (Eradication preparation)\n5단계: 사고 조사 및 근본 조치/복구 (Eradication & Recovery)\n6단계: 사후 검토 및 교훈 (Post-Incident Review / Lessons Learned)",
+        scoringCriteria: "6단계를 올바른 순서대로 기술 시 5점 (1단계 누락 시 감점)",
+      },
+      {
+        number: 2,
+        question:
+          "법정에 제출되는 디지털 증거의 증거 능력을 인정받기 위한 '디지털 포렌식 5대 기본 원칙' 중 3가지를 제시하고 개념을 간략히 설명하시오.",
+        answer:
+          "1. 정당성의 원칙: 모든 증거 수집은 적법 절차(영장주의 등)를 준수해야 함\n2. 재현성의 원칙: 동일한 조건에서 동일한 도구와 절차로 검증 시 동일한 결과가 도출되어야 함\n3. 신속성의 원칙: 휘발성 증거의 소멸을 방지하기 위해 신속하게 수집되어야 함\n4. 연계보관성의 원칙 (Chain of Custody): 증거 획득부터 법정 제출까지 인계자, 보관자, 시간, 장소의 이동 경로가 투명하게 기록·관리되어야 함\n5. 무결성의 원칙: 수집된 증거는 위·변조되지 않았음을 해시값(MD5, SHA 등)을 통해 입증해야 함 (중 3가지 기술)",
+        scoringCriteria: "3가지 원칙 명칭 및 설명 정확도 각 2점씩 총 6점",
+      },
+      {
+        number: 3,
+        question:
+          "침해사고 발생 시스템 조사 시 전원을 즉시 끄지 않고 가장 먼저 물리 메모리(RAM) 등 휘발성 데이터(Volatile Data)를 수집해야 하는 기술적 이유를 서술하시오.",
+        answer:
+          "전원이 차단되면 물리 메모리에 상주하는 휘발성 데이터가 영구 소실되기 때문이며, 메모리에는 공격자의 활성 네트워크 연결(세션), 실행 중인 악성 프로세스, 인메모리 악성코드, 암호화 키, 계정 자격증명 등 디스크에 저장되지 않는 결정적인 휘발성 증거가 포함되어 있기 때문이다.",
+        scoringCriteria: "전원 차단 시 소멸 및 활성 프로세스/네트워크/키 등 핵심 증거 존재 이유 기술 시 3점",
+      },
+    ],
+    answer: [
+      "1. 6단계: 사고 전 준비 -> 사고 탐지 -> 초기 대응 -> 대응 전략 -> 근본 조치(제거/복구) -> 사후 검토",
+      "2. 포렌식 원칙(3가지): 무결성의 원칙(해시 검증), 연계보관성의 원칙(Chain of Custody), 재현성의 원칙(동일 결과 도출)",
+      "3. 휘발성 메모리 수집 이유: 전원 차단 시 소멸되는 활성 네트워크 연결, 악성 프로세스, 암호키 등 결정적 증거 보존",
+    ],
+    scoringPoints: [
+      "침해사고 대응 6단계 순서의 정확도 (5점)",
+      "포렌식 5대 원칙(무결성, 연계보관성, 정당성, 재현성, 신속성) 중 3가지 (6점)",
+      "휘발성 데이터(RAM) 소멸 방지 및 인메모리 증거 보존 서술 (3점)",
+    ],
+    explanation:
+      "• 휘발성 데이터 수집 순서 (Order of Volatility):\n1) 레지스터 및 캐시\n2) 라우팅 테이블, ARP 캐시, 프로세스 테이블, 커널 통계, 물리 메모리(RAM)\n3) 임시 파일 시스템(/tmp, swap)\n4) 보조기억장치(디스크)\n5) 원격 로깅 및 네트워크 토폴로지\n6) 백업 미디어",
+    examTips:
+      "실기 시험에서 연계보관성(Chain of Custody)과 무결성(Hash)의 정의, 그리고 사고 대응 6단계의 명칭 순서는 매년 14점 배점으로 반복 출제되는 핵심 주제입니다.",
+    mermaidChart: `flowchart TD
+    S1["1단계: 사고 전 준비<br/>(대응팀 구성, 도구 확보)"] --> S2["2단계: 사고 탐지<br/>(IDS/SIEM 경고, 이상 징후)"]
+    S2 --> S3["3단계: 초기 대응<br/>(휘발성 메모리 수집, 증거 보전)"]
+    S3 --> S4["4단계: 대응 전략 수립<br/>(네트워크 격리, 감염 확산 방지)"]
+    S4 --> S5["5단계: 근본 조치 및 복구<br/>(악성코드 제거, 시스템 복구)"]
+    S5 --> S6["6단계: 사후 검토<br/>(원인 보고서, 보안 정책 개선)"]
+    S6 -.->|"피드백 반영 (개선)"| S1`,
+  },
+
+  // =================================================================
+  // [문제 19] 단답형 (3점) - 애플리케이션 보안 / 세션 쿠키 보안
+  // =================================================================
+  {
+    id: 19,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "HTTP 세션 쿠키 보안 3대 속성 (HttpOnly, Secure, SameSite)",
+    description:
+      "웹 서버가 사용자의 웹 브라우저에게 세션 쿠키를 발급할 때 사용하는 `Set-Cookie` 응답 헤더의 핵심 보안 속성에 관한 설명이다. 빈칸 (A), (B), (C)를 각각 기술하시오.",
+    scenario:
+      "1. 브라우저의 클라이언트 스크립트(document.cookie)를 통한 쿠키 접근을 원천 차단하여 XSS 공격 시 세션 탈취를 방지하는 속성: (  A  )\n2. HTTPS(SSL/TLS) 암호화 연결 채널을 통해서만 쿠키를 전송하도록 강제하여 평문 스니핑(Sniffing)을 방지하는 속성: (  B  )\n3. 타 사이트로부터 발생하는 교차 출처(Cross-Site) 요청 시 쿠키 전송 여부를 제어하여 CSRF(크로스 사이트 요청 위조)를 방어하는 속성 (Strict, Lax, None 옵션): (  C  )",
+    answer: [
+      "(A): HttpOnly",
+      "(B): Secure",
+      "(C): SameSite",
+    ],
+    scoringPoints: [
+      "(A): HttpOnly 정확히 기술 시 1점",
+      "(B): Secure 정확히 기술 시 1점",
+      "(C): SameSite 정확히 기술 시 1점",
+    ],
+    explanation:
+      "• Set-Cookie 보안 속성 3대장:\n1) HttpOnly: 브라우저 JavaScript API(`document.cookie`)의 접근을 차단하여 XSS 취약점이 터지더라도 세션 쿠키가 직접 탈취되는 것을 방어합니다.\n2) Secure: 쿠키를 반드시 HTTPS 연결에서만 암호화하여 전송하도록 강제합니다. (HTTP 평문 전송 차단)\n3) SameSite: CSRF 방어의 핵심 플래그\n   • Strict: 모든 교차 출처 요청에서 쿠키 전송을 전면 차단 (가장 안전하나 외부 링크 유입 시 로그인 풀림)\n   • Lax: 안전한 탐색(GET 링크 클릭 등)을 제외한 위험한 요청(POST, iframe 등)에서 쿠키 제외 (기본값 권장)\n   • None: 모든 요청에 쿠키 포함 (반드시 Secure 속성이 함께 설정되어야 함)",
+    examTips:
+      "단답형 초빈출 3총사입니다. 'HttpOnly(XSS 방어)', 'Secure(스니핑 방어)', 'SameSite(CSRF 방어)'의 보호 대상 공격을 정확히 매칭해야 합니다.",
+    mermaidChart: `flowchart TD
+    Cookie["Set-Cookie: SESSIONID=abc123xyz..."] --> Flags{"보안 속성 부여"}
+
+    Flags -->|"1. HttpOnly"| P_XSS["✔️ XSS 세션 탈취 방어<br/>document.cookie 접근 차단"]
+    Flags -->|"2. Secure"| P_Sniff["✔️ 스니핑/도청 방어<br/>HTTPS 암호화 채널에서만 전송"]
+    Flags -->|"3. SameSite (Strict/Lax)"| P_CSRF["✔️ CSRF 위조 요청 방어<br/>외부 사이트 링크 요청 시 쿠키 전송 제한"]`,
+  },
+
+  // =================================================================
+  // [문제 20] 서술·작업형 (14점) - 애플리케이션 보안 / 시큐어 코딩
+  // =================================================================
+  {
+    id: 20,
+    subjectId: "application",
+    type: "practical",
+    score: 14,
+    domain: "애플리케이션 보안 / 시큐어 코딩",
+    title: "HTTP 응답 분할(CRLF Injection) 공격 메커니즘 및 대응",
+    description:
+      "웹 애플리케이션에서 사용자 입력값이 HTTP 응답 헤더에 동적으로 반영될 때 발생하는 CRLF 인젝션(HTTP Response Splitting) 취약점에 관한 물음에 답하시오.",
+    scenario:
+      "공격자가 로그인 후 리다이렉트되는 웹 애플리케이션의 URL 파라미터에 다음과 같은 악의적인 페이로드를 전달하였다.\nGET /login.jsp?redirect_url=http://service.com%0d%0aSet-Cookie:%20admin_session=hacked%0d%0a%0d%0a<html><script>alert(document.domain)</script></html>\n웹 서버는 입력값을 검증하지 않고 HTTP 응답의 `Location` 헤더에 그대로 반영하여 응답을 전송하였다.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "CRLF 문자를 구성하는 2가지 제어 문자(CR, LF)의 영문 정식 명칭과 URL 인코딩된 16진수 아스키 코드 값을 각각 쓰시오.",
+        answer:
+          "1. CR (Carriage Return): 16진수 %0D (또는 0x0D, \\r)\n2. LF (Line Feed): 16진수 %0A (또는 0x0A, \\n)",
+        scoringCriteria: "CR과 LF의 영문 명칭 및 %0D, %0A 코드 값 정확히 기술 시 4점",
+      },
+      {
+        number: 2,
+        question:
+          "위 시나리오처럼 HTTP 응답 헤더 내에 연속된 CRLF(%0d%0a%0d%0a)가 삽입되었을 때 발생하는 'HTTP 응답 분할(HTTP Response Splitting)'의 기술적 원리와 공격자가 유발할 수 있는 대표적인 2차 공격 2가지를 서술하시오.",
+        answer:
+          "• 기술적 원리: HTTP 프로토콜 규격상 헤더와 본문(Body)은 빈 줄(CRLF 2회: \\r\\n\\r\\n)로 구분된다. 공격자가 %0d%0a%0d%0a를 삽입하면 서버가 보낸 단일 응답의 헤더 영역이 조기 종료되고, 공격자가 주입한 스크립트가 본문 영역으로 분할 해석되어 1개의 응답이 2개의 응답으로 분할된다.\n• 2차 공격(2가지): 1) Set-Cookie 헤더를 삽입하여 관리자 권한을 위조하거나 세션을 고정하는 세션 고정(Session Fixation) 공격, 2) 조작된 본문(Body)을 브라우저에 렌더링시키는 XSS 공격 (또는 프록시/캐시 서버를 오염시키는 웹 캐시 포이즈닝)",
+        scoringCriteria: "헤더 조기 종료 및 1개 응답의 2개 분할 원리(3점), 세션 조작 및 XSS/캐시 포이즈닝 2가지(3점) 총 6점",
+      },
+      {
+        number: 3,
+        question:
+          "CRLF 인젝션 취약점을 원천 차단하기 위한 서버 측 입력값 검증 및 시큐어 코딩 방안을 서술하시오.",
+        answer:
+          "HTTP 응답 헤더(Location, Set-Cookie 등)에 사용자 입력값을 동적으로 포함해야 하는 경우, 개행 문자(\\r, \\n, %0d, %0a)가 포함되어 있는지 철저히 검사하여 제거(Replace/Filter)하거나 요청 자체를 거부 처리하며, 최신 WAS 프레임워크의 내장 응답 헤더 유효성 검사 기능을 적용한다.",
+        scoringCriteria: "개행 문자(\\r, \\n, %0d, %0a)의 제거/필터링 및 입력값 검증 서술 시 4점",
+      },
+    ],
+    answer: [
+      "1. CR(Carriage Return, %0D) 및 LF(Line Feed, %0A)",
+      "2. 원리: CRLF 2번 삽입으로 헤더 조기 종료 및 응답 분할 / 2차 공격: Set-Cookie 주입(세션 고정), 가짜 본문 주입(XSS, 캐시 포이즈닝)",
+      "3. 시큐어 코딩: HTTP 응답 헤더에 반영되는 모든 입력값에서 개행 문자(\\r, \\n, %0d, %0a) 필터링/제거",
+    ],
+    codeBlock: {
+      language: "java",
+      code: `// [시큐어 코딩] HTTP 응답 헤더 주입 방어 (Java 예시)
+String redirectUrl = request.getParameter("redirect_url");
+
+if (redirectUrl != null) {
+    // CRLF 개행 문자(\\r, \\n) 원천 제거
+    redirectUrl = redirectUrl.replaceAll("\\r", "").replaceAll("\\n", "");
+    
+    // 신뢰할 수 있는 화이트리스트 도메인 검증 후 리다이렉트
+    if (isValidDomain(redirectUrl)) {
+        response.setHeader("Location", redirectUrl);
+    }
+}`,
+    },
+    scoringPoints: [
+      "CR(%0D, 0x0D) 및 LF(%0A, 0x0A) 명칭과 16진수 코드 정확도 (4점)",
+      "HTTP 응답 분할 원리(헤더-바디 분리 플래그 악용) 서술 (3점)",
+      "2차 피해: 세션 고정/조작 및 XSS 공격 (3점)",
+      "개행 문자(\\r, \\n) 필터링/제거 시큐어 코딩 대책 (4점)",
+    ],
+    explanation:
+      "• HTTP 프로토콜의 헤더 구조:\nHTTP 메시지는 `Header1: Value\\r\\nHeader2: Value\\r\\n\\r\\nBody` 형태로 구성됩니다. 따라서 헤더 값에 `%0d%0a`가 들어가면 새로운 임의의 헤더를 마음대로 주입할 수 있고, `%0d%0a%0d%0a`가 들어가면 서버의 실제 본문 앞에 공격자가 조작한 가짜 HTML/JavaScript가 위치하게 되어 완벽한 XSS 및 캐시 오염 공격이 완성됩니다.",
+    examTips:
+      "실기 14점 배점으로 출제될 때, %0D(CR)와 %0A(LF)의 16진수 아스키 코드 값을 묻는 단답형 서브 문항이 반드시 포함되므로 코드를 확실히 암기해야 합니다.",
+    mermaidChart: `sequenceDiagram
+    autonumber
+    actor Attacker as 공격자
+    participant Server as 취약한 웹 서버
+    actor Victim as 일반 희생자 (브라우저)
+
+    Attacker->>Server: GET /login?url=test%0d%0aSet-Cookie: admin=true%0d%0a%0d%0a<script>...
+    Note over Server: 입력값 검증 없이 Location 헤더에 주입 반영
+    Server-->>Victim: HTTP/1.1 302 Found<br/>Location: test<br/>Set-Cookie: admin=true (임의 헤더 주입)<br/>[CRLF 2회: 헤더 조기 종료]<br/><html><script>XSS 실행!</script></html> (가짜 본문)
+    Note over Victim: 브라우저는 단일 응답을 2개의 분할된 응답으로 해석하여<br/>세션 조작 및 악성 스크립트(XSS) 실행 피해 발생!`,
+  },
+
+  // =================================================================
+  // [문제 21] 단답형 (3점) - 네트워크 보안 / SNMP
+  // =================================================================
+  {
+    id: 21,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안 / 프로토콜 보안",
+    title: "SNMP 프로토콜 버전별 보안 메커니즘 및 취약점",
+    description:
+      "네트워크 관리 프로토콜인 SNMP(Simple Network Management Protocol)에 관한 설명이다. 빈칸 (A), (B), (C)를 각각 기술하시오.",
+    scenario:
+      "1. SNMP v1 및 v2c는 인증을 위해 (  A  ) 문자열을 패킷 내에 평문으로 전송하므로 네트워크 스니핑에 매우 취약하다.\n2. 장비 제조 시 읽기(Read) 전용과 읽기/쓰기(Write) 전용으로 기본 설정되어 있어 반드시 변경해야 하는 기본값 문자열 2가지: (  B  )\n3. SNMP v3는 사용자 기반 보안 모델(USM)을 통해 3단계 보안 수준을 제공한다. 이 중 인증(HMAC)과 데이터 기밀성(DES/AES 암호화)을 모두 제공하는 최상위 보안 모드: (  C  )",
+    answer: [
+      "(A): 커뮤니티 스트링 (Community String)",
+      "(B): public (읽기 전용), private (쓰기 전용)",
+      "(C): authPriv (Authentication and Privacy)",
+    ],
+    scoringPoints: [
+      "(A): Community String (커뮤니티 스트링) 1점",
+      "(B): public 및 private 모두 기재 시 1점",
+      "(C): authPriv 1점",
+    ],
+    explanation:
+      "• SNMP v1 / v2c의 한계:\n패킷이 암호화되지 않고 Community String(일종의 패스워드)이 평문 전송됩니다. 기본값인 `public`(ro)과 `private`(rw)를 그대로 두면 공격자가 MIB(Management Information Base) 트리를 조회하여 네트워크 토폴로지, 계정 정보를 탈취하거나 장비 설정을 무단 변경(SetRequest)할 수 있습니다.\n• SNMP v3 보안 모델 (USM - User-based Security Model):\n1) noAuthNoPriv: 인증 X, 암호화 X (식별자만 확인)\n2) authNoPriv: 인증 O(MD5/SHA), 암호화 X\n3) authPriv: 인증 O(HMAC) + 기밀성 암호화 O(DES/AES) - 실무 권장",
+    examTips:
+      "SNMP v3의 보안 3단계(noAuthNoPriv, authNoPriv, authPriv)와 기본 포트 번호(에이전트 UDP 161, Trap UDP 162)는 단답형 초빈출입니다.",
+    mermaidChart: `flowchart TD
+    subgraph Legacy["SNMP v1 / v2c (취약)"]
+        M1["NMS (관리자)"] -->|"평문 Community String (public/private)"| A1["Agent (네트워크 장비)"]
+        Snoop["🚨 스니퍼 도청 시 Community String 즉시 유출!"]
+    end
+
+    subgraph Secure["SNMP v3 (안전 - USM 적용)"]
+        M2["NMS (관리자)"] -->|"authPriv: HMAC 인증 + AES/DES 암호화"| A2["Agent (네트워크 장비)"]
+        Defense["✔️ 도청 및 패킷 변조 원천 차단"]
+    end`,
+  },
+
+  // =================================================================
+  // [문제 22] 서술·작업형 (14점) - 네트워크 보안 / VLAN & 스위치
+  // =================================================================
+  {
+    id: 22,
+    subjectId: "network",
+    type: "practical",
+    score: 14,
+    domain: "네트워크 보안 / 스위치 및 가상 랜",
+    title: "VLAN 태깅(IEEE 802.1Q) 및 VLAN Hopping(이중 태깅) 방어",
+    description:
+      "가상 랜(VLAN)을 구성하는 IEEE 802.1Q 트렁킹 프로토콜과 이를 악용한 VLAN Hopping 공격 및 스위치 보안 설정에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "IEEE 802.1Q 표준에서 이더넷 프레임에 삽입되는 4바이트 VLAN 태그 필드 중, 802.1Q 프레임임을 식별하는 2바이트 프로토콜 식별자(TPID)의 16진수 값과, 실제 VLAN 번호를 지정하는 VID 필드의 비트(bit) 크기 및 할당 가능한 최대 VLAN 개수를 쓰시오.",
+        answer:
+          "• TPID (Tag Protocol Identifier): 0x8100\n• VID (VLAN Identifier) 크기: 12비트 (12 bits)\n• 최대 개수: 4,096개 (2^12 = 4,096개, 실제 사용 1~4094)",
+        scoringCriteria: "0x8100(2점), 12비트(2점), 4096개(1점) 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "VLAN Hopping 공격 기법 중 '이중 태깅(Double Tagging)' 공격의 발생 원리와 공격자가 패킷에 태그를 부착하는 구조를 서술하시오.",
+        answer:
+          "공격자는 패킷에 외부 태그(Outer Tag)와 내부 태그(Inner Tag) 2개를 중첩 삽입한다. 첫 번째 스위치는 외부 태그가 트렁크 링크의 Native VLAN과 일치하면 외부 태그를 제거(Untagging)한 채 트렁크 링크로 전송한다. 두 번째 스위치는 패킷에 남아있는 내부 태그(희생자 VLAN)를 확인하여 해당 VLAN 포트로 패킷을 포워딩함으로써, 공격자가 다른 VLAN의 호스트로 패킷을 비인가 전송(VLAN 도약)하게 된다.",
+        scoringCriteria: "이중 태그 삽입 및 Native VLAN 언태깅 특성을 이용한 2차 스위치 도약 원리 명시 시 5점",
+      },
+      {
+        number: 3,
+        question:
+          "이중 태깅 공격 및 스위치 스푸핑(Switch Spoofing)을 방어하기 위해 시스코 스위치에서 권장하는 2가지 포트 보안 설정 방안을 서술하시오.",
+        answer:
+          "1. 트렁크 포트의 Native VLAN을 기본값인 VLAN 1이 아닌 사용하지 않는 더미 VLAN(예: VLAN 999)으로 변경한다.\n2. 일반 사용자 접속 포트에서 DTP(Dynamic Trunking Protocol)를 비활성화하고 강제로 액세스 모드로 고정한다. (명령어: switchport mode access 및 switchport nonegotiate 적용)",
+        scoringCriteria: "Native VLAN 변경(2점), DTP 비활성화/액세스 모드 고정(2점) 총 4점",
+      },
+    ],
+    answer: [
+      "1. TPID: 0x8100 / VID: 12비트 (최대 4,096개)",
+      "2. 이중 태깅 원리: 외부 태그(Native VLAN)가 첫 스위치에서 제거된 후, 내부 태그(희생자 VLAN)가 두 번째 스위치에서 해석되어 격리된 타 VLAN으로 패킷 침투",
+      "3. 스위치 보안: Native VLAN을 비사용 VLAN으로 변경, switchport mode access 및 switchport nonegotiate(DTP 차단)",
+    ],
+    codeBlock: {
+      language: "cisco",
+      code: `! 1. 사용자 포트 보안 (스위치 스푸핑 방지)
+interface FastEthernet 0/1
+ switchport mode access          ! 트렁크 협상 거부 및 액세스 고정
+ switchport nonegotiate          ! DTP 프레임 비활성화
+
+! 2. 트렁크 포트 Native VLAN 보안 (이중 태깅 방지)
+interface GigabitEthernet 0/1
+ switchport mode trunk
+ switchport trunk native vlan 999 ! 기본 VLAN 1 대신 비사용 VLAN 할당`,
+    },
+    scoringPoints: [
+      "TPID(0x8100) 및 VID(12bit, 4096개) 정확도 (5점)",
+      "Native VLAN 언태깅 악용 이중 태깅 메커니즘 (5점)",
+      "Native VLAN 변경 및 DTP 차단 방어 설정 (4점)",
+    ],
+    explanation:
+      "• Double Tagging 공격의 전제 조건:\n1) 공격자가 스위치 트렁크 포트의 Native VLAN과 동일한 VLAN에 속해 있어야 함\n2) 스위치 간 트렁크 연결이 802.1Q로 구성되어 있어야 함\n따라서 Native VLAN을 사용자가 속하지 않는 더미 VLAN 번호로 격리하면 원천 방어됩니다.",
+    examTips:
+      "802.1Q 태그 필드 구조(TPID 0x8100, VID 12비트)와 Native VLAN 취약점 방어 설정은 실기 네트워크 단골 문제입니다.",
+    mermaidChart: `sequenceDiagram
+    autonumber
+    actor Attacker as 공격자 (VLAN 10)
+    participant SW1 as 1차 스위치
+    participant SW2 as 2차 스위치
+    actor Victim as 희생자 (격리된 VLAN 20)
+
+    Note over Attacker: 패킷 조작: [Outer Tag: 10 (Native)] + [Inner Tag: 20]
+    Attacker->>SW1: 이중 태그 프레임 전송
+    Note over SW1: Outer Tag가 Native VLAN(10)이므로<br/>외부 태그를 벗겨내고(Untag) 트렁크로 전송
+    SW1->>SW2: 단일 태그 프레임 전송 [Tag: 20 (희생자)]
+    Note over SW2: 남아있는 Tag 20을 보고 VLAN 20 포트로 전달
+    SW2->>Victim: 패킷 도달! (VLAN Hopping 침투 성공)`,
+  },
+
+  // =================================================================
+  // [문제 23] 단답·서술형 (3점) - 네트워크 보안 / VPN
+  // =================================================================
+  {
+    id: 23,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안 / VPN",
+    title: "가상사설망(VPN) 기술 비교 (IPSec VPN vs SSL VPN)",
+    description:
+      "원격 접속 및 본·지사 보안 연결에 사용되는 대표적인 VPN 기술인 IPSec VPN과 SSL VPN에 관한 설명이다. 빈칸 (A), (B), (C)를 채우시오.",
+    scenario:
+      "1. OSI 7계층 중 네트워크 계층(3계층)에서 동작하며, 주로 본사와 지사 간(Site-to-Site) 대량 트래픽의 전용 터널을 구축하는 데 적합한 VPN: (  A  )\n2. 전송/응용 계층(4~7계층)에서 동작하며, 클라이언트 전용 소프트웨어 설치 없이 웹 브라우저만으로 안전하게 사내망에 접속할 수 있는 재택근무용 VPN: (  B  )\n3. SSL VPN이 표준 웹 포트인 TCP (  C  )번 포트를 사용하여 방화벽 및 NAT 장비를 별도 정책 변경 없이 쉽게 통과할 수 있는 특징을 갖는다.",
+    answer: [
+      "(A): IPSec VPN",
+      "(B): SSL VPN",
+      "(C): 443",
+    ],
+    scoringPoints: [
+      "(A): IPSec VPN 1점",
+      "(B): SSL VPN 1점",
+      "(C): 443 (또는 443번 포트) 1점",
+    ],
+    explanation:
+      "• IPSec VPN vs SSL VPN 비교:\n1) 계층: IPSec은 3계층(IP 계층), SSL VPN은 4/7계층(전송/응용 계층)\n2) 클라이언트: IPSec은 전용 SW/설정이 필수적이나, SSL VPN은 표준 브라우저(Web VPN)로 무설치 접속 가능\n3) 방화벽 통과: IPSec(ESP 프로토콜 50번, IKE UDP 500번)은 방화벽/NAT 통과 시 설정이 복잡하나, SSL VPN은 표준 HTTPS 포트(TCP 443)를 사용하여 어디서나 우회 없이 원활히 접속됨\n4) 접근 제어: IPSec은 네트워크 전체 접근, SSL VPN은 특정 웹/포털 서비스별 세밀한 권한 제어가 가능함",
+    examTips:
+      "재택근무 확산으로 SSL VPN과 IPSec VPN의 계층(3계층 vs 4/7계층), 포트(443), 전용 클라이언트 필요 여부를 비교하는 단답/서술 문항이 매우 빈출됩니다.",
+    mermaidChart: `flowchart TD
+    subgraph IPSec["IPSec VPN (3계층 - Site-to-Site)"]
+        HQ["본사 방화벽/게이트웨이"] <== "IPSec 터널 (ESP / IKE UDP 500)" ==> Branch["지사 게이트웨이"]
+        Note1["네트워크 대 네트워크 연결 / 전용 장비 및 SW 필수"]
+    end
+
+    subgraph SSL["SSL VPN (4~7계층 - Remote Access)"]
+        User["재택근무자 (웹 브라우저)"] -->|"HTTPS (TCP 443 표준 포트)"| Gate["사내 SSL VPN 게이트웨이"]
+        Gate --> App["특정 사내 인트라넷/ERP 서비스"]
+        Note2["클라이언트 무설치 / 특정 애플리케이션 단위 세밀한 제어"]
+    end`,
+  },
+
+  // =================================================================
+  // [문제 24] 서술·작업형 (14점) - 보안 관리 및 법률 / 안전성 확보조치
+  // =================================================================
+  {
+    id: 24,
+    subjectId: "law",
+    type: "descriptive",
+    score: 14,
+    domain: "보안 관리 & 법률",
+    title: "개인정보의 안전성 확보조치 기준(고시) 핵심 보호조치 분석",
+    description:
+      "개인정보보호위원회의 '개인정보의 안전성 확보조치 기준'에 규정된 기술적·관리적 보호조치에 관한 다음 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "개인정보처리시스템 및 정보통신망에서 반드시 암호화해야 하는 개인정보 항목을 1) 일방향 암호화 대상 1가지와 2) 양방향 안전한 암호화 대상 3가지를 구분하여 기술하시오.",
+        answer:
+          "1) 일방향 암호화 대상: 비밀번호 (Password)\n2) 양방향 암호화 대상: 고유식별정보(주민등록번호, 여권번호, 운전면허번호, 외국인등록번호), 바이오정보(생체인식정보), 계좌정보(신용카드번호, 은행계좌번호)",
+        scoringCriteria: "일방향(비밀번호 2점), 양방향 대상(고유식별정보, 바이오정보, 계좌/카드정보 중 3가지 3점) 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "개인정보취급자에 대한 '접근 권한 관리' 기준에 따라, 담당자 퇴직 또는 인사이동으로 취급자가 변경되었을 때 권한을 변경·말소해야 하는 기한과, 권한 부여·변경·말소 내역을 보관해야 하는 최소 법정 보관 기간을 쓰시오.",
+        answer:
+          "• 변경·말소 기한: 지체 없이 (정당한 사유가 없는 한 지체 없이 반영)\n• 권한 이력 보관 기간: 최소 3년 이상 보관",
+        scoringCriteria: "지체 없이(2.5점), 최소 3년 이상(2.5점) 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "개인정보처리시스템의 '접속기록 보관 및 점검' 규정에 따라, 접속기록의 위·변조 및 도난·분실을 방지하기 위하여 개인정보관리책임자가 접속기록을 점검해야 하는 최소 주기와 확인해야 하는 이상 징후 사항 1가지를 서술하시오.",
+        answer:
+          "• 점검 주기: 최소 월 1회 이상 정기적으로 점검\n• 이상 징후 사항: 개인정보를 다운로드한 내역, 비인가자의 접속 시도(로그인 실패 급증), 근무시간 외의 비정상 대량 조회 등",
+        scoringCriteria: "월 1회 이상(2점), 다운로드/비인가접속 등 이상징후 1가지 명시(2점) 총 4점",
+      },
+    ],
+    answer: [
+      "1. 암호화 대상: 일방향(비밀번호) / 양방향(고유식별정보, 바이오정보, 계좌/카드번호)",
+      "2. 접근 권한 관리: 지체 없이 변경·말소 / 권한 이력 최소 3년 이상 보관",
+      "3. 접속기록 점검: 월 1회 이상 점검 / 다운로드 내역, 비정상 대량 조회 등 이상 징후 분석",
+    ],
+    scoringPoints: [
+      "비밀번호의 일방향 암호화 원칙 명시 (2점)",
+      "고유식별정보, 바이오정보, 금융정보의 양방향 암호화 명시 (3점)",
+      "지체 없는 권한 말소 및 3년 보관 기간 (5점)",
+      "월 1회 이상 접속기록 점검 주기 및 다운로드 이상 징후 (4점)",
+    ],
+    explanation:
+      "• 안전성 확보조치 기준 주요 숫자 총정리:\n1) 권한 관리 기록 보관: 3년\n2) 접속기록 보관: 일반 1년 이상 / 5만명 이상 또는 고유식별정보 처리 2년 이상\n3) 접속기록 점검 주기: 월 1회 이상 (다운로드 시 내부 승인 절차)\n4) 유출 통지 및 전문기관 신고: 72시간 이내 (1천명 이상 시 전문기관 신고)",
+    examTips:
+      "실기 14점 배점으로 매회 출제되는 법률 파트 1순위 고시입니다. 비밀번호=일방향, 주민번호/금융/바이오=양방향, 권한 이력=3년 보관은 절대 잊으면 안 됩니다.",
+    mermaidChart: `flowchart TD
+    subgraph Crypto["암호화 대상 분류"]
+        PW["비밀번호"] --> OneWay["일방향 암호화<br/>(SHA-512, bcrypt, Salt 필수)"]
+        Priv["고유식별정보<br/>(주민/여권/면허/외국인번호)<br/>바이오정보, 신용카드/계좌번호"] --> TwoWay["안전한 양방향 암호화<br/>(AES-256, ARIA, SEED)"]
+    end
+
+    subgraph Operation["관리적·기술적 의무 주기"]
+        AuthMgt["권한 인사이동 시<br/>지체 없이 말소"] --> Hist["권한 변경 이력<br/>최소 3년 보관"]
+        LogCheck["접속기록 점검<br/>최소 월 1회 이상"] --> Detect["대량 다운로드<br/>이상 징후 탐지"]
+    end`,
+  },
+
+  // =================================================================
+  // [문제 25] 서술·작업형 (14점) - 시스템 보안 / PAM
+  // =================================================================
+  {
+    id: 25,
+    subjectId: "system",
+    type: "practical",
+    score: 14,
+    domain: "시스템 보안 / 리눅스 인증 모듈",
+    title: "리눅스 PAM(Pluggable Authentication Modules) 아키텍처 및 계정 잠금",
+    description:
+      "리눅스 시스템에서 응용 프로그램의 인증 방식을 모듈화하여 유연하게 관리하는 PAM(Pluggable Authentication Modules) 구조와 계정 잠금 정책에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "PAM 설정 파일의 4가지 모듈 인터페이스(Type)인 auth, account, password, session의 역할을 각각 한 줄로 요약하여 설명하시오.",
+        answer:
+          "1. auth: 사용자의 신원을 인증(패스워드 확인 등)하고 자격 증명(Credential)을 부여함\n2. account: 계정의 유효성(계정 만료일, 로그인 허용 시간, 비밀번호 변경 주기 등)을 검사함\n3. password: 사용자의 비밀번호 변경 및 복잡도(길이, 특수문자 등) 규칙을 강제함\n4. session: 사용자의 서비스 이용 전후 환경 설정(홈 디렉터리 마운트, 리소스 제한, 로깅 등)을 수행함",
+        scoringCriteria: "4가지 타입의 역할을 정확히 서술 시 각 1.25점씩 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "PAM의 4대 제어 플래그(Control Flag) 중 'required'와 'requisite'의 동작 차이점을 인증 실패(Failure) 시의 스택 처리 관점에서 명확히 비교 서술하시오.",
+        answer:
+          "• required: 모듈 실행이 실패하더라도 스택 내의 나머지 모듈들을 끝까지 모두 실행한 후 최종적으로 실패를 반환함 (공격자에게 어느 모듈에서 실패했는지 은폐하기 위함)\n• requisite: 모듈 실행이 실패하면 나머지 모듈을 실행하지 않고 그 즉시 인증을 중단하며 즉각 실패를 반환함",
+        scoringCriteria: "실패 시 나머지 모듈 실행 지속(required) vs 즉시 중단(requisite) 차이 명시 시 5점",
+      },
+      {
+        number: 3,
+        question:
+          "로그인 무차별 대입 공격(Brute Force)을 방어하기 위해, 패스워드 입력 실패가 연속 5회 발생 시 계정을 10분(600초) 동안 자동 잠금하는 PAM 계정 잠금 모듈(`pam_faillock.so` 또는 `pam_tally2.so`) 설정 옵션 구문을 작성하시오.",
+        answer:
+          "auth required pam_faillock.so preauth silent deny=5 unlock_time=600\n(또는 auth required pam_tally2.so deny=5 unlock_time=600 onerr=fail)",
+        scoringCriteria: "deny=5 및 unlock_time=600 옵션이 포함된 구문 작성 시 4점",
+      },
+    ],
+    answer: [
+      "1. PAM 타입: auth(신원 인증), account(계정 유효성 검사), password(암호 변경/규칙), session(세션 환경 구성/정리)",
+      "2. 제어 플래그: required는 실패해도 나머지 모듈 끝까지 수행 후 최종 실패 / requisite는 실패 시 즉시 중단하고 반환",
+      "3. 계정 잠금 설정: deny=5 unlock_time=600 옵션을 지정하여 pam_faillock.so 또는 pam_tally2.so 구성",
+    ],
+    codeBlock: {
+      language: "pam",
+      code: `# /etc/pam.d/system-auth 또는 password-auth 설정 예시 (pam_faillock 기준)
+auth        required      pam_env.so
+auth        required      pam_faillock.so preauth silent deny=5 unlock_time=600
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        [default=die] pam_faillock.so authfail deny=5 unlock_time=600
+auth        required      pam_deny.so
+
+account     required      pam_faillock.so`,
+    },
+    scoringPoints: [
+      "PAM 4대 모듈 타입(auth, account, password, session) 정의 (5점)",
+      "required와 requisite의 실패 시 스택 진행/중단 차이 (5점)",
+      "deny=5 및 unlock_time=600(또는 10분) 옵션 정확도 (4점)",
+    ],
+    explanation:
+      "• PAM 제어 플래그 4대장:\n1) required: 성공해도 계속 진행, 실패해도 끝까지 진행 후 실패\n2) requisite: 성공 시 계속 진행, 실패 시 즉시 중단 및 실패\n3) sufficient: 이전 모듈이 성공했고 이 모듈도 성공하면 나머지 auth 스택 건너뛰고 즉시 성공\n4) optional: 이 모듈의 성공/실패는 다른 모듈 결과에 영향을 미치지 않음",
+    examTips:
+      "실기 14점 단골 문제입니다. required vs requisite의 차이점 서술과 deny=5, unlock_time=600 계정 잠금 지시자는 1점도 감점당하지 않도록 암기해야 합니다.",
+    mermaidChart: `flowchart TD
+    Req["인증 요청 유입"] --> M1["모듈 1: required"]
+
+    M1 -->|실패| FlagFail["실패 상태 플래그 세팅"]
+    FlagFail --> M2["모듈 2 실행 (스택 계속 진행!)"]
+    M1 -->|성공| M2
+
+    M2 --> CheckReq{"모듈 2: requisite<br/>실패 여부?"}
+    CheckReq -->|실패| Stop["🚨 즉시 중단 및 거부! (Return Failure)"]
+    CheckReq -->|성공| M3["모듈 3: sufficient"]
+
+    M3 -->|성공| Success["✔️ 즉시 인증 성공! (나머지 스택 생략)"]
+    M3 -->|실패| Rest["다음 모듈 진행"]`,
+  },
+
+  // =================================================================
+  // [문제 26] 단답형 (3점) - 네트워크 보안 / VLAN 분류
+  // =================================================================
+  {
+    id: 26,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안 / 스위치 및 가상 랜",
+    title: "가상 랜(VLAN)의 구성 방식 및 유형 분류",
+    description:
+      "네트워크 스위치에서 브로드캐스트 도메인을 논리적으로 분할하는 VLAN(Virtual LAN)의 구성 방식에 관한 설명이다. 빈칸 (A), (B), (C)에 들어갈 알맞은 용어를 각각 기술하시오.",
+    scenario:
+      "1. 스위치의 물리적 포트 번호에 VLAN ID를 고정 할당하는 방식으로, 관리가 직관적이고 가장 널리 사용되지만 사용자가 다른 포트로 이동하면 VLAN이 변경되는 정적 방식: (  A  )\n2. 단말기 네트워크 카드(NIC)의 물리적 주소를 기반으로 VLAN을 매핑하는 방식으로, 사용자가 스위치의 어느 포트로 자리를 이동하더라도 동일한 VLAN이 유지되는 동적 방식: (  B  )\n3. 3계층 IP 서브넷 주소나 상위 네트워크 프로토콜(IPv4, IPv6, IPX 등)의 종류를 기준으로 브로드캐스트 도메인을 분할하는 방식: (  C  )",
+    answer: [
+      "(A): 포트 기반 VLAN (Port-based VLAN)",
+      "(B): MAC 주소 기반 VLAN (MAC-based VLAN)",
+      "(C): 프로토콜 / 서브넷 기반 VLAN (Protocol/Subnet-based VLAN)",
+    ],
+    scoringPoints: [
+      "(A): 포트 기반 VLAN (Port-based VLAN) 1점",
+      "(B): MAC 주소 기반 VLAN (MAC-based VLAN) 1점",
+      "(C): 프로토콜 기반 또는 IP 서브넷 기반 VLAN 1점",
+    ],
+    explanation:
+      "• VLAN 구성 방식 4가지 분류:\n1) 포트 기반(Port-based): 스위치 포트에 직접 VLAN 매핑 (정적 VLAN, 1계층/물리 기반)\n2) MAC 주소 기반(MAC-based): 단말 MAC 주소를 기반으로 동적 VLAN 할당 (2계층 기반, 이동성 우수하나 초기 등록 번거로움)\n3) IP 서브넷 기반(Subnet-based): IP 주소 대역(네트워크 ID)에 따라 VLAN 분할 (3계층 기반)\n4) 프로토콜 기반(Protocol-based): 프레임 내 상위 프로토콜 헤더(IP, ARP, IPX 등)에 따라 분할",
+    examTips:
+      "포트 이동 시에도 VLAN이 그대로 유지되는 방식이 'MAC 주소 기반 VLAN'이라는 점이 기출 단골 함정 포인트입니다.",
+    mermaidChart: `flowchart TD
+    subgraph PortBased["1. 포트 기반 VLAN (정적 할당)"]
+        SW1["스위치 포트 1: VLAN 10 고정"] --> PC1["PC-A (VLAN 10)"]
+        SW2["스위치 포트 2: VLAN 20 고정"] --> PC2["PC-B (VLAN 20)"]
+        Note1["포트를 옮겨 꽂으면 VLAN이 변경됨"]
+    end
+
+    subgraph MacBased["2. MAC 주소 기반 VLAN (동적 할당)"]
+        VMPS["VLAN 관리 서버 (MAC 매핑 DB)"] --> Switch["스위치"]
+        Switch -->|"MAC 인식: 00:11:22..."| Laptop["노트북 (어느 포트에 꽂아도 VLAN 10 자동 유지!)"]
+        Note2["사용자 이동성(Mobility) 보장"]
+    end`,
+  },
+
+  // =================================================================
+  // [문제 27] 서술·작업형 (14점) - 애플리케이션 보안 / 캐시 공격
+  // =================================================================
+  {
+    id: 27,
+    subjectId: "application",
+    type: "practical",
+    score: 14,
+    domain: "애플리케이션 보안 / 웹 캐시 보안",
+    title: "HTTP Cache-Control 지시자 및 웹 캐시 공격 (Poisoning & Deception)",
+    description:
+      "웹 성능 향상을 위해 사용되는 HTTP 캐시 메커니즘과 이를 악용한 웹 캐시 디셉션(Web Cache Deception) 및 웹 캐시 포이즈닝에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "HTTP `Cache-Control` 응답 헤더의 핵심 지시자 중 1) 브라우저나 프록시 등 어떠한 캐시 저장소에도 응답 내용을 영구히 저장하지 못하도록 강제하는 지시자와, 2) 캐시 저장은 허용하되 매 요청마다 반드시 원서버(Origin Server)에 캐시 유효성(ETag, 304 Not Modified)을 재검증하도록 요구하는 지시자를 각각 쓰시오.",
+        answer:
+          "1) no-store\n2) no-cache",
+        scoringCriteria: "no-store(2.5점), no-cache(2.5점) 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "공격자가 희생자에게 `/my-account/profile.php/nonexistent.css`와 같은 경로의 링크를 전달하여 클릭하게 만들었을 때, 프록시/CDN 캐시 서버가 정적 파일 확장자(`.css`)만 보고 동적 개인정보 페이지를 캐시에 저장하여 제3자에게 유출시키는 공격 기법의 명칭과 발생 원인을 서술하시오.",
+        answer:
+          "• 공격 명칭: 웹 캐시 디셉션 (Web Cache Deception)\n• 발생 원인: CDN/프록시 캐시 서버는 URL 끝의 확장자(`.css`, `.js` 등)를 기준으로 정적 자원으로 오인하여 무조건 캐싱하지만, 백엔드 웹 서버는 경로 해석 시 실제 엔드포인트(`profile.php`)를 실행하여 사용자의 개인정보가 포함된 동적 HTML을 반환함으로써, 민감한 개인정보 페이지가 공용 캐시 서버에 그대로 저장되어 공격자가 URL 직접 접근으로 타인의 정보를 열람하게 됨",
+        scoringCriteria: "웹 캐시 디셉션 명칭(2점), CDN 확장자 캐싱 오인 및 백엔드 동적 응답 불일치 원리 서술(3점) 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "로그인 세션, 마이페이지, 결제 정보 등 민감한 개인정보가 포함된 동적 웹 페이지에서 중간 프록시나 CDN에 캐시 데이터가 절대 저장되지 않도록 방어하기 위해 웹 서버가 전송해야 하는 안전한 `Cache-Control` 응답 헤더 설정을 작성하시오.",
+        answer:
+          "Cache-Control: no-store, no-cache, must-revalidate, private\n(또는 Cache-Control: no-store)",
+        scoringCriteria: "no-store 지시자가 포함된 응답 헤더 구문 작성 시 4점",
+      },
+    ],
+    answer: [
+      "1. 지시자: 1) no-store (저장 일체 금지), 2) no-cache (저장하되 원서버 재검증 필수)",
+      "2. 웹 캐시 디셉션(Web Cache Deception): CDN 캐시의 확장자 기반 캐싱 정책과 백엔드의 동적 스크립트 실행 간 불일치로 개인정보가 공용 CDN에 저장되는 취약점",
+      "3. 방어 헤더: Cache-Control: no-store, no-cache, must-revalidate, private",
+    ],
+    scoringPoints: [
+      "no-store와 no-cache의 개념 차이 명확화 (5점)",
+      "웹 캐시 디셉션(Web Cache Deception) 명칭 및 경로 해석 불일치 원리 (5점)",
+      "Cache-Control: no-store 방어 헤더 설정 (4점)",
+    ],
+    explanation:
+      "• no-cache vs no-store의 결정적 차이:\n• `no-cache`: 캐시를 하지 말라는 뜻이 아니라, '캐시에 저장하되 쓸 때마다 원서버에 304 유효성 확인을 받아라'는 의미입니다.\n• `no-store`: 어떠한 메모리나 디스크 캐시에도 '절대 저장하지 말라'는 의미로, 민감 정보 노출을 막으려면 반드시 `no-store`를 지정해야 합니다.\n• `Web Cache Poisoning`: 캐시 키(Cache Key)에 포함되지 않는 비표준 헤더(X-Forwarded-Host 등)를 조작하여 캐시를 오염시키는 공격인 반면, `Web Cache Deception`은 경로 해석 차이를 이용해 타인의 민감 정보를 캐시에 저장시키는 공격입니다.",
+    examTips:
+      "no-cache와 no-store의 차이점은 단답형으로, 웹 캐시 디셉션(Web Cache Deception)은 최신 웹 보안 서술형 14점으로 출제 가능성이 매우 높습니다.",
+    mermaidChart: `sequenceDiagram
+    autonumber
+    actor Attacker as 공격자
+    actor Victim as 피해자 (로그인 상태)
+    participant CDN as CDN / 캐시 프록시
+    participant Server as 웹 서버 (WAS)
+
+    Attacker->>Victim: 악성 링크 전달 (/mypage.php/test.css)
+    Victim->>CDN: GET /mypage.php/test.css (피해자 세션 쿠키 포함)
+    Note over CDN: 캐시 미스! 확장자가 .css이므로 정적 파일로 인식
+    CDN->>Server: GET /mypage.php/test.css
+    Note over Server: 백엔드는 .css 무시하고 mypage.php 실행 (개인정보 응답)
+    Server-->>CDN: 200 OK (피해자 개인정보 포함 HTML)
+    Note over CDN: ⚠️ .css 확장자이므로 응답을 캐시에 영구 저장!
+    CDN-->>Victim: 정상 응답 렌더링
+
+    Attacker->>CDN: GET /mypage.php/test.css 요청
+    CDN-->>Attacker: 🚨 캐시된 피해자 개인정보 반환! (정보 유출)`,
+  },
+
+  // =================================================================
+  // [문제 28] 단답형 (3점) - 시스템 & 네트워크 보안 / NetBIOS
+  // =================================================================
+  {
+    id: 28,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 및 네트워크 보안 / 윈도우 프로토콜",
+    title: "윈도우 NetBIOS over TCP/IP 서비스 및 포트 분석",
+    description:
+      "윈도우 시스템에서 근거리 통신망(LAN) 파일 및 프린터 공유를 지원하는 NetBIOS over TCP/IP(NBT) 프로토콜에 관한 설명이다. 각 서비스와 대응하는 포트 번호를 올바르게 매칭하여 빈칸 (A), (B), (C)를 채우시오.",
+    scenario:
+      "1. 네트워크 상의 컴퓨터 이름(NetBIOS Name)을 IP 주소로 해석하거나 등록·조회하는 이름 서비스(Name Service): (  A  )\n2. 비연결형 메시지 전송 및 브로드캐스트 기반 통신을 수행하는 데이터그램 서비스(Datagram Service): (  B  )\n3. 두 컴퓨터 간 연결 지향 세션을 맺고 파일·프린터 공유(SMB) 데이터를 송수신하는 세션 서비스(Session Service): (  C  )",
+    answer: [
+      "(A): UDP 137",
+      "(B): UDP 138",
+      "(C): TCP 139",
+    ],
+    scoringPoints: [
+      "(A): UDP 137 (포트 번호 137) 1점",
+      "(B): UDP 138 (포트 번호 138) 1점",
+      "(C): TCP 139 (포트 번호 139) 1점",
+    ],
+    explanation:
+      "• NetBIOS over TCP/IP 포트 정리:\n• 137/UDP: NetBIOS Name Service (이름 해석 - nbtstat 명령어)\n• 138/UDP: NetBIOS Datagram Service (브로드캐스트 데이터 전송)\n• 139/TCP: NetBIOS Session Service (SMB 파일/프린터 공유 세션)\n• 445/TCP: NetBIOS 계층 없이 순수 TCP 상에서 직접 동작하는 SMB(Direct-hosted SMB) 포트\n• 보안 취약점:\n과거 윈도우 시스템에서 139/445번 포트를 열어두면 인증 없이 접속하는 '널 세션(Null Session: IPC$)' 공격을 통해 사용자 계정 목록, 공유 폴더, 시스템 정보를 무단 유출당하는 중대한 취약점이 존재했습니다.",
+    examTips:
+      "137(UDP), 138(UDP), 139(TCP)의 프로토콜/포트 번호와 최신 윈도우의 445(TCP) 포트는 방화벽 차단 정책의 초빈출 단골 문제입니다.",
+    mermaidChart: `flowchart TD
+    NBT["NetBIOS over TCP/IP (NBT)"] --> NS["이름 서비스 (Name Service)<br/>컴퓨터 이름 등록 및 조회"]
+    NBT --> DS["데이터그램 서비스 (Datagram)<br/>비연결형 브로드캐스트"]
+    NBT --> SS["세션 서비스 (Session)<br/>연결지향 파일/프린터 공유"]
+
+    NS --> P137["UDP 137 포트"]
+    DS --> P138["UDP 138 포트"]
+    SS --> P139["TCP 139 포트"]
+
+    SMB445["순수 Direct SMB<br/>(NetBIOS 우회)"] --> P445["TCP 445 포트"]`,
+  },
+
+  // =================================================================
+  // [문제 29] 단답형 (3점) - 애플리케이션 보안 / 정보 수집
+  // =================================================================
+  {
+    id: 29,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안 / 웹 취약점 점검",
+    title: "검색엔진 로봇 배제 표준(robots.txt) 및 디렉터리 노출",
+    description:
+      "웹 서버 루트 디렉터리에 위치하여 검색엔진 크롤러(Robot)의 수집 동작을 제어하는 `robots.txt` 파일에 관한 물음이다. 빈칸 (A), (B)를 각각 채우시오.",
+    scenario:
+      "1. `robots.txt` 파일에서 '모든 크롤러(A)'를 대상으로 '/admin/' 디렉터리에 대한 '접근 수집을 금지(B)'하도록 선언하는 표준 문법:\nUser-agent: (  A  )\n(  B  ): /admin/\n\n2. 보안 관리 측면에서 `robots.txt`는 강제적인 접근 통제 기술이 아니므로, 공격자가 이 파일을 열람하여 숨겨진 관리자 페이지나 백업 디렉터리 경로를 파악하는 (        ) 수집 단계의 정찰 벡터로 악용될 수 있다.",
+    answer: [
+      "(A): * (와일드카드 / 모든 크롤러)",
+      "(B): Disallow",
+      "보안 취약점: 정보 노출 (Information Disclosure) 또는 사전 정찰(Reconnaissance) 경로 노출",
+    ],
+    scoringPoints: [
+      "(A): * 기호 1점",
+      "(B): Disallow 지시자 1점",
+      "robots.txt의 정보 노출/정찰 취약점 이해 1점",
+    ],
+    explanation:
+      "• robots.txt의 원리와 한계:\n• `User-agent`: 규칙을 적용받을 크롤러 지정 (`*`는 모든 크롤러, `Googlebot` 등 특정 지정 가능)\n• `Disallow`: 크롤링을 금지할 디렉터리/파일 경로 지정\n• `Allow`: Disallow 하위에서 특정 경로만 허용\n• ⚠️ 중대한 보안적 오해:\n`robots.txt`는 선의의 검색엔진 크롤러가 지켜주는 권고안(표준 규약)일 뿐, 기술적인 '접근 제어(Access Control)'나 방화벽이 아닙니다. 오히려 외부에 노출되어서는 안 되는 `/admin/`, `/backup/`, `/secret/` 같은 민감 경로를 `Disallow`에 적어두면, 해커가 가장 먼저 `robots.txt`를 읽고 비인가 관리 페이지를 찾아내는 표적이 됩니다.",
+    examTips:
+      "Disallow 문법 표기법과 robots.txt가 접근 통제 대책이 될 수 없다는 점(민감 경로는 웹서버 인증/인가로 막아야 함)이 시험의 핵심 정답 포인트입니다.",
+    mermaidChart: `flowchart TD
+    subgraph GoogleBot["선의의 검색엔진 로봇"]
+        G1["robots.txt 조회"] --> G2["Disallow: /admin/ 확인"]
+        G2 --> G3["/admin/ 경로 수집 제외 (규약 준수) ✔️"]
+    end
+
+    subgraph Attacker["악의적인 공격자 (해커)"]
+        A1["GET /robots.txt 열람"] --> A2["Disallow: /admin/ 경로 발견!"]
+        A2 --> A3["/admin/ 경로 직접 침투 시도 🚨<br/>(숨겨진 관리자 페이지 역탐지)"]
+    end`,
+  },
+
+  // =================================================================
+  // [문제 30] 서술·작업형 (14점) - 보안 관리 및 법률 / ISMS 위험평가
+  // =================================================================
+  {
+    id: 30,
+    subjectId: "law",
+    type: "descriptive",
+    score: 14,
+    domain: "보안 관리 & 법률 / ISMS-P 위험관리",
+    title: "ISMS / ISO 27001 정보보호 위험평가(Risk Assessment) 5단계",
+    description:
+      "정보보호 관리체계(ISMS-P / ISO 27001) 인증 기준의 핵심 요구사항인 위험 관리(Risk Management)의 세부 위험평가 절차에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "위험평가(Risk Assessment)를 수행하는 5단계 프로세스를 순서대로 명확히 나열하시오.",
+        answer:
+          "1단계: 정보자산 식별 및 가치 산정 (Asset Identification & Valuation)\n2단계: 위협(Threat) 및 취약점(Vulnerability) 식별 및 분석\n3단계: 위험도(Risk) 산정 및 평가 (위험 분석)\n4단계: 수용 가능 위험 수준(DoA: Degree of Acceptance) 설정 및 비교\n5단계: 위험 처리(Risk Treatment) 전략 선정 및 정보보호 대책(이행 계획) 수립",
+        scoringCriteria: "5단계의 순서 및 핵심 내용 정확히 기술 시 5점",
+      },
+      {
+        number: 2,
+        question:
+          "위험평가 결과 도출된 위험도가 조직의 수용 가능 위험 수준(DoA)을 초과할 때 선택할 수 있는 '위험 처리 4대 전략'의 명칭과 각각의 구체적 대응 사례를 1가지씩 기술하시오.",
+        answer:
+          "1. 위험 완화(Mitigation): 방화벽 구축, 접근제어 강화, 암호화 적용 등 보안 통제를 적용하여 위험도를 DoA 이하로 낮춤\n2. 위험 회피(Avoidance): 위험도가 높은 사업 영역 철수, 고위험 서비스 폐지 등 위험 유발 활동 자체를 중단함\n3. 위험 전가(Transference): 사이버 종합배상보험 가입, 보안 관제 전문업체 아웃소싱 등을 통해 위험 책임을 제3자에게 이전함\n4. 위험 수용(Acceptance): 대응 비용이 잠재 손실보다 크거나 발생 확률이 극히 낮을 때 경영진의 정식 승인을 거쳐 잔여 위험을 감수함",
+        scoringCriteria: "4대 전략 명칭 및 구체적 사례 매칭 시 5점 (각 1.25점씩)",
+      },
+      {
+        number: 3,
+        question:
+          "위험 분석 기법 중 정량적 위험 분석(Quantitative Analysis)에서 사용하는 단일예상손실액(SLE), 연간발생률(ARO), 연간예상손실액(ALE)의 상관관계를 계산 공식으로 작성하시오.",
+        answer:
+          "ALE (연간예상손실액) = SLE (단일예상손실액) × ARO (연간발생률)\n(단, SLE = 자산가치 AV × 노출계수 EF)",
+        scoringCriteria: "ALE = SLE × ARO 공식 정확히 기술 시 4점",
+      },
+    ],
+    answer: [
+      "1. 5단계: 자산 식별/가치산정 -> 위협·취약점 분석 -> 위험도 산정 -> DoA 비교 -> 위험 처리 계획 수립",
+      "2. 4대 전략: 완화(보안통제 적용), 회피(사업/서비스 중단), 전가(보험 가입), 수용(경영진 승인 하 잔여위험 감수)",
+      "3. 공식: ALE = SLE × ARO (단일예상손실액 × 연간발생률)",
+    ],
+    scoringPoints: [
+      "위험평가 5단계 순서의 정확도 (5점)",
+      "위험 처리 4대 전략(완화, 회피, 전가, 수용) 및 사례 매칭 (5점)",
+      "정량적 공식: ALE = SLE × ARO (4점)",
+    ],
+    explanation:
+      "• ISMS 위험관리 핵심 개념:\n• DoA (Degree of Acceptance): 조직이 감당할 수 있는 위험의 임계 기준치로, DoA 이하의 위험은 '잔여 위험(Residual Risk)'으로 수용하고, DoA를 초과하는 위험은 정보보호 대책(완화/회피/전가)을 반드시 수립해야 합니다.\n• ARO (Annual Rate of Occurrence): 특정 위협이 1년 동안 발생할 것으로 예상되는 빈도\n• SLE (Single Loss Expectancy): 위협 발생 1회당 입는 금전적 피해액 (자산가치 × 피해비율)",
+    examTips:
+      "실기 14점 배점 서술형 단골 문제입니다. 위험평가 5단계의 명칭과 ALE = SLE × ARO 공식은 1점도 감점 없이 완벽히 서술할 수 있어야 합니다.",
+    mermaidChart: `flowchart TD
+    S1["1단계: 정보자산 식별 & 가치 산정"] --> S2["2단계: 위협(Threat) 및 취약점(Vuln) 분석"]
+    S2 --> S3["3단계: 위험도 산정 (ALE = SLE × ARO)"]
+    S3 --> S4{"4단계: 위험 평가<br/>DoA(수용수준) 초과 여부?"}
+
+    S4 -->|"DoA 이하"| Residual["잔여 위험 수용 (Acceptance)<br/>경영진 승인 및 주기적 모니터링"]
+    S4 -->|"DoA 초과"| S5["5단계: 위험 처리 대책 수립"]
+
+    S5 --> T1["위험 완화 (보안 통제 구축)"]
+    S5 --> T2["위험 회피 (서비스 폐기)"]
+    S5 --> T3["위험 전가 (보안 보험 가입)"]`,
+  },
+
+  // =================================================================
+  // [문제 31] 서술·작업형 (14점) - 네트워크 보안 / TCP 제어 플래그
+  // =================================================================
+  {
+    id: 31,
+    subjectId: "network",
+    type: "practical",
+    score: 14,
+    domain: "네트워크 보안 / 패킷 및 스캔 분석",
+    title: "TCP 헤더 6대 제어 플래그(Control Flags) 및 스캔(Scan) 공격",
+    description:
+      "TCP 프로토콜의 신뢰성 있는 연결 제어를 위해 사용되는 6가지 기본 제어 플래그와 이를 조작하여 포트를 탐지하는 포트 스캐닝 기법에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "TCP 헤더의 6개 기본 제어 플래그(URG, ACK, PSH, RST, SYN, FIN)의 약어 명칭과 각각의 역할을 1문장으로 기술하시오.",
+        answer:
+          "1. URG (Urgent): 긴급 포인터(Urgent Pointer) 필드가 유효하며 긴급 데이터를 우선 처리함을 알림\n2. ACK (Acknowledgment): 확인 응답 번호(Acknowledgment Number) 필드가 유효함을 나타냄\n3. PSH (Push): 수신 버퍼가 찰 때까지 기다리지 않고 수신 애플리케이션으로 즉시 전송을 요청함\n4. RST (Reset): 비정상적인 세션을 강제 종료하거나 연결을 재설정(리셋)함\n5. SYN (Synchronize): 3-Way Handshake 시 연결 수립을 위해 순서 번호(Sequence Number)를 동기화함\n6. FIN (Finish): 송신 측의 데이터 전송이 완료되어 정상적으로 연결을 종료하고자 함을 알림",
+        scoringCriteria: "6가지 플래그의 명칭 및 역할 정확히 기술 시 6점 (각 1점씩)",
+      },
+      {
+        number: 2,
+        question:
+          "공격자가 침입차단시스템(방화벽)의 로그 기록을 우회하기 위해 사용하는 대표적인 스텔스 스캔(Stealth Scan) 3가지(TCP Half-Open Scan, Xmas Scan, Null Scan)의 플래그 조합과 포트가 열려 있을 때(Open)의 응답 특성을 서술하시오.",
+        answer:
+          "1. TCP Half-Open (SYN) Scan: SYN 패킷 전송 후 대상으로부터 SYN/ACK 수신 시 포트가 열린 것으로 판단하며, 즉시 RST 패킷을 전송하여 연결을 성립시키지 않고 중단함 (로그 미기록)\n2. Xmas Scan: URG, PSH, FIN 플래그를 모두 1로 켜서 전송. 포트가 열려 있으면 무응답(No Response), 닫혀 있으면 RST/ACK 응답 수신\n3. Null Scan: 모든 플래그를 0(None)으로 세팅하여 전송. 포트가 열려 있으면 무응답(No Response), 닫혀 있으면 RST/ACK 응답 수신",
+        scoringCriteria: "SYN 스캔의 RST 차단 원리(2점), Xmas 플래그(URG+PSH+FIN) 및 응답 특성(3점), Null 플래그 및 응답 특성(3점) 총 8점",
+      },
+    ],
+    answer: [
+      "1. 6대 플래그: URG(긴급 처리), ACK(수신 확인), PSH(즉시 버퍼 비움), RST(연결 리셋), SYN(연결 동기화), FIN(정상 종료)",
+      "2. 스텔스 스캔:\n• SYN(Half-Open): SYN -> SYN/ACK 수신 후 즉시 RST 전송\n• Xmas: URG+PSH+FIN 플래그 조합 / 열린 포트는 무응답, 닫힌 포트는 RST 응답\n• Null: 플래그 0 / 열린 포트는 무응답, 닫힌 포트는 RST 응답",
+    ],
+    scoringPoints: [
+      "TCP 6대 플래그(URG, ACK, PSH, RST, SYN, FIN)의 정확한 정의 (6점)",
+      "SYN Half-open 스캔의 세션 미완성 원리 (2점)",
+      "Xmas Scan의 URG+PSH+FIN 조합 및 무응답 특성 (3점)",
+      "Null Scan의 플래그 0 및 무응답 특성 (3점)",
+    ],
+    explanation:
+      "• TCP 6 Control Flags 메모리 구조 (6비트):\n`| URG | ACK | PSH | RST | SYN | FIN |`\n• RFC 793 규약 기반 스텔스 스캔의 원리:\n비정상적인 플래그(Xmas, Null, FIN Scan)가 닫힌 포트에 도착하면 대상 호스트는 반드시 RST 패킷으로 응답해야 하지만, 열려 있는 포트에서는 해당 비정상 패킷을 그냥 무시(Drop)하여 응답하지 않습니다. 따라서 공격자는 '무응답'을 통해 포트가 열려 있음을 간접 확인합니다. (단, 윈도우 OS는 RFC 793을 따르지 않고 열린 포트에서도 RST를 반환하므로 유닉스/리눅스 계열 점검에 유효함)",
+    examTips:
+      "실기 14점 단골 문제입니다. URG+PSH+FIN 조합(Xmas)과 포트가 열려 있을 때 '무응답(No Response)'이라는 특징을 명확히 써야 감점이 없습니다.",
+    mermaidChart: `flowchart TD
+    subgraph XmasScan["Xmas Scan (URG + PSH + FIN = 1)"]
+        Attacker["공격자 (스캐너)"] -->|"비정상 플래그 전송 (URG, PSH, FIN)"| Target{"대상 포트 상태"}
+        Target -->|"포트가 열려 있음 (OPEN)"| NoResp["무응답 (No Response)<br/>패킷 폐기 -> 공격자는 OPEN 판정!"]
+        Target -->|"포트가 닫혀 있음 (CLOSED)"| RSTResp["RST / ACK 응답 수신<br/>-> 공격자는 CLOSED 판정!"]
+    end
+
+    subgraph SynScan["SYN Half-Open Scan (스텔스 3-Way)"]
+        S_Atk["공격자"] -->|"1. SYN 전송"| S_Tgt["서버"]
+        S_Tgt -->|"2. SYN / ACK 수신 (포트 열림)"| S_Atk
+        S_Atk -->|"3. 즉시 RST 전송 (연결 강제 해제)"| S_Tgt
+        Note_Syn["세션을 맺지 않아 웹 서버 접속 로그 미기록!"]
+    end`,
   },
 ];
