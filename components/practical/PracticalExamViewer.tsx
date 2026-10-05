@@ -21,7 +21,8 @@ import {
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { PracticalQuestion } from "@/data/practical/types";
+import type { PracticalQuestion, PracticalSubject } from "@/data/practical/types";
+import { PracticalMermaid } from "./PracticalMermaid";
 
 interface PracticalExamViewerProps {
   title: string;
@@ -31,6 +32,7 @@ interface PracticalExamViewerProps {
     summary: string;
     keyPoints: { domain: string; desc: string }[];
   };
+  subjects?: PracticalSubject[];
   questions: PracticalQuestion[];
   exitHref?: string;
   exitLabel?: string;
@@ -40,6 +42,7 @@ export function PracticalExamViewer({
   title,
   subtitle,
   trendAnalysis,
+  subjects = [],
   questions,
   exitHref = "/security",
   exitLabel = "보안기사 홈",
@@ -58,16 +61,35 @@ export function PracticalExamViewer({
   // 출제 트렌드 브리핑 열림/닫힘
   const [isTrendOpen, setIsTrendOpen] = useState(true);
 
+  // 과목 필터 ('all' | subjectId)
+  const [selectedSubject, setSelectedSubject] = useState<string>("all");
+
   // 유형 필터 (all, short, practical/descriptive)
   const [typeFilter, setTypeFilter] = useState<"all" | "short" | "practical">("all");
 
   const filteredQuestions = questions.filter((q) => {
+    // 1. 과목 필터
+    if (selectedSubject !== "all" && q.subjectId !== selectedSubject) {
+      return false;
+    }
+    // 2. 유형 필터
     if (typeFilter === "short") return q.type === "short";
     if (typeFilter === "practical") return q.type === "practical" || q.type === "descriptive";
     return true;
   });
 
-  const allOpen = filteredQuestions.every((q) => openAnswers[q.id]);
+  // 현재 선택된 과목 풀에 따른 카운트
+  const subjectPool = selectedSubject === "all"
+    ? questions
+    : questions.filter((q) => q.subjectId === selectedSubject);
+
+  const subjectPoolCount = subjectPool.length;
+  const shortCount = subjectPool.filter((q) => q.type === "short").length;
+  const practicalCount = subjectPool.filter(
+    (q) => q.type === "practical" || q.type === "descriptive"
+  ).length;
+
+  const allOpen = filteredQuestions.length > 0 && filteredQuestions.every((q) => openAnswers[q.id]);
 
   function toggleAnswer(id: number) {
     setOpenAnswers((prev) => ({
@@ -184,7 +206,82 @@ export function PracticalExamViewer({
         </div>
       )}
 
-      {/* 학습 컨트롤 툴바: 필터 + 전체 토글 + 자가 채점 현황 */}
+      {/* 과목 선택 (과목별 문제 필터링) */}
+      {subjects.length > 0 && (
+        <section className="flex flex-col gap-2 rounded-xl border border-border/70 bg-card p-3.5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-xs font-bold text-foreground">
+              <BookOpen className="size-3.5 text-primary" />
+              과목 선택
+            </span>
+            <span className="text-[11px] text-muted-foreground">
+              {selectedSubject === "all"
+                ? `전체 ${questions.length}문항`
+                : `${subjects.find((s) => s.id === selectedSubject)?.name ?? ""} (${
+                    questions.filter((q) => q.subjectId === selectedSubject).length
+                  }문항)`}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            <button
+              type="button"
+              onClick={() => setSelectedSubject("all")}
+              className={cn(
+                "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all select-none",
+                selectedSubject === "all"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                  : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <span>전체 과목</span>
+              <span
+                className={cn(
+                  "rounded px-1.5 py-0.2 text-[10px]",
+                  selectedSubject === "all"
+                    ? "bg-primary-foreground/20 text-primary-foreground font-bold"
+                    : "bg-background text-muted-foreground"
+                )}
+              >
+                {questions.length}
+              </span>
+            </button>
+
+            {subjects.map((sub) => {
+              const count = questions.filter((q) => q.subjectId === sub.id).length;
+              const isSelected = selectedSubject === sub.id;
+
+              return (
+                <button
+                  key={sub.id}
+                  type="button"
+                  onClick={() => setSelectedSubject(sub.id)}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all select-none",
+                    isSelected
+                      ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                      : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  )}
+                >
+                  <span>{sub.name}</span>
+                  <span
+                    className={cn(
+                      "rounded px-1.5 py-0.2 text-[10px]",
+                      isSelected
+                        ? "bg-primary-foreground/20 text-primary-foreground font-bold"
+                        : "bg-background text-muted-foreground"
+                    )}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* 학습 컨트롤 툴바: 유형 필터 + 전체 토글 + 자가 채점 현황 */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-border bg-card p-3.5 shadow-xs">
         <div className="flex items-center gap-1.5">
           <Button
@@ -194,7 +291,7 @@ export function PracticalExamViewer({
             onClick={() => setTypeFilter("all")}
             className="h-8 text-xs font-semibold"
           >
-            전체 ({questions.length})
+            전체 ({subjectPoolCount})
           </Button>
           <Button
             type="button"
@@ -203,7 +300,7 @@ export function PracticalExamViewer({
             onClick={() => setTypeFilter("short")}
             className="h-8 text-xs font-semibold"
           >
-            단답형
+            단답형 ({shortCount})
           </Button>
           <Button
             type="button"
@@ -212,7 +309,7 @@ export function PracticalExamViewer({
             onClick={() => setTypeFilter("practical")}
             className="h-8 text-xs font-semibold"
           >
-            서술·작업형
+            서술·작업형 ({practicalCount})
           </Button>
         </div>
 
@@ -267,12 +364,37 @@ export function PracticalExamViewer({
 
       {/* 문제 리스트 */}
       <div className="flex flex-col gap-6">
-        {filteredQuestions.map((q, idx) => {
-          const isOpen = Boolean(openAnswers[q.id]);
-          const assessment = selfAssessment[q.id];
+        {filteredQuestions.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border p-12 text-center bg-card">
+            <Layers className="size-8 text-muted-foreground/50" />
+            <div className="flex flex-col gap-1">
+              <h3 className="text-sm font-semibold text-foreground">
+                선택한 조건에 해당하는 문제가 없습니다.
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                과목이나 문제 유형(단답형/서술형) 필터를 변경해 보세요.
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSelectedSubject("all");
+                setTypeFilter("all");
+              }}
+              className="mt-1 h-8 text-xs font-medium"
+            >
+              전체 필터 초기화
+            </Button>
+          </div>
+        ) : (
+          filteredQuestions.map((q) => {
+            const isOpen = Boolean(openAnswers[q.id]);
+            const assessment = selfAssessment[q.id];
 
-          return (
-            <article
+            return (
+              <article
               key={q.id}
               className={cn(
                 "flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-all",
@@ -457,6 +579,14 @@ export function PracticalExamViewer({
                     </div>
                   )}
 
+                  {/* Mermaid 구조·흐름 시각화 다이어그램 (존재 시) */}
+                  {q.mermaidChart && (
+                    <PracticalMermaid
+                      chart={q.mermaidChart}
+                      id={`practical-q-${q.id}`}
+                    />
+                  )}
+
                   {/* 채점 기준 및 핵심 키워드 */}
                   {q.scoringPoints && q.scoringPoints.length > 0 && (
                     <div className="flex flex-col gap-1.5 rounded-lg border border-border/70 bg-card p-3.5 text-xs">
@@ -499,14 +629,14 @@ export function PracticalExamViewer({
               )}
             </article>
           );
-        })}
+        }))}
       </div>
 
       {/* 하단 완료 및 다음 행동 안내 바 */}
       <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-border/70 bg-muted/40 p-5 text-center sm:text-left">
         <div className="flex flex-col gap-1">
           <h4 className="text-sm font-bold text-foreground">
-            모의고사 3문항 학습 완료!
+            실기 모의고사 {questions.length}문항 학습 완료!
           </h4>
           <p className="text-xs text-muted-foreground">
             단답형과 서술형 답안 작성 요령을 익혔다면, 스피드 퀴즈로 핵심 개념 암기를 병행해 보세요.

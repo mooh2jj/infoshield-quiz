@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PracticalExamViewer } from "@/components/practical/PracticalExamViewer";
 import {
   SECURITY_PRACTICAL_QUESTIONS,
+  SECURITY_PRACTICAL_SUBJECTS,
   SECURITY_PRACTICAL_TRENDS,
 } from "@/data/practical/security";
 
@@ -18,6 +19,7 @@ export default function SecurityPracticalPage() {
         title="정보보안기사 실기 실전 모의고사"
         subtitle="최신 기출 분석 기반 단답형 및 14점 서술·작업형 핵심 모의고사 (토글 정답 & 모범 답안)"
         trendAnalysis={SECURITY_PRACTICAL_TRENDS}
+        subjects={SECURITY_PRACTICAL_SUBJECTS}
         questions={SECURITY_PRACTICAL_QUESTIONS}
         exitHref="/security"
         exitLabel="정보보안기사 홈"
