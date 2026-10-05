@@ -152,13 +152,25 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
     };
   }, [id, chart, notes, resolvedTheme]);
 
-  // 팝오버가 뷰포트 바깥으로 나가지 않도록 좌표 보정
-  const popoverStyle = popoverPos
-    ? {
-        left: Math.max(16, Math.min(popoverPos.x + 16, (typeof window !== "undefined" ? window.innerWidth : 1000) - 340)),
-        top: Math.max(16, Math.min(popoverPos.y + 16, (typeof window !== "undefined" ? window.innerHeight : 800) - 320)),
-      }
-    : undefined;
+  function closeNote() {
+    setActiveNote(null);
+    setPopoverPos(null);
+    setIsPinned(false);
+  }
+
+  // 데스크톱 팝오버 좌표 보정 (화면 바깥 나가지 않도록 + 하단 여백 부족 시 위로 띄움)
+  const winW = typeof window !== "undefined" ? window.innerWidth : 1200;
+  const winH = typeof window !== "undefined" ? window.innerHeight : 800;
+
+  const desktopLeft = popoverPos
+    ? Math.max(16, Math.min(popoverPos.x + 16, winW - 380))
+    : 16;
+  const isNearBottom = popoverPos ? popoverPos.y + 360 > winH : false;
+  const desktopTop = popoverPos
+    ? isNearBottom
+      ? Math.max(16, popoverPos.y - 360)
+      : Math.max(16, popoverPos.y + 16)
+    : 16;
 
   return (
     <div className="relative">
@@ -167,23 +179,111 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
         className="min-h-60 overflow-x-auto overflow-y-hidden rounded-lg border border-border bg-card p-4 [&_svg]:mx-auto [&_svg]:max-w-none"
       />
 
-      {/* 시험 중요도 및 상세 메모 팝오버 카드 (플로팅 메모장) */}
-      {activeNote && popoverStyle && (
+      {/* ========================================================================= */}
+      {/* 1. 모바일 반응형 뷰 (< 640px): 바텀 시트 (Bottom Sheet) 모달 형태 */}
+      {/* ========================================================================= */}
+      {activeNote && (
+        <div className="sm:hidden">
+          {/* 반투명 배경 딤 오버레이 (탭하여 닫기) */}
+          <div
+            onClick={closeNote}
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+          />
+
+          {/* 하단 바텀 시트 카드 */}
+          <div className="fixed inset-x-3 bottom-3 z-50 flex max-h-[82vh] flex-col rounded-2xl border border-border/90 bg-popover/98 p-4 text-popover-foreground shadow-2xl backdrop-blur-lg animate-in slide-in-from-bottom-8 duration-200">
+            {/* 상단 손잡이 바 */}
+            <div className="mx-auto mb-2.5 h-1.5 w-12 rounded-full bg-muted-foreground/30 shrink-0" />
+
+            {/* 고정 헤더: 뱃지, 중요도 별점, 닫기 버튼 */}
+            <div className="mb-2.5 flex items-center justify-between gap-2 border-b border-border/60 pb-2 shrink-0">
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="size-4 text-amber-500 shrink-0" />
+                <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+                  {activeNote.badge ?? "핵심 개념"}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-0.5 text-amber-500">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`size-3.5 ${
+                        i < activeNote.importance
+                          ? "fill-amber-500 text-amber-500"
+                          : "text-muted-foreground/30"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={closeNote}
+                  className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                  title="닫기"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* 스크롤 가능한 본문 영역 */}
+            <div className="overflow-y-auto pr-1 space-y-2.5 text-left text-xs leading-relaxed">
+              <h4 className="text-sm font-bold tracking-tight text-foreground">
+                {activeNote.title}
+              </h4>
+
+              <p className="text-muted-foreground leading-relaxed">
+                {activeNote.definition}
+              </p>
+
+              {activeNote.keyPoints && activeNote.keyPoints.length > 0 && (
+                <div className="rounded-lg bg-muted/70 p-2.5 space-y-1.5">
+                  <span className="font-semibold text-foreground/90 block text-[11px]">
+                    ⚡ 핵심 빈출 & 함정 포인트
+                  </span>
+                  <ul className="space-y-1 text-muted-foreground">
+                    {activeNote.keyPoints.map((point, idx) => (
+                      <li key={idx} className="flex items-start gap-1.5">
+                        <span className="text-primary mt-0.5 font-bold">•</span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {activeNote.examTip && (
+                <div className="flex items-start gap-2 rounded-lg bg-amber-500/10 px-2.5 py-2 text-amber-800 dark:text-amber-300 font-medium">
+                  <span className="shrink-0 mt-0.5">💡</span>
+                  <span className="leading-snug">{activeNote.examTip}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 2. 데스크톱 반응형 뷰 (>= 640px): 마우스 좌표 연동 스마트 팝오버 툴팁 */}
+      {/* ========================================================================= */}
+      {activeNote && popoverPos && (
         <div
-          style={popoverStyle}
-          className="pointer-events-auto fixed z-50 w-80 rounded-xl border border-border/80 bg-popover/95 p-4 text-popover-foreground shadow-2xl backdrop-blur-md transition-opacity duration-150 animate-in fade-in zoom-in-95"
+          style={{ left: desktopLeft, top: desktopTop }}
+          className="pointer-events-auto fixed z-50 hidden sm:flex flex-col w-[360px] max-h-[78vh] rounded-xl border border-border/80 bg-popover/95 p-4 text-popover-foreground shadow-2xl backdrop-blur-md animate-in fade-in zoom-in-95 duration-150"
         >
           {/* 헤더: 뱃지, 중요도 별점, 닫기 버튼 */}
-          <div className="mb-2 flex items-center justify-between gap-2 border-b border-border/60 pb-2">
+          <div className="mb-2 flex items-center justify-between gap-2 border-b border-border/60 pb-2 shrink-0">
             <div className="flex items-center gap-1.5">
               <Sparkles className="size-3.5 text-amber-500 shrink-0" />
               <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
                 {activeNote.badge ?? "핵심 개념"}
               </span>
             </div>
-            
+
             <div className="flex items-center gap-2">
-              {/* 별점 */}
               <div className="flex items-center gap-0.5 text-amber-500">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
@@ -197,15 +297,9 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                 ))}
               </div>
 
-              {/* 닫기 버튼 */}
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveNote(null);
-                  setPopoverPos(null);
-                  setIsPinned(false);
-                }}
+                onClick={closeNote}
                 className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                 title="메모장 닫기"
               >
@@ -214,40 +308,39 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
             </div>
           </div>
 
-          {/* 제목 */}
-          <h4 className="mb-1.5 text-sm font-bold tracking-tight">
-            {activeNote.title}
-          </h4>
+          {/* 스크롤 가능한 본문 영역 */}
+          <div className="overflow-y-auto pr-1 space-y-2 text-xs leading-relaxed">
+            <h4 className="text-sm font-bold tracking-tight text-foreground">
+              {activeNote.title}
+            </h4>
 
-          {/* 개념 상세 정의 */}
-          <p className="mb-2.5 text-xs text-muted-foreground leading-relaxed">
-            {activeNote.definition}
-          </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {activeNote.definition}
+            </p>
 
-          {/* 핵심 시험 포인트 */}
-          {activeNote.keyPoints && activeNote.keyPoints.length > 0 && (
-            <div className="mb-2.5 rounded-lg bg-muted/60 p-2 text-[11px] space-y-1">
-              <span className="font-semibold text-foreground/90 block">
-                ⚡ 핵심 빈출 & 함정
-              </span>
-              <ul className="space-y-0.5 text-muted-foreground">
-                {activeNote.keyPoints.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-1">
-                    <span className="text-primary">•</span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            {activeNote.keyPoints && activeNote.keyPoints.length > 0 && (
+              <div className="rounded-lg bg-muted/60 p-2.5 space-y-1 text-[11px]">
+                <span className="font-semibold text-foreground/90 block">
+                  ⚡ 핵심 빈출 & 함정
+                </span>
+                <ul className="space-y-0.5 text-muted-foreground">
+                  {activeNote.keyPoints.map((point, idx) => (
+                    <li key={idx} className="flex items-start gap-1">
+                      <span className="text-primary">•</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-          {/* 암기 비법 / 실무 팁 */}
-          {activeNote.examTip && (
-            <div className="flex items-start gap-1.5 rounded-md bg-amber-500/10 px-2.5 py-1.5 text-[11px] text-amber-700 dark:text-amber-300 font-medium">
-              <span>💡</span>
-              <span className="leading-snug">{activeNote.examTip}</span>
-            </div>
-          )}
+            {activeNote.examTip && (
+              <div className="flex items-start gap-1.5 rounded-md bg-amber-500/10 px-2.5 py-1.5 text-[11px] text-amber-700 dark:text-amber-300 font-medium">
+                <span>💡</span>
+                <span className="leading-snug">{activeNote.examTip}</span>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
