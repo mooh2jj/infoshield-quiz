@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   FileCheck2,
@@ -18,11 +18,108 @@ import {
   ArrowLeft,
   ShieldCheck,
   TrendingUp,
+  Search,
+  X,
+  Tag,
+  FilterX,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { PracticalQuestion, PracticalSubject } from "@/data/practical/types";
 import { PracticalMermaid } from "./PracticalMermaid";
+
+// 빈출 핵심 검색 추천 키워드
+const RECOMMENDED_KEYWORDS = [
+  "shadow",
+  "iptables",
+  "Snort",
+  "IPSec",
+  "XSS",
+  "SQL 인젝션",
+  "Heartbleed",
+  "CORS",
+  "Slowloris",
+  "ISMS",
+  "개인정보",
+  "SetUID",
+  "VPN",
+  "PKI",
+  "Cookie",
+];
+
+function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// 검색어 하이라이트 헬퍼 컴포넌트
+function HighlightText({ text, query }: { text?: string; query: string }) {
+  if (!text) return null;
+  const trimmed = query.trim();
+  if (!trimmed) return <>{text}</>;
+
+  const terms = trimmed.split(/\s+/).filter(Boolean);
+  if (terms.length === 0) return <>{text}</>;
+
+  try {
+    const regex = new RegExp(`(${terms.map(escapeRegExp).join("|")})`, "gi");
+    const parts = text.split(regex);
+
+    return (
+      <>
+        {parts.map((part, i) =>
+          regex.test(part) ? (
+            <mark
+              key={i}
+              className="rounded-xs bg-amber-400/35 px-0.5 font-semibold text-foreground dark:bg-amber-500/30 dark:text-amber-200"
+            >
+              {part}
+            </mark>
+          ) : (
+            part
+          )
+        )}
+      </>
+    );
+  } catch {
+    return <>{text}</>;
+  }
+}
+
+// 실기 문제 검색 일치 여부 확인 함수 (AND 검색 지원)
+function matchesQuestionSearch(q: PracticalQuestion, query: string): boolean {
+  const trimmed = query.trim();
+  if (!trimmed) return true;
+
+  const tokens = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
+  if (tokens.length === 0) return true;
+
+  const textPool: string[] = [
+    String(q.id),
+    `문제 ${q.id}`,
+    `문제${q.id}`,
+    `#${q.id}`,
+    `${q.score}점`,
+    q.title,
+    q.domain,
+    q.description,
+    q.scenario || "",
+    q.explanation,
+    q.examTips || "",
+    ...(Array.isArray(q.answer) ? q.answer : [q.answer]),
+    ...(q.scoringPoints || []),
+    q.codeBlock?.code || "",
+    ...(q.subItems?.flatMap((s) => [
+      s.question,
+      Array.isArray(s.answer) ? s.answer.join(" ") : s.answer,
+      s.scoringCriteria || "",
+    ]) || []),
+  ];
+
+  const searchableString = textPool.join(" ").toLowerCase();
+
+  return tokens.every((token) => searchableString.includes(token));
+}
 
 interface PracticalExamViewerProps {
   title: string;
@@ -61,27 +158,56 @@ export function PracticalExamViewer({
   // 출제 트렌드 브리핑 열림/닫힘
   const [isTrendOpen, setIsTrendOpen] = useState(true);
 
+  // 검색어 상태
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   // 과목 필터 ('all' | subjectId)
   const [selectedSubject, setSelectedSubject] = useState<string>("all");
 
   // 유형 필터 (all, short, practical/descriptive)
   const [typeFilter, setTypeFilter] = useState<"all" | "short" | "practical">("all");
 
+  // '/' 단축키로 검색창 포커스
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === "/" &&
+        !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)
+      ) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // 전체 문제 중 검색어 일치 목록 (과목/유형 무관)
+  const searchMatchedQuestions = questions.filter((q) =>
+    matchesQuestionSearch(q, searchQuery)
+  );
+
+  // 현재 필터(검색어 + 과목 + 유형) 모두 적용된 문제 목록
   const filteredQuestions = questions.filter((q) => {
-    // 1. 과목 필터
+    // 1. 검색어 필터
+    if (!matchesQuestionSearch(q, searchQuery)) {
+      return false;
+    }
+    // 2. 과목 필터
     if (selectedSubject !== "all" && q.subjectId !== selectedSubject) {
       return false;
     }
-    // 2. 유형 필터
+    // 3. 유형 필터
     if (typeFilter === "short") return q.type === "short";
     if (typeFilter === "practical") return q.type === "practical" || q.type === "descriptive";
     return true;
   });
 
-  // 현재 선택된 과목 풀에 따른 카운트
+  // 현재 선택된 과목 + 검색어 풀에 따른 카운트
   const subjectPool = selectedSubject === "all"
-    ? questions
-    : questions.filter((q) => q.subjectId === selectedSubject);
+    ? searchMatchedQuestions
+    : searchMatchedQuestions.filter((q) => q.subjectId === selectedSubject);
 
   const subjectPoolCount = subjectPool.length;
   const shortCount = subjectPool.filter((q) => q.type === "short").length;
@@ -206,6 +332,126 @@ export function PracticalExamViewer({
         </div>
       )}
 
+      {/* 실기 모의고사 키워드 검색 바 & 추천 키워드 태그 */}
+      <section className="flex flex-col gap-3 rounded-xl border border-border/80 bg-card p-4 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary">
+              <Search className="size-3.5" />
+            </span>
+            <span className="text-xs font-bold text-foreground">
+              실기 모의고사 키워드 검색
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <span>단축키</span>
+            <kbd className="inline-flex h-4.5 items-center rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-semibold text-muted-foreground shadow-2xs">
+              /
+            </kbd>
+            <span>를 누르면 바로 검색</span>
+          </div>
+        </div>
+
+        {/* 검색 인풋 영역 */}
+        <div className="relative flex items-center">
+          <Search className="pointer-events-none absolute left-3 size-4 text-muted-foreground" />
+          <Input
+            ref={searchInputRef}
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setSearchQuery("");
+                searchInputRef.current?.blur();
+              }
+            }}
+            placeholder="문제 번호, 키워드, 개념 검색 (예: iptables, shadow, Snort, XSS, 14점, 문제 1)..."
+            className="h-10 w-full pl-9 pr-9 text-xs sm:text-sm bg-background/80"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchQuery("");
+                searchInputRef.current?.focus();
+              }}
+              className="absolute right-2.5 flex size-5 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              aria-label="검색어 지우기"
+            >
+              <X className="size-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* 빈출 핵심 추천 키워드 칩 바로가기 */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+          <span className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground mr-1">
+            <Tag className="size-3" />
+            빈출 추천:
+          </span>
+          {RECOMMENDED_KEYWORDS.map((kw) => {
+            const isCurrent = searchQuery.trim().toLowerCase() === kw.toLowerCase();
+            return (
+              <button
+                key={kw}
+                type="button"
+                onClick={() => setSearchQuery(isCurrent ? "" : kw)}
+                className={cn(
+                  "rounded-md px-2 py-1 text-[11px] font-medium transition-all select-none",
+                  isCurrent
+                    ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                    : "bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground"
+                )}
+              >
+                #{kw}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 검색 상태 안내 배너 (검색어 입력 시) */}
+        {searchQuery.trim() && (
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-primary/20 bg-primary/5 p-2.5 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-primary">
+                ‘{searchQuery.trim()}’ 검색 결과:
+              </span>
+              <span className="rounded bg-primary/20 px-1.5 py-0.5 text-[11px] font-bold text-primary">
+                {filteredQuestions.length}건
+              </span>
+              <span className="text-muted-foreground text-[11px]">
+                (전체 {questions.length}문항 중 일치 {searchMatchedQuestions.length}건)
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {/* 과목 필터 때문에 결과가 줄어들었을 경우 전체 과목 보기 버튼 */}
+              {selectedSubject !== "all" && searchMatchedQuestions.length > filteredQuestions.length && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedSubject("all")}
+                  className="text-[11px] font-semibold text-primary underline underline-offset-2 hover:opacity-80"
+                >
+                  전체 과목 결과({searchMatchedQuestions.length}건) 보기
+                </button>
+              )}
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchQuery("")}
+                className="h-6 px-2 text-[11px] text-muted-foreground hover:text-foreground gap-1"
+              >
+                <X className="size-3" />
+                <span>검색 초기화</span>
+              </Button>
+            </div>
+          </div>
+        )}
+      </section>
+
       {/* 과목 선택 (과목별 문제 필터링) */}
       {subjects.length > 0 && (
         <section className="flex flex-col gap-2 rounded-xl border border-border/70 bg-card p-3.5 shadow-xs">
@@ -216,9 +462,13 @@ export function PracticalExamViewer({
             </span>
             <span className="text-[11px] text-muted-foreground">
               {selectedSubject === "all"
-                ? `전체 ${questions.length}문항`
+                ? searchQuery.trim()
+                  ? `일치 문제 ${searchMatchedQuestions.length}건`
+                  : `전체 ${questions.length}문항`
                 : `${subjects.find((s) => s.id === selectedSubject)?.name ?? ""} (${
-                    questions.filter((q) => q.subjectId === selectedSubject).length
+                    (searchQuery.trim() ? searchMatchedQuestions : questions).filter(
+                      (q) => q.subjectId === selectedSubject
+                    ).length
                   }문항)`}
             </span>
           </div>
@@ -243,12 +493,13 @@ export function PracticalExamViewer({
                     : "bg-background text-muted-foreground"
                 )}
               >
-                {questions.length}
+                {searchQuery.trim() ? searchMatchedQuestions.length : questions.length}
               </span>
             </button>
 
             {subjects.map((sub) => {
-              const count = questions.filter((q) => q.subjectId === sub.id).length;
+              const currentList = searchQuery.trim() ? searchMatchedQuestions : questions;
+              const count = currentList.filter((q) => q.subjectId === sub.id).length;
               const isSelected = selectedSubject === sub.id;
 
               return (
@@ -366,27 +617,76 @@ export function PracticalExamViewer({
       <div className="flex flex-col gap-6">
         {filteredQuestions.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border p-12 text-center bg-card">
-            <Layers className="size-8 text-muted-foreground/50" />
-            <div className="flex flex-col gap-1">
+            {searchQuery.trim() ? (
+              <Search className="size-8 text-muted-foreground/50" />
+            ) : (
+              <Layers className="size-8 text-muted-foreground/50" />
+            )}
+            <div className="flex flex-col gap-1 max-w-md">
               <h3 className="text-sm font-semibold text-foreground">
-                선택한 조건에 해당하는 문제가 없습니다.
+                {searchQuery.trim()
+                  ? `‘${searchQuery.trim()}’에 해당하는 실기 문제를 찾을 수 없습니다.`
+                  : "선택한 조건에 해당하는 문제가 없습니다."}
               </h3>
-              <p className="text-xs text-muted-foreground">
-                과목이나 문제 유형(단답형/서술형) 필터를 변경해 보세요.
+              <p className="text-xs text-muted-foreground break-keep">
+                {searchQuery.trim() ? (
+                  searchMatchedQuestions.length > 0 ? (
+                    <>
+                      현재 선택된 과목/유형 조건에는 없지만, 다른 영역에{" "}
+                      <span className="font-semibold text-foreground">
+                        {searchMatchedQuestions.length}건
+                      </span>
+                      의 일치 문제가 있습니다.
+                    </>
+                  ) : (
+                    "철자를 확인하시거나 다른 보안 기술 용어(iptables, shadow, Snort, XSS 등)로 검색해 보세요."
+                  )
+                ) : (
+                  "과목이나 문제 유형(단답형/서술형) 필터를 변경해 보세요."
+                )}
               </p>
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setSelectedSubject("all");
-                setTypeFilter("all");
-              }}
-              className="mt-1 h-8 text-xs font-medium"
-            >
-              전체 필터 초기화
-            </Button>
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+              {searchQuery.trim() && searchMatchedQuestions.length > 0 && (
+                <Button
+                  type="button"
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    setSelectedSubject("all");
+                    setTypeFilter("all");
+                  }}
+                  className="h-8 text-xs font-semibold"
+                >
+                  전체 과목·유형에서 검색 결과({searchMatchedQuestions.length}건) 보기
+                </Button>
+              )}
+              {searchQuery.trim() && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSearchQuery("")}
+                  className="h-8 text-xs font-medium gap-1"
+                >
+                  <X className="size-3" />
+                  <span>검색어 지우기</span>
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedSubject("all");
+                  setTypeFilter("all");
+                }}
+                className="h-8 text-xs font-medium text-muted-foreground hover:text-foreground"
+              >
+                전체 필터 초기화
+              </Button>
+            </div>
           </div>
         ) : (
           filteredQuestions.map((q) => {
@@ -411,7 +711,7 @@ export function PracticalExamViewer({
                       문제 {q.id}
                     </span>
                     <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                      {q.domain}
+                      <HighlightText text={q.domain} query={searchQuery} />
                     </span>
                     <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
                       {q.type === "short" ? "단답형" : "서술·작업형"}
@@ -424,18 +724,18 @@ export function PracticalExamViewer({
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground break-keep">
-                  {q.title}
+                  <HighlightText text={q.title} query={searchQuery} />
                 </h3>
 
                 {/* 문제 본문 설명 */}
                 <p className="text-sm text-foreground/90 leading-relaxed break-keep">
-                  {q.description}
+                  <HighlightText text={q.description} query={searchQuery} />
                 </p>
 
                 {/* 시나리오 또는 예시 코드 박스 */}
                 {q.scenario && (
-                  <div className="rounded-lg border border-border/70 bg-muted/50 p-3.5 font-mono text-xs text-foreground/90 leading-relaxed overflow-x-auto">
-                    {q.scenario}
+                  <div className="rounded-lg border border-border/70 bg-muted/50 p-3.5 font-mono text-xs text-foreground/90 leading-relaxed overflow-x-auto whitespace-pre-wrap">
+                    <HighlightText text={q.scenario} query={searchQuery} />
                   </div>
                 )}
 
@@ -451,7 +751,7 @@ export function PracticalExamViewer({
                           ({sub.number})
                         </span>
                         <span className="text-foreground/90 leading-relaxed break-keep">
-                          {sub.question}
+                          <HighlightText text={sub.question} query={searchQuery} />
                         </span>
                       </div>
                     ))}
@@ -561,11 +861,13 @@ export function PracticalExamViewer({
                       {Array.isArray(q.answer) ? (
                         q.answer.map((ans, aIdx) => (
                           <div key={aIdx} className="break-keep">
-                            {ans}
+                            <HighlightText text={ans} query={searchQuery} />
                           </div>
                         ))
                       ) : (
-                        <div className="break-keep">{q.answer}</div>
+                        <div className="break-keep">
+                          <HighlightText text={q.answer} query={searchQuery} />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -597,7 +899,7 @@ export function PracticalExamViewer({
                       <ul className="list-disc list-inside space-y-1 text-muted-foreground pt-1">
                         {q.scoringPoints.map((pt, pIdx) => (
                           <li key={pIdx} className="leading-relaxed break-keep">
-                            {pt}
+                            <HighlightText text={pt} query={searchQuery} />
                           </li>
                         ))}
                       </ul>
@@ -611,7 +913,7 @@ export function PracticalExamViewer({
                       상세 이론 및 메커니즘 해설
                     </span>
                     <div className="text-muted-foreground leading-relaxed whitespace-pre-line pt-1 break-keep">
-                      {q.explanation}
+                      <HighlightText text={q.explanation} query={searchQuery} />
                     </div>
                   </div>
 
@@ -621,7 +923,9 @@ export function PracticalExamViewer({
                       <Lightbulb className="size-4 shrink-0 text-amber-500 mt-0.5" />
                       <div>
                         <span className="font-bold mr-1">실전 팁:</span>
-                        <span>{q.examTips}</span>
+                        <span>
+                          <HighlightText text={q.examTips} query={searchQuery} />
+                        </span>
                       </div>
                     </div>
                   )}
