@@ -13,7 +13,10 @@ export type SubjectCategory =
   | "bigdata-modeling"
   | "bigdata-evaluation"
   | "sqld-modeling"
-  | "sqld-sql";
+  | "sqld-sql"
+  | "adsp-understanding"
+  | "adsp-planning"
+  | "adsp-analysis";
 
 export type QuestionType = "multiple_choice" | "term_identification";
 
@@ -51,4 +54,7 @@ export const SUBJECT_LABELS: Record<SubjectCategory, string> = {
   "bigdata-evaluation": "빅데이터 결과 해석",
   "sqld-modeling": "데이터 모델링의 이해",
   "sqld-sql": "SQL 기본 및 활용",
+  "adsp-understanding": "데이터 이해",
+  "adsp-planning": "데이터 분석 기획",
+  "adsp-analysis": "데이터 분석",
 };

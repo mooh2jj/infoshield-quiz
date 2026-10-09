@@ -7,6 +7,7 @@ import law from "./law.json";
 import awsSaa from "./aws-saa.json";
 import bigdata from "./bigdata.json";
 import sqld from "./sqld.json";
+import adsp from "./adsp.json";
 
 export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   system: system as QuizItem[],
@@ -43,6 +44,15 @@ export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   ),
   "sqld-sql": (sqld as QuizItem[]).filter(
     (item) => item.category === "sqld-sql"
+  ),
+  "adsp-understanding": (adsp as QuizItem[]).filter(
+    (item) => item.category === "adsp-understanding"
+  ),
+  "adsp-planning": (adsp as QuizItem[]).filter(
+    (item) => item.category === "adsp-planning"
+  ),
+  "adsp-analysis": (adsp as QuizItem[]).filter(
+    (item) => item.category === "adsp-analysis"
   ),
 };
 

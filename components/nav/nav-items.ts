@@ -81,7 +81,7 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     id: "bigdata",
-    label: "빅데이터분석기사+Adsp",
+    label: "빅데이터분석기사",
     items: [
       {
         href: "/bigdata",
@@ -93,7 +93,7 @@ export const NAV_GROUPS: NavGroup[] = [
       {
         href: "/bigdata/speed-quiz",
         label: "스피드 퀴즈",
-        pillLabel: "스피드 퀴즈",
+        pillLabel: "빅데이터 스피드 퀴즈",
         icon: Zap,
         matchPrefixes: ["/bigdata/speed-quiz"],
       },
@@ -103,6 +103,33 @@ export const NAV_GROUPS: NavGroup[] = [
         pillLabel: "빅데이터 마인드맵",
         icon: Network,
         matchPrefixes: ["/bigdata/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "adsp",
+    label: "ADsP (데이터분석 준전문가)",
+    items: [
+      {
+        href: "/adsp",
+        label: "퀴즈",
+        pillLabel: "ADsP 퀴즈",
+        icon: ListChecks,
+        matchPrefixes: ["/adsp", "/adsp/quiz", "/adsp/result"],
+      },
+      {
+        href: "/adsp/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "ADsP 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/adsp/speed-quiz"],
+      },
+      {
+        href: "/adsp/mindmap",
+        label: "마인드맵",
+        pillLabel: "ADsP 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/adsp/mindmap"],
       },
     ],
   },

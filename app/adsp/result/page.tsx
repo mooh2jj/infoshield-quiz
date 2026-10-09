@@ -8,13 +8,12 @@ import { getQuestionById } from "@/lib/questions";
 import { SUBJECT_LABELS, type SubjectCategory } from "@/types/quiz";
 
 const ALL_SUBJECTS: SubjectCategory[] = [
-  "bigdata-planning",
-  "bigdata-exploration",
-  "bigdata-modeling",
-  "bigdata-evaluation",
+  "adsp-understanding",
+  "adsp-planning",
+  "adsp-analysis",
 ];
 
-export default function BigdataResultPage() {
+export default function AdspResultPage() {
   const router = useRouter();
   const queue = useQuizStore((state) => state.queue);
   const answers = useQuizStore((state) => state.answers);
@@ -36,18 +35,18 @@ export default function BigdataResultPage() {
   }).filter((row) => row.total > 0);
 
   const wrongIds = Object.keys(wrongAnswers).filter(
-    (id) => getQuestionById(id)?.category.startsWith("bigdata-")
+    (id) => getQuestionById(id)?.category.startsWith("adsp-")
   );
 
   function handleRetryWrong() {
     if (wrongIds.length === 0) return;
     startSession({ subjects: [], types: [] }, { questionIds: wrongIds });
-    router.push("/bigdata/quiz");
+    router.push("/adsp/quiz");
   }
 
   function handleHome() {
     resetSession();
-    router.push("/bigdata");
+    router.push("/adsp");
   }
 
   if (total === 0) {
@@ -64,7 +63,7 @@ export default function BigdataResultPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold tracking-tight">학습 결과</h1>
         <p className="text-muted-foreground">
-          빅데이터분석기사 세션 결과
+          ADsP (데이터분석 준전문가) 세션 결과
         </p>
       </div>
 

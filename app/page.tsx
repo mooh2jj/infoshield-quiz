@@ -26,9 +26,16 @@ const CERTIFICATIONS: CertificationCard[] = [
   },
   {
     id: "bigdata",
-    label: "빅데이터분석기사+Adsp",
-    description: "5개 챕터 마인드맵 · 핵심 ROI 실전 퀴즈",
+    label: "빅데이터분석기사",
+    description: "4개 필기 과목 + 실기 작업형 마인드맵 · 핵심 실전 퀴즈",
     href: "/bigdata",
+    status: "available",
+  },
+  {
+    id: "adsp",
+    label: "ADsP (데이터분석 준전문가)",
+    description: "3개 과목 마인드맵 · 82제 스피드 퀴즈 · 최신 기출 4지선다",
+    href: "/adsp",
     status: "available",
   },
   {

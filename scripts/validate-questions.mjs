@@ -19,6 +19,11 @@ const VALID_CATEGORIES = [
   "bigdata-exploration",
   "bigdata-modeling",
   "bigdata-evaluation",
+  "sqld-modeling",
+  "sqld-sql",
+  "adsp-understanding",
+  "adsp-planning",
+  "adsp-analysis",
 ];
 const VALID_TYPES = ["multiple_choice", "term_identification"];
 

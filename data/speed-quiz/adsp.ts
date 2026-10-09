@@ -430,5 +430,188 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     chapterName: "제3과목 데이터 분석",
     question: "비정상 시계열을 차분(Differencing)하여 정상화한 후, 자기회귀(AR)와 이동평균(MA)을 결합하여 예측하는 대표적 시계열 모델은?",
     answer: "ARIMA 모형"
+  },
+
+  // =================================================================
+  // === [최신 기출 분석] 적중률 극대화 고득점 ROI TOP 10 (신규 10문항)
+  // =================================================================
+  {
+    id: 58,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 1위] 불균형 데이터 분류 평가에서 정밀도(Precision)와 재현율(Recall)의 가중치를 동등하게 부여하여 계산하는 조화평균(Harmonic Mean) 지표는?",
+    answer: "F1-Score (F-측도)"
+  },
+  {
+    id: 59,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 2위] 사건이 발생할 확률(p)을 발생하지 않을 확률(1-p)로 나눈 비율로, 로지스틱 회귀에서 로짓(Logit) 변환의 근간이 되는 통계적 개념은?",
+    answer: "오즈 (Odds, 승산)"
+  },
+  {
+    id: 60,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 3위] 계층적 군집분석에서 두 군집이 병합되었을 때 발생하는 군집 내 오차제곱합(ESS)의 증가량을 최소화하도록 군집을 결합해 나가는 연결법은?",
+    answer: "와드 연결법 (Ward's Method)"
+  },
+  {
+    id: 61,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 4위] 자료 분포의 비대칭 정도를 나타내는 통계량으로, 0보다 크면 오른쪽으로 긴 꼬리를 가지며(평균 > 중앙값) 양(+)의 비대칭을 나타내는 척도는?",
+    answer: "왜도 (Skewness)"
+  },
+  {
+    id: 62,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 5위] 연관성 분석에서 '어떤 항목집합이 빈발하지 않으면 이를 포함하는 모든 슈퍼셋도 빈발하지 않다'는 가지치기 원리로 탐색 공간을 줄이는 대표 알고리즘은?",
+    answer: "아프리오리 (Apriori) 알고리즘"
+  },
+  {
+    id: 63,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 6위] 회귀 및 시계열 모형 선택 시, 모형의 적합도와 설명변수 개수에 따른 페널티를 동시에 반영하여 수치가 작을수록 우수한 모형으로 평가하는 정보 기준은?",
+    answer: "AIC (아카이케 정보 기준)"
+  },
+  {
+    id: 64,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[ROI 7위] 분석 대상이 이미 식별된 상태에서 체계적으로 과제를 발굴하고 구체화하는 하향식(Top-Down) 접근법의 4단계 순서는?",
+    answer: "문제 탐색 ➔ 문제 정의 ➔ 해결방안 탐색 ➔ 타당성 검토"
+  },
+  {
+    id: 65,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 8위] 시계열 데이터를 추세(Trend), 계절(Seasonal), 순환(Cyclical), 불규칙(Irregular) 요인 등 4가지 변동 요소로 분리하여 해석하는 기법은?",
+    answer: "시계열 분해법 (Time Series Decomposition)"
+  },
+  {
+    id: 66,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[ROI 9위] 전사적 데이터 웨어하우스(DW)로부터 특정 부서나 특정 주제 영역의 신속한 의사결정과 분석을 지원하기 위해 구축한 소규모 맞춤형 데이터 저장소는?",
+    answer: "데이터 마트 (Data Mart, DM)"
+  },
+  {
+    id: 67,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[ROI 10위] 등간·비율 척도로 측정된 두 연속형 변수 간의 '선형적(Linear) 상관관계'의 방향과 강도를 -1부터 +1 사이의 값으로 측정하는 대표적인 모수적 상관계수는?",
+    answer: "피어슨 상관계수 (Pearson Correlation)"
+  },
+
+  // =================================================================
+  // === [기출 복원 분석] 단답형 빈출 1순위 고득점 ROI 15문항 (ID 68~82)
+  // =================================================================
+  {
+    id: 68,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 1위] 가설검정에서 실제 효과나 차이가 존재할 때(귀무가설이 거짓일 때), 귀무가설을 올바르게 기각하여 실제 효과를 감지해낼 확률(1 - β)은?",
+    answer: "검정력 (Power of Test)"
+  },
+  {
+    id: 69,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 2위] 가설검정에서 실제로는 귀무가설이 거짓(대립가설 참)임에도 불구하고 귀무가설을 잘못 채택하여 발생하는 오류(소비자 위험)는?",
+    answer: "제2종 오류 (베타 오류)"
+  },
+  {
+    id: 70,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 3위] 혼동행렬(Confusion Matrix)에서 실제로 음성(Negative)인 데이터 전체 중 모델이 음성이라고 정확하게 분류해낸 비율(TN / (TN + FP))은?",
+    answer: "특이도 (Specificity)"
+  },
+  {
+    id: 71,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 4위] 배깅과 랜덤 포레스트의 부트스트랩 샘플링 과정에서 복원추출에 선택되지 않고 남은 약 36.8%의 데이터로 별도 검증셋 없이 모델을 자체 평가하는 데이터는?",
+    answer: "OOB (Out-Of-Bag) 평가"
+  },
+  {
+    id: 72,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 5위] 두 변수의 값이 순위(Rank)나 서열 척도로 주어졌을 때 두 변수 간의 비선형적인 단조(Monotonic) 관계를 평가하는 비모수 상관계수는?",
+    answer: "스피어만 상관계수 (Spearman Correlation)"
+  },
+  {
+    id: 73,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 6위] 시계열 데이터에서 시간에 따라 평균이 일정하지 않은 추세(Trend)를 제거하고 정상성을 확보하기 위해 현 시점 값에서 바로 이전 시점 값을 빼주는 변환 연산은?",
+    answer: "차분 (Differencing)"
+  },
+  {
+    id: 74,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 7위] 전진선택법과 후진제거법을 결합하여, 새로운 변수를 추가할 때마다 이미 선택된 변수들의 중요도를 재평가하여 기준 미달 변수를 제거해 나가는 변수 선택법은?",
+    answer: "단계적 선택법 (Stepwise Selection)"
+  },
+  {
+    id: 75,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 8위] 계층적 군집분석에서 두 군집 간 거리를 서로 다른 군집에 속한 데이터 포인트 쌍 중 '가장 먼 거리'로 정의하여 군집을 결합하는 연결법은?",
+    answer: "완전연결법 (최장연결법)"
+  },
+  {
+    id: 76,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 9위] 변수 간의 상관관계(공분산 행렬)와 각 변수의 분산 차이를 고려하여 데이터 포인트 사이의 통계적 거리를 측정하는 척도는?",
+    answer: "마할라노비스 거리 (Mahalanobis Distance)"
+  },
+  {
+    id: 77,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 10위] 데이터가 정규분포를 따르는지(정규성) 검정하기 위해 널리 사용되며, 표본 수가 비교적 작을 때(주로 2,000개 미만) 강력한 검정력을 보이는 대표적인 통계 검정법은?",
+    answer: "샤피로-윌크 검정 (Shapiro-Wilk Test)"
+  },
+  {
+    id: 78,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[기출 복원 11위] 분석 과제 4분면 매트릭스에서 분석 대상도 불명확하고(Unknown), 구체적인 분석 방법론도 모르는(Unknown) 상태에서 데이터 탐색을 통해 새로운 기회를 발굴하는 과제 유형은?",
+    answer: "발견 (Discovery)"
+  },
+  {
+    id: 79,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[기출 복원 12위] 전사 전담 분석 부서가 별도로 존재하지 않고, 마케팅·영업·재무 등 각 해당 현업 업무 부서 내에서 자체적으로 필요에 따라 분석 과제를 수행하는 조직 형태는?",
+    answer: "기능형 조직 구조"
+  },
+  {
+    id: 80,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[기출 복원 13위] SECI 지식 창출 모델에서 개인의 머릿속에 축적된 '암묵지'를 매뉴얼, 문서, 서적 등 다른 사람이 이해할 수 있는 '형식지'로 언어화·시각화하여 공유하는 변환 단계는?",
+    answer: "표출화 (Externalization)"
+  },
+  {
+    id: 81,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[기출 복원 14위] 정보주체인 개인이 본인의 개인정보에 대한 전송요구권을 행사하여 자신의 데이터를 능동적으로 관리·통제하고 맞춤형 서비스를 제공받는 패러다임은?",
+    answer: "마이데이터 (MyData)"
+  },
+  {
+    id: 82,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[기출 복원 15위] 의사결정나무 C4.5 알고리즘에서 ID3의 다치 속성(하위 범주가 많은 변수) 과대 분할 편향을 해결하기 위해 엔트로피 대신 도입한 분할 기준 척도는?",
+    answer: "정보 획득 비율 (Gain Ratio)"
   }
 ];

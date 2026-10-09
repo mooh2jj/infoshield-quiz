@@ -11,17 +11,16 @@ import { cn } from "@/lib/utils";
 import type { SubjectCategory } from "@/types/quiz";
 
 const ALL_SUBJECTS: SubjectCategory[] = [
-  "bigdata-planning",
-  "bigdata-exploration",
-  "bigdata-modeling",
-  "bigdata-evaluation",
+  "adsp-understanding",
+  "adsp-planning",
+  "adsp-analysis",
 ];
 
 const MIN_QUESTION_COUNT = 5;
 const MAX_QUESTION_COUNT = 20;
-const DEFAULT_QUESTION_COUNT = 5;
+const DEFAULT_QUESTION_COUNT = 10;
 
-export default function BigdataPage() {
+export default function AdspPage() {
   const router = useRouter();
   const hasHydrated = useQuizStore((state) => state.hasHydrated);
   const startSession = useQuizStore((state) => state.startSession);
@@ -48,21 +47,21 @@ export default function BigdataPage() {
       { subjects: selected, types: ["multiple_choice"] },
       { count: questionCount }
     );
-    router.push("/bigdata/quiz");
+    router.push("/adsp/quiz");
   }
 
   return (
     <main className="mx-auto flex w-full max-w-[680px] flex-1 flex-col gap-10 px-6 py-12 pb-28 sm:pb-12">
       <div className="flex flex-col gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">
-          빅데이터분석기사
+          ADsP (데이터분석 준전문가)
         </h1>
         <p className="text-muted-foreground">
-          데이터 분석 기획부터 탐색, 머신러닝 모델링, 결과 해석까지 필기 4개 과목 핵심 퀴즈
+          데이터 이해부터 분석 기획, 통계 및 정형 데이터 마이닝까지 핵심 ROI 퀴즈
         </p>
       </div>
 
-      {/* 빅데이터분석기사 단답형 스피드 퀴즈 배너 */}
+      {/* ADsP 단답형 스피드 퀴즈 배너 */}
       <div className="relative overflow-hidden rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent p-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
@@ -74,18 +73,18 @@ export default function BigdataPage() {
                 SPEED QUIZ
               </span>
               <span className="rounded bg-amber-500/20 px-1.5 py-0.2 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
-                4과목 완비
+                82문항 완비
               </span>
             </div>
             <h2 className="text-base font-semibold tracking-tight text-foreground">
-              빅데이터분석기사 스피드 퀴즈
+              ADsP 기출 복원 스피드 퀴즈
             </h2>
             <p className="text-xs text-muted-foreground">
-              3초 안에 정답을 떠올리는 4개 과목 핵심 플래시카드 암기 트레이닝
+              3초 안에 정답을 떠올리는 단답형 주관식 & 빈출 킬러 집중 암기 트레이닝
             </p>
           </div>
           <Link
-            href="/bigdata/speed-quiz"
+            href="/adsp/speed-quiz"
             className={cn(
               buttonVariants({ variant: "default" }),
               "h-10 shrink-0 gap-1.5 bg-amber-600 font-semibold text-white hover:bg-amber-700 shadow-sm"
@@ -128,52 +127,56 @@ export default function BigdataPage() {
             />
           ))}
         </div>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <span className="text-sm font-medium">문제 수</span>
-        <div className="flex items-center gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => adjustQuestionCount(-5)}
-            disabled={questionCount <= MIN_QUESTION_COUNT}
-            aria-label="문제 수 감소"
-          >
-            <Minus className="size-4" />
-          </Button>
-          <span className="w-12 text-center text-lg font-semibold tabular-nums">
-            {questionCount}
-          </span>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => adjustQuestionCount(5)}
-            disabled={questionCount >= MAX_QUESTION_COUNT}
-            aria-label="문제 수 증가"
-          >
-            <Plus className="size-4" />
-          </Button>
-        </div>
+        {selected.length === 0 && (
+          <p className="text-xs text-destructive">
+            최소 하나 이상의 과목을 선택해주세요.
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col gap-3">
+        <span className="text-sm font-medium">문제 수</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="size-9"
+              onClick={() => adjustQuestionCount(-5)}
+              disabled={questionCount <= MIN_QUESTION_COUNT}
+              aria-label="문제 수 감소"
+            >
+              <Minus className="size-4" />
+            </Button>
+            <span className="w-12 text-center text-lg font-semibold tabular-nums">
+              {questionCount}
+            </span>
+            <Button
+              variant="outline"
+              size="icon"
+              className="size-9"
+              onClick={() => adjustQuestionCount(5)}
+              disabled={questionCount >= MAX_QUESTION_COUNT}
+              aria-label="문제 수 증가"
+            >
+              <Plus className="size-4" />
+            </Button>
+          </div>
+          <span className="text-xs text-muted-foreground">
+            {MIN_QUESTION_COUNT} ~ {MAX_QUESTION_COUNT}문제
+          </span>
+        </div>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background p-4 sm:static sm:border-0 sm:bg-transparent sm:p-0">
         <Button
           size="lg"
           className="h-12 w-full text-base font-medium"
           disabled={!hasHydrated || selected.length === 0}
           onClick={handleStart}
         >
-          {selected.length === 0 ? "과목을 선택하세요" : "퀴즈 시작"}
+          문제 풀기 시작
         </Button>
-        <Link
-          href="/bigdata/mindmap"
-          className={cn(buttonVariants({ variant: "outline" }), "h-12 text-base")}
-        >
-          마인드맵 전체보기
-        </Link>
       </div>
     </main>
   );
