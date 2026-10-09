@@ -3222,8 +3222,588 @@ account     required      pam_faillock.so`,
     ],
     explanation:
       "• NTP DRDoS (monlist 공격):\n- UDP 123 포트 사용 (비연결형이므로 IP 스푸핑 용이)\n- monlist 명령어: 작은 요청 1개에 대해 최대 600개 IP 목록을 담은 수십 개의 UDP 패킷 반사 (증폭률 약 200~1000배)\n• 4대 종합 대책:\n1. `ntp.conf`에 `disable monitor` 지시자 설정\n2. `ntp.conf`에 `restrict default noquery` 설정\n3. 최신 NTP 데몬(v4.2.7p26+) 패치\n4. 네트워크 라우터에서 uRPF(Unicast Reverse Path Forwarding) 적용하여 위조된 IP 원천 차단",
+  },
+
+  // =================================================================
+  // [문제 79] 단답형 (3점) - 시스템 보안 (패스워드 최소 길이 설정)
+  // =================================================================
+  {
+    id: 79,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "리눅스 계정 패스워드 최소 길이 설정 파일 및 지시자",
+    description:
+      "리눅스 시스템에서 사용자 계정 생성 및 패스워드 설정 시 패스워드의 최소 길이를 8자리 이상으로 강제하기 위해 수정해야 하는 환경 설정 파일명과 해당 설정 변수(지시자)명을 기술하시오.",
+    answer: [
+      "설정 파일명: `/etc/login.defs` (또는 `/etc/security/pwquality.conf`, `/etc/pam.d/system-auth`)",
+      "설정 변수명: `PASS_MIN_LEN` (pwquality의 경우 `minlen`)",
+    ],
+    scoringPoints: [
+      "설정 파일명 `/etc/login.defs` 정확히 기술 시 1.5점",
+      "설정 변수명 `PASS_MIN_LEN` 정확히 기술 시 1.5점",
+      "(PAM pwquality 기준 `/etc/security/pwquality.conf` 및 `minlen`도 정답 인정)",
+    ],
+    explanation:
+      "• `/etc/login.defs`는 사용자 계정 및 암호 생성 기본 정책을 정의하는 파일입니다.\n- `PASS_MIN_LEN 8`: 패스워드 최소 글자 수 제한\n- `PASS_MAX_DAYS 90`: 패스워드 최대 사용 기간 (만료 주기)\n- `PASS_MIN_DAYS 1`: 패스워드 최소 변경 유예 기간\n- `PASS_WARN_AGE 7`: 패스워드 만료 전 경고 일수\n• 최신 배포판(RHEL/CentOS 7+)에서는 PAM 모듈 `pam_pwquality.so`와 `/etc/security/pwquality.conf`의 `minlen = 8` 설정을 함께 활용합니다.",
     examTips:
-      "NTP monlist 명령어, ntp.conf 설정(disable monitor, restrict noquery), uRPF 안티 스푸핑은 DRDoS 서술형의 1순위 핵심 키워드입니다.",
+      "주요정보통신기반시설 기술적 취약점 분석·평가 가이드 [U-02 패스워드 복잡성 설정]의 1순위 핵심 단답형 문제입니다.",
+  },
+
+  // =================================================================
+  // [문제 80] 서술·작업형 (14점) - 네트워크 보안 (무선 LAN CSMA/CA 절차 및 핵심 용어)
+  // =================================================================
+  {
+    id: 80,
+    subjectId: "network",
+    type: "descriptive",
+    score: 14,
+    domain: "네트워크 보안",
+    title: "무선 LAN IEEE 802.11 CSMA/CA 충돌 회피 절차 및 핵심 메커니즘",
+    description:
+      "유선 이더넷의 CSMA/CD와 달리 무선 환경에서는 신호 감쇠 및 히든 노드 문제로 인해 CSMA/CA(Carrier Sense Multiple Access with Collision Avoidance) 방식을 사용한다. 하위 3가지 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "무선 프레임 간의 충돌을 방지하고 프레임 우선순위를 보장하기 위해 프레임 전송 사이에 의무적으로 두는 대기 시간(간격)의 일반 명칭과 가장 높은 우선순위를 갖는 제어 프레임(ACK, CTS 등)용 간격의 명칭을 쓰시오.",
+        answer:
+          "일반 명칭: IFS (Inter-Frame Space / 프레임 간 간격)\n최우선 간격: SIFS (Short Inter-Frame Space)",
+        scoringCriteria:
+          "IFS 및 SIFS 명칭을 정확히 기술 시 4점 (각 2점)",
+      },
+      {
+        number: 2,
+        question:
+          "무선 환경의 고질적인 '숨은 노드 문제(Hidden Node Problem)'를 해결하기 위해 송신측과 수신측이 실제 데이터 전송 전에 주고받는 2가지 제어 핸드셰이크 프레임의 약어와 동작을 서술하시오.",
+        answer:
+          "1. RTS (Request To Send): 송신측이 AP나 수신측에게 데이터를 보낼 준비가 되었음을 알리고 채널 예약을 요청하는 프레임\n2. CTS (Clear To Send): 수신측이 RTS에 응답하여 전송을 승낙하고 주변의 모든 노드에게 지정 시간 동안 송신을 멈추도록 알리는 브로드캐스트 프레임",
+        scoringCriteria:
+          "RTS, CTS 명칭 및 채널 예약/송신 유예 동작을 기술 시 5점",
+      },
+      {
+        number: 3,
+        question:
+          "다른 노드가 전송 중인 RTS/CTS 프레임을 수신한 제3의 무선 스테이션들이 채널이 사용 중임을 가상으로 인지하고 송신을 지연시키기 위해 설정하는 타이머(가상 반송파 감지)의 명칭을 쓰시오.",
+        answer: "NAV (Network Allocation Vector / 네트워크 할당 벡터)",
+        scoringCriteria: "NAV 명칭 정확히 기술 시 5점",
+      },
+    ],
+    answer: [
+      "1. 프레임 간 간격: IFS, 최우선 간격: SIFS",
+      "2. 핸드셰이크 프레임: RTS (Request To Send) / CTS (Clear To Send)",
+      "3. 가상 반송파 감지 타이머: NAV (Network Allocation Vector)",
+    ],
+    scoringPoints: [
+      "IFS 및 SIFS 명칭 (4점)",
+      "RTS / CTS 제어 프레임 명칭 및 히든 노드 해결 역할 (5점)",
+      "NAV (Network Allocation Vector) 명칭 (5점)",
+    ],
+    explanation:
+      "• 무선 LAN CSMA/CA 4단계 핸드셰이크:\n1. DIFS(Distributed IFS) 동안 채널 유휴 상태 감지 및 무작위 백오프(Backoff)\n2. 송신 노드가 RTS(Request to Send) 전송\n3. SIFS 후 수신 노드가 CTS(Clear to Send) 회신\n4. CTS를 들은 주변의 다른 모든 노드는 NAV(Network Allocation Vector)를 설정하여 데이터 전송 기간 동안 전송을 유예함\n• 우선순위 간격 크기: SIFS < PIFS < DIFS < EIFS",
+    examTips:
+      "무선랜 보안 및 통신 프로토콜의 핵심입니다. SIFS, DIFS, RTS/CTS, NAV 4개 용어는 서술형/단답형 단골입니다.",
+  },
+
+  // =================================================================
+  // [문제 81] 단답형 (3점) - 정보보안 일반 (위험의 3요소: 자산, 위협, 취약점)
+  // =================================================================
+  {
+    id: 81,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반",
+    title: "정보보호 위험(Risk)을 구성하는 3대 기본 요소",
+    description:
+      "정보보호 위험관리(ISO 27005 / ISO 13335)에서 '위험(Risk)'은 조직이 보호해야 할 대상과 이를 침해할 수 있는 요인들의 상호작용으로 정의된다. 위험의 크기를 산정하기 위해 분석하는 3대 핵심 요소를 기술하시오.",
+    answer: [
+      "1. 자산 (Asset)",
+      "2. 위협 (Threat)",
+      "3. 취약점 (Vulnerability)",
+    ],
+    scoringPoints: [
+      "자산(Asset), 위협(Threat), 취약점(Vulnerability) 3가지를 모두 기술 시 3점 (2가지는 2점)",
+    ],
+    explanation:
+      "• 위험(Risk)의 기본 공식:\n`위험(Risk) = f(자산 가치, 위협, 취약점)`\n1. 자산(Asset): 조직이 업무를 수행하는 데 가치가 있어 보호해야 할 유·무형의 정보 자원\n2. 위협(Threat): 자산에 손실이나 피해를 끼칠 잠재적 원인이나 행위 (내부자 유출, 해킹, 천재지변 등)\n3. 취약점(Vulnerability): 위협이 자산에 피해를 입히는 데 악용될 수 있는 자산 자체의 물리적·기술적·관리적 약점이나 결함",
+    examTips:
+      "위험 = 자산(보호대상) × 위협(외부요인) × 취약점(내부약점)의 관계는 위험관리의 절대 기초입니다.",
+  },
+
+  // =================================================================
+  // [문제 82] 단답형 (3점) - 애플리케이션 보안 (XXE 취약점)
+  // =================================================================
+  {
+    id: 82,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "XML 외부 개체 참조(XXE) 보안 약점 및 방어 대책",
+    description:
+      "웹 애플리케이션이 XML 입력을 파싱할 때 외부 엔티티(External Entity, DTD의 `SYSTEM` 키워드) 처리를 차단하지 않아, 공격자가 서버 내부 파일(`/etc/passwd` 등)을 유출하거나 내부망 포트 스캐닝 및 SSRF를 수행할 수 있게 되는 보안 취약점의 영문 약어와 근본적인 조치 방안을 쓰시오.",
+    scenario:
+      "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<!DOCTYPE foo [  \n  <!ELEMENT foo ANY >\n  <!ENTITY xxe SYSTEM \"file:///etc/passwd\" >]>\n<foo>&xxe;</foo>",
+    answer: [
+      "취약점 명칭: XXE (XML External Entity Injection / XML 외부 개체 참조)",
+      "보안 조치: XML 파서에서 외부 엔티티 및 DTD 기능 비활성화 (예: `setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)` 또는 `setExpandEntityReferences(false)`)",
+    ],
+    scoringPoints: [
+      "취약점 약어 XXE 정확히 기술 시 1.5점",
+      "XML 파서의 DTD/외부 엔티티 참조 비활성화 조치 서술 시 1.5점",
+    ],
+    explanation:
+      "XXE 공격은 XML 1.0 표준의 외부 엔티티 선언(`<!ENTITY xxe SYSTEM \"uri\">`)을 악용합니다.\n• 방어 기법:\n1. XML 파서 설정에서 `disallow-doctype-decl`을 true로 지정하여 DTD 선언 자체를 전면 차단\n2. `external-general-entities` 및 `external-parameter-entities`를 false로 비활성화\n3. 불필요한 경우 JSON 포맷으로 대체",
+    examTips:
+      "전자정부 SW 개발보안 가이드 및 OWASP Top 10 단골 문제입니다. 'XXE'와 '외부 DTD 비활성화'를 기억하세요.",
+  },
+
+  // =================================================================
+  // [문제 83] 서술·작업형 (14점) - 애플리케이션 보안 (XSS 취약점 3대 유형 및 심층 방어)
+  // =================================================================
+  {
+    id: 83,
+    subjectId: "application",
+    type: "descriptive",
+    score: 14,
+    domain: "애플리케이션 보안",
+    title: "XSS(Cross-Site Scripting) 3대 유형 비교 및 다계층 방어 체계",
+    description:
+      "웹 애플리케이션의 대표적인 클라이언트 측 코드 인젝션 공격인 XSS(크로스 사이트 스크립팅)에 관한 서술형 물음이다. 하위 3가지 요구사항에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "XSS의 3대 유형인 저장형(Stored XSS), 반사형(Reflected XSS), DOM 기반(DOM-based XSS)의 스크립트 저장 위치 및 실행 경로의 차이점을 각각 비교 설명하시오.",
+        answer:
+          "1. 저장형(Stored XSS): 악성 스크립트가 게시판 DB 등 서버 저장소에 영구 보관된 후, 해당 페이지를 열람하는 모든 희생자의 브라우저에서 실행됨.\n2. 반사형(Reflected XSS): 스크립트가 포함된 악성 URL 링크를 희생자가 클릭했을 때 서버 응답 본문에 그대로 반사(Reflect)되어 1회성으로 실행됨.\n3. DOM 기반(DOM-based XSS): 서버를 거치지 않고, 브라우저가 클라이언트 측 자바스크립트를 해석하여 DOM 트리(document.location, innerHTML 등)를 조작하는 과정에서 실행됨.",
+        scoringCriteria:
+          "3가지 유형의 스크립트 위치 및 실행 메커니즘을 정확히 대조 설명 시 6점 (각 2점)",
+      },
+      {
+        number: 2,
+        question:
+          "XSS 공격을 원천 무력화하기 위해 서버 측에서 HTML 특수문자(`<`, `>`, `\"`, `'`, `&`)를 변환하는 기술의 명칭과 `<` 및 `>`의 변환 결과(HTML Entity)를 쓰시오.",
+        answer:
+          "기술 명칭: HTML 엔티티 인코딩 (HTML Entity Encoding / 출력값 치환)\n변환 결과: `<` → `&lt;` / `>` → `&gt;`",
+        scoringCriteria:
+          "HTML 엔티티 인코딩 명칭 (2점), &lt; 및 &gt; 표기 (2점) - 총 4점",
+      },
+      {
+        number: 3,
+        question:
+          "공격자가 XSS 취약점을 통해 사용자의 세션 쿠키(Cookie)를 탈취하지 못하도록 웹 서버 응답 헤더에서 설정해야 하는 쿠키 보안 속성과, 웹 브라우저가 인가된 출처의 스크립트만 실행하도록 제한하는 HTTP 응답 보안 헤더의 명칭을 쓰시오.",
+        answer:
+          "1. 쿠키 보안 속성: `HttpOnly` (자바스크립트의 document.cookie 접근 차단)\n2. HTTP 보안 헤더: `CSP (Content-Security-Policy)`",
+        scoringCriteria:
+          "HttpOnly 속성 명칭 (2점), Content-Security-Policy (CSP) 헤더 명칭 (2점) - 총 4점",
+      },
+    ],
+    answer: [
+      "1. Stored XSS(DB 저장 후 다수 감염), Reflected XSS(URL 파라미터 반사 1회 실행), DOM-based XSS(클라이언트 DOM 조작 실행)",
+      "2. HTML 엔티티 인코딩 (< → &lt;, > → &gt;)",
+      "3. HttpOnly 쿠키 플래그 및 CSP(Content-Security-Policy) 헤더",
+    ],
+    scoringPoints: [
+      "XSS 3대 세부 유형 동작 메커니즘 대조 (6점)",
+      "HTML Entity Encoding 및 &lt;, &gt; 치환 (4점)",
+      "HttpOnly 속성 및 CSP(Content-Security-Policy) 헤더 (4점)",
+    ],
+    explanation:
+      "• XSS 방어 심층 체계:\n1. 입·출력 검증: 입력을 화이트리스트 검증하고, 출력 시 HTML Entity Encoding(`&lt;`, `&gt;`, `&quot;`, `&#x27;`, `&amp;`)\n2. 쿠키 보호: 세션 쿠키에 `HttpOnly` 플래그를 설정하여 스크립트 탈취 차단\n3. 브라우저 정책 강화: `Content-Security-Policy: default-src 'self'` 헤더를 적용하여 인라인 스크립트 실행 차단",
+    examTips:
+      "실기 시험에서 가장 출제 빈도가 높은 14점 서술형 문제입니다. 3가지 유형 대조, 인코딩, HttpOnly/CSP 콤보는 완벽히 숙지해야 합니다.",
+  },
+
+  // =================================================================
+  // [문제 84] 단답형 (3점) - 네트워크 보안 (Local DNS vs Authoritative DNS)
+  // =================================================================
+  {
+    id: 84,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "Local DNS(Recursive) 서버와 Authoritative DNS 서버의 역할 구분",
+    description:
+      "DNS 계층 구조에서 클라이언트(호스트)의 질의를 받아 루트 DNS부터 순차적으로 반복 질의(Iterative Query)를 수행하여 최종 IP를 찾아 캐싱하는 서버와, 특정 도메인 존(Zone) 파일의 원본 레코드를 직접 보유하고 최종 권한 응답을 제공하는 서버의 명칭을 각각 기술하시오.",
+    answer: [
+      "1. 반복 질의 대행 및 캐싱 서버: Local DNS 서버 (또는 Recursive DNS 서버 / Recursive Resolver)",
+      "2. 원본 레코드 보유 권한 서버: Authoritative DNS 서버 (권위 DNS 서버)",
+    ],
+    scoringPoints: [
+      "Local DNS (또는 Recursive Resolver) 기술 시 1.5점",
+      "Authoritative DNS (권위 DNS) 기술 시 1.5점",
+    ],
+    explanation:
+      "• Local DNS (Recursive Resolver):\n- PC(스텁 리졸버)가 가장 먼저 조회하는 ISP 등의 캐시 네임서버\n- 클라이언트를 대신해 루트(.) → TLD(.com) → SLD 순으로 반복 질의를 수행하고 TTL 동안 결과를 캐싱함\n• Authoritative DNS (권위 네임서버):\n- 해당 도메인에 대한 최종 책임(Zone File)을 지니고 있으며, 질문에 대해 권한 있는 응답(Authoritative Answer)을 반환하는 서버",
+    examTips:
+      "DNS 캐시 포이즈닝은 Local DNS가 표적이며, 존 트랜스퍼 공격은 Authoritative DNS가 표적입니다.",
+  },
+
+  // =================================================================
+  // [문제 85] 서술·작업형 (14점) - 애플리케이션 보안 (HTTP Request Smuggling)
+  // =================================================================
+  {
+    id: 85,
+    subjectId: "application",
+    type: "descriptive",
+    score: 14,
+    domain: "애플리케이션 보안",
+    title: "HTTP Request Smuggling(요청 밀수) 공격 원리 및 헤더 불일치 분석",
+    description:
+      "프론트엔드 프록시(WAF/로드밸런서)와 백엔드 웹 서버 간에 HTTP 요청 경계를 해석하는 방식의 차이를 악용하여 발생하는 'HTTP Request Smuggling(HTTP 요청 밀수)' 취약점에 관한 서술형 물음이다. 하위 3가지 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "HTTP Request Smuggling 공격이 발생하는 근본 원인인 프론트엔드와 백엔드 서버 간의 2가지 요청 본문 길이 명시 헤더 처리 불일치를 기술하시오.",
+        answer:
+          "HTTP 요청의 본문 길이를 나타내는 `Content-Length(CL)` 헤더와 청크 분할 전송을 지정하는 `Transfer-Encoding: chunked (TE)` 헤더가 하나의 HTTP 요청에 동시에 포함되었을 때, 두 서버 중 하나는 CL을 우선하고 다른 하나는 TE를 우선하여 요청 경계(끝점)를 서로 다르게 파싱하기 때문에 발생한다.",
+        scoringCriteria:
+          "Content-Length 및 Transfer-Encoding: chunked 두 헤더의 처리 불일치(CL-TE, TE-CL) 원인을 정확히 서술 시 5점",
+      },
+      {
+        number: 2,
+        question:
+          "CL-TE 취약점 환경에서 프론트엔드는 Content-Length를 처리하고 백엔드는 Transfer-Encoding을 처리할 때, 악성 페이로드가 백엔드 서버의 다음 사용자 요청에 주입되는 메커니즘을 설명하시오.",
+        answer:
+          "프론트엔드는 Content-Length 길이만큼을 정상적인 단일 요청으로 인식하여 백엔드로 전달하지만, 백엔드는 Transfer-Encoding: chunked에 따라 청크 종료 바이트(`0\\r\\n\\r\\n`)까지만 처리하고 남은 나머지 데이터를 다음 수신 요청의 시작 부분으로 오인하여 연결 소켓 큐에 잔류시킨다. 그 결과 다음 무고한 사용자의 요청 앞에 공격자의 악성 요청 조각이 결합(밀수)되어 실행된다.",
+        scoringCriteria:
+          "청크 종료 후 잔여 데이터가 백엔드 큐에 남아 다음 사용자 요청과 결합되는 원리 서술 시 5점",
+      },
+      {
+        number: 3,
+        question:
+          "HTTP Request Smuggling 공격을 방어하기 위한 웹 서버 및 프록시 설정 대책 2가지를 기술하시오.",
+        answer:
+          "1. HTTP/2 프로토콜 종단 간(End-to-End) 사용: 프론트엔드와 백엔드 간 통신을 프레임 기반 바이너리 프로토콜인 HTTP/2로 일원화하여 모호한 텍스트 헤더 파싱을 제거한다.\n2. 모호한 헤더 차단 및 프론트엔드 정규화: Content-Length와 Transfer-Encoding이 동시에 포함된 요청이나 난독화된 헤더가 유입되면 프론트엔드에서 즉시 400 Bad Request로 드롭(차단)한다.",
+        scoringCriteria:
+          "HTTP/2 도입 및 이중 헤더(CL/TE 동시 유입) 즉시 차단 서술 시 4점 (각 2점)",
+      },
+    ],
+    answer: [
+      "1. Content-Length(CL)와 Transfer-Encoding: chunked(TE) 헤더의 서버 간 우선순위 불일치(CL-TE, TE-CL)",
+      "2. 백엔드가 청크 종료 후 남은 바이트를 파이프라인 상 다음 요청의 접두어로 오인 결합(밀수)",
+      "3. 종단 간 HTTP/2 사용 및 CL/TE 동시 포함 모호한 요청 400 Bad Request 차단",
+    ],
+    scoringPoints: [
+      "CL과 TE 헤더 불일치 원인 정확 기술 (5점)",
+      "백엔드 큐 내 다음 요청 결합 메커니즘 서술 (5점)",
+      "HTTP/2 일원화 및 모호 헤더 거부 방어 대책 (4점)",
+    ],
+    explanation:
+      "• HTTP Request Smuggling 유형:\n- CL-TE: 프론트는 CL 기준 파싱, 백엔드는 TE 기준 파싱\n- TE-CL: 프론트는 TE 기준 파싱, 백엔드는 CL 기준 파싱\n- TE-TE: 양쪽 모두 TE를 지원하지만 헤더 난독화(`Transfer-Encoding: xchunked`)로 한쪽이 CL로 폴백",
+    examTips:
+      "최신 웹 보안 시험에서 고난도로 출제되는 트렌드 주제입니다. CL과 TE 헤더 간의 충돌을 명확히 이해해야 합니다.",
+  },
+
+  // =================================================================
+  // [문제 86] 단답형 (3점) - 정보보안 일반 (지능형 지속 위협 - APT)
+  // =================================================================
+  {
+    id: 86,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반",
+    title: "지능형 지속 위협(APT)의 개념 및 3대 핵심 특성",
+    description:
+      "불특정 다수가 아닌 특정 표적(기업, 국가기관 등)을 사전에 정하고, 장기간에 걸쳐 다양한 최신 공격 기법(스피어 피싱, 제로데이, 악성코드 등)을 잠복·우회 활용하여 목표를 은밀히 달성하는 공격 형태의 명칭과 약어(3글자)를 기술하시오.",
+    answer: "APT (Advanced Persistent Threat / 지능형 지속 위협)",
+    scoringPoints: [
+      "영문 약어 'APT' 또는 '지능형 지속 위협' 기술 시 3점 인정",
+    ],
+    explanation:
+      "• APT의 3대 요소:\n1. Advanced (지능형): 제로데이 취약점, 맞춤형 악성코드, 루트킷 등 고도화된 기술 사용\n2. Persistent (지속형): 목표가 달성될 때까지 수주~수개월 동안 은밀히 잠복하며 시스템 침투 유지\n3. Threat (위협): 명확한 경제적·군사적 목적을 지닌 조직화된 공격 주체",
+    examTips:
+      "기출 단골 단답형입니다. 침투(Infiltration) → 거점 확보 → 내부 정찰 → 권한 상승 → 자료 유출 단계로 이어집니다.",
+  },
+
+  // =================================================================
+  // [문제 87] 단답형 (3점) - 네트워크 보안 (HTTP Read DoS / Slow Read)
+  // =================================================================
+  {
+    id: 87,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "TCP 윈도우 크기를 조작하는 Slow HTTP Read DoS 공격",
+    description:
+      "공격자가 웹 서버와 정상적인 TCP 3-Way Handshake를 맺고 대용량 리소스를 요청한 뒤, TCP 헤더의 `Window Size`를 매우 작은 크기(0 또는 수십 바이트)로 지속 설정하여 서버가 응답 데이터를 보내지 못하고 버퍼에 담아둔 채 TCP 연결 세션을 장시간 점유하게 만들어 자원을 고갈시키는 DoS 공격 기법은?",
+    answer: "Slow HTTP Read DoS (또는 Slow Read DoS / Slowloris Read)",
+    scoringPoints: [
+      "Slow HTTP Read DoS (또는 Slow Read DoS) 명칭 정확히 기술 시 3점",
+    ],
+    explanation:
+      "• Slow HTTP 공격 계열 비교:\n1. Slowloris (Slow HTTP Header): 요청 헤더 끝에 `\\r\\n\\r\\n`을 보내지 않고 불완전한 헤더를 천천히 전송\n2. RUDY (Slow HTTP POST): Content-Length를 크게 설정하고 본문(Body)을 1바이트씩 전송\n3. Slow HTTP Read DoS: 정상 요청 후 수신 윈도우 크기(Window Size)를 0으로 줄여 서버의 송신 버퍼와 연결 소켓 고갈",
+    examTips:
+      "Slowloris(헤더 조작), RUDY(바디 조작), Slow Read(TCP Window Size 조작) 3형제를 명확히 구분하세요.",
+  },
+
+  // =================================================================
+  // [문제 88] 단답형 (3점) - 정보보안 일반 (오탐 False Positive vs 미탐 False Negative)
+  // =================================================================
+  {
+    id: 88,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반",
+    title: "보안관제 및 탐지 시스템의 오탐(False Positive)과 미탐(False Negative)",
+    description:
+      "침입 탐지 시스템(IDS) 및 보안관제 장비에서 발생하는 탐지 오류 중 (A) 정상적인 트래픽이나 행위를 공격으로 잘못 판단하여 경보를 울리는 오류와, (B) 실제 공격이 발생하였음에도 정상 트래픽으로 오인하여 탐지하지 못하고 놓치는 오류의 명칭을 각각 쓰시오.",
+    answer: [
+      "(A): 오탐 (False Positive / 거짓 긍정)",
+      "(B): 미탐 (False Negative / 거짓 부정)",
+    ],
+    scoringPoints: [
+      "(A) 오탐 (False Positive) 정확히 기술 시 1.5점",
+      "(B) 미탐 (False Negative) 정확히 기술 시 1.5점",
+    ],
+    explanation:
+      "• 혼동 행렬(Confusion Matrix) 기준:\n- 정탐(True Positive): 공격을 공격으로 올바르게 탐지\n- 정탐(True Negative): 정상을 정상으로 올바르게 통과\n- 오탐(False Positive): 정상을 공격으로 잘못 판정 (업무 불편, 관리자 피로 증가)\n- 미탐(False Negative): 공격을 정상으로 잘못 판정 (시스템 침해 위험 초래, 가장 치명적)",
+    examTips:
+      "보안 관제에서 가장 위험한 것은 '미탐(False Negative)'입니다. 미탐은 침해 사고로 직결되기 때문입니다.",
+  },
+
+  // =================================================================
+  // [문제 89] 서술·작업형 (14점) - 시스템 & 네트워크 보안 (HIDS vs NIDS)
+  // =================================================================
+  {
+    id: 89,
+    subjectId: "system",
+    type: "descriptive",
+    score: 14,
+    domain: "시스템 보안",
+    title: "호스트 기반 침입탐지시스템(HIDS)과 네트워크 기반 침입탐지시스템(NIDS) 비교",
+    description:
+      "조직의 보안 인프라를 감시하기 위해 운영하는 HIDS와 NIDS에 관한 서술형 물음이다. 하위 3가지 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "HIDS와 NIDS의 주요 감시 대상 및 데이터 수집 위치의 차이점을 각각 서술하시오.",
+        answer:
+          "1. HIDS(Host-based IDS): 개별 서버나 엔드포인트 호스트 내부에 에이전트로 설치되어 시스템 로그, 프로세스 실행, 파일 무결성(Tripwire 등), 레지스트리, 시스템 콜을 감시한다.\n2. NIDS(Network-based IDS): 스위치 미러링(SPAN) 포트나 네트워크 탭(TAP)에 설치되어 네트워크 세그먼트를 통과하는 원시 패킷(헤더 및 페이로드) 전체를 스니핑하여 감시한다.",
+        scoringCriteria:
+          "HIDS(서버 내부 로그/시스템콜/무결성) 및 NIDS(네트워크 패킷/스위치 미러링) 감시 대상 서술 시 5점",
+      },
+      {
+        number: 2,
+        question:
+          "네트워크 패킷이 암호화(HTTPS/IPSec)된 환경에서 NIDS와 HIDS가 갖는 탐지 역량의 결정적 차이점을 서술하시오.",
+        answer:
+          "NIDS는 암호화된 트래픽(HTTPS 등)을 복호화하지 못하면 패킷 페이로드 내부의 악성 행위를 탐지하기 어렵다. 반면 HIDS는 서버가 트래픽을 복호화한 이후 애플리케이션 계층이나 운영체제 수준에서 실행되는 데이터와 행위를 직접 감시하므로 암호화 여부와 무관하게 정밀 탐지가 가능하다.",
+        scoringCriteria:
+          "암호화 트래픽 복호화 한계(NIDS)와 복호화 후 호스트 수준 탐지 가능(HIDS) 대비 서술 시 5점",
+      },
+      {
+        number: 3,
+        question:
+          "대규모 전산망 환경에서 NIDS 대비 HIDS가 지닌 단점(운영 및 시스템 리소스 측면) 2가지를 서술하시오.",
+        answer:
+          "1. 개별 호스트의 CPU/메모리 부하: 에이전트 구동 및 로깅 분석으로 인해 대상 서버의 시스템 성능 저하를 초래할 수 있다.\n2. 설치 및 유지관리 복잡성: 보호 대상 서버마다 개별 OS에 맞춰 일일이 에이전트를 설치·패치·관리해야 하므로 관리 오버헤드가 크며, 서버 침해 시 HIDS 에이전트 자체가 무력화되거나 로그가 변조될 위험이 있다.",
+        scoringCriteria:
+          "호스트 자원 부하 및 관리 오버헤드/에이전트 무력화 위험 서술 시 4점 (각 2점)",
+      },
+    ],
+    answer: [
+      "1. HIDS(호스트 내부 로그/시스템콜 감시) vs NIDS(네트워크 미러링 패킷 감시)",
+      "2. HTTPS 암호화 시 NIDS는 페이로드 검사 불가, HIDS는 복호화 후 호스트 레벨 감시 가능",
+      "3. 단점: 서버 CPU/메모리 자원 점유 부하, 다수 서버 설치·관리 오버헤드 및 에이전트 변조 위험",
+    ],
+    scoringPoints: [
+      "HIDS/NIDS 수집 위치 및 감시 데이터 정확 서술 (5점)",
+      "암호화 트래픽 환경에서의 탐지 한계 및 장단점 비교 (5점)",
+      "HIDS의 자원 부하 및 관리 비용 단점 서술 (4점)",
+    ],
+    explanation:
+      "• HIDS의 대표 사례: OSSEC, Wazuh, Tripwire\n• NIDS의 대표 사례: Snort, Suricata, Zeek\n• 실제 엔터프라이즈 환경에서는 경계 NIDS로 외부 1차 탐지를 수행하고, 중요 DB/웹 서버에는 HIDS(또는 EDR)를 결합하는 다계층 심층 방어를 구현합니다.",
+    examTips:
+      "HIDS와 NIDS의 장단점 비교(암호화 환경 대응력, 리소스 부하, 감시 영역)는 14점 서술형 단골 주제입니다.",
+  },
+
+  // =================================================================
+  // [문제 90] 단답형 (3점) - 정보보안 관리 및 법률 (위험관리 프로세스 및 명세서)
+  // =================================================================
+  {
+    id: 90,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리 및 법률",
+    title: "위험분석, 위험평가, 위험관리의 개념 및 정보보호대책 명세서(SoA)",
+    description:
+      "ISMS-P 및 ISO 27001 인증 기준에서 (A) 조직의 수용 가능한 위험 수준(DoA)을 설정하고 위험 처리 전략을 수립하여 잔여 위험을 관리하는 전체 일련의 프로세스와, (B) 적용 가능한 보안 통제 항목 중 조직에 채택할 항목과 제외할 항목 및 그 사유를 기술한 최종 산출물 문서의 명칭을 쓰시오.",
+    answer: [
+      "(A): 위험관리 (Risk Management)",
+      "(B): 정보보호대책 명세서 (또는 적용성 보고서 / SoA - Statement of Applicability)",
+    ],
+    scoringPoints: [
+      "(A) 위험관리 (Risk Management) 1.5점",
+      "(B) 정보보호대책 명세서 (또는 적용성 보고서 / SoA) 1.5점",
+    ],
+    explanation:
+      "• 단계적 구분:\n1. 위험분석(Risk Analysis): 자산, 위협, 취약점을 식별하고 위험도를 산정하는 작업\n2. 위험평가(Risk Assessment): 산정된 위험도를 조직의 DoA(수용 가능 위험 수준)와 비교하여 우선순위를 매기는 작업\n3. 위험관리(Risk Management): 위험분석/평가 결과를 바탕으로 위험 처리(수용/감소/회피/전가)를 실행하고 지속 통제하는 전체 프레임워크\n• 정보보호대책 명세서(SoA):\n- 통제 항목별 적용 여부(Yes/No), 구현 현황, 제외 시 명확한 사유를 기재한 핵심 필수 문서",
+    examTips:
+      "ISMS-P 인증 심사의 필수 제출 문서인 '정보보호대책 명세서(적용성 보고서, SoA)'는 실기 단골 키워드입니다.",
+  },
+
+  // =================================================================
+  // [문제 91] 단답형 (3점) - 시스템 보안 (윈도우 사용자 계정 컨트롤 - UAC)
+  // =================================================================
+  {
+    id: 91,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "윈도우 사용자 계정 컨트롤(UAC) 메커니즘 및 권한 상승 방어",
+    description:
+      "윈도우 비스타 이후 도입된 보안 기능으로, 관리자 권한을 가진 계정이라도 평상시에는 표준 사용자 토큰으로 프로그램을 실행하다가 시스템 설정 변경이나 관리자 권한이 필요한 작업 시 사용자 동의 화면(Secure Desktop 팝업)을 띄워 악성코드의 무단 권한 상승을 통제하는 기술의 명칭과 약어(3글자)를 기술하시오.",
+    answer: "UAC (사용자 계정 컨트롤 / User Account Control)",
+    scoringPoints: [
+      "영문 약어 'UAC' 또는 '사용자 계정 컨트롤' 정확히 기술 시 3점",
+    ],
+    explanation:
+      "• UAC의 핵심 원리:\n1. 이중 토큰(Dual Token): 관리자 계정 로그인 시 '필터링된 표준 토큰'과 '전체 관리자 토큰' 2개를 발급\n2. 기본적으로 모든 프로세스는 표준 토큰으로 실행\n3. 높은 권한 요청 시(Shield 아이콘 프로그램 실행) UAC 프롬프트를 Secure Desktop(보안 데스크톱)에 표시하여 화면 스크린샷이나 후킹 조작을 차단하고 명시적 승인을 요구함",
+    examTips:
+      "윈도우 보안의 기초 메커니즘입니다. UAC 팝업 창이 뜨는 격리된 화면을 '보안 데스크톱(Secure Desktop)'이라 부릅니다.",
+  },
+
+  // =================================================================
+  // [문제 92] 서술·작업형 (14점) - 정보보안 관리 및 법률 (개인정보 영향평가 PIA)
+  // =================================================================
+  {
+    id: 92,
+    subjectId: "law",
+    type: "descriptive",
+    score: 14,
+    domain: "정보보안 관리 및 법률",
+    title: "개인정보 영향평가(PIA) 수행 대상 기준 및 법정 고려사항 4가지",
+    description:
+      "개인정보보호법 제33조에 따른 '개인정보 영향평가(Privacy Impact Assessment)'에 관한 서술형 물음이다. 하위 2가지 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "공공기관이 개인정보 영향평가를 의무적으로 수행해야 하는 대상 기준 3가지를 관련 정보의 규모(정보주체 수) 관점에서 서술하시오.",
+        answer:
+          "1. 5만 명 이상의 민감정보 또는 고유식별정보의 처리가 수반되는 개인정보파일을 구축·운용·변경하려는 경우\n2. 50만 명 이상의 개인정보가 포함된 개인정보파일을 다른 개인정보파일과 연계하려는 경우\n3. 100만 명 이상의 정보주체에 관한 개인정보파일을 구축·운용·변경하려는 경우",
+        scoringCriteria:
+          "5만 명(민감/고유식별), 50만 명(연계), 100만 명(구축/운용) 3가지 기준을 정확히 제시 시 6점 (각 2점)",
+      },
+      {
+        number: 2,
+        question:
+          "개인정보 영향평가를 수행할 때 반드시 고려하여 평가하여야 하는 법정 고려사항 4가지를 서술하시오.",
+        answer:
+          "1. 처리하는 개인정보의 수량 (규모)\n2. 개인정보가 침해될 경우 정보주체의 권리가 침해받을 가능성 및 그 위험 정도 (침해 위험성)\n3. 개인정보의 성질 및 종류 (민감정보, 고유식별정보 등 자산의 성격)\n4. 개인정보의 안전성 확보조치 기준에 따른 암호화, 접근 통제 등 기술적·물리적·관리적 보호조치 현황",
+        scoringCriteria:
+          "개인정보 수량, 권리 침해 위험 정도, 개인정보 성질/종류, 안전성 확보조치 수준 4가지를 서술 시 8점 (각 2점)",
+      },
+    ],
+    answer: [
+      "1. 공공기관 PIA 의무 기준: 5만 명(민감·고유식별), 50만 명(연계), 100만 명(구축·운용)",
+      "2. PIA 법정 고려사항 4가지: ① 처리하는 개인정보의 수량, ② 정보주체 권리 침해 위험 정도, ③ 개인정보의 성질 및 종류, ④ 안전성 확보조치 수준",
+    ],
+    scoringPoints: [
+      "PIA 수량 기준 5만/50만/100만 명 정확 서술 (6점)",
+      "법정 고려사항 4가지 명확 서술 (8점)",
+    ],
+    explanation:
+      "• 개인정보 영향평가(PIA):\n개인정보를 활용하는 새로운 시스템 도입이나 변경 시 정보주체의 사생활 침해 위험을 사전에 분석하고 개선 대책을 도출하는 제도입니다.\n• 공공기관 의무 기준 암기법: 5만(민감), 50만(연계), 100만(일반)",
+    examTips:
+      "개인정보보호법 서술형 1순위 문제입니다. 5만/50만/100만 숫자와 4대 고려사항은 백지에 완벽히 쓸 수 있어야 합니다.",
+  },
+
+  // =================================================================
+  // [문제 93] 단답형 (3점) - 시스템 & 네트워크 보안 (무차별 모드 promiscuous mode)
+  // =================================================================
+  {
+    id: 93,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "리눅스 로그의 promiscuous mode 경고와 네트워크 스니핑 공격",
+    description:
+      "보안 담당자가 리눅스 서버의 `/var/log/messages` 파일을 점검하던 중 다음과 같은 로그를 발견하였다. (A) 해당 네트워크 인터페이스가 활성화한 동작 모드의 명칭과, (B) 내부 침입자가 해당 모드를 켜서 수행하려는 대표적인 네트워크 공격 기법을 쓰시오.",
+    scenario: "kernel: device eth0 entered promiscuous mode",
+    answer: [
+      "(A) 동작 모드: 무차별 모드 (Promiscuous Mode / 프로미스큐어스 모드)",
+      "(B) 공격 기법: 스니핑 (Sniffing / 패킷 도청)",
+    ],
+    scoringPoints: [
+      "(A) 무차별 모드 (Promiscuous Mode) 기술 시 1.5점",
+      "(B) 스니핑 (Sniffing / 도청) 기술 시 1.5점",
+    ],
+    explanation:
+      "• Promiscuous Mode (무차별 모드):\n- 일반적인 NIC(네트워크 카드)는 목적지 MAC 주소가 자신의 MAC 주소이거나 브로드캐스트인 패킷만 수신하고 나머지는 폐기합니다.\n- 그러나 tcpdump, Wireshark, 악성 스니퍼가 NIC를 '무차별 모드'로 전환하면, 목적지와 무관하게 해당 이더넷 세그먼트를 지나가는 모든 패킷을 OS 커널로 전달하여 도청(Sniffing)할 수 있게 됩니다.",
+    examTips:
+      "ifconfig eth0 명령어로 PROMISC 플래그가 켜져 있는지 확인하거나 `ip link show`로 점검합니다.",
+  },
+
+  // =================================================================
+  // [문제 94] 서술·작업형 (14점) - 애플리케이션 보안 (데이터베이스 권한 관리 및 통제)
+  // =================================================================
+  {
+    id: 94,
+    subjectId: "application",
+    type: "descriptive",
+    score: 14,
+    domain: "애플리케이션 보안",
+    title: "데이터베이스(DBMS) 사용자 권한 관리 원칙 및 제한 대상 권한",
+    description:
+      "데이터베이스의 기밀성과 무결성을 보호하기 위해 일반 사용자 계정 및 웹 애플리케이션 연동 계정에 적용해야 하는 권한 통제 방안에 관한 서술형 물음이다. 하위 3가지 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "DB 사용자 권한 관리의 가장 기본이 되는 보안 원칙인 '최소 권한의 원칙(Principle of Least Privilege)'의 개념을 DB 운영 관점에서 설명하시오.",
+        answer:
+          "각 사용자와 애플리케이션 계정에 업무 수행에 반드시 필요한 최소한의 테이블 및 SQL 연산 권한(SELECT, INSERT, UPDATE 등)만 부여하고, 업무와 무관하거나 불필요한 관리자 권한 및 DDL/DCL 권한을 일체 배제하는 원칙이다.",
+        scoringCriteria:
+          "업무에 필요한 최소 권한만 부여하고 불필요한 권한을 배제한다는 핵심 개념 서술 시 4점",
+      },
+      {
+        number: 2,
+        question:
+          "웹 애플리케이션 연동 계정이나 일반 사용자 계정에게 절대로 부여해서는 안 되는 위험한 DB 권한(또는 롤) 3가지를 서술하시오.",
+        answer:
+          "1. 데이터베이스 관리자 최고 권한 (DBA 롤, SUPER, SA, SYSDBA 등)\n2. 테이블/스키마 구조를 변경·삭제할 수 있는 DDL 권한 (DROP TABLE, ALTER TABLE 등)\n3. 다른 사용자에게 권한을 재부여할 수 있는 권한 (`WITH GRANT OPTION`)\n4. OS 시스템 명령 실행 및 파일 접근 프로시저 실행 권한 (Oracle의 `UTL_FILE`, MSSQL의 `xp_cmdshell` 등)",
+        scoringCriteria:
+          "DBA 관리자 권한, DROP/ALTER 등 DDL 권한, WITH GRANT OPTION, 시스템 프로시저 실행 권한 중 3가지를 명시 시 6점 (각 2점)",
+      },
+      {
+        number: 3,
+        question:
+          "SQL 인젝션 공격이 발생하더라도 공격자가 민감한 전체 테이블을 일괄 조회하거나 타 계정의 테이블에 침범하지 못하도록 차단하는 DBMS 설계 및 권한 격리 기법 2가지를 서술하시오.",
+        answer:
+          "1. 뷰(View) 및 저장 프로시저(Stored Procedure)를 통한 간접 접근 제한: 원본 테이블 직접 조회 권한을 박탈하고 필요한 컬럼만 정의된 뷰(View)나 파라미터화된 저장 프로시저 실행 권한만 부여한다.\n2. 스키마 분리 및 전용 계정 격리: 애플리케이션 기능 단위(서비스별)로 DB 스키마와 계정을 엄격히 분리하여 타 업무 테이블에 대한 교차 접근(SELECT) 권한을 원천 차단한다.",
+        scoringCriteria:
+          "View/저장 프로시저 활용 제한 및 업무별 스키마/계정 격리 방안 서술 시 4점 (각 2점)",
+      },
+    ],
+    answer: [
+      "1. 최소 권한의 원칙: 업무에 반드시 필요한 최소한의 CRUD 권한만 부여",
+      "2. 제한 대상 권한: DBA 롤, DROP/ALTER 등 DDL, WITH GRANT OPTION, OS 프로시저(xp_cmdshell 등)",
+      "3. 격리 방안: 원본 테이블 대신 View/저장프로시저 권한만 부여, 서비스별 DB 스키마 및 계정 분리",
+    ],
+    scoringPoints: [
+      "최소 권한의 원칙 개념 정확 서술 (4점)",
+      "부여 금지 대상 권한(DBA, DROP/ALTER, WITH GRANT OPTION, 시스템 프로시저) 3가지 명시 (6점)",
+      "View/Stored Procedure 활용 및 스키마 분리 격리 방안 서술 (4점)",
+    ],
+    explanation:
+      "• DB 계정 권한 점검 가이드:\n- 웹 앱 계정에 `DBA` 롤이 부여되어 있으면 SQL 인젝션 한 번으로 DB 전체 탈취 및 OS 쉘 장악으로 직결됩니다.\n- `WITH GRANT OPTION`이 있으면 탈취된 계정으로 임의의 백도어 계정에 관리자 권한을 부여할 수 있어 절대 금기입니다.",
+    examTips:
+      "DB 보안 가이드에서 단골로 출제되는 서술형 문제입니다. DDL 배제, WITH GRANT OPTION 배제, 최소 권한 원칙을 키워드로 정리하세요.",
   },
 ];
+
 

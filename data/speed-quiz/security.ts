@@ -640,5 +640,111 @@ export const SECURITY_QUIZ_LIST: SpeedQuizItem[] = [
     chapterName: "제3과목 애플리케이션 보안",
     question: "네트워크 7계층(L7)의 HTTP/HTTPS 페이로드를 검사하여 SQL 인젝션, XSS, 웹쉘 업로드 등 웹 애플리케이션 공격을 실시간 차단하는 보안 솔루션은?",
     answer: "WAF (웹 방화벽 / Web Application Firewall)"
+  },
+  {
+    id: 88,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "리눅스 pacct 회계 로그를 기반으로 특정 사용자나 프로세스가 실행한 명령어 이력, CPU 사용 시간 등을 조회하는 시스템 보안 명령어는?",
+    answer: "lastcomm"
+  },
+  {
+    id: 89,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "포인터가 가리키는 메모리가 NULL인 상태에서 참조를 시도할 때 프로그램 비정상 종료(Crash)나 DoS를 유발하는 메모리 소프트웨어 보안 취약점은?",
+    answer: "NULL Pointer 역참조 (Null Pointer Dereference)"
+  },
+  {
+    id: 90,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "IP 주소를 모르는 디스크 없는 호스트(디스크리스 워크스테이션)가 자신의 MAC 주소를 브로드캐스트하여 서버로부터 IP를 할당받는 프로토콜은?",
+    answer: "RARP (Reverse ARP)"
+  },
+  {
+    id: 91,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "침해사고를 선제적으로 방어하기 위해 공격자의 행동 단계(정찰→무기화→전달→취약점 악용→설치→C2→행동)를 7단계로 모델링한 보안 프레임워크는?",
+    answer: "사이버 킬체인 (Cyber Kill Chain)"
+  },
+  {
+    id: 92,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "스마트폰 모바일 앱에서 커스텀 스킴 URL(`myapp://...`)을 호출하여 다른 앱을 실행하거나 특정 파라미터 화면으로 직행시키는 기능이자 취약점 표적은?",
+    answer: "딥링크 (Deeplink / Custom URL Scheme)"
+  },
+  {
+    id: 93,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "웹 공격자가 서버로 하여금 내부망 비인가 주소(`127.0.0.1`, 클라우드 메타데이터 URL 등)로 조작된 HTTP 요청을 대신 전송하게 만드는 취약점 공격은?",
+    answer: "SSRF (Server-Side Request Forgery)"
+  },
+  {
+    id: 94,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "자바 DB 연동 시 SQL 파라미터를 '?' 플레이스홀더로 컴파일 후 바인딩하여 특수문자 조작을 원천 방어하는 가장 확실한 방어 인터페이스는?",
+    answer: "PreparedStatement"
+  },
+  {
+    id: 95,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "공격자가 출발지 IP를 희생자 IP로 위조한 후 서브넷 브로드캐스트 주소로 ICMP Echo Request를 대량 전송하여 희생자를 고갈시키는 증폭 공격은?",
+    answer: "스머핑 (Smurf 공격 / Direct Broadcast)"
+  },
+  {
+    id: 96,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "공격자가 특정 계정의 암호를 알아내기 위해 시스템에 접속을 반복 시도하다가 '실패한 로그인 기록'(/var/log/btmp)을 확인하는 명령어는?",
+    answer: "lastb"
+  },
+  {
+    id: 97,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "재해 발생 시 비즈니스 핵심 기능의 중단 영향을 평가하여 RTO(목표복구시간)와 RPO(목표복구시점)를 산출하는 재해복구 분석 활동은?",
+    answer: "BIA (업무 영향 분석 / Business Impact Analysis)"
+  },
+  {
+    id: 98,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "정보보호 위험 대응 전략 중 위험 수준이 수용 가능한 한계치(DoA) 이하일 때 별도의 추가 통제 없이 조직이 위험을 그대로 감수하는 전략은?",
+    answer: "위험 수용 (Risk Acceptance)"
+  },
+  {
+    id: 99,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "모든 자산에 기본 보안 대책을 일괄 적용(기준선)한 후, 고위험 중요 자산에 대해서만 추가 상세 위험분석을 수행하는 고효율 절충형 위험분석법은?",
+    answer: "복합적 접근법 (Combined Approach)"
+  },
+  {
+    id: 100,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "NTP 증폭 디도스 공격(Monlist)을 방어하기 위해 ntp.conf 설정 파일에서 반드시 비활성화해야 하는 쿼리 제한 옵션은?",
+    answer: "noquery (또는 nomodify noquery)"
+  },
+  {
+    id: 101,
+    chapterId: "law",
+    chapterName: "제5과목 정보보안 관리 및 법규",
+    question: "개인정보의 안전성 확보조치 기준에서 전산실, 자료보관실 등 개인정보를 보관하는 중요 장소에 대해 출입 인가를 설정하고 통제하는 물리적 구역은?",
+    answer: "통제구역"
+  },
+  {
+    id: 102,
+    chapterId: "law",
+    chapterName: "제5과목 정보보안 관리 및 법규",
+    question: "기업에서 정보기술(IT) 인프라 구축 및 혁신을 총괄하는 책임자와 정보보호 정책 및 보안 거버넌스를 전담하는 최고책임자를 분리할 때 각각의 직책은?",
+    answer: "CIO (최고정보책임자) / CISO (최고정보보호책임자)"
   }
 ];
+
