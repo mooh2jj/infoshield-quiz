@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
-import { Sparkles, Star, X } from "lucide-react";
+import { Sparkles, Star, X, Pin } from "lucide-react";
 import type { MindmapNodeNote } from "@/types/mindmap";
+import { RelatedPracticalQuestionsFeed } from "./RelatedPracticalQuestionsFeed";
 
 interface MermaidDiagramProps {
   id: string;
@@ -17,10 +18,35 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
 
   // 활성화된 메모 상태 및 마우스 화면 좌표
   const [activeNote, setActiveNote] = useState<MindmapNodeNote | null>(null);
+  const [activeMatchedKey, setActiveMatchedKey] = useState<string | null>(null);
   const [popoverPos, setPopoverPos] = useState<{ x: number; y: number } | null>(
     null
   );
   const [isPinned, setIsPinned] = useState(false);
+
+  // 닫힘 유예 타이머 및 상태 ref
+  const closeTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isPinnedRef = useRef(isPinned);
+  isPinnedRef.current = isPinned;
+
+  const cancelClose = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const scheduleClose = (delay = 350) => {
+    if (isPinnedRef.current) return;
+    cancelClose();
+    closeTimerRef.current = setTimeout(() => {
+      if (!isPinnedRef.current) {
+        setActiveNote(null);
+        setActiveMatchedKey(null);
+        setPopoverPos(null);
+      }
+    }, delay);
+  };
 
   useEffect(() => {
     if (!resolvedTheme) return;
@@ -86,8 +112,10 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
               // 마우스 진입 시 (고정 상태가 아닐 때만)
               htmlNode.addEventListener("mouseenter", (e: MouseEvent) => {
                 e.stopPropagation();
-                if (isPinned) return;
+                if (isPinnedRef.current) return;
+                cancelClose();
                 setActiveNote(noteData);
+                setActiveMatchedKey(matchedKey);
                 setPopoverPos({ x: e.clientX, y: e.clientY });
 
                 if (bkgShape) {
@@ -99,19 +127,18 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                 }
               });
 
-              // 마우스 이동 시 좌표 추적 (고정 상태가 아닐 때만)
+              // 마우스 이동 시: 팝오버가 이미 열려있다면 위치를 과도하게 흔들지 않고 유지하거나 보정
               htmlNode.addEventListener("mousemove", (e: MouseEvent) => {
                 e.stopPropagation();
-                if (isPinned) return;
-                setPopoverPos({ x: e.clientX, y: e.clientY });
+                if (isPinnedRef.current) return;
+                cancelClose();
               });
 
-              // 마우스 이탈 시 복구 (고정 상태가 아닐 때만)
+              // 마우스 이탈 시: 팝오버로 이동할 수 있도록 350ms 지연 닫기
               htmlNode.addEventListener("mouseleave", (e: MouseEvent) => {
                 e.stopPropagation();
-                if (isPinned) return;
-                setActiveNote(null);
-                setPopoverPos(null);
+                if (isPinnedRef.current) return;
+                scheduleClose(350);
 
                 if (bkgShape) {
                   bkgShape.style.filter = "none";
@@ -125,7 +152,9 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
               // 클릭 또는 모바일 탭 시: 팝오버 고정(Pin) 토글
               htmlNode.addEventListener("click", (e: MouseEvent) => {
                 e.stopPropagation();
+                cancelClose();
                 setActiveNote(noteData);
+                setActiveMatchedKey(matchedKey);
                 setPopoverPos({ x: e.clientX, y: e.clientY });
                 setIsPinned((prev) => !prev);
 
@@ -149,11 +178,14 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
 
     return () => {
       cancelled = true;
+      cancelClose();
     };
   }, [id, chart, notes, resolvedTheme]);
 
   function closeNote() {
+    cancelClose();
     setActiveNote(null);
+    setActiveMatchedKey(null);
     setPopoverPos(null);
     setIsPinned(false);
   }
@@ -261,6 +293,13 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                   <span className="leading-snug">{activeNote.examTip}</span>
                 </div>
               )}
+
+              {/* 연관 실기 모의고사 피드 (최대 2문항) */}
+              <RelatedPracticalQuestionsFeed
+                note={activeNote}
+                matchedKey={activeMatchedKey ?? undefined}
+                maxCount={2}
+              />
             </div>
           </div>
         </div>
@@ -272,6 +311,8 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
       {activeNote && popoverPos && (
         <div
           style={{ left: desktopLeft, top: desktopTop }}
+          onMouseEnter={cancelClose}
+          onMouseLeave={() => scheduleClose(250)}
           className="pointer-events-auto fixed z-50 hidden sm:flex flex-col w-[360px] max-h-[78vh] rounded-xl border border-border/80 bg-popover/95 p-4 text-popover-foreground shadow-2xl backdrop-blur-md animate-in fade-in zoom-in-95 duration-150"
         >
           {/* 헤더: 뱃지, 중요도 별점, 닫기 버튼 */}
@@ -297,14 +338,29 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                 ))}
               </div>
 
-              <button
-                type="button"
-                onClick={closeNote}
-                className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                title="메모장 닫기"
-              >
-                <X className="size-3.5" />
-              </button>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setIsPinned((prev) => !prev)}
+                  className={`rounded-full p-1 transition-colors ${
+                    isPinned
+                      ? "bg-primary text-primary-foreground font-semibold"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                  title={isPinned ? "고정 해제 (호버 모드로 복귀)" : "화면에 고정 (마우스 떼도 유지)"}
+                >
+                  <Pin className={`size-3.5 ${isPinned ? "fill-current" : ""}`} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={closeNote}
+                  className="rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                  title="메모장 닫기"
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -340,6 +396,13 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                 <span className="leading-snug">{activeNote.examTip}</span>
               </div>
             )}
+
+            {/* 연관 실기 모의고사 피드 (최대 2문항) */}
+            <RelatedPracticalQuestionsFeed
+              note={activeNote}
+              matchedKey={activeMatchedKey ?? undefined}
+              maxCount={2}
+            />
           </div>
         </div>
       )}

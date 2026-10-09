@@ -195,6 +195,50 @@ export function PracticalExamViewer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // URL hash 또는 ?q= 파라미터 감지하여 해당 문제로 스크롤 및 정답 열기
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const parseTargetId = (): number | null => {
+      const hash = window.location.hash;
+      const match = hash.match(/#practical-q-(\d+)/);
+      if (match && match[1]) {
+        return parseInt(match[1], 10);
+      }
+      const searchParams = new URLSearchParams(window.location.search);
+      const qParam = searchParams.get("q");
+      if (qParam) {
+        const parsed = parseInt(qParam, 10);
+        if (!isNaN(parsed)) return parsed;
+      }
+      return null;
+    };
+
+    const targetId = parseTargetId();
+    if (!targetId) return;
+
+    // 해당 문제의 정답 열어주기
+    setOpenAnswers((prev) => ({
+      ...prev,
+      [targetId]: true,
+    }));
+
+    // 약간의 렌더링 딜레이 후 요소로 스크롤 이동
+    const timer = setTimeout(() => {
+      const el = document.getElementById(`practical-q-${targetId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        // 시각적 포커스 효과 부여
+        el.classList.add("ring-2", "ring-primary", "ring-offset-2");
+        setTimeout(() => {
+          el.classList.remove("ring-2", "ring-primary", "ring-offset-2");
+        }, 3000);
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // 전체 문제 중 검색어 일치 목록 (과목/유형 무관)
   const searchMatchedQuestions = questions.filter((q) =>
     matchesQuestionSearch(q, searchQuery)
@@ -707,14 +751,15 @@ export function PracticalExamViewer({
 
             return (
               <article
-              key={q.id}
-              className={cn(
-                "flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-all",
-                assessment === "correct" && "border-emerald-500/40 bg-emerald-500/[0.02]",
-                assessment === "review" && "border-amber-500/40 bg-amber-500/[0.02]",
-                !assessment && "border-border"
-              )}
-            >
+                key={q.id}
+                id={`practical-q-${q.id}`}
+                className={cn(
+                  "flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-all scroll-mt-24",
+                  assessment === "correct" && "border-emerald-500/40 bg-emerald-500/[0.02]",
+                  assessment === "review" && "border-amber-500/40 bg-amber-500/[0.02]",
+                  !assessment && "border-border"
+                )}
+              >
               {/* 문제 헤더 */}
               <div className="flex flex-col gap-3 p-5 sm:p-6 border-b border-border/70">
                 <div className="flex items-center justify-between gap-2">
