@@ -745,6 +745,218 @@ export const SECURITY_QUIZ_LIST: SpeedQuizItem[] = [
     chapterName: "제5과목 정보보안 관리 및 법규",
     question: "기업에서 정보기술(IT) 인프라 구축 및 혁신을 총괄하는 책임자와 정보보호 정책 및 보안 거버넌스를 전담하는 최고책임자를 분리할 때 각각의 직책은?",
     answer: "CIO (최고정보책임자) / CISO (최고정보보호책임자)"
+  },
+  {
+    id: 103,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "리눅스 시스템에서 사용자 계정 생성 시 패스워드의 최소 길이를 강제 설정하기 위해 수정하는 환경 설정 파일과 변수명은?",
+    answer: "/etc/login.defs (변수: PASS_MIN_LEN)"
+  },
+  {
+    id: 104,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "무선 LAN(802.11 CSMA/CA)에서 프레임 간 충돌 방지를 위해 두는 대기 시간 중, ACK/CTS 등 최우선순위 제어 프레임에 적용되는 가장 짧은 간격은?",
+    answer: "SIFS (Short Inter-Frame Space)"
+  },
+  {
+    id: 105,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "무선 LAN의 숨은 노드 문제(Hidden Node)를 해결하기 위해 데이터 전송 전 송수신측이 채널 예약 및 송신 유예를 위해 주고받는 2가지 제어 프레임은?",
+    answer: "RTS (Request To Send) / CTS (Clear To Send)"
+  },
+  {
+    id: 106,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "무선 LAN 환경에서 다른 노드가 보낸 RTS/CTS 프레임을 수신한 단말들이 채널 사용 중임을 가상으로 인지하고 전송을 유예하기 위해 설정하는 타이머는?",
+    answer: "NAV (Network Allocation Vector)"
+  },
+  {
+    id: 107,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "정보보호 위험관리(ISO 27005)에서 위험(Risk)의 크기를 산정하기 위해 상호작용을 분석하는 3대 기본 요소는?",
+    answer: "자산(Asset), 위협(Threat), 취약점(Vulnerability)"
+  },
+  {
+    id: 108,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "XML 입력 파싱 시 DTD의 SYSTEM 외부 엔티티 처리를 악용하여 서버 내부 파일을 탈취하거나 SSRF를 유발하는 취약점은?",
+    answer: "XXE (XML 외부 개체 참조 / XML External Entity)"
+  },
+  {
+    id: 109,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "공격자가 악성 스크립트를 게시판 DB 등에 영구 저장시켜 해당 페이지를 열람하는 모든 희생자에게 실행되도록 만드는 XSS 공격 유형은?",
+    answer: "저장형 XSS (Stored XSS)"
+  },
+  {
+    id: 110,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "DNS 계층 구조에서 호스트의 요청을 대신 받아 루트부터 순차적으로 반복 질의를 수행하고 결과를 임시 보관하는 서버는?",
+    answer: "Local DNS (Recursive DNS / 캐시 DNS)"
+  },
+  {
+    id: 111,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "프론트엔드 프록시와 백엔드 서버 간에 Content-Length와 Transfer-Encoding 헤더 해석 불일치로 다음 사용자 요청에 악성 요청이 주입되는 공격은?",
+    answer: "HTTP Request Smuggling (HTTP 요청 밀수)"
+  },
+  {
+    id: 112,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "특정 표적을 정하고 장기간에 걸쳐 스피어 피싱, 제로데이, 루트킷 등 다양한 기술을 잠복·우회 활용하여 은밀히 목적을 달성하는 공격 형태는?",
+    answer: "APT (지능형 지속 위협 / Advanced Persistent Threat)"
+  },
+  {
+    id: 113,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "정상적인 HTTP 요청 후 TCP 수신 윈도우 크기(Window Size)를 0 또는 극소치로 유지하여 서버의 송신 버퍼와 세션을 고갈시키는 DoS 공격은?",
+    answer: "Slow HTTP Read DoS (Slow Read)"
+  },
+  {
+    id: 114,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "보안관제 장비에서 실제 악성 공격이 발생하였음에도 정상 트래픽으로 오인하여 탐지하지 못하고 그냥 놓쳐버리는 가장 위험한 탐지 오류는?",
+    answer: "미탐 (False Negative / 거짓 부정)"
+  },
+  {
+    id: 115,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "네트워크 패킷이 HTTPS 등으로 암호화된 환경에서, 패킷 페이로드 대신 서버 내부 시스템 콜, 로그, 파일 무결성을 통해 공격을 탐지하는 IDS는?",
+    answer: "HIDS (호스트 기반 침입탐지시스템)"
+  },
+  {
+    id: 116,
+    chapterId: "law",
+    chapterName: "제5과목 정보보안 관리 및 법규",
+    question: "ISMS-P 인증 심사 시 조직의 적용 가능한 보안 통제 항목 중 채택할 항목과 제외할 항목 및 그 사유를 명시한 필수 제출 산출물 문서는?",
+    answer: "정보보호대책 명세서 (적용성 보고서 / SoA)"
+  },
+  {
+    id: 117,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "리눅스 `/var/log/messages`에서 인터페이스가 목적지와 무관한 모든 네트워크 패킷을 도청(Sniffing)하기 위해 활성화한 동작 모드는?",
+    answer: "무차별 모드 (Promiscuous Mode)"
+  },
+  {
+    id: 118,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "윈도우에서 표준 사용자로 실행 중 관리자 권한 작업 필요 시 격리된 보안 데스크톱에 동의 팝업을 띄워 권한 상승을 통제하는 기술은?",
+    answer: "UAC (사용자 계정 컨트롤 / User Account Control)"
+  },
+  {
+    id: 119,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "XSS 공격 방어를 위해 웹 서버 응답 시 HTML 특수문자(`<`, `>`)를 브라우저 텍스트로 치환하는 엔티티 코드는 각각 무엇인가?",
+    answer: "&lt; 및 &gt;"
+  },
+  {
+    id: 120,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "웹 브라우저가 특정 신뢰 출처의 스크립트·스타일·이미지만 로드하고 실행하도록 강제하여 XSS를 완화하는 HTTP 보안 헤더는?",
+    answer: "CSP (Content-Security-Policy)"
+  },
+  {
+    id: 121,
+    chapterId: "law",
+    chapterName: "제5과목 정보보안 관리 및 법규",
+    question: "공공기관이 개인정보 영향평가(PIA)를 의무적으로 수행해야 하는 민감정보 또는 고유식별정보 처리 인원수 기준은 몇 명 이상인가?",
+    answer: "5만 명 이상"
+  },
+  {
+    id: 122,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "DBMS 권한 부여 시 다른 사용자에게 해당 권한을 마음대로 재부여할 수 있어 일반 계정에는 절대 부여하면 안 되는 위험한 옵션은?",
+    answer: "WITH GRANT OPTION"
+  },
+  {
+    id: 123,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "서버를 거치지 않고 브라우저 측 자바스크립트가 location.hash나 innerHTML 등 문서 객체 모델을 조작하여 발생하는 XSS 유형은?",
+    answer: "DOM 기반 XSS (DOM-based XSS)"
+  },
+  {
+    id: 124,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "침입탐지시스템(IDS)이나 보안장비가 정상적인 정상 트래픽이나 업무 행위를 악성 공격으로 잘못 판단하여 울리는 경보 오류는?",
+    answer: "오탐 (False Positive / 거짓 긍정)"
+  },
+  {
+    id: 125,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "해당 도메인의 원본 존(Zone) 파일을 직접 보유하고 질의에 대해 최종 책임 권한을 가진 네임서버를 무엇이라 부르는가?",
+    answer: "Authoritative DNS (권위 DNS 서버)"
+  },
+  {
+    id: 126,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "리눅스 PAM 모듈 중 패스워드 최소 길이(minlen), 대소문자/숫자/특수문자 조합 복잡성을 강제 검증하는 핵심 모듈은?",
+    answer: "pam_pwquality.so (또는 pam_cracklib.so)"
+  },
+  {
+    id: 127,
+    chapterId: "general",
+    chapterName: "제4과목 정보보안 일반",
+    question: "전자서명에서 송신자가 메시지를 비밀키로 서명하여 송신한 후, 차후 자신이 전송한 사실을 부인할 수 없도록 보장하는 정보보안 특성은?",
+    answer: "부인 방지 (Non-Repudiation)"
+  },
+  {
+    id: 128,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "IPv4 패킷이 네트워크 상에서 무한 라우팅 루프를 도는 것을 방지하기 위해 홉마다 1씩 감소시키며 0이 되면 폐기하는 IP 헤더 필드는?",
+    answer: "TTL (Time to Live)"
+  },
+  {
+    id: 129,
+    chapterId: "application",
+    chapterName: "제3과목 애플리케이션 보안",
+    question: "오픈소스 취약점 관리 및 소프트웨어 공급망 보안을 위해 애플리케이션에 포함된 모든 컴포넌트·라이브러리 목록을 명세한 '소프트웨어 자재명세서'는?",
+    answer: "SBOM (Software Bill of Materials)"
+  },
+  {
+    id: 130,
+    chapterId: "network",
+    chapterName: "제2과목 네트워크 보안",
+    question: "스위치 포트에 연결될 수 있는 단말의 최대 MAC 주소 개수를 제한하거나 특정 MAC만 허용하여 MAC Flooding을 방어하는 보안 기능은?",
+    answer: "포트 시큐리티 (Port Security)"
+  },
+  {
+    id: 131,
+    chapterId: "system",
+    chapterName: "제1과목 시스템 보안",
+    question: "리눅스에서 실행 중인 특정 프로세스가 현재 열고(Open) 있는 파일, 디렉터리, 네트워크 소켓 목록을 확인하는 명령어는?",
+    answer: "lsof (List Open Files)"
+  },
+  {
+    id: 132,
+    chapterId: "law",
+    chapterName: "제5과목 정보보안 관리 및 법규",
+    question: "개인정보보호법상 개인정보처리자가 개인정보 유출 사실을 인지하였을 때 정당한 사유가 없는 한 지체 없이(72시간 이내) 통지해야 하는 주체는?",
+    answer: "정보주체 (및 개인정보보호위원회/KISA)"
   }
 ];
+
+
 
