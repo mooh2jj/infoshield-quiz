@@ -1,6 +1,7 @@
 import { MermaidDiagram } from "@/components/mindmap/MermaidDiagram";
 import { MindmapTabs } from "@/components/mindmap/MindmapTabs";
 import { PrintButton } from "@/components/mindmap/PrintButton";
+import { SecurityFloatingMemo } from "@/components/mindmap/SecurityFloatingMemo";
 import { MINDMAP_SECTIONS } from "@/data/mindmaps";
 
 export default function MindmapPage() {
@@ -43,6 +44,9 @@ export default function MindmapPage() {
           </section>
         ))}
       </div>
+
+      {/* 우측 하단 플로팅 기출 ROI 메모장 (20대 핵심 개념) */}
+      <SecurityFloatingMemo />
     </main>
   );
 }
