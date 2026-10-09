@@ -1,6 +1,7 @@
 import { MermaidDiagram } from "@/components/mindmap/MermaidDiagram";
 import { MindmapTabs } from "@/components/mindmap/MindmapTabs";
 import { PrintButton } from "@/components/mindmap/PrintButton";
+import { AdspFloatingMemo } from "@/components/mindmap/AdspFloatingMemo";
 import { ADSP_MINDMAP_SECTIONS } from "@/data/mindmaps/adsp";
 
 export default function AdspMindmapPage() {
@@ -43,6 +44,9 @@ export default function AdspMindmapPage() {
           </section>
         ))}
       </div>
+
+      {/* 기출 빈도 및 최고 ROI 핵심 플로팅 메모장 */}
+      <AdspFloatingMemo />
     </main>
   );
 }
