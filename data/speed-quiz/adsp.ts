@@ -28,8 +28,8 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 1,
     chapterId: "ch1",
     chapterName: "제1과목 데이터 이해",
-    question: "[48회 기출] 데이터를 비즈니스 맥락에서 비판적으로 이해하고 데이터에 기반하여 원활하게 소통하는 전인적 역량은?",
-    answer: "데이터 리터러시 (Data Literacy)"
+    question: "[48회 기출] SECI 모델에서 개별 형식지들을 조합·편집·분류하여 새로운 형식지를 창출하거나 체계화하는 지식 변환 과정은?",
+    answer: "연결화 (Combination)"
   },
   {
     id: 2,
@@ -172,8 +172,8 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 21,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
-    question: "[48회 기출] 분석 과제 우선순위 매트릭스 4사분면 중 가장 먼저 추진해야 하는 최우선 1순위 과제 조건은?",
-    answer: "시급성 높음(현재) + 난이도 낮음(쉬움) [Quick-Win]"
+    question: "[48회 기출] 분석 과제 발굴 4사분면 중 분석 방법(How)은 이미 알고 있으나 분석 대상(What)을 모를 때 도출하는 분석 유형은?",
+    answer: "통찰 (Insight)"
   },
   {
     id: 22,
@@ -316,22 +316,22 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 41,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[48회 기출] 3개 이상의 독립된 집단 간 중앙값 차이를 비교하며 정규성을 가정하지 않는 비모수 통계 검정은?",
-    answer: "크루스칼-왈리스 검정 (Kruskal-Wallis)"
+    question: "[48회 기출] 불균형 데이터셋 분류에서 정밀도(Precision)와 재현율(Recall) 간의 상충 관계를 보완하는 조화평균 지표는?",
+    answer: "F1-Score"
   },
   {
     id: 42,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[48회 기출] 시계열 곱셈 모형에서 원계열을 계절 지수로 나눈(Yt / St) 시계열은?",
-    answer: "계절 조정 시계열 (Seasonally Adjusted)"
+    question: "[48회 기출] 시계열 데이터가 추세를 보여 평균이 일정하지 않을 때 정상 시계열로 변환하기 위해 현시점 값에서 이전 시점 값을 빼주는 기법은?",
+    answer: "차분 (Differencing)"
   },
   {
     id: 43,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[48회 기출] 연관성 분석에서 향상도(Lift)가 정확히 1일 때 두 품목 간의 통계적 관계는?",
-    answer: "상호 독립 (Independent)"
+    question: "[48회 기출] 계층적 군집분석에서 군집 병합 시 발생하는 군집 내 오차제곱합(SSE)의 증가량을 최소화하는 결합 방법은?",
+    answer: "와드연결법 (Ward's Method)"
   },
   {
     id: 44,

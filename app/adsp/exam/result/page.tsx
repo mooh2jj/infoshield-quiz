@@ -462,7 +462,7 @@ export default function AdspExamResultPage() {
                     <span className="font-bold text-primary flex items-center gap-1">
                       💡 정답 및 핵심 개념 해설
                     </span>
-                    <p className="text-foreground leading-relaxed">
+                    <p className="text-foreground leading-relaxed whitespace-pre-line">
                       <MathText text={item.explanation.definition} />
                     </p>
                   </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { MathText } from "@/components/ui/MathText";
 
 interface MultipleChoiceOptionsProps {
   options: string[];
@@ -52,7 +53,9 @@ export function MultipleChoiceOptions({
             <span className="font-semibold text-muted-foreground">
               {OPTION_LABELS[index] ?? index + 1}
             </span>
-            <span>{option}</span>
+            <span>
+              <MathText text={option} />
+            </span>
           </button>
         );
       })}

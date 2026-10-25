@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MathText } from "@/components/ui/MathText";
 import { CodeBlock } from "@/components/quiz/CodeBlock";
 import { TermInput } from "@/components/quiz/TermInput";
 import { MultipleChoiceOptions } from "@/components/quiz/MultipleChoiceOptions";
@@ -55,10 +56,14 @@ export function QuestionCard({
     >
       <div className="flex items-center gap-2">
         <Badge variant="secondary">{SUBJECT_LABELS[item.category]}</Badge>
-        <span className="text-xs text-muted-foreground">{item.title}</span>
+        <span className="text-xs text-muted-foreground">
+          <MathText text={item.title} />
+        </span>
       </div>
 
-      <p className="text-base leading-relaxed">{item.question}</p>
+      <div className="text-base leading-relaxed whitespace-pre-wrap">
+        <MathText text={item.question} />
+      </div>
 
       {item.codeSnippet && <CodeBlock code={item.codeSnippet} />}
 

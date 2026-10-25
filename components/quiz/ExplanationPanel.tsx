@@ -1,4 +1,5 @@
 import type { QuizItem } from "@/types/quiz";
+import { MathText } from "@/components/ui/MathText";
 
 interface ExplanationPanelProps {
   item: QuizItem;
@@ -11,8 +12,8 @@ export function ExplanationPanel({ item }: ExplanationPanelProps) {
         <h3 className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
           Definition
         </h3>
-        <p className="mt-1 text-sm leading-relaxed">
-          {item.explanation.definition}
+        <p className="mt-1 text-sm leading-relaxed whitespace-pre-line">
+          <MathText text={item.explanation.definition} />
         </p>
       </section>
 
@@ -24,7 +25,9 @@ export function ExplanationPanel({ item }: ExplanationPanelProps) {
             </h3>
             <ul className="mt-1 list-disc space-y-1 pl-4 text-sm leading-relaxed">
               {item.explanation.optionsBreakdown.map((line) => (
-                <li key={line}>{line}</li>
+                <li key={line}>
+                  <MathText text={line} />
+                </li>
               ))}
             </ul>
           </section>
@@ -34,8 +37,8 @@ export function ExplanationPanel({ item }: ExplanationPanelProps) {
         <h3 className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
           Dev Context
         </h3>
-        <p className="mt-1 text-sm leading-relaxed">
-          {item.explanation.devContext}
+        <p className="mt-1 text-sm leading-relaxed whitespace-pre-line">
+          <MathText text={item.explanation.devContext} />
         </p>
       </section>
     </div>
