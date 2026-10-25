@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { Sparkles, Star, X, Pin } from "lucide-react";
 import type { MindmapNodeNote } from "@/types/mindmap";
 import { RelatedPracticalQuestionsFeed } from "./RelatedPracticalQuestionsFeed";
+import { MathText } from "@/components/ui/MathText";
 
 interface MermaidDiagramProps {
   id: string;
@@ -264,11 +265,11 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
             {/* 스크롤 가능한 본문 영역 */}
             <div className="overflow-y-auto pr-1 space-y-2.5 text-left text-xs leading-relaxed">
               <h4 className="text-sm font-bold tracking-tight text-foreground">
-                {activeNote.title}
+                <MathText text={activeNote.title} />
               </h4>
 
               <p className="text-muted-foreground leading-relaxed">
-                {activeNote.definition}
+                <MathText text={activeNote.definition} />
               </p>
 
               {activeNote.keyPoints && activeNote.keyPoints.length > 0 && (
@@ -280,7 +281,9 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                     {activeNote.keyPoints.map((point, idx) => (
                       <li key={idx} className="flex items-start gap-1.5">
                         <span className="text-primary mt-0.5 font-bold">•</span>
-                        <span>{point}</span>
+                        <span>
+                          <MathText text={point} />
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -290,7 +293,9 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
               {activeNote.examTip && (
                 <div className="flex items-start gap-2 rounded-lg bg-amber-500/10 px-2.5 py-2 text-amber-800 dark:text-amber-300 font-medium">
                   <span className="shrink-0 mt-0.5">💡</span>
-                  <span className="leading-snug">{activeNote.examTip}</span>
+                  <span className="leading-snug">
+                    <MathText text={activeNote.examTip} />
+                  </span>
                 </div>
               )}
 
@@ -367,11 +372,11 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
           {/* 스크롤 가능한 본문 영역 */}
           <div className="overflow-y-auto pr-1 space-y-2 text-xs leading-relaxed">
             <h4 className="text-sm font-bold tracking-tight text-foreground">
-              {activeNote.title}
+              <MathText text={activeNote.title} />
             </h4>
 
             <p className="text-muted-foreground leading-relaxed">
-              {activeNote.definition}
+              <MathText text={activeNote.definition} />
             </p>
 
             {activeNote.keyPoints && activeNote.keyPoints.length > 0 && (
@@ -383,7 +388,9 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
                   {activeNote.keyPoints.map((point, idx) => (
                     <li key={idx} className="flex items-start gap-1">
                       <span className="text-primary">•</span>
-                      <span>{point}</span>
+                      <span>
+                        <MathText text={point} />
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -393,7 +400,9 @@ export function MermaidDiagram({ id, chart, notes }: MermaidDiagramProps) {
             {activeNote.examTip && (
               <div className="flex items-start gap-1.5 rounded-md bg-amber-500/10 px-2.5 py-1.5 text-[11px] text-amber-700 dark:text-amber-300 font-medium">
                 <span>💡</span>
-                <span className="leading-snug">{activeNote.examTip}</span>
+                <span className="leading-snug">
+                  <MathText text={activeNote.examTip} />
+                </span>
               </div>
             )}
 

@@ -11,6 +11,13 @@ interface CertificationCard {
 
 const CERTIFICATIONS: CertificationCard[] = [
   {
+    id: "itpe",
+    label: "정보관리기술사 (ITPE)",
+    description: "6대 도메인 마인드맵 · 기출빈도 ROI 전략 메모장(42선) · 105제 스피드 퀴즈",
+    href: "/itpe",
+    status: "available",
+  },
+  {
     id: "security",
     label: "정보보안기사",
     description: "시스템·네트워크·애플리케이션 보안 퀴즈와 마인드맵",

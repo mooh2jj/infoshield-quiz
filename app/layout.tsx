@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "pretendard/dist/web/variable/pretendardvariable.css";
+import "katex/dist/katex.min.css";
 import "./globals.css";
 import { HydrateStores } from "@/components/HydrateStores";
 import { SidebarNav } from "@/components/nav/SidebarNav";

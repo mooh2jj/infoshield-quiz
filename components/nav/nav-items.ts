@@ -18,6 +18,33 @@ export interface NavGroup {
 
 export const NAV_GROUPS: NavGroup[] = [
   {
+    id: "itpe",
+    label: "정보관리기술사(ITPE)",
+    items: [
+      {
+        href: "/itpe",
+        label: "전략 총괄",
+        pillLabel: "기술사 홈",
+        icon: ListChecks,
+        matchPrefixes: ["/itpe"],
+      },
+      {
+        href: "/itpe/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "기술사 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/itpe/speed-quiz"],
+      },
+      {
+        href: "/itpe/mindmap",
+        label: "마인드맵 & ROI",
+        pillLabel: "기술사 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/itpe/mindmap"],
+      },
+    ],
+  },
+  {
     id: "security",
     label: "정보보안기사",
     items: [

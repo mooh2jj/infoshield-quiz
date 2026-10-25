@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { MathText } from "@/components/ui/MathText";
 import type { SpeedQuizChapter, SpeedQuizItem } from "@/data/speed-quiz/types";
 
 // 기본 시간 설정 상수
@@ -677,7 +678,7 @@ export function SpeedQuiz({
                 </span>
               </div>
               <p className="text-lg sm:text-2xl font-bold leading-relaxed tracking-tight text-foreground break-keep max-w-[540px]">
-                {currentQuiz.question}
+                <MathText text={currentQuiz.question} />
               </p>
               <p className="text-xs text-muted-foreground/75">
                 화면을 클릭하거나 <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">Space</kbd>를 누르면 즉시 정답 공개
@@ -695,7 +696,7 @@ export function SpeedQuiz({
                   </span>
                 )}
                 <span className="text-xs text-muted-foreground line-clamp-1 max-w-[360px]">
-                  {currentQuiz.question}
+                  <MathText text={currentQuiz.question} />
                 </span>
               </div>
 
@@ -705,7 +706,7 @@ export function SpeedQuiz({
                   정답
                 </span>
                 <p className="text-xl sm:text-3xl font-black tracking-tight text-emerald-600 dark:text-emerald-400 break-keep">
-                  {currentQuiz.answer}
+                  <MathText text={currentQuiz.answer} />
                 </p>
               </div>
 
