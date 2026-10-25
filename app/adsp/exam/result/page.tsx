@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MathText } from "@/components/ui/MathText";
 import { CodeBlock } from "@/components/quiz/CodeBlock";
+import { AdspQuestionDiagram } from "@/components/quiz/AdspQuestionDiagram";
 import {
   evaluateAdspExam,
   getAdspExamRound,
@@ -415,6 +416,9 @@ export default function AdspExamResultPage() {
                     <MathText text={item.question} />
                   </div>
                 </div>
+
+                {/* 시각 다이어그램 / 도표 */}
+                <AdspQuestionDiagram questionId={item.id} />
 
                 {/* 코드 스니펫 */}
                 {item.codeSnippet && <CodeBlock code={item.codeSnippet} />}

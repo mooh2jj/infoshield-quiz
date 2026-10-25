@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MathText } from "@/components/ui/MathText";
 import { CodeBlock } from "@/components/quiz/CodeBlock";
+import { AdspQuestionDiagram } from "@/components/quiz/AdspQuestionDiagram";
 import { getSectionByQuestionIndex } from "@/data/adsp-exam";
 import { cn } from "@/lib/utils";
 import type { QuizItem } from "@/types/quiz";
@@ -91,6 +92,9 @@ export function AdspCbtQuestionCard({
           <MathText text={item.question} />
         </div>
       </div>
+
+      {/* 시각 다이어그램 / 도표 영역 */}
+      <AdspQuestionDiagram questionId={item.id} />
 
       {/* 코드 스니펫 영역 */}
       {item.codeSnippet && <CodeBlock code={item.codeSnippet} />}

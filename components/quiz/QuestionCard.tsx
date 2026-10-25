@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MathText } from "@/components/ui/MathText";
 import { CodeBlock } from "@/components/quiz/CodeBlock";
+import { AdspQuestionDiagram } from "@/components/quiz/AdspQuestionDiagram";
 import { TermInput } from "@/components/quiz/TermInput";
 import { MultipleChoiceOptions } from "@/components/quiz/MultipleChoiceOptions";
 import { ExplanationPanel } from "@/components/quiz/ExplanationPanel";
@@ -64,6 +65,9 @@ export function QuestionCard({
       <div className="text-base leading-relaxed whitespace-pre-wrap">
         <MathText text={item.question} />
       </div>
+
+      {/* 시각 다이어그램 / 도표 영역 */}
+      <AdspQuestionDiagram questionId={item.id} />
 
       {item.codeSnippet && <CodeBlock code={item.codeSnippet} />}
 

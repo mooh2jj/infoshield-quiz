@@ -3089,7 +3089,8 @@
       "cross-tabulation",
       "chi-square",
       "categorical-variable"
-    ]
+    ],
+    "codeSnippet": "[교차분석 분할표 (Contingency Table) 구조]\n┌─────────────┬─────────────┬─────────────┬─────────────┐\n│ 변수 X \\ Y  │ Y = 범주 1  │ Y = 범주 2  │ 행 합계     │\n├─────────────┼─────────────┼─────────────┼─────────────┤\n│ X = 범주 1  │ O_11 (E_11) │ O_12 (E_12) │ R_1         │\n│ X = 범주 2  │ O_21 (E_21) │ O_22 (E_22) │ R_2         │\n├─────────────┼─────────────┼─────────────┼─────────────┤\n│ 열 합계     │ C_1         │ C_2         │ 전체 표본 N │\n└─────────────┴─────────────┴─────────────┴─────────────┘\n* 카이제곱 통계량: χ² = Σ (O - E)² / E,  자유도 df = (r - 1)(c - 1)"
   },
   {
     "id": "adsp-48-028",
@@ -3205,7 +3206,8 @@
       "t-test",
       "p-value",
       "null-hypothesis-retention"
-    ]
+    ],
+    "codeSnippet": "\tWelch Two Sample t-test\n\ndata:  extra by group (1: 수면유도제 1, 2: 수면유도제 2)\nt = -1.8608, df = 17.776, p-value = 0.07301\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -3.3654  0.2054\nsample estimates:\nmean in group 1 mean in group 2 \n          0.750           2.330 "
   },
   {
     "id": "adsp-48-032",
@@ -3264,7 +3266,8 @@
       "multiple-regression",
       "adjusted-r-squared",
       "p-value"
-    ]
+    ],
+    "codeSnippet": "Call:\nlm(formula = Salary ~ PutOuts + Assists, data = Hitters)\n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept) 149.2736    65.4120   2.282   0.0232 *  \nPutOuts       0.2818     0.0706   3.991 8.50e-05 ***\nAssists      -0.1685     0.0938  -1.796   0.0736 .  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 421.2 on 260 degrees of freedom\nMultiple R-squared:  0.5405,\tAdjusted R-squared:  0.5223 \nF-statistic: 29.87 on 2 and 260 DF,  p-value: 3.25e-12"
   },
   {
     "id": "adsp-48-034",
@@ -3381,7 +3384,8 @@
       "residual-degrees-of-freedom",
       "intercept-p-value",
       "sample-size"
-    ]
+    ],
+    "codeSnippet": "Call:\nlm(formula = Distance ~ Time, data = delivery)\n\nCoefficients:\n            Estimate Std. Error t value Pr(>|t|)    \n(Intercept)  12.3521     3.9712   3.110  0.00201 ** \nTime          8.8030     0.2391  36.817  < 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 18.42 on 576 degrees of freedom\nMultiple R-squared:  0.7012,\tAdjusted R-squared:  0.7002 \nF-statistic: 1355 on 1 and 576 DF,  p-value: < 2.2e-16"
   },
   {
     "id": "adsp-48-038",
@@ -3644,7 +3648,8 @@
       "missing-values",
       "independent-events",
       "probability-calculation"
-    ]
+    ],
+    "codeSnippet": "[나이·성별 독립 결측치 확률 분석]\n- 나이 변수: 결측치 10% (정상 90% = 0.90)\n- 성별 변수: 결측치 10% (정상 90% = 0.90)\n------------------------------------------------------\n두 변수 모두 정상일 확률 (독립 사건): 0.90 × 0.90 = 0.81 (81%)\n적어도 하나의 결측 발생 확률 (레코드 제거): 1 - 0.81 = 0.19 (19%)"
   },
   {
     "id": "adsp-48-047",
@@ -3731,7 +3736,8 @@
       "association-rule",
       "confidence",
       "conditional-probability"
-    ]
+    ],
+    "codeSnippet": "[마트 구매 거래 1,000건 교차표]\n┌─────────────┬─────────────┬─────────────┬─────────────┐\n│ 구분        │ B 구매      │ B 미구매    │ 합계        │\n├─────────────┼─────────────┼─────────────┼─────────────┤\n│ A 구매      │ 300건 (A∩B) │ 300건       │ 600건 (A)   │\n│ A 미구매    │ 200건       │ 200건       │ 400건       │\n├─────────────┼─────────────┼─────────────┼─────────────┤\n│ 합계        │ 500건 (B)   │ 500건       │ 1,000건 (N) │\n└─────────────┴─────────────┴─────────────┴─────────────┘"
   },
   {
     "id": "adsp-48-050",
