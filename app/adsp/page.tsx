@@ -209,7 +209,7 @@ export default function AdspPage() {
                 SPEED QUIZ
               </span>
               <span className="rounded bg-amber-500/20 px-1.5 py-0.2 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
-                100문항 완비 (42·43회 수록)
+                100문항 완비 (48~31회 역대 기출 수록)
               </span>
             </div>
             <h2 className="text-base font-semibold tracking-tight text-foreground">
