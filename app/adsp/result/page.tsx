@@ -11,6 +11,7 @@ const ALL_SUBJECTS: SubjectCategory[] = [
   "adsp-understanding",
   "adsp-planning",
   "adsp-analysis",
+  "adsp-past",
 ];
 
 export default function AdspResultPage() {
@@ -52,7 +53,7 @@ export default function AdspResultPage() {
   if (total === 0) {
     return (
       <main className="mx-auto flex w-full max-w-[680px] flex-1 flex-col items-center justify-center gap-4 px-6 py-12 text-center">
-        <p className="text-muted-foreground">완료된 퀴즈 세션이 없습니다.</p>
+        <p className="text-muted-foreground">완료된 기출 복원 세션이 없습니다.</p>
         <Button onClick={handleHome}>홈으로</Button>
       </main>
     );
@@ -63,7 +64,7 @@ export default function AdspResultPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-semibold tracking-tight">학습 결과</h1>
         <p className="text-muted-foreground">
-          ADsP (데이터분석 준전문가) 세션 결과
+          ADsP (데이터분석 준전문가) 기출 복원 결과
         </p>
       </div>
 

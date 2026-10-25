@@ -16,7 +16,8 @@ export type SubjectCategory =
   | "sqld-sql"
   | "adsp-understanding"
   | "adsp-planning"
-  | "adsp-analysis";
+  | "adsp-analysis"
+  | "adsp-past";
 
 export type QuestionType = "multiple_choice" | "term_identification";
 
@@ -57,4 +58,5 @@ export const SUBJECT_LABELS: Record<SubjectCategory, string> = {
   "adsp-understanding": "데이터 이해",
   "adsp-planning": "데이터 분석 기획",
   "adsp-analysis": "데이터 분석",
+  "adsp-past": "기출 복원 (42·43·44·47·48회)",
 };

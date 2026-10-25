@@ -41,7 +41,7 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "adsp",
     label: "ADsP (데이터분석 준전문가)",
-    description: "3개 과목 마인드맵 · 82제 스피드 퀴즈 · 최신 기출 4지선다",
+    description: "3개 과목 마인드맵 · 100제 스피드 퀴즈 · 42~48회(2024~2026년) 실전 기출 복원",
     href: "/adsp",
     status: "available",
   },

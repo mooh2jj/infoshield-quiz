@@ -1,4 +1,4 @@
-export type AdspChapterId = "all" | "ch1" | "ch2" | "ch3";
+export type AdspChapterId = "all" | "ch1" | "ch2" | "ch3" | "past";
 
 export interface AdspChapter {
   id: AdspChapterId;
@@ -6,15 +6,16 @@ export interface AdspChapter {
   shortName: string;
 }
 
-export const ADSP_CHAPTERS: { id: "ch1" | "ch2" | "ch3"; name: string; shortName: string }[] = [
+export const ADSP_CHAPTERS: { id: "ch1" | "ch2" | "ch3" | "past"; name: string; shortName: string }[] = [
   { id: "ch1", name: "제1과목 데이터 이해", shortName: "데이터 이해" },
   { id: "ch2", name: "제2과목 데이터 분석 기획", shortName: "데이터 분석 기획" },
   { id: "ch3", name: "제3과목 데이터 분석", shortName: "데이터 분석" },
+  { id: "past", name: "최신 기출 복원 (42회·43회)", shortName: "기출 (42·43회)" },
 ];
 
 export interface SpeedQuizItem {
   id: number;
-  chapterId: "ch1" | "ch2" | "ch3";
+  chapterId: "ch1" | "ch2" | "ch3" | "past";
   chapterName: string;
   question: string;
   answer: string;
@@ -613,5 +614,135 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     chapterName: "제3과목 데이터 분석",
     question: "[기출 복원 15위] 의사결정나무 C4.5 알고리즘에서 ID3의 다치 속성(하위 범주가 많은 변수) 과대 분할 편향을 해결하기 위해 엔트로피 대신 도입한 분할 기준 척도는?",
     answer: "정보 획득 비율 (Gain Ratio)"
+  },
+
+  // =================================================================
+  // === [기출 복원 챕터] 최신 42회·43회 기출 복원 문항 (Q83 ~ Q100)
+  // =================================================================
+  {
+    id: 83,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 풍량, 강수량, 습도와 같은 정량적 데이터와 달리, 문자나 언어로 주관적 현상을 기술한 기상특보 같은 데이터 유형은?",
+    answer: "정성적 데이터 (Qualitative Data)"
+  },
+  {
+    id: 84,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] DIKW 피라미드에서 'B마트가 A마트보다 생수가 200원 싸니 B마트에서 사야겠다'처럼 정보를 실행 규칙과 개인의 행동 지침으로 정립한 단계는?",
+    answer: "지식 (Knowledge)"
+  },
+  {
+    id: 85,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 데이터 사이언티스트에게 요구되는 소프트/하드 스킬(비즈니스 통찰, 분석 기술, 스토리텔링 등) 중 하드웨어/서버 인프라 구축처럼 주된 핵심 역량이 아닌 것은?",
+    answer: "네트워크 인프라 구축 역량"
+  },
+  {
+    id: 86,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] KDD 분석 방법론 5단계 중 수집·정제된 데이터셋의 차원을 축소하거나 정규화하여 마이닝 알고리즘에 적합하게 가공하는 3번째 단계는?",
+    answer: "데이터 변환 (Transformation) 단계"
+  },
+  {
+    id: 87,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 빅데이터 위기 요인 중 예측 알고리즘의 잠재적 위험 판단만으로 아직 범죄를 저지르지 않은 사람의 기본권을 제한하는 문제는?",
+    answer: "책임 원칙의 훼손"
+  },
+  {
+    id: 88,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 빅데이터 시대 가치 패러다임 변화 중 복잡한 인과관계 규명보다 대량 데이터 간의 패턴과 연관성을 찾는 변화는?",
+    answer: "인과관계에서 상관관계로의 변화"
+  },
+  {
+    id: 89,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 시계열 데이터 4대 분해 요소 중 1년 단위의 계절성을 벗어나 2~10년 이상의 다년간 주기로 경기 변동처럼 오르내리는 요인은?",
+    answer: "순환 요인 (Cycle / 순환 변동)"
+  },
+  {
+    id: 90,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 분류 모델 평가 지표 중 '실제 음성(Negative) 데이터 중 모델이 올바르게 음성으로 분류한 비율'을 나타내는 지표는?",
+    answer: "특이도 (Specificity, TNR)"
+  },
+  {
+    id: 91,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 의사결정나무 CART 알고리즘에서 범주형 목표변수의 분할 기준으로 사용되며 불순도가 낮을수록 0에 수렴하는 척도는?",
+    answer: "지니 지수 (Gini Index)"
+  },
+  {
+    id: 92,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[42회 기출] 결측치 대치 기법 중 결측치가 있는 관측치를 해당 변수의 평균값으로 대체하지만 자료의 분산을 과소추정하게 만드는 기법은?",
+    answer: "평균 대치법 (Mean Imputation)"
+  },
+  {
+    id: 93,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 소셜 텍스트나 동영상 같은 비정형 데이터와 달리, 기상청 관측소에서 측정한 최고기온 수치와 같이 정해진 스키마의 수치 데이터 유형은?",
+    answer: "정형 데이터 (Structured Data)"
+  },
+  {
+    id: 94,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 빅데이터 가치 패러다임 변화 3단계 중 아날로그의 디지털화, 인터넷 연결을 거쳐 스스로 판단하고 맞춤 행동을 추천하는 마지막 단계는?",
+    answer: "에이전시 (Agency)"
+  },
+  {
+    id: 95,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 분석 과제 발굴 4분면 매트릭스에서 분석 대상(What)은 알고 있으나 구체적인 해결 방법(How)을 모를 때 도출되는 과제 유형은?",
+    answer: "솔루션 (Solution)"
+  },
+  {
+    id: 96,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] CRISP-DM 방법론 6단계 중 전체 분석 프로젝트 공수의 60~80%가 소요되는 가장 시간과 노력이 많이 드는 단계는?",
+    answer: "데이터 준비 (Data Preparation) 단계"
+  },
+  {
+    id: 97,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 모든 예측 변수들이 상호 조건부 독립이라는 가정을 전제로 베이즈 정리를 적용하여 사후확률을 계산하는 지도학습 알고리즘은?",
+    answer: "나이브 베이즈 분류기 (Naive Bayes)"
+  },
+  {
+    id: 98,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 회귀분석 잔차(Residual)가 만족해야 하는 4대 기본 가정(선형성, 등분산성, 독립성 외 1가지)은?",
+    answer: "정규성 (Normality)"
+  },
+  {
+    id: 99,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 연관규칙 분석에서 품목 A와 B가 서로 독립일 때의 동시 구매 기대치 대비 실제 동시 구매율의 배수를 나타내는 지표는?",
+    answer: "향상도 (Lift)"
+  },
+  {
+    id: 100,
+    chapterId: "past",
+    chapterName: "최신 기출 복원 (42회·43회)",
+    question: "[43회 기출] 타깃 레이블(정답 Y)이 주어지지 않은 상태에서 객체 간의 거리/유사도에 기반하여 데이터를 자연스러운 군집으로 묶는 머신러닝 기법은?",
+    answer: "군집 분석 (Clustering, 비지도 학습)"
   }
 ];

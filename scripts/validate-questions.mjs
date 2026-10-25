@@ -24,6 +24,7 @@ const VALID_CATEGORIES = [
   "adsp-understanding",
   "adsp-planning",
   "adsp-analysis",
+  "adsp-past",
 ];
 const VALID_TYPES = ["multiple_choice", "term_identification"];
 

@@ -82,7 +82,7 @@ export default function AdspQuizPage() {
   function handleExit() {
     if (
       window.confirm(
-        "퀴즈를 종료하고 홈으로 이동할까요? 진행 상황은 저장되지 않습니다."
+        "기출 복원 문제 풀이를 종료하고 홈으로 이동할까요? 진행 상황은 저장되지 않습니다."
       )
     ) {
       resetSession();

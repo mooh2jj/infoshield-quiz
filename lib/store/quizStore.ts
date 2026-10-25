@@ -25,10 +25,15 @@ interface QuizSessionState {
   currentIndex: number;
   answers: Record<string, AnswerRecord>;
   isHintShown: boolean;
+  timeSpentSeconds: number;
+  examRound: "48" | "47" | "44" | "43" | "42";
   startSession: (filters: QuizFilters, options?: StartSessionOptions) => void;
   submitAnswer: (itemId: string, submitted: string, correct: boolean) => void;
   nextQuestion: () => void;
   previousQuestion: () => void;
+  goToQuestion: (index: number) => void;
+  setTimeSpentSeconds: (seconds: number) => void;
+  setExamRound: (round: "48" | "47" | "44" | "43" | "42") => void;
   toggleHint: () => void;
   resetSession: () => void;
   setHasHydrated: (value: boolean) => void;
@@ -45,6 +50,8 @@ export const useQuizStore = create<QuizSessionState>()(
       currentIndex: 0,
       answers: {},
       isHintShown: false,
+      timeSpentSeconds: 0,
+      examRound: "48",
       startSession: (filters, options) => {
         const { questionIds, count } = options ?? {};
         let ids: string[];
@@ -62,6 +69,7 @@ export const useQuizStore = create<QuizSessionState>()(
           currentIndex: 0,
           answers: {},
           isHintShown: false,
+          timeSpentSeconds: 0,
         });
       },
       submitAnswer: (itemId, submitted, correct) =>
@@ -81,6 +89,13 @@ export const useQuizStore = create<QuizSessionState>()(
           currentIndex: Math.max(state.currentIndex - 1, 0),
           isHintShown: false,
         })),
+      goToQuestion: (index) =>
+        set((state) => ({
+          currentIndex: Math.max(0, Math.min(index, state.queue.length - 1)),
+          isHintShown: false,
+        })),
+      setTimeSpentSeconds: (seconds) => set({ timeSpentSeconds: seconds }),
+      setExamRound: (round) => set({ examRound: round }),
       toggleHint: () => set((state) => ({ isHintShown: !state.isHintShown })),
       resetSession: () =>
         set({
@@ -89,6 +104,8 @@ export const useQuizStore = create<QuizSessionState>()(
           currentIndex: 0,
           answers: {},
           isHintShown: false,
+          timeSpentSeconds: 0,
+          examRound: "48",
         }),
       setHasHydrated: (value) => set({ hasHydrated: value }),
     }),
@@ -101,6 +118,8 @@ export const useQuizStore = create<QuizSessionState>()(
         queue: state.queue,
         currentIndex: state.currentIndex,
         answers: state.answers,
+        timeSpentSeconds: state.timeSpentSeconds,
+        examRound: state.examRound,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);

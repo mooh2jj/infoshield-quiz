@@ -54,6 +54,9 @@ export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   "adsp-analysis": (adsp as QuizItem[]).filter(
     (item) => item.category === "adsp-analysis"
   ),
+  "adsp-past": (adsp as QuizItem[]).filter(
+    (item) => item.category === "adsp-past"
+  ),
 };
 
 export const ALL_QUESTIONS: QuizItem[] = Object.values(

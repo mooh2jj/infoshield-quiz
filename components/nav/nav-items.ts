@@ -139,10 +139,10 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       {
         href: "/adsp",
-        label: "퀴즈",
-        pillLabel: "ADsP 퀴즈",
+        label: "기출 복원",
+        pillLabel: "ADsP 기출 복원",
         icon: ListChecks,
-        matchPrefixes: ["/adsp", "/adsp/quiz", "/adsp/result"],
+        matchPrefixes: ["/adsp", "/adsp/quiz", "/adsp/result", "/adsp/exam"],
       },
       {
         href: "/adsp/speed-quiz",
