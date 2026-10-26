@@ -19,9 +19,14 @@ import {
   HelpCircle,
   AlertTriangle,
   BookmarkCheck,
+  ChevronDown,
+  ChevronUp,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { MathText } from "@/components/ui/MathText";
+import { AdspRoiMermaid } from "./AdspRoiMermaid";
 
 export interface RoiMemoItem {
   id: string;
@@ -35,6 +40,8 @@ export interface RoiMemoItem {
   trap: string;
   sectionId: string;
   tags: string[];
+  mermaidChart?: string;
+  diagramTitle?: string;
 }
 
 export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
@@ -53,6 +60,17 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     trap: "지혜(Wisdom)는 지식 없이 발생하는 단순 직관이 아니라, 축적된 지식을 바탕으로 창의적 아이디어와 유연한 통찰을 발휘하는 단계!",
     sectionId: "adsp-understanding",
     tags: ["DIKW", "데이터", "정보", "지식", "지혜"],
+    diagramTitle: "DIKW 계층 피라미드 & 가치 상승 구조",
+    mermaidChart: `flowchart TD
+  W["지혜 (Wisdom)<br/>통찰력 / 유연한 창의적 아이디어"]
+  K["지식 (Knowledge)<br/>규칙 / 원리 / 축적된 노하우"]
+  I["정보 (Information)<br/>의미와 목적이 부여된 데이터"]
+  D["데이터 (Data)<br/>가공되지 않은 순수한 객관적 사실"]
+  D --> I --> K --> W
+  style W fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
+  style K fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style I fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b
+  style D fill:#f3f4f6,stroke:#4b5563,stroke-width:2px,color:#1f2937`,
   },
   {
     id: "roi-02",
@@ -61,11 +79,18 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "S",
     stars: 5,
     frequencyRate: "출제율 98%+",
-    title: "SECI 모델 (지식 창출 사이클)",
+    title: "SECI 모델 (지식 변환 4단계 나선 구조)",
     formula: "공통화(암묵➔암묵) ➔ 표출화(암묵➔형식) ➔ 연결화(형식➔형식) ➔ 내면화(형식➔암묵)",
-    trap: "개인의 머릿속 암묵지를 매뉴얼/보고서 등 형식지로 언어화·시각화하는 것은 '표출화(Externalization)'!",
+    trap: "[48회 1번·47회 1번 연속 출제!] 연결화(Combination)는 형식지들을 결합·분류·체계화하는 것이며, 형식지를 개인의 암묵지로 체화하는 것은 '내면화(Internalization)'!",
     sectionId: "adsp-understanding",
-    tags: ["SECI", "암묵지", "형식지", "표출화", "공통화"],
+    tags: ["SECI", "암묵지", "형식지", "표출화", "연결화", "내면화"],
+    diagramTitle: "SECI 모델 지식 상호작용 선순환 나선 구조",
+    mermaidChart: `flowchart LR
+  S["1. 공통화 (Socialization)<br/>암묵지 ➔ 암묵지<br/>경험 공유·공감대 형성"]
+  E["2. 표출화 (Externalization)<br/>암묵지 ➔ 형식지<br/>문서화·매뉴얼화·개념화"]
+  C["3. 연결화 (Combination - 48회)<br/>형식지 ➔ 형식지<br/>분류·편집·체계적 결합"]
+  I["4. 내면화 (Internalization)<br/>형식지 ➔ 암묵지<br/>행동·학습·개인 체화"]
+  S --> E --> C --> I --> S`,
   },
   {
     id: "roi-03",
@@ -75,8 +100,8 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     stars: 5,
     frequencyRate: "출제율 92%+",
     title: "빅데이터 3대 위기 요인 & 통제 방안",
-    formula: "사생활 침해(책임 원칙) / 책임 원칙 훼손(알고리즘 접근권) / 데이터 오용(알고리즈미스트)",
-    trap: "사생활 침해의 통제는 '사전 동의제 강화'가 아니라 정보 사용자에게 책임을 묻는 '사후 책임 원칙'으로의 전환!",
+    formula: "사생활 침해(사후 책임 원칙) / 책임 원칙 훼손(알고리즘 접근권 보장) / 데이터 오용(알고리즈미스트 & 공정성)",
+    trap: "[48회 6번·47회 8번 연계] 3대 위기요인은 사생활침해/책임원칙훼손/데이터오용! 익명화나 알고리즘 공개는 위기요인이 아닌 '대응방안(통제기제)'이며, 수집 사전동의제 강화는 오답!",
     sectionId: "adsp-understanding",
     tags: ["위기요인", "책임원칙", "알고리즘접근권", "알고리즈미스트"],
   },
@@ -171,9 +196,35 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     sectionId: "adsp-understanding",
     tags: ["비식별화", "가명처리", "마스킹", "범주화"],
   },
+  {
+    id: "roi-51",
+    subjectId: "ch1",
+    subjectName: "1과목 데이터 이해",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 96%+",
+    title: "데이터베이스 4대 본질 특성 & DBMS",
+    formula: "통합 데이터(중복 최소화), 저장 데이터(컴퓨터 기억장치), 운영 데이터(조직 업무 필수), 공용 데이터(다수 동시 공유)",
+    trap: "[48회 4번·47회 3번 기출!] DBMS는 다수 사용자가 자원을 동시 공유하는 '공용 데이터(Shared Data)'를 지원함! 기계가독성, 검색가능성, 원격조작성은 '정보의 축적 및 전달' 측면의 특성!",
+    sectionId: "adsp-understanding",
+    tags: ["데이터베이스", "DBMS", "공용데이터", "통합데이터", "원격조작성"],
+  },
+  {
+    id: "roi-52",
+    subjectId: "ch1",
+    subjectName: "1과목 데이터 이해",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 90%+",
+    title: "실시간 OLTP vs 분석용 OLAP & 익명화",
+    formula: "OLTP = 일상 트랜잭션 실시간 기록·갱신(무결성/일관성) / OLAP = 다차원 대량 데이터 분석·의사결정 / 익명화 = 비가역적 재식별 불가 조치",
+    trap: "[47회 9번·4번 기출!] 주문·결제 즉시 데이터베이스에 실시간으로 반영하여 무결성을 유지하는 것은 OLAP가 아닌 'OLTP'! 특정 개인을 다시 알아볼 수 없도록 비가역적으로 조치하는 것은 '익명화(Anonymization)'!",
+    sectionId: "adsp-understanding",
+    tags: ["OLTP", "OLAP", "익명화", "비식별화", "트랜잭션"],
+  },
 
   // =================================================================
-  // === [제2과목] 데이터 분석 기획 (11문항)
+  // === [제2과목] 데이터 분석 기획 (12문항)
   // =================================================================
   {
     id: "roi-06",
@@ -182,11 +233,20 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "S",
     stars: 5,
     frequencyRate: "출제율 96%+",
-    title: "분석 과제 4분면 (Target × How)",
-    formula: "최적화(Known×Known) / 솔루션(Target Known×How Unknown) / 통찰(Target Unknown×How Known) / 발견(Unknown×Unknown)",
-    trap: "분석 대상은 명확하지만 구체적 알고리즘/방법을 모르는 과제는 '솔루션(Solution)'!",
+    title: "분석 과제 4분면 (What 대상 × How 방법)",
+    formula: "최적화(Known×Known) / 솔루션(What Known×How Unknown) / 통찰(What Unknown×How Known) / 발견(Unknown×Unknown)",
+    trap: "[48회 11번·47회 14번 연속 적중!] 분석 방법(How)은 아는데 대상(What)을 모르면 '통찰(Insight)', 대상을 아는데 방법(How)을 모르면 '솔루션(Solution)'!",
     sectionId: "adsp-planning",
     tags: ["4분면", "최적화", "솔루션", "통찰", "발견"],
+    diagramTitle: "분석 과제 발굴 4분면 매트릭스",
+    mermaidChart: `flowchart TD
+  subgraph Q ["분석 과제 4분면 (대상 What × 방법 How)"]
+    direction TB
+    OPT["최적화 (Optimization)<br/>대상 앎(Known) × 방법 앎(Known)"]
+    SOL["솔루션 (Solution - 47회)<br/>대상 앎(Known) × 방법 모름(Unknown)"]
+    INS["통찰 (Insight - 48회)<br/>대상 모름(Unknown) × 방법 앎(Known)"]
+    DIS["발견 (Discovery)<br/>대상 모름(Unknown) × 방법 모름(Unknown)"]
+  end`,
   },
   {
     id: "roi-07",
@@ -213,6 +273,15 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     trap: "전체 프로젝트 기간의 60~80%가 소요되는 가장 많은 공수 단계는 '데이터 준비(Data Preparation)'!",
     sectionId: "adsp-planning",
     tags: ["CRISP-DM", "데이터준비", "방법론"],
+    diagramTitle: "CRISP-DM 6단계 순환 피드백 프로세스",
+    mermaidChart: `flowchart LR
+  B["1. 업무 이해"] --> U["2. 데이터 이해<br/>(EDA 탐색)"]
+  U --> P["3. 데이터 준비<br/>(60~80% 최다 공수)"]
+  P --> M["4. 모델링"]
+  M --> E["5. 평가"]
+  E --> D["6. 전개"]
+  M -.-> P
+  E -.-> B`,
   },
   {
     id: "roi-09",
@@ -221,11 +290,20 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "A",
     stars: 4,
     frequencyRate: "출제율 86%+",
-    title: "분석 수준 4분면 (준비도 × 성숙도)",
-    formula: "준비형(준비도 高, 성숙도 低) / 정착형(준비도 低, 성숙도 高) / 도입형(둘 다 低) / 확산형(둘 다 高)",
-    trap: "조직·인프라 준비는 되어 있으나 실제 업무 성숙도가 낮으면 '준비형(Preparation)'!",
+    title: "분석 수준 진단 4분면 (준비도 × 성숙도)",
+    formula: "준비형(준비도 低 × 성숙도 低) / 도입형(준비도 低 × 성숙도 高) / 정착형(준비도 高 × 성숙도 低) / 확산형(준비도 高 × 성숙도 高)",
+    trap: "[47회 17번 기출 정답!] 조직·인력 등 인프라 준비도는 높으나 전사 업무 성숙도가 낮으면 '정착형(Settle)'! 둘 다 낮으면 준비형, 둘 다 높으면 확산형!",
     sectionId: "adsp-planning",
-    tags: ["준비도", "성숙도", "준비형", "확산형"],
+    tags: ["준비도", "성숙도", "정착형", "준비형", "도입형", "확산형"],
+    diagramTitle: "분석 수준 진단 4분면 (준비도 × 성숙도 매트릭스)",
+    mermaidChart: `flowchart TD
+  subgraph LevelMatrix ["분석 수준 사분면 (준비도 Readiness × 성숙도 Maturity)"]
+    direction TB
+    Spread["확산형 (Spread)<br/>준비도 高 × 성숙도 高<br/>(전사적 분석 역량 완비)"]
+    Settle["정착형 (Settle - 47회 17번 기출!)<br/>준비도 高 × 성숙도 低<br/>(인프라 준비 완료, 업무 정착 필요)"]
+    Intro["도입형 (Introduction)<br/>준비도 低 × 성숙도 高<br/>(업무 실적 우수하나 인프라 미흡)"]
+    Prep["준비형 (Preparation)<br/>준비도 低 × 성숙도 低<br/>(기반 및 역량 사전 준비 착수)"]
+  end`,
   },
   {
     id: "roi-10",
@@ -234,11 +312,21 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "B",
     stars: 3,
     frequencyRate: "출제율 80%+",
-    title: "마스터 플랜 우선순위 (시급성 vs 난이도)",
-    formula: "최우선 추진 = 3사분면 (시급성 높고, 난이도 낮음 = Quick-Win 과제)",
-    trap: "난이도 중심 추진 시 순서는 '3사분면 ➔ 1사분면 ➔ 2사분면 ➔ 4사분면'!",
+    title: "분석 마스터플랜 과제 우선순위 (시급성 vs 난이도)",
+    formula: "우선순위 3대 기준: 전략적 중요도, 비즈니스 성과(ROI), 실행 용이성(시급성/난이도). 최우선: 3사분면(시급성 高, 난이도 低 Quick-Win)",
+    trap: "[48회 15번·47회 16번 연계] 데이터 양과 범위를 줄이는 것은 '난이도' 조정이지 비즈니스 '시급성'을 낮출 수 없음! 난이도 중심 추진 순서: 3사분면 ➔ 1사분면 ➔ 2사분면!",
     sectionId: "adsp-planning",
-    tags: ["마스터플랜", "시급성", "난이도", "Quick-Win"],
+    tags: ["마스터플랜", "시급성", "난이도", "Quick-Win", "우선순위"],
+    diagramTitle: "마스터플랜 과제 우선순위 평가 사분면",
+    mermaidChart: `flowchart TD
+  subgraph MP ["마스터플랜 추진 우선순위 사분면 (시급성 vs 난이도)"]
+    direction TB
+    Q3["3사분면 ★ 최우선 (Quick-Win)<br/>시급성 高 × 난이도 低"]
+    Q1["1사분면 (난이도 기준 2순위)<br/>시급성 高 × 난이도 高"]
+    Q2["2사분면 (시급성 기준 2순위)<br/>시급성 低 × 난이도 低"]
+    Q4["4사분면 (중장기 과제)<br/>시급성 低 × 난이도 高"]
+  end
+  Q3 --> Q1 --> Q2 --> Q4`,
   },
   {
     id: "roi-31",
@@ -305,9 +393,35 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     sectionId: "adsp-planning",
     tags: ["거버넌스", "데이터표준", "용어사전", "도메인"],
   },
+  {
+    id: "roi-53",
+    subjectId: "ch2",
+    subjectName: "2과목 분석 기획",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 89%+",
+    title: "오컴의 면도날 법칙 & 거시적 STEEP 환경분석",
+    formula: "오컴의 면도날: 동일 성능이면 단순한 모형 선택(설명력·해석력 우선) / STEEP: 사회(S), 기술(T), 경제(E), 환경(E), 정치(P)",
+    trap: "[47회 11번·15번, 48회 11번 기출!] 모델의 복잡도를 무조건 높인다고 좋은 게 아님! 복잡할수록 과적합 위험과 설명 불가 리스크가 커지므로 단순 모형이 선호됨. 하향식 문제 탐색 시 STEEP 프레임워크 활용!",
+    sectionId: "adsp-planning",
+    tags: ["오컴의면도날", "STEEP", "복잡도", "과적합", "하향식탐색"],
+  },
+  {
+    id: "roi-54",
+    subjectId: "ch2",
+    subjectName: "2과목 분석 기획",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 87%+",
+    title: "분석 프로젝트 품질 관리 (품질보증 QA vs 품질통제 QC)",
+    formula: "품질보증(QA) = 프로젝트 수행 절차가 표준 프로세스를 준수하는지 점검 / 품질통제(QC) = 최종 산출물이 명세·품질 요구조건을 충족하는지 검토",
+    trap: "[48회 14번 기출!] 품질 보증은 종료 시점이 아니라 '프로젝트 전 과정'에 걸쳐 수행됨! 품질 관리는 프로세스를 감사하는 '품질보증(QA)'과 산출물을 검사하는 '품질검토(QC)'로 구성!",
+    sectionId: "adsp-planning",
+    tags: ["품질관리", "품질보증", "QA", "QC", "프로젝트관리"],
+  },
 
   // =================================================================
-  // === [제3과목] 데이터 분석 (29문항 - 시험 60% 비중)
+  // === [제3과목] 데이터 분석 (36문항 - 시험 60% 비중)
   // =================================================================
   {
     id: "roi-11",
@@ -329,11 +443,11 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "S",
     stars: 5,
     frequencyRate: "출제율 98%+",
-    title: "로지스틱 회귀 & 오즈비 (Odds Ratio)",
-    formula: "Odds = p / (1 - p), ln(Odds) = β0 + β1*X, 독립변수 1단위 증가 시 승산 배율 = exp(β1)",
-    trap: "회귀계수의 exp값은 '확률'의 증가가 아니라 '승산(Odds = 발생확률/미발생확률)'의 배율 증가!",
+    title: "로지스틱 회귀분석 & 오즈비 (Odds Ratio)",
+    formula: "Odds = p / (1 - p), 로짓 연결함수 ln(p / (1 - p)) = β0 + β1*X, 독립변수 1단위 증가 시 승산 배율 = exp(β1)배",
+    trap: "[48회 34번 기출!] 회귀계수의 exp값은 '확률'의 증가가 아니라 '승산(Odds = p/(1-p))'의 배율 증가! 연결함수(Link Function)는 '로짓 함수'이며 시그모이드는 역함수!",
     sectionId: "adsp-analysis",
-    tags: ["로지스틱", "오즈비", "로짓", "Odds"],
+    tags: ["로지스틱", "오즈비", "로짓", "Odds", "연결함수"],
   },
   {
     id: "roi-13",
@@ -343,10 +457,10 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     stars: 5,
     frequencyRate: "출제율 98%+",
     title: "계층 군집 와드 연결법 (Ward's Method)",
-    formula: "두 군집 병합 시 발생하는 군집 내 오차제곱합(ESS: Error Sum of Squares) 증가량 최소화",
-    trap: "군집 내 분산을 최소화하여 비슷한 크기의 조밀한 구형 군집을 형성함!",
+    formula: "두 군집 병합 시 발생하는 군집 내 오차제곱합(SSE/ESS) 증가량 최소화 기준 병합",
+    trap: "[48회 47번·47회 49번 2회 연속 출제!] 거리 기준이 아니라 '군집 내 편차 오차제곱합(SSE/ESS)의 증가분 최소화'를 기준으로 병합하여 비슷한 크기의 조밀한 구형 군집 형성!",
     sectionId: "adsp-analysis",
-    tags: ["군집분석", "와드연결법", "ESS", "오차제곱합"],
+    tags: ["군집분석", "와드연결법", "ESS", "SSE", "오차제곱합"],
   },
   {
     id: "roi-14",
@@ -356,10 +470,20 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     stars: 5,
     frequencyRate: "출제율 96%+",
     title: "왜도(Skewness)와 대표값 위치 관계",
-    formula: "양의 왜도(오른쪽 꼬리, > 0): 최빈값 < 중앙값 < 평균 / 음의 왜도(왼쪽 꼬리, < 0): 평균 < 중앙값 < 최빈값",
-    trap: "오른쪽 긴 꼬리(양의 왜도)는 극단적 이상치가 평균을 끌어올리므로 평균이 제일 큼!",
+    formula: "양의 왜도(오른쪽 긴 꼬리): 최빈값 < 중앙값 < 평균 / 음의 왜도(왼쪽 긴 꼬리): 평균 < 중앙값 < 최빈값",
+    trap: "[47회 26번 기출!] 오른쪽으로 꼬리가 길면(양의 왜도) 극단적으로 큰 값들이 평균을 오른쪽으로 끌어당기므로 평균이 가장 큼! (최빈값 < 중앙값 < 평균)",
     sectionId: "adsp-analysis",
     tags: ["왜도", "Skewness", "평균", "중앙값", "최빈값"],
+    diagramTitle: "왜도(비대칭 분포)에 따른 대표값 대소 관계",
+    mermaidChart: `flowchart LR
+  subgraph Pos ["양의 왜도 (Right-skewed, 오른쪽 긴 꼬리 - 47회)"]
+    direction LR
+    P1["최빈값 (Mode)"] --> P2["중앙값 (Median)"] --> P3["평균 (Mean, 최대)"]
+  end
+  subgraph Neg ["음의 왜도 (Left-skewed, 왼쪽 긴 꼬리)"]
+    direction LR
+    N1["평균 (Mean, 최소)"] --> N2["중앙값 (Median)"] --> N3["최빈값 (Mode)"]
+  end`,
   },
   {
     id: "roi-15",
@@ -368,11 +492,11 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "S",
     stars: 5,
     frequencyRate: "출제율 97%+",
-    title: "연관성 분석 3대 지표 (장바구니)",
-    formula: "지지도 P(A∩B), 신뢰도 P(B|A), 향상도 신뢰도 / P(B)",
-    trap: "향상도(Lift) > 1일 때 양의 상관(보완재), = 1이면 독립(무관), < 1이면 음의 상관(대체재)!",
+    title: "연관성 분석 3대 지표 (장바구니 분석)",
+    formula: "지지도 = n(A∩B)/N, 신뢰도 = n(A∩B)/n(A), 향상도 = P(A∩B) / (P(A)*P(B)) = 신뢰도 / P(B)",
+    trap: "[48회 45·49·50번, 47회 50번 초빈출!] 품목 A, B가 상호 독립일 때 향상도는 0이 아니라 1! 향상도 > 1이면 보완재(양의 상관), 향상도 < 1이면 대체재(음의 상관)!",
     sectionId: "adsp-analysis",
-    tags: ["지지도", "신뢰도", "향상도", "연관분석"],
+    tags: ["지지도", "신뢰도", "향상도", "연관분석", "장바구니"],
   },
   {
     id: "roi-16",
@@ -386,6 +510,13 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     trap: "PACF가 뚝 끊겨 절단되면 무조건 'AR 모형', ACF가 뚝 끊기면 'MA 모형'!",
     sectionId: "adsp-analysis",
     tags: ["시계열", "ACF", "PACF", "AR", "MA"],
+    diagramTitle: "시계열 ACF / PACF 절단 판정 결정 트리",
+    mermaidChart: `flowchart TD
+  S["정상 시계열 데이터"] --> PACF{"PACF (부분자기상관)"}
+  PACF -- "p차 시차 이후 절단<br/>(ACF 지수 감쇄)" --> AR["AR(p) 자기회귀 모형"]
+  PACF -- "지수적 감쇄" --> ACF{"ACF (자기상관)"}
+  ACF -- "q차 시차 이후 절단<br/>(PACF 지수 감쇄)" --> MA["MA(q) 이동평균 모형"]
+  ACF -- "둘 다 지수적 감쇄" --> ARMA["ARMA(p, q) 혼합 모형"]`,
   },
   {
     id: "roi-17",
@@ -399,6 +530,16 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     trap: "배깅은 '분산(Variance) 감소', 부스팅은 '편향(Bias) 감소' 목적이 정반대!",
     sectionId: "adsp-analysis",
     tags: ["앙상블", "배깅", "부스팅", "분산감소", "편향감소"],
+    diagramTitle: "배깅(병렬 분산감소) vs 부스팅(순차 편향감소) 구조",
+    mermaidChart: `flowchart LR
+  subgraph Bag ["배깅 (Bagging - 랜덤포레스트)"]
+    direction TB
+    B1["복원추출 (Bootstrap)"] --> B2["병렬 독립 모델 학습"] --> B3["다수결 투표 / 평균<br/>➔ 분산(Variance) 감소"]
+  end
+  subgraph Boost ["부스팅 (Boosting - XGBoost)"]
+    direction TB
+    S1["오분류 오차 가중치"] --> S2["순차적(Sequential) 학습"] --> S3["오차 보정 집중<br/>➔ 편향(Bias) 감소"]
+  end`,
   },
   {
     id: "roi-18",
@@ -511,11 +652,11 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "S",
     stars: 5,
     frequencyRate: "출제율 96%+",
-    title: "상관계수: 피어슨 vs 스피어만",
-    formula: "피어슨 = 등간/비율 척도, '선형적(Linear)' 상관 측정 / 스피어만 = 순위/서열 척도, 비모수, '단조적(Monotonic)' 상관 측정",
-    trap: "수능 등수나 만족도 설문처럼 서열/순위 척도로 매겨진 데이터의 상관관계는 '스피어만 상관계수' 사용!",
+    title: "상관계수 비교: 피어슨 vs 스피어만",
+    formula: "피어슨 = 등간/비율 척도, 선형(Linear) 관계, 선형변환(상수 덧셈·양수 곱셈) 시 불변 / 스피어만 = 서열/순위 척도, 비모수, 단조(Monotonic) 관계",
+    trap: "[48회 28번·47회 37번 연속 적중!] 피어슨은 X에 0.3을 더하고 Y에 0.2를 더해도 r은 불변! 비선형이라도 순위 기반 단조 증가/감소 관계를 측정하려면 '스피어만 상관계수' 필수!",
     sectionId: "adsp-analysis",
-    tags: ["상관계수", "피어슨", "스피어만", "순위척도"],
+    tags: ["상관계수", "피어슨", "스피어만", "순위척도", "선형변환"],
   },
   {
     id: "roi-37",
@@ -555,6 +696,19 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     trap: "ROC 곡선의 가로축(X축)은 특이도 자체가 아니라 '1 - 특이도(위양성률, FPR)'임에 유의!",
     sectionId: "adsp-analysis",
     tags: ["특이도", "Specificity", "FPR", "혼동행렬"],
+    diagramTitle: "혼동행렬 2×2 구조 및 4대 성능 평가지표",
+    mermaidChart: `flowchart TD
+  subgraph CM ["혼동행렬 (Confusion Matrix)"]
+    direction TB
+    TP["TP: 실제 True / 예측 True"]
+    FN["FN: 실제 True / 예측 False (2종 오류)"]
+    FP["FP: 실제 False / 예측 True (1종 오류)"]
+    TN["TN: 실제 False / 예측 False"]
+  end
+  TP & FP --> P["정밀도(Precision) = TP / (TP + FP)"]
+  TP & FN --> R["재현율(Recall/TPR) = TP / (TP + FN)"]
+  FP & TN --> S["특이도(TNR) = TN / (FP + TN)"]
+  S --> FPR["위양성률(FPR) = 1 - 특이도 (ROC 가로축)"]`,
   },
   {
     id: "roi-40",
@@ -563,11 +717,11 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "S",
     stars: 5,
     frequencyRate: "출제율 92%+",
-    title: "군집 거리 척도 (유클리드 vs 맨해튼 vs 마할라노비스)",
-    formula: "유클리드 = 최단 직선거리 / 맨해튼 = 격자 블록 거리(|x1-x2|+|y1-y2|) / 마할라노비스 = 공분산·상관관계 고려 통계적 거리",
-    trap: "변수 간 상관관계와 분산 차이를 통계적으로 보정하여 측정하는 거리는 '마할라노비스 거리(Mahalanobis)'!",
+    title: "군집 거리 척도: 유클리드 vs 맨해튼 vs 마할라노비스",
+    formula: "유클리드 = 최단 직선 / 맨해튼 = L1 격자(|Δx|+|Δy|) / 마할라노비스 = 공분산 역행렬 반영 상관성·표준편차 보정 거리",
+    trap: "[48회 43번 기출!] 변수들의 측정 단위(척도) 차이뿐만 아니라 변수 간의 통계적 상관관계(공분산)까지 함께 고려하여 거리를 측정하는 것은 '마할라노비스 거리'!",
     sectionId: "adsp-analysis",
-    tags: ["거리척도", "유클리드", "맨해튼", "마할라노비스"],
+    tags: ["거리척도", "유클리드", "맨해튼", "마할라노비스", "공분산"],
   },
   {
     id: "roi-41",
@@ -602,11 +756,11 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     grade: "A",
     stars: 4,
     frequencyRate: "출제율 88%+",
-    title: "회귀분석 4대 기본 가정과 진단 플롯",
-    formula: "선형성(산점도), 독립성(더빈-왓슨 d≈2), 등분산성(잔차 산점도 균일 폭), 정규성(Q-Q 플롯, 샤피로-윌크)",
-    trap: "잔차 산점도에서 깔때기나 부채꼴 모양이 나타나면 '등분산성 위반'!",
+    title: "선형회귀 4대 기본 가정 & 잔차 진단",
+    formula: "선형성(산점도/다항회귀), 독립성(더빈-왓슨 d≈2), 등분산성(잔차 산점도 균일 폭), 정규성(Q-Q 플롯, 샤피로-윌크 p≥0.05)",
+    trap: "[48회 29번·47회 36번 기출!] 잔차 산점도가 2차 곡선(U자 형태)을 보이면 선형성 가정 위배 ➔ '다항 회귀(Polynomial Regression)'로 개선해야 함!",
     sectionId: "adsp-analysis",
-    tags: ["회귀가정", "선형성", "등분산성", "정규성", "잔차분석"],
+    tags: ["회귀가정", "선형성", "등분산성", "정규성", "잔차분석", "다항회귀"],
   },
   {
     id: "roi-44",
@@ -699,38 +853,167 @@ export const ADSP_ROI_ITEMS: RoiMemoItem[] = [
     sectionId: "adsp-analysis",
     tags: ["R패키지", "reshape", "melt", "cast", "plyr"],
   },
+  {
+    id: "roi-55",
+    subjectId: "ch3",
+    subjectName: "3과목 데이터 분석",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 97%+",
+    title: "측정 척도 4단계 (명목·서열·등간·비율) & 절대영점",
+    formula: "명목(구분, 성별) ➔ 서열(순서, 학점) ➔ 등간(간격일정, 덧셈/뺄셈, 절대영점 없음, 온도) ➔ 비율(절대영점 존재, 사칙연산/배수 가능, 무게·길이·매출)",
+    trap: "[48회 25번·47회 21번 연속 출제!] 섭씨온도는 절대영점이 없어 2배 뜨겁다고 할 수 없는 '등간척도'! '절대적인 참된 0(부재)'이 존재하여 나눗셈/비율 계산이 가능한 최상위 척도는 '비율척도'!",
+    sectionId: "adsp-analysis",
+    tags: ["척도", "등간척도", "비율척도", "절대영점", "사칙연산"],
+  },
+  {
+    id: "roi-56",
+    subjectId: "ch3",
+    subjectName: "3과목 데이터 분석",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 96%+",
+    title: "상자그림(Box Plot) 안쪽울타리 수식 & 표본크기 한계",
+    formula: "IQR = Q3 - Q1 / 하한펜스 = Q1 - 1.5*IQR / 상한펜스 = Q3 + 1.5*IQR (펜스 밖 = 이상치)",
+    trap: "[47회 23번·48회 21번·22번 기출!] 상자그림은 사분위수 기반이며 표준오차(SE)를 쓰지 않음! 또한 상자그림만으로는 각 집단의 '전체 관측치 개수(표본 크기 N)'를 직접 파악할 수 없음!",
+    sectionId: "adsp-analysis",
+    tags: ["상자그림", "BoxPlot", "IQR", "안쪽울타리", "이상치", "표본크기"],
+    diagramTitle: "상자그림(Box Plot) 5수치 & 울타리/이상치 구조",
+    mermaidChart: `flowchart TD
+  OH["상한 이상치 (Outlier)"] --> UF["상한 안쪽울타리: Q3 + 1.5 * IQR (47회)"]
+  UF --> MAX["정상 관측 최댓값 (Whisker 끝)"]
+  MAX --> Q3["제3사분위수 (Q3, 상위 75%)"]
+  Q3 --> M["중앙값 (Median, Q2 50%)"]
+  M --> Q1["제1사분위수 (Q1, 상위 25%)"]
+  Q1 --> MIN["정상 관측 최솟값 (Whisker 끝)"]
+  MIN --> LF["하한 안쪽울타리: Q1 - 1.5 * IQR (47회)"]
+  LF --> OL["하한 이상치 (Outlier)"]`,
+  },
+  {
+    id: "roi-57",
+    subjectId: "ch3",
+    subjectName: "3과목 데이터 분석",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 95%+",
+    title: "확률적 표본추출: 군집(집락)추출 vs 층화추출",
+    formula: "층화추출 = 집단(층) 내 동질적, 집단 간 이질적 (각 층 무작위 추출) / 군집추출 = 군집 내 이질적(소모집단), 군집 간 동질적 (군집 통째로 추출)",
+    trap: "[47회 27번 기출 정답!] 군집(집락)추출은 '군집 내부는 이질적, 군집 간에는 동질적'이어야 함! 집단 내 동질적, 집단 간 이질적인 것은 '층화추출법'!",
+    sectionId: "adsp-analysis",
+    tags: ["표본추출", "군집추출", "층화추출", "이질적", "동질적"],
+    diagramTitle: "층화추출 vs 군집추출 집단 내/간 특성 비교",
+    mermaidChart: `flowchart LR
+  subgraph Stratified ["층화추출법 (Stratified)"]
+    direction TB
+    S1["집단(층) 내: 동질적 (Homogeneous)"]
+    S2["집단(층) 간: 이질적 (Heterogeneous)"]
+    S3["각 층마다 무작위 표본 추출"]
+    S1 --> S2 --> S3
+  end
+  subgraph Cluster ["군집(집락)추출법 (Cluster - 47회 정답)"]
+    direction TB
+    C1["군집 내: 이질적 (모집단 축소판)"]
+    C2["군집 간: 동질적 (Mutual Homogeneous)"]
+    C3["선택된 군집 전체를 전수 조사"]
+    C1 --> C2 --> C3
+  end`,
+  },
+  {
+    id: "roi-58",
+    subjectId: "ch3",
+    subjectName: "3과목 데이터 분석",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 96%+",
+    title: "단순회귀 잔차 자유도(n-2) 및 평균제곱오차(MSE)",
+    formula: "단순회귀: 전체 표본 수 n = 잔차 자유도 + 2(모수: 절편, 기울기) / MSE = SSE / (n - 2)",
+    trap: "[48회 37번·47회 31번 계산 기출!] 단순회귀 잔차자유도가 576이면 표본수 n = 576 + 2 = 578개! SSE=20, n=10이면 MSE = 20/(10-2) = 20/8 = 2.50! (n이 아닌 n-2로 나눔!)",
+    sectionId: "adsp-analysis",
+    tags: ["단순회귀", "잔차자유도", "MSE", "SSE", "분산분석표"],
+    diagramTitle: "회귀분석 제곱합 분해 & 자유도 분산분석 구조",
+    mermaidChart: `flowchart TD
+  SST["총제곱합 (SST)<br/>자유도: n - 1"] --> SSR["회귀제곱합 (SSR)<br/>자유도: 1 (기울기 모수)"]
+  SST --> SSE["잔차제곱합 (SSE)<br/>자유도: n - 2 (48회 기출)"]
+  SSE --> MSE["MSE = SSE / (n - 2) (47회 계산 기출)"]
+  MSE --> F["F-통계량 = MSR / MSE<br/>(모형 전체 유의성 검정)"]`,
+  },
+  {
+    id: "roi-59",
+    subjectId: "ch3",
+    subjectName: "3과목 데이터 분석",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 91%+",
+    title: "인공신경망 활성화 함수: 소프트맥스 vs 시그모이드",
+    formula: "시그모이드 = 이진분류/로지스틱, 출력 [0, 1], 기울기소실 문제 / 소프트맥스 = 다중분류 출력층, 모든 클래스 확률 총합 = 1",
+    trap: "[48회 42번·47회 41번·43번 기출!] 3개 이상 클래스를 분류하는 다중분류 출력층에서 확률 총합이 1이 되도록 정규화하는 함수는 '소프트맥스(Softmax)'! 뉴런의 비선형 변환 함수 = 활성화 함수!",
+    sectionId: "adsp-analysis",
+    tags: ["활성화함수", "소프트맥스", "시그모이드", "인공신경망", "다중분류"],
+    diagramTitle: "이진분류(Sigmoid) vs 다중분류(Softmax) 결정 경로",
+    mermaidChart: `flowchart LR
+  In["선형 가중합<br/>z = WX + b"] --> Task{"분류 문제 유형"}
+  Task -- "이진 분류 (Binary)" --> Sig["시그모이드 (Sigmoid)<br/>출력: 0 ~ 1 독립 확률<br/>임계값 0.5 기준 판정"]
+  Task -- "다중 분류 (Multi-class)" --> Soft["소프트맥스 (Softmax - 47회 기출)<br/>K개 클래스 확률 총합 = 1<br/>최대 확률 클래스 선택"]`,
+  },
+  {
+    id: "roi-60",
+    subjectId: "ch3",
+    subjectName: "3과목 데이터 분석",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 88%+",
+    title: "정형 데이터마이닝 5단계 절차 & 회귀 잔차도 U자형",
+    formula: "목적 정의 ➔ 데이터 준비 ➔ 데이터 가공(전처리·파생변수) ➔ 마이닝 기법 적용(모델링) ➔ 검증 및 평가",
+    trap: "[48회 40번·29번 기출!] 데이터 준비(수집) 다음은 모델링이 아니라 '데이터 가공(가 ➔ 나 ➔ 다 ➔ 라 ➔ 마)'! 회귀분석 후 잔차도가 U자 곡선을 띠면 비선형이므로 '다항 회귀'를 적용해야 함!",
+    sectionId: "adsp-analysis",
+    tags: ["데이터마이닝", "수행단계", "잔차도", "다항회귀", "비선형"],
+    diagramTitle: "정형 데이터마이닝 5단계 순차 워크플로우",
+    mermaidChart: `flowchart LR
+  S1["1. 목적 정의"] --> S2["2. 데이터 준비<br/>(원천 데이터 수집)"]
+  S2 --> S3["3. 데이터 가공<br/>(전처리·파생변수)"]
+  S3 --> S4["4. 마이닝 기법 적용<br/>(알고리즘 모델링)"]
+  S4 --> S5["5. 검증 및 평가"]`,
+  },
 ];
 
-const DEFAULT_MEMO_TEMPLATE = `[💡 나의 ADsP 시험 직전 최종 암기 노트]
+const DEFAULT_MEMO_TEMPLATE = `[💡 나의 ADsP 시험 직전 최종 암기 노트 (48회·47회 최신 반영)]
 =========================================
 [제1과목 데이터 이해]
 - DIKW: 데이터(사실) ➔ 정보(의미) ➔ 지식(규칙) ➔ 지혜(통찰)
-- SECI: 공통화(암묵→암묵), 표출화(암묵→형식), 연결화(형식→형식), 내면화(형식→암묵)
-- DW 4대 특징: 주제 지향성, 통합성, 시계열성, 비휘발성
+- SECI: 공통화(암묵→암묵), 표출화(암묵→형식), 연결화(형식→형식/48회), 내면화(형식→암묵)
+- DB 본질 특성: 통합(최소중복), 저장, 운영, 공용(다수공유/48회), 원격조작성(47회)
+- DW 4대 특징: 주제 지향성, 통합성, 시계열성, 비휘발성 (OLTP=실시간/47회)
 - 빅데이터 위기 통제: 사생활 침해(사후 책임원칙), 책임 훼손(알고리즘 접근권), 오용(알고리즈미스트)
 
 [제2과목 데이터 분석 기획]
-- 분석 4분면: 최적화(K×K), 솔루션(Target K×How U), 통찰(Target U×How K), 발견(U×U)
-- 하향식 4단계: 문제 탐색 ➔ 문제 정의 ➔ 해결방안 탐색 ➔ 타당성 검토
-- CRISP-DM 6단계: 업무이해 ➔ 데이터이해 ➔ 데이터준비(60~80% 공수) ➔ 모델링 ➔ 평가 ➔ 전개
-- 마스터플랜 4분면: 3사분면(시급성 高, 난이도 低) = Quick-Win 최우선
+- 분석 4분면: 최적화(K×K), 솔루션(What K×How U/47회), 통찰(What U×How K/48회), 발견(U×U)
+- 분석 수준 4분면: 정착형(준비도 高×성숙도 低/47회), 준비형(둘 다 低), 도입형(준비도 低×성숙도 高), 확산형(둘 다 高)
+- 하향식 4단계: 문제 탐색(STEEP) ➔ 문제 정의 ➔ 해결방안 탐색 ➔ 타당성 검토
+- CRISP-DM 6단계: 업무이해 ➔ 데이터이해(EDA) ➔ 데이터준비(가공/정제) ➔ 모델링 ➔ 평가 ➔ 전개
+- 마스터플랜 우선순위: 3사분면(시급성 高, 난이도 低 Quick-Win 최우선)
+- 프로젝트 관리: 품질보증 QA(프로세스 전 과정) vs 품질통제 QC(산출물 검사) (48회)
 
 [제3과목 데이터 분석 (60% 비중)]
+- 척도: 등간(절대영점 없음, 온도) vs 비율(절대영점 존재, 사칙연산/배수/48·47회)
+- 상자그림: IQR=Q3-Q1, 하한=Q1-1.5*IQR, 상한=Q3+1.5*IQR (표본크기 N 확인불가/48·47회)
+- 표본추출: 층화(층 내 동질, 층 간 이질) vs 군집(군집 내 이질, 군집 간 동질/47회)
+- 단순회귀: 잔차자유도 = n - 2 (n = df + 2/48회), MSE = SSE / (n - 2) (47회)
+- 잔차도 U자형 곡선: 비선형 패턴 ➔ 다항 회귀(Polynomial) 적용 (48회)
 - F1-Score = 2*(Precision*Recall)/(Precision+Recall) (조화평균)
-- 로지스틱 오즈비 = exp(회귀계수) = 승산 배율 증가
-- 와드연결법 = 군집 내 오차제곱합(ESS) 증가량 최소화
-- 왜도 양수(오른쪽 긴 꼬리): 최빈값 < 중앙값 < 평균
-- 시계열 ACF/PACF: PACF 절단 ➔ AR / ACF 절단 ➔ MA
-- 앙상블: 배깅 = 분산 감소 / 부스팅 = 편향 감소
+- 로지스틱 오즈비 = exp(회귀계수) = 승산 배율 증가, 연결함수 = 로짓(Logit/48회)
+- 신경망 출력층: 이진=시그모이드, 다중분류=소프트맥스(확률 총합=1/47회)
+- 와드연결법 = 군집 내 오차제곱합(SSE/ESS) 증가량 최소화 (48·47회 연속 출제!)
+- 왜도 양수(오른쪽 긴 꼬리): 최빈값 < 중앙값 < 평균 (47회)
+- 연관성 지표: 지지도 P(A∩B), 신뢰도 P(B|A), 향상도 = 독립 시 1, Lift>1 보완재 (48·47회)
+- 시계열 ACF/PACF: PACF 절단 ➔ AR / ACF 절단 ➔ MA, 추세 비정상 ➔ 차분
 - 다중공선성: VIF ≥ 10이면 심각 (해결: 변수제거, PCA, 릿지/라쏘)
-- 더빈-왓슨 d ≈ 2 ➔ 자기상관 없음(독립성 만족)
-- AIC = 값이 작을수록 우수한 모형
-- 실루엣 계수 = (b - a)/max(a, b) [-1 ~ +1 범위]
+- 더빈-왓슨 d ≈ 2 ➔ 자기상관 없음(독립성 만족), AIC = 작을수록 우수
+- 군집 거리: 마할라노비스 = 상관관계 & 분산 보정 통계적 거리 (48회)
 `;
 
 export function AdspFloatingMemo() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"roi" | "scratchpad">("roi");
 
   // 필터링 상태
@@ -738,9 +1021,13 @@ export function AdspFloatingMemo() {
   const [selectedGrade, setSelectedGrade] = useState<"all" | "S" | "A" | "B">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [onlyFavorites, setOnlyFavorites] = useState(false);
+  const [onlyDiagrams, setOnlyDiagrams] = useState(false);
 
   // 즐겨찾기(북마크) 상태
   const [starredIds, setStarredIds] = useState<string[]>([]);
+
+  // 도표 펼침 상태 (ID 배열)
+  const [expandedDiagramIds, setExpandedDiagramIds] = useState<string[]>([]);
 
   // 유저 스크래치패드 메모 상태
   const [userNotes, setUserNotes] = useState("");
@@ -768,6 +1055,17 @@ export function AdspFloatingMemo() {
     }
   }, []);
 
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   const handleNotesChange = (text: string) => {
     setUserNotes(text);
     if (typeof window !== "undefined") {
@@ -783,6 +1081,12 @@ export function AdspFloatingMemo() {
       }
       return next;
     });
+  };
+
+  const toggleDiagram = (id: string) => {
+    setExpandedDiagramIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   const handleCopyCard = (item: RoiMemoItem) => {
@@ -808,6 +1112,7 @@ export function AdspFloatingMemo() {
   const filteredList = useMemo(() => {
     return ADSP_ROI_ITEMS.filter((item) => {
       if (onlyFavorites && !starredIds.includes(item.id)) return false;
+      if (onlyDiagrams && !item.mermaidChart) return false;
       if (selectedSubject !== "all" && item.subjectId !== selectedSubject) return false;
       if (selectedGrade !== "all" && item.grade !== selectedGrade) return false;
       if (searchQuery.trim()) {
@@ -820,441 +1125,489 @@ export function AdspFloatingMemo() {
       }
       return true;
     });
-  }, [selectedSubject, selectedGrade, searchQuery, onlyFavorites, starredIds]);
+  }, [selectedSubject, selectedGrade, searchQuery, onlyFavorites, onlyDiagrams, starredIds]);
+
+  // 과목별 문항 수 집계
+  const subjectCounts = useMemo(() => {
+    return {
+      all: ADSP_ROI_ITEMS.length,
+      ch1: ADSP_ROI_ITEMS.filter((i) => i.subjectId === "ch1").length,
+      ch2: ADSP_ROI_ITEMS.filter((i) => i.subjectId === "ch2").length,
+      ch3: ADSP_ROI_ITEMS.filter((i) => i.subjectId === "ch3").length,
+    };
+  }, []);
 
   // 마인드맵 특정 섹션으로 스크롤 이동
   const handleScrollToSection = (sectionId: string) => {
-    const target = document.getElementById(sectionId);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setIsOpen(false);
+    setTimeout(() => {
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 150);
   };
 
   return (
     <>
-      {/* ======================================================== */}
-      {/* 1. 우측 하단 플로팅 트리거 버튼 (창이 닫혀 있을 때 표시) */}
-      {/* ======================================================== */}
-      {!isOpen && (
-        <aside aria-label="ADsP 플로팅 메모장 토글" className="fixed bottom-6 right-6 z-40 print:hidden flex items-center">
-          <button
-            type="button"
-            onClick={() => {
-              setIsOpen(true);
-              setIsMinimized(false);
-            }}
-            className="group relative flex items-center gap-2.5 rounded-full border border-amber-500/40 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 px-4 py-3 text-white shadow-xl shadow-amber-500/25 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/40 active:scale-95"
-            aria-label="ADsP 기출 ROI 플로팅 메모장 열기"
-          >
-            <span className="relative flex size-6 items-center justify-center rounded-full bg-white/20">
-              <Flame className="size-3.5 fill-white text-white animate-pulse" />
-            </span>
-            <div className="flex flex-col items-start leading-tight">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold tracking-tight">ADsP 기출 ROI 메모장</span>
-                <span className="rounded bg-black/30 px-1 py-0.2 text-[9px] font-extrabold text-amber-200">
-                  TOP 50
-                </span>
-              </div>
-              <span className="text-[10px] text-amber-100/90 font-medium">출제율 95%+ 빈출 요약 & 메모</span>
-            </div>
-            <Sparkles className="size-4 text-amber-200 transition-transform group-hover:rotate-12" />
-          </button>
-        </aside>
-      )}
+      {/* 1. 우측 하단 플로팅 트리거 버튼 */}
+      <div className="fixed bottom-6 right-6 z-40 print:hidden">
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="group relative flex h-14 items-center gap-2.5 rounded-full bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 px-5 text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-amber-500/25 active:scale-95"
+        >
+          <span className="relative flex size-3">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+            <span className="relative inline-flex size-3 rounded-full bg-white" />
+          </span>
+          <Flame className="size-5 fill-white transition-transform group-hover:rotate-12" />
+          <span className="text-sm font-bold tracking-tight">
+            기출빈도 ROI 전략 메모장
+          </span>
+          <span className="rounded-full bg-black/25 px-2 py-0.5 text-xs font-semibold backdrop-blur-sm">
+            60선
+          </span>
+        </Button>
+      </div>
 
-      {/* ======================================================== */}
-      {/* 2. 플로팅 메모장 위젯 본체 */}
-      {/* ======================================================== */}
+      {/* 2. 중앙 대형 모달창 */}
       {isOpen && (
-        <aside aria-label="ADsP 기출 ROI 플로팅 메모장" className={cn(
-          "fixed bottom-4 right-4 z-50 print:hidden flex flex-col rounded-2xl border border-amber-500/30 bg-background/95 backdrop-blur-md shadow-2xl transition-all duration-200",
-          isMinimized
-            ? "w-80 h-14"
-            : "w-[94vw] sm:w-[500px] md:w-[560px] max-h-[82vh] h-[660px]"
-        )}>
-          {/* 상단 헤더 바 */}
-          <div className="flex items-center justify-between border-b border-border/80 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent px-4 py-3 select-none">
-            <div className="flex items-center gap-2">
-              <span className="flex size-7 items-center justify-center rounded-lg bg-amber-500/20 text-amber-500">
-                <Flame className="size-4 fill-amber-500" />
-              </span>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-bold text-foreground">
-                    ADsP 기출 빈도 & ROI 메모장
-                  </h3>
-                  <span className="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-300">
-                    50개 킬러 탑재
-                  </span>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-3 backdrop-blur-sm print:hidden sm:p-6 animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsOpen(false);
+          }}
+        >
+          <div
+            className={cn(
+              "flex flex-col rounded-2xl border border-border bg-card shadow-2xl transition-all duration-200 overflow-hidden",
+              isMaximized
+                ? "h-full w-full max-w-7xl"
+                : "h-[85vh] w-full max-w-4xl"
+            )}
+          >
+            {/* 상단 헤더 바 */}
+            <div className="flex items-center justify-between border-b border-border bg-muted/40 px-5 py-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-sm">
+                  <Flame className="size-4 fill-white" />
                 </div>
-                {!isMinimized && (
-                  <p className="text-[11px] text-muted-foreground">
-                    합격 당락을 가르는 50대 킬러 개념 & 나만의 시험 요약장
+                <div>
+                  <h3 className="text-base font-bold tracking-tight text-foreground flex items-center gap-2">
+                    ADsP 기출빈도 ROI 전략 메모장
+                    <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                      48회·47회 최신 반영
+                    </span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    48회·47회 최신 기출 전수 반영 60대 킬러 개념 &amp; 나만의 시험 요약장
                   </p>
+                </div>
+              </div>
+
+              {/* 창 최대화 / 닫기 컨트롤 */}
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 text-muted-foreground hover:text-foreground"
+                  onClick={() => setIsMaximized((prev) => !prev)}
+                  title={isMaximized ? "원래 크기로" : "최대화"}
+                >
+                  {isMaximized ? (
+                    <Minimize2 className="size-4" />
+                  ) : (
+                    <Maximize2 className="size-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 text-muted-foreground hover:text-foreground"
+                  onClick={() => setIsOpen(false)}
+                  title="닫기"
+                >
+                  <X className="size-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* 탭 전환 바 (ROI 랭킹 60제 vs 나만의 직전 암기장) */}
+            <div className="flex border-b border-border bg-muted/20 px-5 pt-2">
+              <button
+                type="button"
+                onClick={() => setActiveTab("roi")}
+                className={cn(
+                  "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-bold transition-colors",
+                  activeTab === "roi"
+                    ? "border-amber-500 text-amber-600 dark:text-amber-400"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
                 )}
-              </div>
+              >
+                <Flame className="size-3.5 fill-current" />
+                기출 빈출 ROI 랭킹 (60제)
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("scratchpad")}
+                className={cn(
+                  "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-bold transition-colors",
+                  activeTab === "scratchpad"
+                    ? "border-amber-500 text-amber-600 dark:text-amber-400"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <FileText className="size-3.5" />
+                나만의 직전 암기장 (Scratchpad)
+                {userNotes.trim().length > 0 && (
+                  <span className="size-1.5 rounded-full bg-amber-500 ml-1" />
+                )}
+              </button>
             </div>
 
-            {/* 최소화 / 닫기 컨트롤 버튼 */}
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-7 text-muted-foreground hover:text-foreground"
-                onClick={() => setIsMinimized(!isMinimized)}
-                title={isMinimized ? "펼치기" : "최소화"}
-                aria-label={isMinimized ? "펼치기" : "최소화"}
-              >
-                {isMinimized ? <Maximize2 className="size-3.5" /> : <Minimize2 className="size-3.5" />}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-7 text-muted-foreground hover:text-foreground hover:bg-destructive/10 hover:text-destructive"
-                onClick={() => setIsOpen(false)}
-                title="닫기"
-                aria-label="닫기"
-              >
-                <X className="size-4" />
-              </Button>
-            </div>
-          </div>
-
-          {/* 본문 콘텐츠 (최소화가 아닐 때만 렌더) */}
-          {!isMinimized && (
-            <div className="flex flex-1 flex-col overflow-hidden">
-              {/* 탭 전환 바 */}
-              <div className="flex border-b border-border px-4 pt-2 bg-muted/20">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("roi")}
-                  className={cn(
-                    "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-bold transition-colors",
-                    activeTab === "roi"
-                      ? "border-amber-500 text-amber-600 dark:text-amber-400"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <Flame className="size-3.5 fill-current" />
-                  기출 빈출 ROI 랭킹 (50제)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("scratchpad")}
-                  className={cn(
-                    "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-bold transition-colors",
-                    activeTab === "scratchpad"
-                      ? "border-amber-500 text-amber-600 dark:text-amber-400"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <FileText className="size-3.5" />
-                  나만의 직전 암기장 (Scratchpad)
-                </button>
-              </div>
-
-              {/* ==================================================== */}
-              {/* [TAB 1] 기출 빈출 ROI 랭킹 목록 */}
-              {/* ==================================================== */}
-              {activeTab === "roi" && (
-                <div className="flex flex-1 flex-col overflow-hidden">
-                  {/* 검색창 및 필터 바 */}
-                  <div className="flex flex-col gap-2 p-3 border-b border-border/60 bg-muted/10">
-                    <div className="relative">
-                      <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground" />
+            {/* [TAB 1] 기출 빈출 ROI 랭킹 목록 */}
+            {activeTab === "roi" && (
+              <div className="flex flex-1 flex-col overflow-hidden">
+                {/* 검색 바 & 필터 컨트롤 */}
+                <div className="flex flex-col gap-3 border-b border-border bg-muted/15 p-4">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    {/* 검색 바 */}
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                       <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="키워드 검색 (예: 와드, 오즈, ACF, 지니, 더빈왓슨, F1...)"
-                        className="w-full rounded-md border border-input bg-background/80 py-1.5 pl-8 pr-7 text-xs placeholder:text-muted-foreground focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                        placeholder="토픽명, 키워드 검색 (예: 와드, 오즈, 척도, 상자그림, 소프트맥스, 더빈왓슨, F1, 왜도, 마할라노비스)..."
+                        className="h-9 w-full rounded-lg border border-border bg-background pl-9 pr-8 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-amber-500/50"
                       />
                       {searchQuery && (
                         <button
                           type="button"
                           onClick={() => setSearchQuery("")}
-                          className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground"
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
                           <X className="size-3.5" />
                         </button>
                       )}
                     </div>
 
-                    {/* 과목 필터 칩 */}
-                    <div className="flex flex-wrap items-center justify-between gap-1 text-[11px]">
-                      <div className="flex flex-wrap gap-1">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedSubject("all");
-                            setOnlyFavorites(false);
-                          }}
-                          className={cn(
-                            "rounded px-2 py-0.5 font-medium transition-colors",
-                            selectedSubject === "all" && !onlyFavorites
-                              ? "bg-amber-500 text-white font-bold"
-                              : "bg-muted text-muted-foreground hover:bg-muted/80"
-                          )}
-                        >
-                          전체 ({ADSP_ROI_ITEMS.length})
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedSubject("ch1");
-                            setOnlyFavorites(false);
-                          }}
-                          className={cn(
-                            "rounded px-2 py-0.5 font-medium transition-colors",
-                            selectedSubject === "ch1" && !onlyFavorites
-                              ? "bg-amber-500 text-white font-bold"
-                              : "bg-muted text-muted-foreground hover:bg-muted/80"
-                          )}
-                        >
-                          1과목 (10)
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedSubject("ch2");
-                            setOnlyFavorites(false);
-                          }}
-                          className={cn(
-                            "rounded px-2 py-0.5 font-medium transition-colors",
-                            selectedSubject === "ch2" && !onlyFavorites
-                              ? "bg-amber-500 text-white font-bold"
-                              : "bg-muted text-muted-foreground hover:bg-muted/80"
-                          )}
-                        >
-                          2과목 (11)
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSelectedSubject("ch3");
-                            setOnlyFavorites(false);
-                          }}
-                          className={cn(
-                            "rounded px-2 py-0.5 font-medium transition-colors",
-                            selectedSubject === "ch3" && !onlyFavorites
-                              ? "bg-amber-500 text-white font-bold"
-                              : "bg-muted text-muted-foreground hover:bg-muted/80"
-                          )}
-                        >
-                          3과목 분석 60% (29)
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setOnlyFavorites(!onlyFavorites)}
-                          className={cn(
-                            "rounded px-2 py-0.5 font-bold transition-colors flex items-center gap-1",
-                            onlyFavorites
-                              ? "bg-amber-600 text-white"
-                              : "bg-amber-500/15 text-amber-700 dark:text-amber-300 hover:bg-amber-500/25"
-                          )}
-                        >
-                          <Star className={cn("size-2.5", onlyFavorites ? "fill-white" : "fill-amber-500")} />
-                          즐겨찾기 ({starredIds.length})
-                        </button>
-                      </div>
+                    {/* 북마크 필터 토글 */}
+                    <Button
+                      variant={onlyFavorites ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setOnlyFavorites((prev) => !prev)}
+                      className={cn(
+                        "h-9 gap-1.5 text-xs font-semibold",
+                        onlyFavorites
+                          ? "bg-amber-600 hover:bg-amber-700 text-white"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      <Star className={cn("size-3.5", onlyFavorites ? "fill-white" : "fill-amber-500 text-amber-500")} />
+                      즐겨찾기 ({starredIds.length})
+                    </Button>
 
-                      {/* 등급 필터 */}
-                      <div className="flex items-center gap-1">
-                        {(["all", "S", "A"] as const).map((grade) => (
-                          <button
-                            key={grade}
-                            type="button"
-                            onClick={() => setSelectedGrade(grade)}
-                            className={cn(
-                              "rounded px-1.5 py-0.5 text-[10px] font-bold transition-colors",
-                              selectedGrade === grade
-                                ? "bg-amber-600 text-white"
-                                : "text-muted-foreground hover:bg-muted"
-                            )}
-                          >
-                            {grade === "all" ? "전체급" : `${grade}급`}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                    {/* 도표 필터 토글 */}
+                    <Button
+                      variant={onlyDiagrams ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setOnlyDiagrams((prev) => !prev)}
+                      className={cn(
+                        "h-9 gap-1.5 text-xs font-semibold",
+                        onlyDiagrams
+                          ? "bg-amber-600 hover:bg-amber-700 text-white"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      <BarChart3 className={cn("size-3.5", onlyDiagrams ? "text-white" : "text-amber-500")} />
+                      도표 요약 ({ADSP_ROI_ITEMS.filter((i) => Boolean(i.mermaidChart)).length})
+                    </Button>
                   </div>
 
-                  {/* 카드 리스트 스크롤 영역 */}
-                  <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
-                    {filteredList.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-                        <HelpCircle className="size-8 stroke-1 text-muted-foreground/60 mb-2" />
-                        <p className="text-xs">일치하는 기출 ROI 항목이 없습니다.</p>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSearchQuery("");
-                            setSelectedSubject("all");
-                            setSelectedGrade("all");
-                            setOnlyFavorites(false);
-                          }}
-                          className="mt-2 text-xs text-amber-600 underline"
+                  {/* 과목 선택 탭 */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                    {(
+                      [
+                        { id: "all", label: `전체 과목 (${subjectCounts.all})` },
+                        { id: "ch1", label: `1. 데이터 이해 (${subjectCounts.ch1})` },
+                        { id: "ch2", label: `2. 데이터 분석 기획 (${subjectCounts.ch2})` },
+                        { id: "ch3", label: `3. 데이터 분석 60% (${subjectCounts.ch3})` },
+                      ] as const
+                    ).map((sub) => (
+                      <button
+                        key={sub.id}
+                        type="button"
+                        onClick={() => setSelectedSubject(sub.id)}
+                        className={cn(
+                          "shrink-0 rounded-md px-2.5 py-1 font-medium transition-colors",
+                          selectedSubject === sub.id
+                            ? "bg-foreground text-background font-semibold"
+                            : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                        )}
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* 등급(Grade) 필터 및 카운터 */}
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span className="text-[11px] font-medium text-muted-foreground mr-1">
+                      우선순위:
+                    </span>
+                    {(
+                      [
+                        { id: "all", label: "전체 등급" },
+                        { id: "S", label: "🏆 [S] 초빈출 킬러" },
+                        { id: "A", label: "🥈 [A] 핵심 빈출" },
+                        { id: "B", label: "🥉 [B] 기본 개념" },
+                      ] as const
+                    ).map((gr) => (
+                      <button
+                        key={gr.id}
+                        type="button"
+                        onClick={() => setSelectedGrade(gr.id)}
+                        className={cn(
+                          "rounded-full px-2.5 py-0.5 text-[11px] font-medium transition-colors border",
+                          selectedGrade === gr.id
+                            ? "border-amber-500 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold"
+                            : "border-border bg-background text-muted-foreground hover:bg-muted"
+                        )}
+                      >
+                        {gr.label}
+                      </button>
+                    ))}
+                    <span className="ml-auto text-[11px] text-muted-foreground">
+                      총 <strong>{filteredList.length}</strong>개 토픽 검색됨
+                    </span>
+                  </div>
+                </div>
+
+                {/* 카드 리스트 영역 */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
+                  {filteredList.length === 0 ? (
+                    <div className="flex h-64 flex-col items-center justify-center gap-2 text-center text-muted-foreground">
+                      <HelpCircle className="size-10 stroke-[1.5]" />
+                      <p className="text-sm">조건에 일치하는 기출 ROI 토픽이 없습니다.</p>
+                      <Button
+                        variant="link"
+                        size="sm"
+                        onClick={() => {
+                          setSearchQuery("");
+                          setSelectedSubject("all");
+                          setSelectedGrade("all");
+                          setOnlyFavorites(false);
+                          setOnlyDiagrams(false);
+                        }}
+                        className="gap-1 text-xs text-amber-600 dark:text-amber-400"
+                      >
+                        <RotateCcw className="size-3" />
+                        검색 필터 초기화
+                      </Button>
+                    </div>
+                  ) : (
+                    filteredList.map((item) => {
+                      const isStarred = starredIds.includes(item.id);
+                      const isDiagramExpanded = expandedDiagramIds.includes(item.id);
+
+                      return (
+                        <div
+                          key={item.id}
+                          className="group relative rounded-xl border border-border bg-card p-4 transition-all hover:border-amber-500/40 hover:shadow-md"
                         >
-                          필터 초기화
-                        </button>
-                      </div>
-                    ) : (
-                      filteredList.map((item) => {
-                        const isStarred = starredIds.includes(item.id);
-                        return (
-                          <div
-                            key={item.id}
-                            className="group relative rounded-xl border border-border bg-card p-3 shadow-xs transition-all hover:border-amber-500/50 hover:shadow-md"
-                          >
-                            {/* 상단 뱃지 및 메타 */}
-                            <div className="flex items-center justify-between gap-2 mb-1.5">
-                              <div className="flex items-center gap-1.5">
-                                <span
-                                  className={cn(
-                                    "rounded px-1.5 py-0.2 text-[10px] font-extrabold uppercase",
-                                    item.grade === "S"
-                                      ? "bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30"
-                                      : item.grade === "A"
-                                      ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30"
-                                      : "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30"
-                                  )}
-                                >
-                                  {item.grade}급 ★★★★★
-                                </span>
-                                <span className="text-[10px] text-muted-foreground">
-                                  {item.subjectName}
-                                </span>
-                              </div>
+                          {/* 카드 상단 배지 및 헤더 */}
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              {/* 등급 배지 */}
+                              <span
+                                className={cn(
+                                  "rounded-md px-2 py-0.5 text-xs font-bold uppercase tracking-wider",
+                                  item.grade === "S"
+                                    ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
+                                    : item.grade === "A"
+                                    ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30"
+                                    : "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30"
+                                )}
+                              >
+                                Tier {item.grade === "S" ? "1 [S]" : item.grade === "A" ? "2 [A]" : "3 [B]"}
+                              </span>
 
-                              <div className="flex items-center gap-1">
-                                <span className="text-[10px] font-semibold text-amber-600 dark:text-amber-400">
-                                  {item.frequencyRate}
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => toggleStar(item.id)}
-                                  className="flex size-5 items-center justify-center rounded text-muted-foreground hover:text-amber-500"
-                                  title={isStarred ? "즐겨찾기 해제" : "즐겨찾기 추가"}
-                                >
-                                  <Star className={cn("size-3", isStarred && "fill-amber-500 text-amber-500")} />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleCopyCard(item)}
-                                  className="flex size-5 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
-                                  title="암기 요약 복사"
-                                >
-                                  {copiedId === item.id ? (
-                                    <Check className="size-3 text-emerald-500" />
-                                  ) : (
-                                    <Copy className="size-3" />
-                                  )}
-                                </button>
-                              </div>
+                              <span className="rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                                {item.subjectName}
+                              </span>
+
+                              <span className="flex items-center gap-0.5 rounded bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
+                                <Sparkles className="size-3" />
+                                {item.frequencyRate}
+                              </span>
                             </div>
 
-                            {/* 제목 */}
-                            <h4 className="text-xs font-bold text-foreground mb-1">
-                              {item.title}
-                            </h4>
-
-                            {/* 핵심 공식 / 정답 키워드 */}
-                            <div className="rounded-md bg-amber-500/10 dark:bg-amber-500/15 p-2 text-[11px] font-medium text-amber-950 dark:text-amber-100 mb-1.5">
-                              <div className="flex items-start gap-1">
-                                <Zap className="size-3 shrink-0 text-amber-600 dark:text-amber-400 mt-0.5" />
-                                <span className="font-semibold leading-relaxed">{item.formula}</span>
-                              </div>
-                            </div>
-
-                            {/* 시험 함정 주의 포인트 */}
-                            <div className="rounded-md bg-muted/60 p-2 text-[11px] text-muted-foreground leading-relaxed flex items-start gap-1.5 mb-2">
-                              <AlertTriangle className="size-3 shrink-0 text-amber-500 mt-0.5" />
-                              <span><strong className="text-foreground font-semibold">함정 방어:</strong> {item.trap}</span>
-                            </div>
-
-                            {/* 하단 인터랙션 액션 */}
-                            <div className="flex items-center justify-between pt-1 border-t border-border/50 text-[10px]">
-                              <div className="flex flex-wrap gap-1 text-muted-foreground">
-                                {item.tags.map((tag) => (
-                                  <span key={tag} className="hover:text-amber-600">
-                                    #{tag}
-                                  </span>
-                                ))}
-                              </div>
+                            {/* 즐겨찾기 및 복사 버튼 */}
+                            <div className="flex items-center gap-1">
                               <button
                                 type="button"
-                                onClick={() => handleScrollToSection(item.sectionId)}
-                                className="inline-flex items-center gap-1 font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                                onClick={() => toggleStar(item.id)}
+                                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-amber-500 transition-colors"
+                                title={isStarred ? "즐겨찾기 해제" : "즐겨찾기 저장"}
                               >
-                                마인드맵 이동
-                                <ExternalLink className="size-2.5" />
+                                {isStarred ? (
+                                  <Star className="size-4 text-amber-500 fill-amber-500" />
+                                ) : (
+                                  <Star className="size-4" />
+                                )}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleCopyCard(item)}
+                                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                title="요약 복사"
+                              >
+                                {copiedId === item.id ? (
+                                  <Check className="size-4 text-emerald-500" />
+                                ) : (
+                                  <Copy className="size-4" />
+                                )}
                               </button>
                             </div>
                           </div>
-                        );
-                      })
-                    )}
+
+                          {/* 토픽 타이틀 (MathText 적용) */}
+                          <h4 className="text-base font-bold text-foreground mb-2 flex items-center gap-2">
+                            <MathText text={item.title} />
+                          </h4>
+
+                          {/* 핵심 공식 / 정답 키워드 박스 (MathText 적용) */}
+                          <div className="rounded-lg border border-border/80 bg-muted/40 p-3 mb-2.5 font-mono text-xs text-foreground/90 leading-relaxed overflow-x-auto">
+                            <div className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
+                              <Zap className="size-3 text-amber-500" />
+                              <span>핵심 메커니즘 &amp; 판정 공식:</span>
+                            </div>
+                            <MathText text={item.formula} />
+                          </div>
+
+                          {/* 시험 함정 주의 포인트 (MathText 적용) */}
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-xs leading-relaxed text-amber-900 dark:text-amber-200">
+                            <div className="flex items-center gap-1 font-bold text-amber-700 dark:text-amber-400 mb-0.5">
+                              <AlertTriangle className="size-3.5" />
+                              <span>출제관 공략 &amp; 시험장 함정 방어 포인트:</span>
+                            </div>
+                            <MathText text={item.trap} />
+                          </div>
+
+                          {/* Mermaid 도표 시각화 토글 영역 */}
+                          {item.mermaidChart && (
+                            <div className="mt-2.5">
+                              <button
+                                type="button"
+                                onClick={() => toggleDiagram(item.id)}
+                                className={cn(
+                                  "flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all",
+                                  isDiagramExpanded
+                                    ? "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30"
+                                    : "bg-muted/80 text-foreground/80 hover:bg-muted border border-border/60 hover:border-amber-500/40"
+                                )}
+                              >
+                                <BarChart3 className="size-3.5 text-amber-500" />
+                                <span>{isDiagramExpanded ? "도표 요약 접기" : "📊 핵심 구조·도표 보기"}</span>
+                                {isDiagramExpanded ? (
+                                  <ChevronUp className="size-3.5 text-muted-foreground" />
+                                ) : (
+                                  <ChevronDown className="size-3.5 text-muted-foreground" />
+                                )}
+                              </button>
+
+                              {isDiagramExpanded && (
+                                <div className="animate-in fade-in slide-in-from-top-1 duration-200">
+                                  <AdspRoiMermaid
+                                    id={item.id}
+                                    chart={item.mermaidChart}
+                                    title={item.diagramTitle || `${item.title} 시각화 다이어그램`}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* 하단 태그 및 마인드맵 바로가기 */}
+                          <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2 text-xs">
+                            <div className="flex flex-wrap gap-1 text-[11px] text-muted-foreground">
+                              {item.tags.map((tag) => (
+                                <span key={tag} className="hover:text-amber-600 dark:hover:text-amber-400">
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleScrollToSection(item.sectionId)}
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 hover:underline"
+                            >
+                              마인드맵 이동
+                              <ExternalLink className="size-3" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* [TAB 2] 나만의 직전 암기장 (Scratchpad) */}
+            {activeTab === "scratchpad" && (
+              <div className="flex flex-1 flex-col p-4 overflow-hidden">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                    <BookmarkCheck className="size-4 text-amber-500" />
+                    작성한 내용은 브라우저(localStorage)에 실시간 자동 저장됩니다.
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-xs gap-1.5 px-3"
+                      onClick={handleCopyAllNotes}
+                    >
+                      {isCopiedNotes ? (
+                        <>
+                          <Check className="size-3.5 text-emerald-500" />
+                          복사 완료
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="size-3.5" />
+                          전체 복사
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs gap-1.5 px-3 text-muted-foreground hover:text-destructive"
+                      onClick={handleResetNotes}
+                    >
+                      <RotateCcw className="size-3.5" />
+                      기본 서식으로 초기화
+                    </Button>
                   </div>
                 </div>
-              )}
 
-              {/* ==================================================== */}
-              {/* [TAB 2] 나만의 직전 암기장 (Scratchpad) */}
-              {/* ==================================================== */}
-              {activeTab === "scratchpad" && (
-                <div className="flex flex-1 flex-col p-3 overflow-hidden">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-                      <BookmarkCheck className="size-3.5 text-amber-500" />
-                      작성한 내용은 브라우저에 자동 저장됩니다.
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-6 text-[10px] gap-1 px-2"
-                        onClick={handleCopyAllNotes}
-                      >
-                        {isCopiedNotes ? (
-                          <>
-                            <Check className="size-3 text-emerald-500" />
-                            복사됨
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="size-3" />
-                            전체 복사
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 text-[10px] gap-1 px-2 text-muted-foreground hover:text-destructive"
-                        onClick={handleResetNotes}
-                      >
-                        <RotateCcw className="size-3" />
-                        초기화
-                      </Button>
-                    </div>
-                  </div>
-
-                  <textarea
-                    value={userNotes}
-                    onChange={(e) => handleNotesChange(e.target.value)}
-                    placeholder="시험 직전 헷갈리는 공식이나 나만의 암기 팁을 자유롭게 적어보세요..."
-                    className="flex-1 w-full rounded-xl border border-input bg-card p-3 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-none leading-relaxed"
-                  />
-                  <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span>글자 수: {userNotes.length}자</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">✓ 실시간 자동 저장됨</span>
-                  </div>
+                <textarea
+                  value={userNotes}
+                  onChange={(e) => handleNotesChange(e.target.value)}
+                  placeholder="시험 직전 헷갈리는 공식이나 나만의 암기 팁을 자유롭게 적어보세요..."
+                  className="flex-1 w-full rounded-xl border border-input bg-card p-4 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-none leading-relaxed"
+                />
+                <div className="mt-2.5 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>총 글자 수: {userNotes.length.toLocaleString()}자</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">✓ 실시간 자동 저장됨</span>
                 </div>
-              )}
-            </div>
-          )}
-        </aside>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </>
   );

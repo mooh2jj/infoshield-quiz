@@ -7,9 +7,9 @@ export interface AdspChapter {
 }
 
 export const ADSP_CHAPTERS: { id: "ch1" | "ch2" | "ch3"; name: string; shortName: string }[] = [
-  { id: "ch1", name: "제1과목 데이터 이해", shortName: "데이터 이해 (기출 20선)" },
-  { id: "ch2", name: "제2과목 데이터 분석 기획", shortName: "분석 기획 (기출 20선)" },
-  { id: "ch3", name: "제3과목 데이터 분석", shortName: "데이터 분석 (기출 60선)" },
+  { id: "ch1", name: "제1과목 데이터 이해", shortName: "데이터 이해 (기출 24선)" },
+  { id: "ch2", name: "제2과목 데이터 분석 기획", shortName: "분석 기획 (기출 24선)" },
+  { id: "ch3", name: "제3과목 데이터 분석", shortName: "데이터 분석 (기출 72선)" },
 ];
 
 export interface SpeedQuizItem {
@@ -22,7 +22,7 @@ export interface SpeedQuizItem {
 
 export const QUIZ_LIST: SpeedQuizItem[] = [
   // =================================================================
-  // === [제1과목] 데이터 이해 (기출 ROI 핵심 20문항, Q1 ~ Q20)
+  // === [제1과목] 데이터 이해 (기출 ROI 핵심 24문항, Q1 ~ Q24)
   // =================================================================
   {
     id: 1,
@@ -49,7 +49,7 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 4,
     chapterId: "ch1",
     chapterName: "제1과목 데이터 이해",
-    question: "[43회 기출] 기상청 관측소 최고기온 수치처럼 행과 열의 고정된 스키마 구조를 갖는 데이터 유형은?",
+    question: "[47회 기출] 행과 열의 고정된 테이블 스키마 구조를 가지며 관계형 데이터베이스(RDBMS)에 저장되는 데이터 유형은?",
     answer: "정형 데이터 (Structured Data)"
   },
   {
@@ -84,8 +84,8 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 9,
     chapterId: "ch1",
     chapterName: "제1과목 데이터 이해",
-    question: "[42회 기출] 예측 알고리즘의 성향 판단만으로 아직 범죄를 저지르지 않은 사람의 기본권을 제한하는 빅데이터 위기 요인은?",
-    answer: "책임 원칙의 훼손"
+    question: "[47회 기출] 빅데이터 예측 알고리즘의 성향 분석만으로 개인의 미래 행동을 예단하여 불이익을 주는 위기 요인은?",
+    answer: "책임 원칙의 훼손 (Responsibility)"
   },
   {
     id: 10,
@@ -112,8 +112,8 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 13,
     chapterId: "ch1",
     chapterName: "제1과목 데이터 이해",
-    question: "[39회 기출] 제조, 물류 등 유통공급망 전체를 최적화하여 재고와 비용을 줄이는 기업 통합 솔루션은?",
-    answer: "SCM (공급망 관리)"
+    question: "[48회 기출] 통찰력 있는 분석, 스토리텔링 시각화, 비즈니스 리더십 및 협업 소통 능력 등 데이터 사이언티스트에게 요구되는 인문학적 소양은?",
+    answer: "소프트 스킬 (Soft Skill)"
   },
   {
     id: 14,
@@ -147,15 +147,15 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     id: 18,
     chapterId: "ch1",
     chapterName: "제1과목 데이터 이해",
-    question: "[37회 기출] 알고리즘 맹신에 따른 부당한 피해를 방지하고 판정 알고리즘의 작동 근거와 부당성을 설명하는 전문가는?",
+    question: "[48회 기출] 자동화된 알고리즘과 의사결정 시스템으로 인해 발생할 수 있는 부작용, 차별 및 피해 보상을 전담하는 직무는?",
     answer: "알고리즈미스트 (Algorithmist)"
   },
   {
     id: 19,
     chapterId: "ch1",
     chapterName: "제1과목 데이터 이해",
-    question: "[36회 기출] 데이터베이스의 4대 기본 특성(실시간 접근성, 계속적 변화, 동시 공유 외 1가지)은?",
-    answer: "내용에 의한 참조 (Content Reference)"
+    question: "[48회 기출] 다수의 사용자가 서로 다른 목적으로 동일한 데이터베이스의 자원을 동시에 공유하여 일관성 있게 활용할 수 있는 DB의 핵심 특성은?",
+    answer: "공용 데이터 (Shared Data)"
   },
   {
     id: 20,
@@ -164,572 +164,712 @@ export const QUIZ_LIST: SpeedQuizItem[] = [
     question: "[빈출 기출] 개인이 자신의 개인정보에 대한 열람, 전송, 활용 권리를 직접 행사하는 새로운 데이터 패러다임은?",
     answer: "마이데이터 (MyData)"
   },
-
-  // =================================================================
-  // === [제2과목] 데이터 분석 기획 (기출 ROI 핵심 20문항, Q21 ~ Q40)
-  // =================================================================
   {
     id: 21,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[47회 기출] 개인정보 비식별 조치 중 특정 개인을 알아볼 수 없도록 관련 정보를 영구 삭제하거나 복원 불가능하게 비가역적으로 처리하는 기법은?",
+    answer: "익명화 (Anonymization)"
+  },
+  {
+    id: 22,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[47회 기출] 은행의 입출금이나 결제처럼 일상 업무에서 발생하는 대량의 트랜잭션을 실시간으로 무결성 있게 처리하는 시스템 방식은?",
+    answer: "OLTP (Online Transaction Processing)"
+  },
+  {
+    id: 23,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[47회 기출] 노나카의 지식 창출 SECI 모델에서 개인이 현장 경험과 관찰을 통해 머릿속 노하우(암묵지)를 동료에게 직접 전수하여 공유(암묵지)하는 첫 단계는?",
+    answer: "공통화 (Socialization)"
+  },
+  {
+    id: 24,
+    chapterId: "ch1",
+    chapterName: "제1과목 데이터 이해",
+    question: "[47회 기출] 데이터베이스(DB)가 지닌 본질적 특성 중 기계가독성, 검색가능성과 함께 네트워크를 통해 원격지에서 다룰 수 있는 특성은?",
+    answer: "원격조작성 (Remote Operability)"
+  },
+
+  // =================================================================
+  // === [제2과목] 데이터 분석 기획 (기출 ROI 핵심 24문항, Q25 ~ Q48)
+  // =================================================================
+  {
+    id: 25,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[48회 기출] 분석 과제 발굴 4사분면 중 분석 방법(How)은 이미 알고 있으나 분석 대상(What)을 모를 때 도출하는 분석 유형은?",
     answer: "통찰 (Insight)"
   },
   {
-    id: 22,
+    id: 26,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[47회 기출] 요구사항이 모호할 때 가벼운 시제품을 빠르게 개발해 사용자 피드백을 수용하며 구체화하는 상향식 모델은?",
     answer: "프로토타이핑 모델 (Prototyping)"
   },
   {
-    id: 23,
+    id: 27,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[44회 기출] 분석 마스터플랜의 투자비용 요소(ROI) 4V 중 비즈니스 효과성(Benefit)을 나타내는 요소는?",
     answer: "가치 (Value)"
   },
   {
-    id: 24,
+    id: 28,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[43회 기출] CMMI 기반 분석 성숙도(Maturity) 5단계의 올바른 발전 순서는?",
     answer: "도입 ➔ 관리 ➔ 정의 ➔ 측정 ➔ 최적화"
   },
   {
-    id: 25,
+    id: 29,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
-    question: "[43회 기출] 분석 과제 발굴 4분면에서 분석 대상(What)은 알고 있으나 구체적 해결 방법(How)을 모를 때 도출되는 과제는?",
+    question: "[47회 기출] 분석 과제 발굴 4사분면에서 분석 대상(What)은 알고 있으나 구체적인 해결 방법(How)을 모를 때 도출되는 과제는?",
     answer: "솔루션 (Solution)"
   },
   {
-    id: 26,
+    id: 30,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
-    question: "[43회 기출] CRISP-DM 6단계 중 전체 분석 공수의 60~80%가 소요되는 가장 노동집약적인 단계는?",
-    answer: "데이터 준비 (Data Preparation)"
+    question: "[48회 기출] CRISP-DM 방법론에서 데이터 탐색(EDA) 및 데이터 품질 식별 업무를 수행하는 단계(데이터 준비 단계 이전)는?",
+    answer: "데이터 이해 (Data Understanding)"
   },
   {
-    id: 27,
+    id: 31,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[42회 기출] 데이터 거버넌스 체계 중 원천 스키마 변경 시 사전 영향도 분석과 통제 승인을 거치는 프로세스는?",
     answer: "데이터 변경 관리"
   },
   {
-    id: 28,
+    id: 32,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[42회 기출] KDD 분석 방법론 5단계 중 데이터셋의 차원을 축소하거나 정규화하여 마이닝에 적합하게 가공하는 3번째 단계는?",
     answer: "데이터 변환 (Transformation)"
   },
   {
-    id: 29,
+    id: 33,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
-    question: "[41회 기출] 전사 전담 분석 조직이 분석을 독점 주도하여 현업 부서와 갈등이나 우선순위 충돌이 생길 수 있는 구조는?",
+    question: "[47회 기출] 전사 분석 전담 조직이 분석 업무를 일괄 주관하여 시너지는 높으나 현업 부서와의 우선순위 갈등이 발생할 수 있는 구조는?",
     answer: "집중형 조직 구조 (Centralized)"
   },
   {
-    id: 30,
+    id: 34,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
-    question: "[41회 기출] 기업의 분석 수준 진단에서 분석 준비도(Readiness)와 성숙도(Maturity)가 모두 낮은 초기 진입 기업 유형은?",
-    answer: "준비형 (Ready)"
+    question: "[48회 기출] 데이터 분석 프로젝트 관리에서 절차와 수행 체계가 사전에 정의된 표준에 부합하는지 점검하는 활동은?",
+    answer: "품질 보증 (Quality Assurance, QA)"
   },
   {
-    id: 31,
+    id: 35,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[40회 기출] 데이터 분석 수준 진단 6대 영역(분석 인력, 인프라, 거버넌스, 분석 기법, 데이터 외 1가지)은?",
     answer: "분석 문화 (Culture)"
   },
   {
-    id: 32,
+    id: 36,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[40회 기출] 분석 과제 발굴 4분면에서 분석 대상(What)도 모르고 해결 방법(How)도 모를 때 시도하는 과제 유형은?",
     answer: "발견 (Discovery)"
   },
   {
-    id: 33,
+    id: 37,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[39회 기출] 하향식 접근법(Top-Down)의 4단계 순서는?",
     answer: "문제 식별 ➔ 문제 정의 ➔ 원인 탐색 ➔ 대안 도출"
   },
   {
-    id: 34,
+    id: 38,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
-    question: "[39회 기출] 빅데이터 분석 방법론의 3계층 프로세스 모델 구성 단위는?",
-    answer: "단계(Phase) ➔ 태스크(Task) ➔ 스텝(Step)"
+    question: "[48회 기출] 분석 준비도(Readiness) 6대 진단 영역(업무, 인력/조직, 기법, IT인프라, 데이터 외 1개) 중 데이터 기반 의사결정 태도를 뜻하는 영역은?",
+    answer: "분석 문화 (Analytics Culture)"
   },
   {
-    id: 35,
+    id: 39,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[38회 기출] 데이터 거버넌스(Data Governance) 체계의 4대 핵심 구성 요소는?",
     answer: "원칙(Principles), 조직, 프로세스, 관리체계"
   },
   {
-    id: 36,
+    id: 40,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[38회 기출] 분석 마스터플랜 수립 시 우선순위 평가의 2대 핵심 축은?",
     answer: "전략적 중요도 (시급성), 실행 용이성 (난이도)"
   },
   {
-    id: 37,
+    id: 41,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[37회 기출] 전담 분석 부서의 분석가를 현업 부서에 직접 전진 배치하여 신속한 협업과 피드백을 유도하는 구조는?",
     answer: "분산형 조직 구조 (Decentralized)"
   },
   {
-    id: 38,
+    id: 42,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[37회 기출] 데이터 마이닝 표준 방법론인 CRISP-DM의 6단계 순서는?",
     answer: "비즈니스 이해 ➔ 데이터 이해 ➔ 데이터 준비 ➔ 모델링 ➔ 평가 ➔ 전개"
   },
   {
-    id: 39,
+    id: 43,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[36회 기출] 문제를 미리 정의하지 않고 보유한 데이터의 탐색과 결합을 통해 인사이트를 발굴하는 접근법은?",
     answer: "상향식 접근법 (Bottom-Up)"
   },
   {
-    id: 40,
+    id: 44,
     chapterId: "ch2",
     chapterName: "제2과목 데이터 분석 기획",
     question: "[빈출 기출] 분석 과제 관리 5대 주요 속성(Data, Speed, Value, Complexity 외 1가지)은?",
     answer: "Accuracy (정확도)"
   },
+  {
+    id: 45,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[47회 기출] 동일한 현상을 설명할 수 있는 모델이 여러 개 존재할 때, 복잡한 모델보다 가장 단순하고 직관적인 모델을 우선 채택해야 한다는 원리는?",
+    answer: "오컴의 면도날 법칙 (Occam's Razor)"
+  },
+  {
+    id: 46,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[47회 기출] 하향식 과제 발굴의 거시적 문제 탐색 시 활용되는 도구로, 사회(S)·기술(T)·경제(E)·환경(E)·정치(P)의 5대 영역을 통합 분석하는 프레임워크는?",
+    answer: "STEEP 분석"
+  },
+  {
+    id: 47,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[47회 기출] 기업 데이터 분석 수준 진단 사분면에서 분석 인프라와 기법 등 '준비도(Readiness)'는 높으나, 조직적 확산과 활용 성숙도(Maturity)는 낮은 기업 유형은?",
+    answer: "정착형 (Settle)"
+  },
+  {
+    id: 48,
+    chapterId: "ch2",
+    chapterName: "제2과목 데이터 분석 기획",
+    question: "[47회 기출] 분석 마스터플랜 수립 시 개별 분석 과제의 우선순위를 결정하는 3대 핵심 평가 기준(전략적 중요도, 실행 용이성 외 1가지)은?",
+    answer: "비즈니스 효과 (ROI: 투자자본수익률)"
+  },
 
   // =================================================================
-  // === [제3과목] 데이터 분석 (기출 ROI 핵심 60문항, Q41 ~ Q100)
+  // === [제3과목] 데이터 분석 (기출 ROI 핵심 72문항, Q49 ~ Q120)
   // =================================================================
   {
-    id: 41,
+    id: 49,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[48회 기출] 불균형 데이터셋 분류에서 정밀도(Precision)와 재현율(Recall) 간의 상충 관계를 보완하는 조화평균 지표는?",
     answer: "F1-Score"
   },
   {
-    id: 42,
+    id: 50,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[48회 기출] 시계열 데이터가 추세를 보여 평균이 일정하지 않을 때 정상 시계열로 변환하기 위해 현시점 값에서 이전 시점 값을 빼주는 기법은?",
     answer: "차분 (Differencing)"
   },
   {
-    id: 43,
+    id: 51,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[48회 기출] 계층적 군집분석에서 군집 병합 시 발생하는 군집 내 오차제곱합(SSE)의 증가량을 최소화하는 결합 방법은?",
     answer: "와드연결법 (Ward's Method)"
   },
   {
-    id: 44,
+    id: 52,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[47회 기출] 선형 회귀분석 잔차의 자기상관(독립성)을 검정하며 2에 가까울수록 독립인 검정 통계량은?",
     answer: "더빈-왓슨 검정 (Durbin-Watson)"
   },
   {
-    id: 45,
+    id: 53,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[47회 기출] K-Means 군집분석에서 군집 내 오차제곱합(WSS) 감소율이 완만해지는 변곡점의 k를 선택하는 기법은?",
     answer: "엘보우 기법 (Elbow Method)"
   },
   {
-    id: 46,
+    id: 54,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[47회 기출] 심층 신경망 학습 시 뉴런의 일부를 임의의 확률로 비활성화하여 과적합을 억제하는 기법은?",
     answer: "드롭아웃 (Dropout)"
   },
   {
-    id: 47,
+    id: 55,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[44회 기출] PCA에서 주성분 분산 비율을 순차 합산하여 누적 설명력 85% 이상 지점을 찾는 척도는?",
     answer: "누적 기여율 (Cumulative Proportion)"
   },
   {
-    id: 48,
+    id: 56,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[44회 기출] 로지스틱 회귀분석에서 성공 확률 p에 대한 오즈(Odds)의 계산 공식은?",
     answer: "p / (1 - p)"
   },
   {
-    id: 49,
+    id: 57,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[44회 기출] 랜덤포레스트에서 부트스트랩 미선택 잔여치(약 36.8%)를 활용하여 모델 성능을 평가하는 오차는?",
     answer: "OOB 오차 (Out-of-Bag Error)"
   },
   {
-    id: 50,
+    id: 58,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[43회 기출] 모든 예측 변수가 상호 조건부 독립이라는 가정을 전제로 사후확률을 계산하는 분류기는?",
     answer: "나이브 베이즈 분류기 (Naive Bayes)"
   },
   {
-    id: 51,
+    id: 59,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[43회 기출] 회귀분석 잔차가 만족해야 하는 4대 기본 가정(선형성, 등분산성, 독립성 외 1가지)은?",
+    question: "[47회 기출] 선형 회귀분석 잔차(Residual)가 만족해야 하는 4대 기본 가정(선형성, 독립성, 등분산성 외 1가지)은?",
     answer: "정규성 (Normality)"
   },
   {
-    id: 52,
+    id: 60,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[43회 기출] 서포트 벡터 머신(SVM)에서 두 클래스를 분리하는 초평면과 가장 가까운 위치의 경계 샘플은?",
     answer: "서포트 벡터 (Support Vector)"
   },
   {
-    id: 53,
+    id: 61,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[43회 기출] 계층적 군집분석에서 개체 간의 결합 거리와 순서를 시각화한 수형도 다이어그램은?",
     answer: "덴드로그램 (Dendrogram)"
   },
   {
-    id: 54,
+    id: 62,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[43회 기출] AIC 대비 표본 크기(ln n)를 페널티에 반영하여 변수 증가에 더 엄격한 제약을 주는 정보 기준은?",
     answer: "BIC (Bayesian Information Criterion)"
   },
   {
-    id: 55,
+    id: 63,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[42회 기출] PCA 수행 시 변수 간 단위(Scale)나 분산의 차이가 극심할 때 입력으로 사용해야 하는 행렬은?",
     answer: "상관행렬 (Correlation Matrix)"
   },
   {
-    id: 56,
+    id: 64,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[42회 기출] 시계열 오차항이 만족해야 하는 평균 0, 분산 σ², 시차 k ≠ 0 자기상관 0인 정상 시계열은?",
     answer: "백색잡음 (White Noise)"
   },
   {
-    id: 57,
+    id: 65,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[42회 기출] 장바구니 분석 Apriori에서 '비빈발 항목의 초집합은 무조건 비빈발하다'는 원리는?",
     answer: "가지치기 (Pruning / 반단조성)"
   },
   {
-    id: 58,
+    id: 66,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[42회 기출] K-Fold 교차검증에서 K = N으로 설정하여 표본 수만큼 모델을 학습시키는 기법은?",
     answer: "LOOCV (Leave-One-Out)"
   },
   {
-    id: 59,
+    id: 67,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[42회 기출] 시계열 데이터 4대 분해 요소 중 2~10년 이상 주기의 불규칙한 경제 변동 파동은?",
     answer: "순환 요인 (Cycle / 순환 변동)"
   },
   {
-    id: 60,
+    id: 68,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[42회 기출] 의사결정나무 CART에서 불순도가 낮을수록 0에 수렴하는 불순도 지표는?",
     answer: "지니 지수 (Gini Index)"
   },
   {
-    id: 61,
+    id: 69,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[41회 기출] 다중공선성(Multicollinearity) 진단 지표로 VIF가 몇 이상일 때 심각한 공선성이 있다고 판정하는가?",
-    answer: "10 이상 (VIF ≥ 10)"
+    question: "[47회 기출] 다중 회귀분석에서 설명변수 간의 상관관계(다중공선성)를 진단하는 지표로 10 이상일 때 심각하다고 판정하는 통계량은?",
+    answer: "분산팽창요인 (VIF: Variance Inflation Factor)"
   },
   {
-    id: 62,
+    id: 70,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[41회 기출] 로지스틱 회귀에서 독립변수 X가 1단위 증가할 때 성공 오즈가 변화하는 배수는?",
     answer: "오즈비 (Odds Ratio, exp(β₁))"
   },
   {
-    id: 63,
+    id: 71,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[41회 기출] 시계열 모형 판별 시 자기상관함수(ACF)가 시차 q 이후 절단되는 모형은?",
     answer: "MA(q) 모형 (이동평균 모형)"
   },
   {
-    id: 64,
+    id: 72,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[41회 기출] 시계열 모형 판별 시 부분자기상관함수(PACF)가 시차 p 이후 절단되는 모형은?",
     answer: "AR(p) 모형 (자기회귀 모형)"
   },
   {
-    id: 65,
+    id: 73,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[40회 기출] 부트스트랩 표본을 병렬 학습시켜 모델의 분산(Variance)을 줄여주는 앙상블 기법은?",
-    answer: "배깅 (Bagging)"
+    question: "[48회 기출] 상자 그림(Box Plot)에서 이상값 경계 펜스를 설정할 때 사분위범위(IQR)에 곱해주는 기준 배수는?",
+    answer: "1.5배 (1.5 × IQR)"
   },
   {
-    id: 66,
+    id: 74,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[40회 기출] 이전 모델의 오분류 오차에 가중치를 부여해 순차 학습하여 편향(Bias)을 줄이는 기법은?",
+    question: "[47회 기출] 배깅(병렬 학습)과 달리 이전 분류기의 오분류 오차에 가중치를 부여하여 순차적으로 약분류기를 학습시키는 앙상블 기법은?",
     answer: "부스팅 (Boosting)"
   },
   {
-    id: 67,
+    id: 75,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[40회 기출] 군집분석 실루엣 계수의 값 범위와 군집 구조가 매우 타당하다고 평가되는 기준 수치는?",
-    answer: "-1 ~ +1 (0.5 이상)"
+    question: "[48회 기출] 주성분분석(PCA)에서 원본 데이터의 전체 변동(분산)을 가장 많이 설명하는 선형결합 축은?",
+    answer: "제1주성분 (PC1)"
   },
   {
-    id: 68,
+    id: 76,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[39회 기출] 실제 참인 귀무가설(H₀)을 통계적으로 잘못 기각하는 오류는?",
-    answer: "제1종 오류 (α)"
+    question: "[47회 기출] 실제 참인 귀무가설(H₀)을 통계적으로 잘못 기각할 확률이며, 유의수준(α)으로 최대 허용 한계를 통제하는 오류는?",
+    answer: "제1종 오류 (Type I Error, α)"
   },
   {
-    id: 69,
+    id: 77,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[39회 기출] 거짓인 귀무가설을 채택하지 않고 올바르게 기각할 확률(1 - β)은?",
     answer: "검정력 (Power)"
   },
   {
-    id: 70,
+    id: 78,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[39회 기출] 상자그림(Boxplot)에서 이상치를 판정하는 바깥 울타리 경계 공식은?",
     answer: "Q1 - 1.5×IQR 미만, Q3 + 1.5×IQR 초과"
   },
   {
-    id: 71,
+    id: 79,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[39회 기출] 연속형 두 변수의 선형 관계 강도를 측정하며 -1에서 +1 사이 값을 갖는 상관계수는?",
-    answer: "피어슨 상관계수 (Pearson)"
+    question: "[48회 기출] 두 변수 X, Y의 피어슨 상관계수가 0.5일 때, 각 변수에 양수를 곱하거나 상수를 더하는 선형변환(aX+b, cY+d, a,c>0) 후의 상관계수는?",
+    answer: "0.5 (선형변환 불변)"
   },
   {
-    id: 72,
+    id: 80,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[39회 기출] 두 변수의 순위(Rank)를 기반으로 비모수적 단조 관계를 측정하는 상관계수는?",
+    question: "[47회 기출] 두 변수 간의 비선형 단조적 관계를 평가하기 위해 원시 데이터 값 대신 순위(Rank)를 활용하는 비모수 상관계수는?",
     answer: "스피어만 상관계수 (Spearman)"
   },
   {
-    id: 73,
+    id: 81,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[38회 기출] R에서 동일한 단일 자료형(숫자형, 문자형 등)으로만 구성된 1차원 데이터 구조는?",
     answer: "벡터 (Vector)"
   },
   {
-    id: 74,
+    id: 82,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[38회 기출] R에서 열마다 서로 다른 자료형을 담을 수 있는 2차원 표 형태의 구조는?",
     answer: "데이터프레임 (Data Frame)"
   },
   {
-    id: 75,
+    id: 83,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[38회 기출] R에서 숫자, 문자, 행렬, 리스트 등 서로 다른 객체를 중첩해서 담을 수 있는 구조는?",
     answer: "리스트 (List)"
   },
   {
-    id: 76,
+    id: 84,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[38회 기출] 회귀 변수선택법 중 변수를 추가하면서도 유의성이 낮아진 기존 변수를 다시 제거하는 기법은?",
-    answer: "단계적 방법 (Stepwise)"
+    question: "[48회 기출] 회귀분석 후 잔차도가 2차 곡선(U자 형태) 패턴을 나타낼 때 선형성 가정을 보완하기 위해 사용하는 모형은?",
+    answer: "다항 회귀 모형 (Polynomial)"
   },
   {
-    id: 77,
+    id: 85,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[38회 기출] 개체 간 거리를 저차원에 사상할 때 불일치 정도를 측정하며 0에 가까울수록 좋은 지표는?",
-    answer: "스트레스 지수 (Stress)"
+    question: "[48회 기출] 수치로 표현되어 덧셈·뺄셈은 가능하지만 절대 영점(0)이 없어 비율 계산(나눗셈)이 성립하지 않는 척도는?",
+    answer: "등간척도 (구간척도)"
   },
   {
-    id: 78,
+    id: 86,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[37회 기출] 분류 모델 평가 지표 중 실제 Positive 중 모델이 맞춘 비율(민감도, 재현율)은?",
     answer: "Recall (재현율 = TP / (TP + FN))"
   },
   {
-    id: 79,
+    id: 87,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[37회 기출] 모델이 Positive로 예측한 것 중 실제 Positive인 비율은?",
-    answer: "Precision (정밀도 = TP / (TP + FP))"
+    question: "[47회 기출] 혼동행렬에서 모델이 Positive(참)로 예측한 전체 건수 중 실제 정답이 Positive인 비율을 나타내는 지표는?",
+    answer: "정밀도 (Precision = TP / (TP + FP))"
   },
   {
-    id: 80,
+    id: 88,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[37회 기출] 정밀도(Precision)와 재현율(Recall)의 조화평균으로 클래스 불균형에 강한 지표는?",
     answer: "F1-Score"
   },
   {
-    id: 81,
+    id: 89,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[37회 기출] ROC 곡선의 가로축(X축)과 세로축(Y축)을 구성하는 지표는?",
     answer: "X축: 1-특이도 (FPR), Y축: 민감도 (TPR)"
   },
   {
-    id: 82,
+    id: 90,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[37회 기출] ROC 곡선 아래의 면적을 나타내며 1에 가까울수록 완벽한 성능을 뜻하는 지표는?",
     answer: "AUC (Area Under the Curve)"
   },
   {
-    id: 83,
+    id: 91,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[36회 기출] 2개의 독립 표본에 대해 정규분포를 가정할 수 없을 때 사용하는 비모수 순위 검정은?",
     answer: "만-휘트니 U 검정 (Mann-Whitney U)"
   },
   {
-    id: 84,
+    id: 92,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[36회 기출] 2개의 대응(Paired) 표본에 대해 정규분포를 가정할 수 없을 때 사용하는 비모수 검정은?",
     answer: "윌콕슨 부호순위 검정 (Wilcoxon Signed-Rank)"
   },
   {
-    id: 85,
+    id: 93,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[36회 기출] 계층적 군집분석에서 두 군집을 병합할 때 군집 내 오차제곱합의 증가량을 최소화하는 연결법은?",
-    answer: "와드 연결법 (Ward's Method)"
+    question: "[47회 기출] 계층적 군집분석에서 군집 병합 시 발생하는 오차제곱합(SSE)의 증가량(ΔSSE)을 최소화하는 방식으로 군집을 형성하는 연결법은?",
+    answer: "와드 연결법 (Ward's Linkage)"
   },
   {
-    id: 86,
+    id: 94,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[36회 기출] 왜도(Skewness) > 0인 오른쪽 꼬리가 긴 분포에서 평균, 중앙값, 최빈값의 크기 순서는?",
-    answer: "평균 > 중앙값 > 최빈값"
+    question: "[48회 기출] 상자 그림(Box Plot)을 통해 사분위수, 최댓값, 최솟값, 이상치는 알 수 있으나 그래프 자체만으로는 직접 확인할 수 없는 정보는?",
+    answer: "표본 관측치 수 (샘플 크기 N)"
   },
   {
-    id: 87,
+    id: 95,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[36회 기출] 첨도(Kurtosis) > 0일 때 정규분포 대비 형태적 특징은?",
-    answer: "정점이 더 뾰족하고 양쪽 꼬리가 두꺼움"
+    question: "[48회 기출] 다변량 데이터 분석에서 변수 간 측정 단위 차이를 보정하고 변수 간의 통계적 상관관계(공분산)를 반영하여 계산하는 거리는?",
+    answer: "마할라노비스 거리 (Mahalanobis)"
   },
   {
-    id: 88,
+    id: 96,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[35회 기출] 인공신경망 은닉층이 깊어질 때 시그모이드 기울기가 0으로 사라지는 현상은?",
-    answer: "기울기 소실 문제 (Vanishing Gradient)"
+    question: "[48회 기출] 일반화선형모형(GLM) 관점에서 로지스틱 회귀의 독립변수 선형 결합과 사건 발생 확률 p를 연결하는 함수는?",
+    answer: "로짓 함수 (Logit Function)"
   },
   {
-    id: 89,
+    id: 97,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[35회 기출] max(0, x) 형태로 계산이 빠르며 기울기 소실을 극복한 표준 활성화 함수는?",
     answer: "ReLU 함수"
   },
   {
-    id: 90,
+    id: 98,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[35회 기출] 다중 클래스 분류 신경망의 출력층에서 전체 확률의 합이 1이 되도록 변환하는 함수는?",
+    question: "[47회 기출] 다중 클래스 분류(Multi-class) 신경망의 최종 출력층에서 각 클래스 예측 확률의 총합이 1.0이 되도록 정규화하는 활성화 함수는?",
     answer: "소프트맥스 함수 (Softmax)"
   },
   {
-    id: 91,
+    id: 99,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[35회 기출] 선형 회귀분석 summary 결과에서 모형 전체의 통계적 유의성을 검정하는 통계량은?",
-    answer: "F-통계량 (F-statistic의 p-value)"
+    question: "[48회 기출] 선형 회귀 모형 전체의 설명력이 통계적으로 유의미한지 검정하기 위해 사용하는 통계량은?",
+    answer: "F-통계량 (F-검정)"
   },
   {
-    id: 92,
+    id: 100,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[34회 기출] 모형의 설명력을 나타내며 총제곱합(SST) 대비 회귀제곱합(SSR)의 비율을 뜻하는 척도는?",
-    answer: "결정계수 (R²)"
+    question: "[48회 기출] 단순 선형 회귀분석 결과표에서 잔차 자유도(Residual DF)가 576일 때 전체 관측치 표본 수(n)는 몇 개인가?",
+    answer: "578개 (576 + 2)"
   },
   {
-    id: 93,
+    id: 101,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[34회 기출] 독립변수가 증가할 때 무조건 커지는 결점을 보완해 페널티를 부과한 결정계수는?",
     answer: "수정된 결정계수 (Adjusted R²)"
   },
   {
-    id: 94,
+    id: 102,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[34회 기출] 회귀 계수의 절댓값 합에 페널티를 주어 변수를 자동으로 0으로 만들어 희소화하는 규제는?",
     answer: "L1 규제 (Lasso 라쏘)"
   },
   {
-    id: 95,
+    id: 103,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[34회 기출] 회귀 계수의 제곱합에 페널티를 주어 계수를 0에 가깝게 축소하는 규제는?",
     answer: "L2 규제 (Ridge 릿지)"
   },
   {
-    id: 96,
+    id: 104,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[33회 기출] 의사결정나무의 과적합을 방지하기 위해 불필요한 하위 가지를 잘라내는 작업은?",
+    question: "[47회 기출] 의사결정나무에서 과적합(Overfitting)을 방지하고 일반화 성능을 높이기 위해 복잡하고 불안정한 말단 분기를 잘라내는 작업은?",
     answer: "가지치기 (Pruning)"
   },
   {
-    id: 97,
+    id: 105,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[33회 기출] ID3 의사결정나무에서 노드 분할 기준으로 사용하는 불순도 척도는?",
     answer: "엔트로피 (Entropy)"
   },
   {
-    id: 98,
+    id: 106,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[32회 기출] C4.5 알고리즘에서 ID3의 다치 속성 과대분할 결점을 보완하기 위해 도입한 척도는?",
     answer: "정보 획득 비율 (Gain Ratio)"
   },
   {
-    id: 99,
+    id: 107,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
     question: "[32회 기출] 결측치 대치법 중 결측 관측치를 평균값으로 채우지만 분산을 과소추정하는 기법은?",
     answer: "평균 대치법 (Mean Imputation)"
   },
   {
-    id: 100,
+    id: 108,
     chapterId: "ch3",
     chapterName: "제3과목 데이터 분석",
-    question: "[31회 기출] 연관규칙에서 전체 거래 중 품목 A와 B가 동시에 포함된 거래의 비율을 뜻하는 지표는?",
-    answer: "지지도 (Support)"
+    question: "[48회 기출] 연관규칙 분석에서 두 품목이 상호 독립일 때의 기준값이며, 1보다 클 때 두 품목 간 양의 연관성(보완 관계)이 있음을 나타내는 지표는?",
+    answer: "향상도 (Lift)"
+  },
+  {
+    id: 109,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 측정 척도(명목, 서열, 등간, 비율) 중 '절대 영점(True Zero)'이 존재하여 사칙연산(덧셈, 뺄셈, 곱셈, 나눗셈)과 비율 계산이 모두 성립하는 최상위 척도는?",
+    answer: "비율척도 (Ratio Scale)"
+  },
+  {
+    id: 110,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 상자수염그림(Box Plot)에서 Q1=4, Q3=12일 때, 이상치를 판정하기 위한 안쪽 울타리(Inner Fence)의 하한과 상한은?",
+    answer: "하한 -8, 상한 24 (IQR=8, 1.5×IQR=12)"
+  },
+  {
+    id: 111,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 데이터의 분포가 오른쪽으로 긴 꼬리를 갖는 비대칭 분포(양의 왜도)일 때, 최빈값(Mode), 중앙값(Median), 평균(Mean) 간의 올바른 대소 관계는?",
+    answer: "최빈값 < 중앙값 < 평균"
+  },
+  {
+    id: 112,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 표본추출 기법 중 군집(집락) 내부는 상호 이질적이고, 군집 간에는 상호 동질적이 되도록 집단을 구분한 후 군집 단위로 무작위 추출하는 방법은?",
+    answer: "군집추출법 (집락추출법, Cluster Sampling)"
+  },
+  {
+    id: 113,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 통계적 가설검정에서 '귀무가설(H₀)이 참'이라는 전제하에 현재 표본 통계량보다 더 극단적인 관측값이 나타날 확률은?",
+    answer: "유의확률 (p-value)"
+  },
+  {
+    id: 114,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 주성분분석(PCA)에서 주성분 번호에 따른 고유값(Eigenvalue)의 크기 감소세를 나타내며 경사가 완만해지는 엘보우(Elbow) 지점을 찾는 그래프는?",
+    answer: "스크리 산점도 (Scree Plot)"
+  },
+  {
+    id: 115,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 관측치가 12개인 단순 선형 회귀분석에서 잔차제곱합(SSE)이 25일 때, 잔차평균제곱(MSE)은 얼마인가? (잔차 자유도 n-2 = 10)",
+    answer: "2.50 (25 / 10)"
+  },
+  {
+    id: 116,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 시계열 데이터가 정상성(Stationarity)을 만족하기 위해 일정해야 하는 3대 조건(평균, 분산 외 1가지)은?",
+    answer: "시점과 무관하고 시차(Lag)에만 의존하는 공분산"
+  },
+  {
+    id: 117,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 비정상 시계열을 d회 차분(Difference)하여 정상화한 후 자기회귀(AR) 및 이동평균(MA)을 결합하여 분석하는 시계열 모형은?",
+    answer: "ARIMA(p, d, q) 모형"
+  },
+  {
+    id: 118,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 교차 분할표(Cross-tabulation) 상에서 두 범주형 변수의 관찰도수와 기대도수 간 편차를 바탕으로 상호 독립 여부를 검정하는 기법은?",
+    answer: "카이제곱 독립성 검정 (Chi-Square Test)"
+  },
+  {
+    id: 119,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 로지스틱 회귀나 인공신경망 이진 분류 출력층에서 실수 입력값을 0과 1 사이의 S자 곡선 형태 확률로 변환하는 활성화 함수는?",
+    answer: "시그모이드 함수 (Sigmoid Function)"
+  },
+  {
+    id: 120,
+    chapterId: "ch3",
+    chapterName: "제3과목 데이터 분석",
+    question: "[47회 기출] 전체 100건의 영수증 거래 중 A품목과 B품목을 동시에 함께 구매한 거래가 30건일 때, 연관규칙 A ➔ B의 지지도(Support)는?",
+    answer: "0.30 (30% = 30 / 100)"
   }
 ];

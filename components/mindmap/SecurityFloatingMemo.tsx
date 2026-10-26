@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { MathText } from "@/components/ui/MathText";
 
 export interface SecurityRoiMemoItem {
   id: string;
@@ -1117,7 +1118,7 @@ const LOCAL_STORAGE_KEY_FAVORITES = "security_mindmap_favorites";
 
 export function SecurityFloatingMemo() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedChapter, setSelectedChapter] = useState<string>("all");
   const [selectedGrade, setSelectedGrade] = useState<string>("all");
@@ -1144,6 +1145,17 @@ export function SecurityFloatingMemo() {
       // 로컬 스토리지 접근 차단 등 예외 처리
     }
   }, []);
+
+  // ESC 키로 모달 닫기
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   // 즐겨찾기 토글
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
@@ -1230,411 +1242,426 @@ export function SecurityFloatingMemo() {
 
   // 마인드맵 해당 섹션으로 부드러운 스크롤 이동
   const handleScrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    setIsOpen(false);
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 150);
   };
 
   return (
     <>
-      {/* ==================================================== */}
-      {/* 플로팅 런처 버튼 (우측 하단 상주) */}
-      {/* ==================================================== */}
-      {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-40 print:hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <Button
-            onClick={() => {
-              setIsOpen(true);
-              setIsMinimized(false);
-            }}
-            className="group relative flex h-14 items-center gap-3 rounded-full border-2 border-emerald-500/30 bg-card px-5 py-3 shadow-2xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-emerald-500 hover:shadow-emerald-500/25 dark:bg-card/95"
-            variant="outline"
-          >
-            <div className="relative flex size-8 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-              <ShieldAlert className="size-4 animate-pulse text-emerald-600 dark:text-emerald-400" />
-              <span className="absolute -top-1 -right-1 flex size-3">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex size-3 rounded-full bg-emerald-500" />
-              </span>
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">
-                기출 1순위 ROI
-              </span>
-              <span className="text-sm font-bold text-foreground">
-                보안기사 80대 킬러 개념
-              </span>
-            </div>
-            <span className="ml-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-300">
-              80제
-            </span>
-          </Button>
-        </div>
-      )}
-
-      {/* ==================================================== */}
-      {/* 플로팅 메모장 메인 팝업 패널 */}
-      {/* ==================================================== */}
-      {isOpen && (
-        <aside
-          className={cn(
-            "fixed right-6 z-50 flex flex-col rounded-2xl border border-border/80 bg-card/95 backdrop-blur-xl shadow-2xl transition-all duration-300 print:hidden",
-            isMinimized
-              ? "bottom-6 h-14 w-80 overflow-hidden"
-              : "bottom-6 h-[640px] max-h-[85vh] w-[95vw] sm:w-[480px] md:w-[520px]"
-          )}
-          aria-label="정보보안기사 기출 ROI 메모장"
+      {/* 1. 플로팅 런처 버튼 (우측 하단 상주) */}
+      <div className="fixed bottom-6 right-6 z-40 print:hidden">
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="group relative flex h-14 items-center gap-2.5 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 px-5 text-white shadow-xl transition-all duration-300 hover:scale-105 hover:shadow-emerald-500/25 active:scale-95"
         >
-          {/* 헤더 */}
-          <div className="flex h-14 items-center justify-between border-b border-border/60 bg-muted/40 px-4">
-            <div className="flex items-center gap-2.5">
-              <div className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-                <ShieldAlert className="size-4" />
+          <span className="relative flex size-3">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+            <span className="relative inline-flex size-3 rounded-full bg-white" />
+          </span>
+          <ShieldAlert className="size-5 fill-white transition-transform group-hover:rotate-12" />
+          <span className="text-sm font-bold tracking-tight">
+            기출빈도 ROI 전략 메모장
+          </span>
+          <span className="rounded-full bg-black/25 px-2 py-0.5 text-xs font-semibold backdrop-blur-sm">
+            80선
+          </span>
+        </Button>
+      </div>
+
+      {/* 2. 중앙 대형 모달창 */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-3 backdrop-blur-sm print:hidden sm:p-6 animate-in fade-in duration-200"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsOpen(false);
+          }}
+        >
+          <div
+            className={cn(
+              "flex flex-col rounded-2xl border border-border bg-card shadow-2xl transition-all duration-200 overflow-hidden",
+              isMaximized
+                ? "h-full w-full max-w-7xl"
+                : "h-[85vh] w-full max-w-4xl"
+            )}
+          >
+            {/* 상단 헤더 바 */}
+            <div className="flex items-center justify-between border-b border-border bg-muted/40 px-5 py-3.5">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm">
+                  <ShieldAlert className="size-4 fill-white" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold tracking-tight text-foreground flex items-center gap-2">
+                    정보보안기사 기출 ROI 전략 메모장
+                    <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                      2026 최신판
+                    </span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    필기·실기 공통 빈출 초고수익 80대 킬러 개념 &amp; 나만의 시험 요약장
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-sm font-bold leading-none text-foreground flex items-center gap-1.5">
-                  보안기사 기출 ROI 메모장
-                  <span className="rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                    TOP 80
-                  </span>
-                </h3>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  필기·실기 공통 빈출 초고수익 80대 킬러 개념
-                </p>
+
+              {/* 창 최대화 / 닫기 컨트롤 */}
+              <div className="flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 text-muted-foreground hover:text-foreground"
+                  onClick={() => setIsMaximized((prev) => !prev)}
+                  title={isMaximized ? "원래 크기로" : "최대화"}
+                >
+                  {isMaximized ? (
+                    <Minimize2 className="size-4" />
+                  ) : (
+                    <Maximize2 className="size-4" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-8 text-muted-foreground hover:text-foreground"
+                  onClick={() => setIsOpen(false)}
+                  title="닫기"
+                >
+                  <X className="size-4" />
+                </Button>
               </div>
             </div>
 
-            <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 text-muted-foreground hover:text-foreground"
-                onClick={() => setIsMinimized(!isMinimized)}
-                title={isMinimized ? "확대하기" : "최소화"}
+            {/* 상단 탭 전환 바 */}
+            <div className="flex border-b border-border bg-muted/20 px-5 pt-2">
+              <button
+                type="button"
+                onClick={() => setActiveTab("cards")}
+                className={cn(
+                  "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-bold transition-colors",
+                  activeTab === "cards"
+                    ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
               >
-                {isMinimized ? <Maximize2 className="size-4" /> : <Minimize2 className="size-4" />}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 text-muted-foreground hover:text-destructive"
-                onClick={() => setIsOpen(false)}
-                title="닫기"
+                <Flame className="size-3.5 fill-current text-emerald-500" />
+                기출 80대 핵심 카드
+                <span className="ml-1 rounded-full bg-emerald-500/15 px-1.5 py-0.2 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                  {filteredItems.length}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("scratchpad")}
+                className={cn(
+                  "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-bold transition-colors",
+                  activeTab === "scratchpad"
+                    ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
               >
-                <X className="size-4" />
-              </Button>
+                <FileText className="size-3.5" />
+                나만의 직전 암기장 (Scratchpad)
+                {userNotes.trim().length > 0 && (
+                  <span className="size-1.5 rounded-full bg-emerald-500 ml-1" />
+                )}
+              </button>
             </div>
-          </div>
 
-          {/* 본문 콘텐츠 (최소화 아닐 때) */}
-          {!isMinimized && (
-            <div className="flex flex-1 flex-col overflow-hidden">
-              {/* 상단 탭 (ROI 카드 vs 나만의 직전 암기장) */}
-              <div className="flex border-b border-border/60 bg-muted/20 px-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("cards")}
-                  className={cn(
-                    "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-semibold transition-colors",
-                    activeTab === "cards"
-                      ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <Flame className="size-3.5 text-emerald-500" />
-                  기출 80대 핵심 카드
-                  <span className="ml-1 rounded-full bg-emerald-500/15 px-1.5 py-0.2 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
-                    {filteredItems.length}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("scratchpad")}
-                  className={cn(
-                    "flex items-center gap-1.5 border-b-2 px-3 py-2 text-xs font-semibold transition-colors",
-                    activeTab === "scratchpad"
-                      ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  <FileText className="size-3.5" />
-                  나만의 직전 암기장 (Scratchpad)
-                  {userNotes.trim().length > 0 && (
-                    <span className="size-1.5 rounded-full bg-emerald-500" />
-                  )}
-                </button>
-              </div>
-
-              {/* ==================================================== */}
-              {/* [TAB 1] ROI 킬러 카드 뷰 */}
-              {/* ==================================================== */}
-              {activeTab === "cards" && (
-                <div className="flex flex-1 flex-col overflow-hidden p-3 gap-2.5">
-                  {/* 검색창 & 즐겨찾기 토글 */}
-                  <div className="flex items-center gap-2">
+            {/* [TAB 1] ROI 킬러 카드 뷰 */}
+            {activeTab === "cards" && (
+              <div className="flex flex-1 flex-col overflow-hidden">
+                {/* 검색 바 & 필터 컨트롤 */}
+                <div className="flex flex-col gap-3 border-b border-border bg-muted/15 p-4">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    {/* 검색 바 */}
                     <div className="relative flex-1">
-                      <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground" />
+                      <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                       <input
                         type="text"
-                        placeholder="개념, 공격기법, 공식, 명령어, 포트 검색..."
+                        placeholder="개념, 공격기법, 공식, 명령어, 포트 검색 (예: BLP, RSA, ECB, Snort, XSS, 반사공격)..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full rounded-lg border border-input bg-card py-1.5 pl-8 pr-7 text-xs text-foreground placeholder:text-muted-foreground focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        className="h-9 w-full rounded-lg border border-border bg-background pl-9 pr-8 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                       />
                       {searchTerm && (
                         <button
                           type="button"
                           onClick={() => setSearchTerm("")}
-                          className="absolute right-2 top-2 text-muted-foreground hover:text-foreground"
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
                           <X className="size-3.5" />
                         </button>
                       )}
                     </div>
+
+                    {/* 즐겨찾기 필터 토글 */}
                     <Button
                       variant={showFavoritesOnly ? "default" : "outline"}
                       size="sm"
                       onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
                       className={cn(
-                        "h-8 text-[11px] gap-1 px-2.5",
-                        showFavoritesOnly && "bg-emerald-600 text-white hover:bg-emerald-700"
+                        "h-9 gap-1.5 text-xs font-semibold",
+                        showFavoritesOnly
+                          ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                          : "text-muted-foreground"
                       )}
-                      title="즐겨찾기한 카드만 모아보기"
                     >
-                      <Star className={cn("size-3", showFavoritesOnly ? "fill-white" : "text-emerald-500")} />
+                      <Star className={cn("size-3.5", showFavoritesOnly ? "fill-white text-white" : "fill-amber-500 text-amber-500")} />
                       즐겨찾기 ({favorites.length})
                     </Button>
                   </div>
 
-                  {/* 챕터 & 등급 필터 칩 */}
-                  <div className="flex flex-col gap-1.5">
-                    {/* 챕터 필터 */}
-                    <div className="flex items-center gap-1 overflow-x-auto pb-1 text-[11px] scrollbar-none">
-                      <span className="shrink-0 font-medium text-muted-foreground mr-1">분야:</span>
-                      {[
-                        { id: "all", label: "전체" },
-                        { id: "general", label: "일반/암호" },
-                        { id: "network", label: "네트워크" },
-                        { id: "system", label: "시스템" },
-                        { id: "app", label: "어플리케이션" },
-                        { id: "law", label: "법규/ISMS" },
-                        { id: "os", label: "OS" },
-                        { id: "arch", label: "구조" },
-                      ].map((sub) => (
-                        <button
-                          key={sub.id}
-                          type="button"
-                          onClick={() => setSelectedChapter(sub.id)}
-                          className={cn(
-                            "shrink-0 rounded-full px-2.5 py-0.5 font-medium transition-colors",
-                            selectedChapter === sub.id
-                              ? "bg-emerald-600 text-white dark:bg-emerald-500 dark:text-black font-bold"
-                              : "bg-muted text-muted-foreground hover:bg-muted/80"
-                          )}
-                        >
-                          {sub.label}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* 등급 필터 */}
-                    <div className="flex items-center gap-1 text-[11px]">
-                      <span className="shrink-0 font-medium text-muted-foreground mr-1">등급:</span>
-                      {[
-                        { id: "all", label: "전체" },
-                        { id: "SSS", label: "🔥 SSS급 (필수)" },
-                        { id: "SS", label: "⭐ SS급 (빈출)" },
-                        { id: "S", label: "⚡ S급" },
-                      ].map((g) => (
-                        <button
-                          key={g.id}
-                          type="button"
-                          onClick={() => setSelectedGrade(g.id)}
-                          className={cn(
-                            "rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors",
-                            selectedGrade === g.id
-                              ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-500/30"
-                              : "text-muted-foreground hover:text-foreground"
-                          )}
-                        >
-                          {g.label}
-                        </button>
-                      ))}
-                    </div>
+                  {/* 챕터 필터 */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+                    {[
+                      { id: "all", label: `전체 (${SECURITY_ROI_ITEMS.length})` },
+                      { id: "general", label: "일반/암호 (25)" },
+                      { id: "network", label: "네트워크 (17)" },
+                      { id: "system", label: "시스템 (14)" },
+                      { id: "app", label: "어플리케이션 (10)" },
+                      { id: "law", label: "법규/ISMS (6)" },
+                      { id: "os", label: "OS (4)" },
+                      { id: "arch", label: "구조 (4)" },
+                    ].map((sub) => (
+                      <button
+                        key={sub.id}
+                        type="button"
+                        onClick={() => setSelectedChapter(sub.id)}
+                        className={cn(
+                          "shrink-0 rounded-md px-2.5 py-1 font-medium transition-colors",
+                          selectedChapter === sub.id
+                            ? "bg-foreground text-background font-semibold"
+                            : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                        )}
+                      >
+                        {sub.label}
+                      </button>
+                    ))}
                   </div>
 
-                  {/* 카드 리스트 스크롤 영역 */}
-                  <div className="flex-1 overflow-y-auto pr-1 space-y-2.5 scrollbar-thin">
-                    {filteredItems.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-                        <AlertTriangle className="size-8 text-muted-foreground/60 mb-2" />
-                        <p className="text-xs">조건에 맞는 기출 카드가 없습니다.</p>
-                        <p className="text-[11px] mt-1">검색어를 지우거나 필터를 변경해 보세요.</p>
-                      </div>
-                    ) : (
-                      filteredItems.map((item) => {
-                        const isFav = favorites.includes(item.id);
-                        return (
-                          <div
-                            key={item.id}
-                            className="group relative rounded-xl border border-border/80 bg-card p-3 shadow-xs hover:border-emerald-500/60 hover:shadow-md transition-all duration-200"
-                          >
-                            {/* 상단 메타 바 */}
-                            <div className="flex items-center justify-between gap-1 mb-1.5">
-                              <div className="flex items-center gap-1.5">
-                                <span
-                                  className={cn(
-                                    "rounded-md px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider",
-                                    item.grade === "SSS"
-                                      ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
-                                      : item.grade === "SS"
-                                      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
-                                      : "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30"
-                                  )}
-                                >
-                                  {item.grade}
-                                </span>
-                                <span className="text-[10px] font-semibold text-muted-foreground">
-                                  {item.chapterName}
-                                </span>
-                                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">
-                                  • {item.frequencyRate}
-                                </span>
-                              </div>
+                  {/* 등급(Grade) 필터 */}
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span className="text-[11px] font-medium text-muted-foreground mr-1">
+                      우선순위:
+                    </span>
+                    {[
+                      { id: "all", label: "전체 등급" },
+                      { id: "SSS", label: "🔥 [SSS] 최우선 필수" },
+                      { id: "SS", label: "⭐ [SS] 핵심 빈출" },
+                      { id: "S", label: "⚡ [S] 기본 개념" },
+                    ].map((g) => (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => setSelectedGrade(g.id)}
+                        className={cn(
+                          "rounded-full px-2.5 py-0.5 text-[11px] font-medium transition-colors border",
+                          selectedGrade === g.id
+                            ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold"
+                            : "border-border bg-background text-muted-foreground hover:bg-muted"
+                        )}
+                      >
+                        {g.label}
+                      </button>
+                    ))}
+                    <span className="ml-auto text-[11px] text-muted-foreground">
+                      총 <strong>{filteredItems.length}</strong>개 토픽 검색됨
+                    </span>
+                  </div>
+                </div>
 
-                              <div className="flex items-center gap-1">
-                                {/* 즐겨찾기 별표 버튼 */}
-                                <button
-                                  type="button"
-                                  onClick={(e) => toggleFavorite(item.id, e)}
-                                  className="p-1 rounded-md text-muted-foreground hover:text-amber-500 hover:bg-muted/60 transition-colors"
-                                  title={isFav ? "즐겨찾기 해제" : "즐겨찾기 추가"}
-                                >
-                                  <Star
-                                    className={cn(
-                                      "size-3.5",
-                                      isFav ? "fill-amber-400 text-amber-500" : "text-muted-foreground"
-                                    )}
-                                  />
-                                </button>
-                                {/* 복사 버튼 */}
-                                <button
-                                  type="button"
-                                  onClick={() => handleCopy(item.id, `${item.title}\n핵심: ${item.formula}\n주의: ${item.trap}`)}
-                                  className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-                                  title="핵심 내용 복사"
-                                >
-                                  {copiedId === item.id ? (
-                                    <Check className="size-3 text-emerald-500" />
-                                  ) : (
-                                    <Copy className="size-3" />
-                                  )}
-                                </button>
-                              </div>
+                {/* 카드 리스트 영역 */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
+                  {filteredItems.length === 0 ? (
+                    <div className="flex h-64 flex-col items-center justify-center gap-2 text-center text-muted-foreground">
+                      <HelpCircle className="size-10 stroke-[1.5]" />
+                      <p className="text-sm">조건에 일치하는 기출 카드가 없습니다.</p>
+                      <Button
+                        variant="link"
+                        size="sm"
+                        onClick={() => {
+                          setSearchTerm("");
+                          setSelectedChapter("all");
+                          setSelectedGrade("all");
+                          setShowFavoritesOnly(false);
+                        }}
+                        className="gap-1 text-xs text-emerald-600 dark:text-emerald-400"
+                      >
+                        <RotateCcw className="size-3" />
+                        검색 필터 초기화
+                      </Button>
+                    </div>
+                  ) : (
+                    filteredItems.map((item) => {
+                      const isFav = favorites.includes(item.id);
+
+                      return (
+                        <div
+                          key={item.id}
+                          className="group relative rounded-xl border border-border bg-card p-4 transition-all hover:border-emerald-500/40 hover:shadow-md"
+                        >
+                          {/* 상단 뱃지 및 메타 */}
+                          <div className="flex items-start justify-between gap-3 mb-2">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              {/* 등급 배지 */}
+                              <span
+                                className={cn(
+                                  "rounded-md px-2 py-0.5 text-xs font-bold uppercase tracking-wider",
+                                  item.grade === "SSS"
+                                    ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30"
+                                    : item.grade === "SS"
+                                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30"
+                                    : "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30"
+                                )}
+                              >
+                                {item.grade}
+                              </span>
+
+                              <span className="rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                                {item.chapterName}
+                              </span>
+
+                              <span className="flex items-center gap-0.5 rounded bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                                <Sparkles className="size-3" />
+                                {item.frequencyRate}
+                              </span>
                             </div>
 
-                            {/* 제목 */}
-                            <h4 className="text-xs font-bold text-foreground mb-1">
-                              {item.title}
-                            </h4>
-
-                            {/* 핵심 공식 / 정답 키워드 */}
-                            <div className="rounded-md bg-emerald-500/10 dark:bg-emerald-500/15 p-2 text-[11px] font-medium text-emerald-950 dark:text-emerald-100 mb-1.5 whitespace-pre-line leading-relaxed">
-                              <div className="flex items-start gap-1">
-                                <Zap className="size-3 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
-                                <span className="font-semibold">{item.formula}</span>
-                              </div>
-                            </div>
-
-                            {/* 시험 함정 주의 포인트 */}
-                            <div className="rounded-md bg-muted/60 p-2 text-[11px] text-muted-foreground leading-relaxed flex items-start gap-1.5 mb-2">
-                              <AlertTriangle className="size-3 shrink-0 text-amber-500 mt-0.5" />
-                              <span><strong className="text-foreground font-semibold">함정 방어:</strong> {item.trap}</span>
-                            </div>
-
-                            {/* 하단 인터랙션 액션 */}
-                            <div className="flex items-center justify-between pt-1 border-t border-border/50 text-[10px]">
-                              <div className="flex flex-wrap gap-1 text-muted-foreground">
-                                {item.tags.map((tag) => (
-                                  <span key={tag} className="hover:text-emerald-600">
-                                    #{tag}
-                                  </span>
-                                ))}
-                              </div>
+                            {/* 즐겨찾기 및 복사 버튼 */}
+                            <div className="flex items-center gap-1">
                               <button
                                 type="button"
-                                onClick={() => handleScrollToSection(item.sectionId)}
-                                className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
+                                onClick={(e) => toggleFavorite(item.id, e)}
+                                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-amber-500 transition-colors"
+                                title={isFav ? "즐겨찾기 해제" : "즐겨찾기 추가"}
                               >
-                                마인드맵 이동
-                                <ExternalLink className="size-2.5" />
+                                {isFav ? (
+                                  <Star className="size-4 text-amber-500 fill-amber-500" />
+                                ) : (
+                                  <Star className="size-4" />
+                                )}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleCopy(item.id, `[보안기사] ${item.title}\n핵심: ${item.formula}\n주의: ${item.trap}`)}
+                                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                                title="핵심 내용 복사"
+                              >
+                                {copiedId === item.id ? (
+                                  <Check className="size-4 text-emerald-500" />
+                                ) : (
+                                  <Copy className="size-4" />
+                                )}
                               </button>
                             </div>
                           </div>
-                        );
-                      })
-                    )}
+
+                          {/* 토픽 타이틀 (MathText 적용) */}
+                          <h4 className="text-base font-bold text-foreground mb-2 flex items-center gap-2">
+                            <MathText text={item.title} />
+                          </h4>
+
+                          {/* 핵심 공식 / 정답 키워드 (MathText 적용) */}
+                          <div className="rounded-lg border border-border/80 bg-muted/40 p-3 mb-2.5 font-mono text-xs text-foreground/90 leading-relaxed overflow-x-auto whitespace-pre-line">
+                            <div className="flex items-center gap-1 text-[11px] font-semibold text-muted-foreground mb-1">
+                              <Zap className="size-3 text-emerald-500" />
+                              <span>핵심 메커니즘 &amp; 판정 공식:</span>
+                            </div>
+                            <MathText text={item.formula} />
+                          </div>
+
+                          {/* 시험 함정 주의 포인트 (MathText 적용) */}
+                          <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-xs leading-relaxed text-amber-900 dark:text-amber-200">
+                            <div className="flex items-center gap-1 font-bold text-amber-700 dark:text-amber-400 mb-0.5">
+                              <AlertTriangle className="size-3.5" />
+                              <span>출제관 공략 &amp; 시험장 함정 방어 포인트:</span>
+                            </div>
+                            <MathText text={item.trap} />
+                          </div>
+
+                          {/* 하단 태그 및 마인드맵 바로가기 */}
+                          <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2 text-xs">
+                            <div className="flex flex-wrap gap-1 text-[11px] text-muted-foreground">
+                              {item.tags.map((tag) => (
+                                <span key={tag} className="hover:text-emerald-600 dark:hover:text-emerald-400">
+                                  #{tag}
+                                </span>
+                              ))}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleScrollToSection(item.sectionId)}
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
+                            >
+                              마인드맵 이동
+                              <ExternalLink className="size-3" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* [TAB 2] 나만의 직전 암기장 (Scratchpad) */}
+            {activeTab === "scratchpad" && (
+              <div className="flex flex-1 flex-col p-4 overflow-hidden">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
+                    <BookmarkCheck className="size-4 text-emerald-500" />
+                    작성한 내용은 브라우저(localStorage)에 실시간 자동 저장됩니다.
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-xs gap-1.5 px-3"
+                      onClick={handleCopyAllNotes}
+                    >
+                      {isCopiedNotes ? (
+                        <>
+                          <Check className="size-3.5 text-emerald-500" />
+                          복사 완료
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="size-3.5" />
+                          전체 복사
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 text-xs gap-1.5 px-3 text-muted-foreground hover:text-destructive"
+                      onClick={handleResetNotes}
+                    >
+                      <RotateCcw className="size-3.5" />
+                      초기화
+                    </Button>
                   </div>
                 </div>
-              )}
 
-              {/* ==================================================== */}
-              {/* [TAB 2] 나만의 직전 암기장 (Scratchpad) */}
-              {/* ==================================================== */}
-              {activeTab === "scratchpad" && (
-                <div className="flex flex-1 flex-col p-3 overflow-hidden">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-muted-foreground flex items-center gap-1.5">
-                      <BookmarkCheck className="size-3.5 text-emerald-500" />
-                      작성한 내용은 브라우저에 자동 저장됩니다.
-                    </span>
-                    <div className="flex items-center gap-1.5">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-6 text-[10px] gap-1 px-2"
-                        onClick={handleCopyAllNotes}
-                      >
-                        {isCopiedNotes ? (
-                          <>
-                            <Check className="size-3 text-emerald-500" />
-                            복사됨
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="size-3" />
-                            전체 복사
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 text-[10px] gap-1 px-2 text-muted-foreground hover:text-destructive"
-                        onClick={handleResetNotes}
-                      >
-                        <RotateCcw className="size-3" />
-                        초기화
-                      </Button>
-                    </div>
-                  </div>
-
-                  <textarea
-                    value={userNotes}
-                    onChange={(e) => handleNotesChange(e.target.value)}
-                    placeholder="시험 직전 헷갈리는 명령어, 리눅스 로그 경로, 암호학 계산 공식 등을 자유롭게 적어보세요..."
-                    className="flex-1 w-full rounded-xl border border-input bg-card p-3 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none leading-relaxed"
-                  />
-                  <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
-                    <span>글자 수: {userNotes.length}자</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">✓ 실시간 자동 저장됨</span>
-                  </div>
+                <textarea
+                  value={userNotes}
+                  onChange={(e) => handleNotesChange(e.target.value)}
+                  placeholder="시험 직전 헷갈리는 명령어, 리눅스 로그 경로, 암호학 계산 공식 등을 자유롭게 적어보세요..."
+                  className="flex-1 w-full rounded-xl border border-input bg-card p-4 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none leading-relaxed"
+                />
+                <div className="mt-2.5 flex items-center justify-between text-xs text-muted-foreground">
+                  <span>총 글자 수: {userNotes.length.toLocaleString()}자</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">✓ 실시간 자동 저장됨</span>
                 </div>
-              )}
-            </div>
-          )}
-        </aside>
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </>
   );

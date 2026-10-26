@@ -16,6 +16,7 @@ export function AdspQuestionDiagram({ questionId }: AdspQuestionDiagramProps) {
     // [1번] SECI 모델 지식 변환 2x2 매트릭스
     // -------------------------------------------------------------
     case "adsp-48-001":
+    case "adsp-47-001":
       return (
         <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
           <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
@@ -657,6 +658,522 @@ export function AdspQuestionDiagram({ questionId }: AdspQuestionDiagramProps) {
             </text>
             <text x="450" y="160" textAnchor="middle" className="fill-foreground font-semibold text-[9px]">
               불균형 데이터 필수 지표
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 14번] 분석 과제 발굴 4사분면 매트릭스 (Solution 하이라이트)
+    // -------------------------------------------------------------
+    case "adsp-47-014":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [분석 과제 발굴 4사분면 매트릭스]
+          </div>
+          <svg viewBox="0 0 540 230" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 상단/좌측 축 레이블 */}
+            <text x="270" y="20" textAnchor="middle" className="fill-muted-foreground font-semibold">
+              분석 방법 (How)
+            </text>
+            <text x="180" y="40" textAnchor="middle" className="fill-foreground font-bold">
+              알고 있음 (Known)
+            </text>
+            <text x="380" y="40" textAnchor="middle" className="fill-foreground font-bold">
+              모름 (Unknown)
+            </text>
+
+            <text x="25" y="100" textAnchor="middle" className="fill-foreground font-bold">
+              알고 있음
+            </text>
+            <text x="25" y="115" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (What)
+            </text>
+            <text x="25" y="170" textAnchor="middle" className="fill-foreground font-bold">
+              모름
+            </text>
+            <text x="25" y="185" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (What)
+            </text>
+
+            {/* 그리드 4영역 */}
+            {/* 최적화 */}
+            <rect x="90" y="52" width="180" height="70" rx="8" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="180" y="85" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              최적화 (Optimization)
+            </text>
+            <text x="180" y="104" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              What 앎 · How 앎
+            </text>
+
+            {/* 솔루션 (정답 강조) */}
+            <rect x="290" y="52" width="180" height="70" rx="8" className="fill-primary/15 stroke-primary" strokeWidth="2" />
+            <text x="380" y="85" textAnchor="middle" className="fill-primary font-bold text-sm">
+              ★ 솔루션 (Solution)
+            </text>
+            <text x="380" y="104" textAnchor="middle" className="fill-foreground font-semibold text-[11px]">
+              What 앎 · How 모름 (정답)
+            </text>
+
+            {/* 통찰 */}
+            <rect x="90" y="132" width="180" height="70" rx="8" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="180" y="165" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              통찰 (Insight)
+            </text>
+            <text x="180" y="184" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              What 모름 · How 앎
+            </text>
+
+            {/* 발견 */}
+            <rect x="290" y="132" width="180" height="70" rx="8" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="380" y="165" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              발견 (Discovery)
+            </text>
+            <text x="380" y="184" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              What 모름 · How 모름
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 17번] 분석 수준 진단 4사분면 (준비도 vs 성숙도 - 정착형)
+    // -------------------------------------------------------------
+    case "adsp-47-017":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [데이터 분석 수준 진단: 준비도(Readiness) vs 성숙도(Maturity)]
+          </div>
+          <svg viewBox="0 0 540 230" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 축 레이블 */}
+            <text x="270" y="20" textAnchor="middle" className="fill-muted-foreground font-semibold">
+              분석 성숙도 (Maturity: 비즈니스·조직역량·IT)
+            </text>
+            <text x="180" y="40" textAnchor="middle" className="fill-foreground font-bold">
+              낮음 (Low)
+            </text>
+            <text x="380" y="40" textAnchor="middle" className="fill-foreground font-bold">
+              높음 (High)
+            </text>
+
+            <text x="25" y="100" textAnchor="middle" className="fill-foreground font-bold">
+              높음
+            </text>
+            <text x="25" y="115" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (준비도)
+            </text>
+            <text x="25" y="170" textAnchor="middle" className="fill-foreground font-bold">
+              낮음
+            </text>
+            <text x="25" y="185" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (준비도)
+            </text>
+
+            {/* 1. 정착형 (정답: 준비도 높음, 성숙도 낮음) */}
+            <rect x="90" y="52" width="180" height="70" rx="8" className="fill-primary/15 stroke-primary" strokeWidth="2" />
+            <text x="180" y="85" textAnchor="middle" className="fill-primary font-bold text-sm">
+              ★ 정착형 (Settle)
+            </text>
+            <text x="180" y="104" textAnchor="middle" className="fill-foreground font-semibold text-[11px]">
+              준비도 높음 · 성숙도 낮음 (정답)
+            </text>
+
+            {/* 2. 확산형 (준비도 높음, 성숙도 높음) */}
+            <rect x="290" y="52" width="180" height="70" rx="8" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="380" y="85" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              확산형 (Spread)
+            </text>
+            <text x="380" y="104" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              준비도 높음 · 성숙도 높음
+            </text>
+
+            {/* 3. 준비형 (준비도 낮음, 성숙도 낮음) */}
+            <rect x="90" y="132" width="180" height="70" rx="8" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="180" y="165" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              준비형 (Preparation)
+            </text>
+            <text x="180" y="184" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              준비도 낮음 · 성숙도 낮음
+            </text>
+
+            {/* 4. 도입형 (준비도 낮음, 성숙도 높음) */}
+            <rect x="290" y="132" width="180" height="70" rx="8" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="380" y="165" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              도입형 (Introduction)
+            </text>
+            <text x="380" y="184" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              준비도 낮음 · 성숙도 높음
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 23번] 상자수염그림 안쪽 울타리(Inner Fence) 계산 도표
+    // -------------------------------------------------------------
+    case "adsp-47-023":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [상자수염그림(Box Plot) 안쪽 울타리(Inner Fence) 계산 구조]
+          </div>
+          <svg viewBox="0 0 540 220" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 수평 축 */}
+            <line x1="50" y1="130" x2="490" y2="130" className="stroke-border" strokeWidth="1.5" />
+
+            {/* 하한 울타리 (Lower Fence = -8) */}
+            <line x1="80" y1="100" x2="80" y2="160" className="stroke-destructive" strokeWidth="2" strokeDasharray="4 2" />
+            <text x="80" y="90" textAnchor="middle" className="fill-destructive font-bold text-xs">
+              하한: -8
+            </text>
+            <text x="80" y="178" textAnchor="middle" className="fill-destructive text-[10px]">
+              Q1 - 1.5×IQR
+            </text>
+            <text x="80" y="192" textAnchor="middle" className="fill-muted-foreground text-[9px]">
+              (4 - 12 = -8)
+            </text>
+
+            {/* 수염 왼쪽 선 */}
+            <line x1="80" y1="130" x2="190" y2="130" className="stroke-foreground" strokeWidth="1.5" />
+
+            {/* 상자 (Q1=4, Q3=12) */}
+            <rect x="190" y="95" width="160" height="70" rx="4" className="fill-primary/15 stroke-primary" strokeWidth="2" />
+            <text x="190" y="85" textAnchor="middle" className="fill-foreground font-bold text-xs">
+              Q1 = 4
+            </text>
+            <text x="350" y="85" textAnchor="middle" className="fill-foreground font-bold text-xs">
+              Q3 = 12
+            </text>
+
+            {/* 중앙값 line */}
+            <line x1="260" y1="95" x2="260" y2="165" className="stroke-primary" strokeWidth="2.5" />
+            <text x="260" y="85" textAnchor="middle" className="fill-primary font-bold text-[11px]">
+              Median
+            </text>
+
+            {/* IQR 표시 (Q3 - Q1 = 8) */}
+            <line x1="190" y1="180" x2="350" y2="180" className="stroke-primary" strokeWidth="1.5" />
+            <path d="M 190 176 L 190 184 M 350 176 L 350 184" className="stroke-primary" strokeWidth="1.5" />
+            <text x="270" y="196" textAnchor="middle" className="fill-primary font-bold text-[11px]">
+              IQR = Q3 - Q1 = 8 (1.5 × IQR = 12)
+            </text>
+
+            {/* 수염 오른쪽 선 */}
+            <line x1="350" y1="130" x2="460" y2="130" className="stroke-foreground" strokeWidth="1.5" />
+
+            {/* 상한 울타리 (Upper Fence = 24) */}
+            <line x1="460" y1="100" x2="460" y2="160" className="stroke-destructive" strokeWidth="2" strokeDasharray="4 2" />
+            <text x="460" y="90" textAnchor="middle" className="fill-destructive font-bold text-xs">
+              상한: 24
+            </text>
+            <text x="460" y="178" textAnchor="middle" className="fill-destructive text-[10px]">
+              Q3 + 1.5×IQR
+            </text>
+            <text x="460" y="192" textAnchor="middle" className="fill-muted-foreground text-[9px]">
+              (12 + 12 = 24)
+            </text>
+          </svg>
+          <div className="mt-1 text-center text-xs text-muted-foreground">
+            정답: 하한 <strong className="text-foreground">-8</strong>, 상한 <strong className="text-foreground">24</strong> (울타리 밖 데이터는 이상치 처리)
+          </div>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 26번] 오른쪽 꼬리가 긴 비대칭 분포 (양의 왜도: 최빈값 < 중앙값 < 평균)
+    // -------------------------------------------------------------
+    case "adsp-47-026":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [오른쪽 꼬리가 긴 분포 (양의 왜도, Right-Skewed) 대푯값 대소 관계]
+          </div>
+          <svg viewBox="0 0 540 220" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* X축 */}
+            <line x1="50" y1="180" x2="490" y2="180" className="stroke-border" strokeWidth="1.5" />
+
+            {/* 오른쪽 꼬리 곡선 (피크는 왼쪽, 오른쪽으로 길게 완만하게 뻗음) */}
+            <path
+              d="M 60 180 C 110 180, 140 40, 160 40 C 190 40, 230 140, 480 180"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="2.5"
+            />
+            <path
+              d="M 60 180 C 110 180, 140 40, 160 40 C 190 40, 230 140, 480 180 Z"
+              className="fill-primary/10"
+            />
+
+            {/* 1. 최빈값 (Mode) - 정점 x=160 */}
+            <line x1="160" y1="40" x2="160" y2="180" className="stroke-indigo-500" strokeWidth="1.5" strokeDasharray="3 3" />
+            <circle cx="160" cy="40" r="4" className="fill-indigo-500" />
+            <text x="160" y="196" textAnchor="middle" className="fill-indigo-600 dark:fill-indigo-400 font-bold text-xs">
+              최빈값
+            </text>
+            <text x="160" y="210" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (Mode: 정점)
+            </text>
+
+            {/* 2. 중앙값 (Median) - x=210 */}
+            <line x1="210" y1="90" x2="210" y2="180" className="stroke-amber-500" strokeWidth="1.5" strokeDasharray="3 3" />
+            <circle cx="210" cy="90" r="4" className="fill-amber-500" />
+            <text x="210" y="196" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold text-xs">
+              중앙값
+            </text>
+            <text x="210" y="210" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (Median: 50%)
+            </text>
+
+            {/* 3. 평균 (Mean) - x=270 (우측 이상치에 끌려감) */}
+            <line x1="270" y1="130" x2="270" y2="180" className="stroke-rose-500" strokeWidth="1.5" strokeDasharray="3 3" />
+            <circle cx="270" cy="130" r="4" className="fill-rose-500" />
+            <text x="270" y="196" textAnchor="middle" className="fill-rose-600 dark:fill-rose-400 font-bold text-xs">
+              평균
+            </text>
+            <text x="270" y="210" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              (Mean: 우측 이동)
+            </text>
+
+            {/* 요약 카드 */}
+            <rect x="330" y="45" width="180" height="75" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="420" y="68" textAnchor="middle" className="fill-primary font-bold text-xs">
+              ★ 대소 관계 공식
+            </text>
+            <text x="420" y="88" textAnchor="middle" className="fill-foreground font-extrabold text-sm">
+              최빈값 &lt; 중앙값 &lt; 평균
+            </text>
+            <text x="420" y="106" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              왜도 &gt; 0 (오른쪽 꼬리)
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 30번] 주성분 분석(PCA) 스크리 산점도(Scree Plot) & 엘보우 지점
+    // -------------------------------------------------------------
+    case "adsp-47-030":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [주성분 분석(PCA) 스크리 산점도 (Scree Plot)와 엘보우 지점]
+          </div>
+          <svg viewBox="0 0 540 220" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* X, Y 축 */}
+            <line x1="60" y1="180" x2="490" y2="180" className="stroke-border" strokeWidth="1.5" />
+            <line x1="60" y1="30" x2="60" y2="180" className="stroke-border" strokeWidth="1.5" />
+
+            <text x="275" y="205" textAnchor="middle" className="fill-muted-foreground font-semibold text-[11px]">
+              주성분 번호 (Principal Component Number)
+            </text>
+            <text x="25" y="105" textAnchor="middle" transform="rotate(-90 25 105)" className="fill-muted-foreground font-semibold text-[11px]">
+              고유값 (Eigenvalue)
+            </text>
+
+            {/* 고유값 1 기준선 (Kaiser rule) */}
+            <line x1="60" y1="130" x2="490" y2="130" className="stroke-muted-foreground/40" strokeDasharray="3 3" />
+            <text x="50" y="134" textAnchor="end" className="fill-muted-foreground text-[10px]">λ = 1</text>
+
+            {/* 포인트 좌표들: PC1(100, 45), PC2(180, 85), PC3(260, 135), PC4(340, 155), PC5(420, 165) */}
+            <polyline
+              points="100,45 180,85 260,135 340,155 420,165"
+              fill="none"
+              className="stroke-primary"
+              strokeWidth="2.5"
+            />
+
+            {/* 점 1 */}
+            <circle cx="100" cy="45" r="5" className="fill-primary" />
+            <text x="100" y="35" textAnchor="middle" className="fill-foreground font-bold text-[10px]">PC1 (λ=3.2)</text>
+            <text x="100" y="195" textAnchor="middle" className="fill-muted-foreground text-[10px]">1</text>
+
+            {/* 점 2 */}
+            <circle cx="180" cy="85" r="5" className="fill-primary" />
+            <text x="180" y="75" textAnchor="middle" className="fill-foreground font-bold text-[10px]">PC2 (λ=2.1)</text>
+            <text x="180" y="195" textAnchor="middle" className="fill-muted-foreground text-[10px]">2</text>
+
+            {/* 점 3 (Elbow 지점) */}
+            <circle cx="260" cy="135" r="7" className="fill-emerald-500 stroke-card" strokeWidth="2" />
+            <text x="260" y="122" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-bold text-[11px]">
+              ★ Elbow 지점
+            </text>
+            <text x="260" y="195" textAnchor="middle" className="fill-foreground font-bold text-[10px]">3</text>
+
+            {/* 점 4 */}
+            <circle cx="340" cy="155" r="5" className="fill-primary" />
+            <text x="340" y="195" textAnchor="middle" className="fill-muted-foreground text-[10px]">4</text>
+
+            {/* 점 5 */}
+            <circle cx="420" cy="165" r="5" className="fill-primary" />
+            <text x="420" y="195" textAnchor="middle" className="fill-muted-foreground text-[10px]">5</text>
+
+            {/* 설명 주석 */}
+            <rect x="310" y="45" width="180" height="60" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="400" y="68" textAnchor="middle" className="fill-primary font-bold text-xs">
+              스크리 산점도 (Scree Plot)
+            </text>
+            <text x="400" y="88" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              경사가 완만해지는 지점에서 컷!
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 41번] 다중 분류 활성화 함수 소프트맥스 (Softmax)
+    // -------------------------------------------------------------
+    case "adsp-47-041":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [다중 분류 신경망 출력층: 소프트맥스(Softmax) 확률 변환]
+          </div>
+          <svg viewBox="0 0 540 190" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 입력 로짓 (Logits z) */}
+            <rect x="30" y="30" width="90" height="35" rx="6" className="fill-muted/60 stroke-border" strokeWidth="1.5" />
+            <text x="75" y="52" textAnchor="middle" className="fill-foreground font-bold">z1 = 2.0</text>
+
+            <rect x="30" y="75" width="90" height="35" rx="6" className="fill-muted/60 stroke-border" strokeWidth="1.5" />
+            <text x="75" y="97" textAnchor="middle" className="fill-foreground font-bold">z2 = 1.0</text>
+
+            <rect x="30" y="120" width="90" height="35" rx="6" className="fill-muted/60 stroke-border" strokeWidth="1.5" />
+            <text x="75" y="142" textAnchor="middle" className="fill-foreground font-bold">z3 = 0.1</text>
+
+            {/* 화살표들 */}
+            <path d="M 125 47 L 175 90 M 125 92 L 175 92 M 125 137 L 175 95" fill="none" className="stroke-border" strokeWidth="1.5" />
+
+            {/* 소프트맥스 변환기 박스 */}
+            <rect x="180" y="30" width="160" height="125" rx="8" className="fill-primary/15 stroke-primary" strokeWidth="2" />
+            <text x="260" y="60" textAnchor="middle" className="fill-primary font-bold text-sm">
+              ★ Softmax 함수
+            </text>
+            <text x="260" y="85" textAnchor="middle" className="fill-foreground font-semibold text-xs">
+              P(y=k) = e^(z_k) / Σ e^(z_j)
+            </text>
+            <text x="260" y="115" textAnchor="middle" className="fill-muted-foreground text-[11px]">
+              모든 출력값을 (0, 1) 확률로 변환
+            </text>
+            <text x="260" y="135" textAnchor="middle" className="fill-primary font-bold text-xs">
+              총합(Sum) = 1.0 (100%)
+            </text>
+
+            {/* 화살표들 */}
+            <path d="M 345 90 L 390 47 M 345 92 L 390 92 M 345 95 L 390 137" fill="none" className="stroke-primary" strokeWidth="1.5" />
+
+            {/* 최종 확률 출력 */}
+            <rect x="395" y="30" width="115" height="35" rx="6" className="fill-emerald-500/15 stroke-emerald-500" strokeWidth="1.5" />
+            <text x="452" y="52" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-bold">P(Class 1) = 0.7</text>
+
+            <rect x="395" y="75" width="115" height="35" rx="6" className="fill-muted/60 stroke-border" strokeWidth="1.5" />
+            <text x="452" y="97" textAnchor="middle" className="fill-foreground font-bold">P(Class 2) = 0.2</text>
+
+            <rect x="395" y="120" width="115" height="35" rx="6" className="fill-muted/60 stroke-border" strokeWidth="1.5" />
+            <text x="452" y="142" textAnchor="middle" className="fill-foreground font-bold">P(Class 3) = 0.1</text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 44번] 혼동행렬(Confusion Matrix) 기반 정밀도(Precision) 계산
+    // -------------------------------------------------------------
+    case "adsp-47-044":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [혼동행렬(Confusion Matrix)과 정밀도(Precision) 산출]
+          </div>
+          <svg viewBox="0 0 540 220" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 상단 레이블: 예측값 */}
+            <text x="210" y="20" textAnchor="middle" className="fill-muted-foreground font-semibold">
+              예측 클래스 (Predicted)
+            </text>
+            <text x="150" y="40" textAnchor="middle" className="fill-primary font-bold">Positive (예측 참)</text>
+            <text x="270" y="40" textAnchor="middle" className="fill-foreground font-bold">Negative (예측 거짓)</text>
+
+            {/* 좌측 레이블: 실제값 */}
+            <text x="25" y="85" textAnchor="middle" className="fill-foreground font-bold">실제 Positive</text>
+            <text x="25" y="145" textAnchor="middle" className="fill-foreground font-bold">실제 Negative</text>
+
+            {/* 2x2 셀 */}
+            {/* TP = 40 (하이라이트) */}
+            <rect x="90" y="52" width="120" height="55" rx="6" className="fill-emerald-500/20 stroke-emerald-500" strokeWidth="2" />
+            <text x="150" y="78" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-bold text-base">TP = 40</text>
+            <text x="150" y="96" textAnchor="middle" className="fill-muted-foreground text-[10px]">실제 참 &amp; 예측 참</text>
+
+            {/* FN = 20 */}
+            <rect x="220" y="52" width="120" height="55" rx="6" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="280" y="78" textAnchor="middle" className="fill-foreground font-bold text-base">FN = 20</text>
+            <text x="280" y="96" textAnchor="middle" className="fill-muted-foreground text-[10px]">실제 참 &amp; 예측 거짓</text>
+
+            {/* FP = 10 (하이라이트) */}
+            <rect x="90" y="117" width="120" height="55" rx="6" className="fill-amber-500/20 stroke-amber-500" strokeWidth="2" />
+            <text x="150" y="143" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold text-base">FP = 10</text>
+            <text x="150" y="161" textAnchor="middle" className="fill-muted-foreground text-[10px]">실제 거짓 &amp; 예측 참</text>
+
+            {/* TN = 30 */}
+            <rect x="220" y="117" width="120" height="55" rx="6" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="280" y="143" textAnchor="middle" className="fill-foreground font-bold text-base">TN = 30</text>
+            <text x="280" y="161" textAnchor="middle" className="fill-muted-foreground text-[10px]">실제 거짓 &amp; 예측 거짓</text>
+
+            {/* 우측 공식 카드: Precision */}
+            <rect x="360" y="52" width="170" height="120" rx="8" className="fill-primary/10 stroke-primary" strokeWidth="2" />
+            <text x="445" y="76" textAnchor="middle" className="fill-primary font-bold text-sm">★ 정밀도 (Precision)</text>
+            <text x="445" y="98" textAnchor="middle" className="fill-foreground font-medium text-[11px]">
+              TP / (TP + FP)
+            </text>
+            <text x="445" y="122" textAnchor="middle" className="fill-primary font-extrabold text-base">
+              40 / (40 + 10)
+            </text>
+            <text x="445" y="142" textAnchor="middle" className="fill-foreground font-bold text-sm">
+              = 40 / 50 = 0.8 (80%)
+            </text>
+            <text x="445" y="160" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              예측 Positive 중 정답 비율
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [47회 49번] 계층적 군집분석 와드 연결법 (Ward's Linkage: SSE 최소화)
+    // -------------------------------------------------------------
+    case "adsp-47-049":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [계층적 군집분석: 와드 연결법(Ward&apos;s Linkage) 원리]
+          </div>
+          <svg viewBox="0 0 540 190" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 군집 A */}
+            <ellipse cx="120" cy="80" rx="60" ry="40" className="fill-primary/10 stroke-primary" strokeWidth="1.5" />
+            <text x="120" y="75" textAnchor="middle" className="fill-foreground font-bold text-sm">군집 A</text>
+            <text x="120" y="93" textAnchor="middle" className="fill-muted-foreground text-[10px]">오차제곱합 SSE_A</text>
+
+            {/* + 기호 */}
+            <text x="210" y="85" textAnchor="middle" className="fill-muted-foreground font-bold text-xl">+</text>
+
+            {/* 군집 B */}
+            <ellipse cx="290" cy="80" rx="60" ry="40" className="fill-primary/10 stroke-primary" strokeWidth="1.5" />
+            <text x="290" y="75" textAnchor="middle" className="fill-foreground font-bold text-sm">군집 B</text>
+            <text x="290" y="93" textAnchor="middle" className="fill-muted-foreground text-[10px]">오차제곱합 SSE_B</text>
+
+            {/* 화살표 병합 */}
+            <path d="M 360 80 L 400 80 M 392 74 L 400 80 L 392 86" fill="none" className="stroke-primary" strokeWidth="2.5" />
+
+            {/* 병합 군집 AB */}
+            <ellipse cx="465" cy="80" rx="65" ry="48" className="fill-emerald-500/15 stroke-emerald-500" strokeWidth="2" />
+            <text x="465" y="75" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-bold text-sm">병합 군집 (A ∪ B)</text>
+            <text x="465" y="93" textAnchor="middle" className="fill-foreground font-medium text-[10px]">SSE_AB</text>
+
+            {/* 하단 공식 및 요약 카드 */}
+            <rect x="60" y="135" width="420" height="45" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="270" y="153" textAnchor="middle" className="fill-primary font-bold text-xs">
+              ★ 와드 연결법(Ward Linkage) 기준: ΔSSE = SSE_AB - (SSE_A + SSE_B)
+            </text>
+            <text x="270" y="169" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              병합 시 군집 내 오차제곱합의 증가량(ΔSSE)이 가장 작아지는 두 군집을 우선 병합!
             </text>
           </svg>
         </div>
