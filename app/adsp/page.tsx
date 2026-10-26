@@ -81,7 +81,7 @@ export default function AdspPage() {
           <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
             CBT 시험장
           </span>
-          <span className="text-xs text-muted-foreground">42회·43회·44회·47회·48회 (2024~2026년) 실전 기출 복원</span>
+          <span className="text-xs text-muted-foreground">42회·43회·44회·47회·48회·49회·50회 (2024~2026년) 실전 기출 복원</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
           ADsP (데이터분석 준전문가) 기출 복원
@@ -209,7 +209,7 @@ export default function AdspPage() {
                 SPEED QUIZ
               </span>
               <span className="rounded bg-amber-500/20 px-1.5 py-0.2 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
-                100문항 완비 (48~31회 역대 기출 수록)
+                160문항 완비 (50~32회 역대 기출 수록)
               </span>
             </div>
             <h2 className="text-base font-semibold tracking-tight text-foreground">

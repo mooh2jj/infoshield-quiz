@@ -41,7 +41,7 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "adsp",
     label: "ADsP (데이터분석 준전문가)",
-    description: "3개 과목 마인드맵 · 100제 스피드 퀴즈 · 42~48회(2024~2026년) 실전 기출 복원",
+    description: "3개 과목 마인드맵 · 160제 스피드 퀴즈 · 42~50회(2024~2026년) 실전 기출 복원",
     href: "/adsp",
     status: "available",
   },
@@ -55,9 +55,9 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "linux",
     label: "리눅스마스터 2급",
-    description: "5개 챕터 마인드맵 공개 · 퀴즈는 준비 중",
+    description: "5개 챕터 마인드맵 · 80제 단답형 스피드 퀴즈 · ROI 30선 전략 메모장 & 함정 기출",
     href: "/linux",
-    status: "coming-soon",
+    status: "available",
   },
   {
     id: "telecom",
