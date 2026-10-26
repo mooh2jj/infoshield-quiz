@@ -26,14 +26,14 @@ interface QuizSessionState {
   answers: Record<string, AnswerRecord>;
   isHintShown: boolean;
   timeSpentSeconds: number;
-  examRound: "48" | "47" | "44" | "43" | "42";
+  examRound: "50" | "48" | "47" | "44" | "43" | "42";
   startSession: (filters: QuizFilters, options?: StartSessionOptions) => void;
   submitAnswer: (itemId: string, submitted: string, correct: boolean) => void;
   nextQuestion: () => void;
   previousQuestion: () => void;
   goToQuestion: (index: number) => void;
   setTimeSpentSeconds: (seconds: number) => void;
-  setExamRound: (round: "48" | "47" | "44" | "43" | "42") => void;
+  setExamRound: (round: "50" | "48" | "47" | "44" | "43" | "42") => void;
   toggleHint: () => void;
   resetSession: () => void;
   setHasHydrated: (value: boolean) => void;
@@ -51,7 +51,7 @@ export const useQuizStore = create<QuizSessionState>()(
       answers: {},
       isHintShown: false,
       timeSpentSeconds: 0,
-      examRound: "48",
+      examRound: "50",
       startSession: (filters, options) => {
         const { questionIds, count } = options ?? {};
         let ids: string[];

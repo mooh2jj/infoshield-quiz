@@ -5230,5 +5230,1491 @@
       "joint-probability"
     ],
     "codeSnippet": "[편의점 영수증 100건 거래 분석]\n- 전체 영수증 거래 건수 (N): 100건\n- 품목 A와 B 동시 구매 건수 (n(A ∩ B)): 30건\n---------------------------------------------\n지지도 Support(A → B) = n(A ∩ B) / N = 30 / 100 = 0.30 (30%)"
+  },
+  {
+    "id": "adsp-50-001",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): DIKW 피라미드 기본 4단계 계층 구조 (Data-Info-Knowledge-Wisdom)",
+    "question": "다음 중 데이터에서 지혜(Wisdom)에 이르는 가치 창출 과정을 계층적으로 구조화한 DIKW 피라미드의 기본 4단계 구성요소에 해당하지 않는 것은?",
+    "options": [
+      "데이터 (Data)",
+      "정보 (Information)",
+      "통찰 (Insight)",
+      "지혜 (Wisdom)"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "DIKW 피라미드는 **데이터(Data) → 정보(Information) → 지식(Knowledge) → 지혜(Wisdom)**의 4단계 계층 구조로 이루어져 있습니다.\n  * 데이터(Data): 가공되지 않은 순수한 객관적 사실(Fact)이나 관측값\n  * 정보(Information): 데이터에 의미와 맥락(Context)을 부여하여 가공한 결과물\n  * 지식(Knowledge): 다양한 정보를 구조화·체계화하여 도출한 유용한 규칙이나 원리\n  * 지혜(Wisdom): 축적된 지식에 창의적 통찰과 경험이 결합되어 미래를 예측하고 올바른 판단을 내리는 능력\n  * **통찰(Insight)**은 데이터 분석을 통해 도출되는 가치 있는 산출물이나, DIKW 피라미드의 고유한 기본 4단계 명칭에는 포함되지 않는 대표적인 오답 함정 보기입니다.",
+      "optionsBreakdown": [
+        "① 데이터 (Data)",
+        "② 정보 (Information)",
+        "③ (정답) 통찰 (Insight)",
+        "④ 지혜 (Wisdom)"
+      ],
+      "devContext": "데이터 레이크하우스 파이프라인에서 S3의 미가공 원천 로그는 Data, 이를 SQL로 일별 집계한 매출 테이블은 Information, 전환율 예측 임계치에 따른 마케팅 자동화 트리거는 Knowledge에 대응됩니다."
+    },
+    "tags": [
+      "dikw-pyramid",
+      "data-hierarchy",
+      "knowledge-information",
+      "wisdom"
+    ]
+  },
+  {
+    "id": "adsp-50-002",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 디지털 정보 시스템의 물리적·논리적 최소 단위 (Bit vs Byte)",
+    "question": "컴퓨터 및 디지털 정보 시스템에서 데이터를 표현하고 저장하는 단위와 체계에 관한 설명으로 가장 적절한 것은?",
+    "options": [
+      "정보 표현의 물리적·논리적 최소 단위는 1바이트(Byte)이며, 1바이트는 4개의 비트(Bit)로 구성된다.",
+      "1비트(Bit)는 0 또는 1이라는 두 가지 이진 상태 중 하나를 표현하는 최소 정보 단위이다.",
+      "1킬로바이트(KB)는 2진 컴퓨터 시스템에서 정확히 1,000바이트(Byte)를 의미한다.",
+      "레코드(Record)는 데이터를 구성하는 가장 하위의 물리적 최소 단위로 메모리에 직접 매핑된다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* ② 컴퓨터 및 디지털 시스템에서 정보를 표현하는 물리적·논리적 최소 단위는 **비트(Bit, Binary Digit)**이며, 0 또는 1의 두 가지 상태를 나타냅니다.\n  * ① 1바이트(Byte)는 8개의 비트($1\\text{ Byte} = 8\\text{ Bits}$)로 구성되며, 영문자 1자나 256($2^8$)가지 상태를 표현할 수 있는 기본 단위입니다. (오답)\n  * ③ 디지털 시스템(이진법)에서 1KB는 전통적으로 $2^{10} = 1,024\\text{ Byte}$를 의미합니다. (오답)\n  * ④ 레코드(Record)는 여러 필드(Field)가 모여 하나의 논리적 데이터 개체를 구성하는 논리적 단위이며, 물리적 최소 단위는 비트입니다. (오답)",
+      "optionsBreakdown": [
+        "① 정보 표현의 물리적·논리적 최소 단위는 1바이트(Byte)이며, 1바이트는 4개의 비트(Bit)로 구성된다.",
+        "② (정답) 1비트(Bit)는 0 또는 1이라는 두 가지 이진 상태 중 하나를 표현하는 최소 정보 단위이다.",
+        "③ 1킬로바이트(KB)는 2진 컴퓨터 시스템에서 정확히 1,000바이트(Byte)를 의미한다.",
+        "④ 레코드(Record)는 데이터를 구성하는 가장 하위의 물리적 최소 단위로 메모리에 직접 매핑된다."
+      ],
+      "devContext": "저수준 네트워크 프로그래밍이나 임베디드 IoT 센서 통신 프로토콜 설계 시 1비트 플래그 필드를 비트마스크(Bitmask) 연산으로 패킹하여 네트워크 대역폭과 메모리를 극대화합니다."
+    },
+    "tags": [
+      "data-representation",
+      "bit",
+      "byte",
+      "information-unit"
+    ]
+  },
+  {
+    "id": "adsp-50-003",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 데이터베이스(DB) 핵심 특성 (통합·공용·운영 데이터 및 중복 최소화)",
+    "question": "다음 중 현대 엔터프라이즈 정보 시스템의 핵심 기반인 데이터베이스(Database)의 일반적인 4대 고유 특성에 대한 설명으로 가장 거리가 먼 것은?",
+    "options": [
+      "통합된 데이터(Integrated Data): 동일한 내용의 데이터가 불필요하게 중복 저장되는 것을 통제하여 데이터의 일관성을 유지한다.",
+      "저장된 데이터(Stored Data): 컴퓨터가 접근하여 처리할 수 있도록 자기 디스크나 SSD 등 컴퓨터 저장 매체에 저장된다.",
+      "운영 데이터(Operational Data): 단순한 임시 산출물이 아니라 조직의 본래 업무 목적과 고유 기능을 수행하기 위해 반드시 유지되어야 할 핵심 데이터이다.",
+      "독립된 단독 데이터(Isolated Data): 보안과 데이터 무결성 보장을 위해 다수의 사용자가 동시에 동일한 데이터에 접근하거나 공유하는 것을 기술적으로 원천 차단한다."
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "데이터베이스의 4대 고유 특성은 다음과 같습니다.\n  * **통합된 데이터(Integrated Data):** 데이터의 불필요한 중복을 배제(최소화)하여 일관성을 유지함\n  * **저장된 데이터(Stored Data):** 컴퓨터가 판독 가능한 전자적 저장 매체에 저장됨\n  * **운영 데이터(Operational Data):** 조직의 고유 업무를 수행하기 위해 지속적으로 관리되는 필수 데이터임\n  * **공용 데이터(Shared Data):** 여러 사용자와 서로 다른 응용 시스템들이 동시에 동일한 데이터를 공유하여 활용할 수 있음\n  * ④ 데이터베이스는 여러 사용자가 동시에 자원을 공유할 수 있도록 다중 접근(Concurrency)을 지원하는 **공용 데이터(Shared Data)**의 특성을 가집니다. 단독 사용만 허용한다는 설명은 잘못되었습니다.",
+      "optionsBreakdown": [
+        "① 통합된 데이터(Integrated Data): 동일한 내용의 데이터가 불필요하게 중복 저장되는 것을 통제하여 데이터의 일관성을 유지한다.",
+        "② 저장된 데이터(Stored Data): 컴퓨터가 접근하여 처리할 수 있도록 자기 디스크나 SSD 등 컴퓨터 저장 매체에 저장된다.",
+        "③ 운영 데이터(Operational Data): 단순한 임시 산출물이 아니라 조직의 본래 업무 목적과 고유 기능을 수행하기 위해 반드시 유지되어야 할 핵심 데이터이다.",
+        "④ (정답) 독립된 단독 데이터(Isolated Data): 보안과 데이터 무결성 보장을 위해 다수의 사용자가 동시에 동일한 데이터에 접근하거나 공유하는 것을 기술적으로 원천 차단한다."
+      ],
+      "devContext": "엔터프라이즈 RDBMS 아키텍처 구축 시 제3정규화(3NF)를 통해 중복 데이터를 최소화함으로써 데이터 갱신 이상(Anomaly)을 원천 차단하고 원자성·일관성(ACID)을 보장합니다."
+    },
+    "tags": [
+      "database",
+      "integrated-data",
+      "dbms-characteristics",
+      "redundancy-control"
+    ]
+  },
+  {
+    "id": "adsp-50-004",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 개인에게 체화된 경험적 노하우와 직관 (암묵지 vs 형식지)",
+    "question": "노나카 이쿠지로의 지식창조 메커니즘(SECI 모델)에서 개인의 오랜 경험, 학습, 시행착오를 통해 체화되어 있으나, 외부로 명확히 언어화하거나 문서 형태로 전달하기 어려운 지식의 유형은?",
+    "options": [
+      "형식지 (Explicit Knowledge)",
+      "암묵지 (Tacit Knowledge)",
+      "메타데이터 (Metadata)",
+      "정형 정보 (Structured Information)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **암묵지(Tacit Knowledge):** 개인의 내면에 체화되어 있는 주관적 경험, 노하우, 직관, 신념 등으로 언어나 기호로 쉽게 표현하기 어려운 지식입니다. (사례: 숙련된 장인의 손기술, 노련한 의사의 진단 감각)\n  * **형식지(Explicit Knowledge):** 문서, 매뉴얼, 서적, 수식, 데이터베이스 등을 통해 외부에 객관적으로 명확히 표현되고 공유 가능한 지식입니다.\n  * SECI 모델은 암묵지와 형식지가 상호작용하면서 공통화(S) → 표출화(E) → 연결화(C) → 내면화(I)를 거쳐 조직의 지식으로 나선형 증폭되는 과정을 설명합니다.",
+      "optionsBreakdown": [
+        "① 형식지 (Explicit Knowledge)",
+        "② (정답) 암묵지 (Tacit Knowledge)",
+        "③ 메타데이터 (Metadata)",
+        "④ 정형 정보 (Structured Information)"
+      ],
+      "devContext": "시니어 아키텍트의 경험적 장애 대응 노하우(암묵지)를 Notion이나 Jira 장애 보고서(형식지)로 문서화하여 공유함으로써 엔지니어링 온보딩 속도를 단축합니다."
+    },
+    "tags": [
+      "tacit-knowledge",
+      "explicit-knowledge",
+      "knowledge-management",
+      "seci"
+    ]
+  },
+  {
+    "id": "adsp-50-005",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 전사 DW 기반 특정 부서·주제별 맞춤형 소규모 저장소 (데이터 마트)",
+    "question": "전사적 데이터웨어하우스(DW)에 축적된 방대한 기업 데이터로부터, 마케팅팀이나 영업팀 등 특정 부서나 특정 분석 주제 영역에 맞춰 요약·가공하여 비교적 소규모로 구축한 맞춤형 데이터 저장소는?",
+    "options": [
+      "데이터 마트 (Data Mart)",
+      "데이터 레이크 (Data Lake)",
+      "운영 데이터 저장소 (ODS)",
+      "온라인 트랜잭션 처리 (OLTP)"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "* **데이터 마트(Data Mart):** 전사적 데이터웨어하우스(DW)의 전체 데이터 중 특정 부서, 특정 업무 기능, 또는 특정 분석 목적에 특화하여 데이터를 추출하고 가공한 하위 개념의 요약형 데이터베이스입니다.\n  * 데이터 레이크(Data Lake): 정형 데이터뿐만 아니라 로그, 이미지, 비디오 등 대규모 비정형·반정형 데이터를 원시 형태(Raw Data) 그대로 보관하는 저장소입니다.\n  * ODS(Operational Data Store): 트랜잭션 데이터를 DW로 이관하기 전 정제 및 통합을 수행하는 임시 운영 저장소입니다.",
+      "optionsBreakdown": [
+        "① (정답) 데이터 마트 (Data Mart)",
+        "② 데이터 레이크 (Data Lake)",
+        "③ 운영 데이터 저장소 (ODS)",
+        "④ 온라인 트랜잭션 처리 (OLTP)"
+      ],
+      "devContext": "전사 데이터 웨어하우스(Snowflake/BigQuery)의 거대한 팩트 테이블에서 마케팅팀 전용 분석을 위해 필요한 컬럼과 지표만을 별도 데이터 마트(Data Mart) 뷰로 서빙하여 쿼리 비용과 지연시간을 낮춥니다."
+    },
+    "tags": [
+      "data-mart",
+      "data-warehouse",
+      "subject-oriented",
+      "etl"
+    ]
+  },
+  {
+    "id": "adsp-50-006",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 고객 통합 관리 및 맞춤형 서비스 지원 시스템 (CRM)",
+    "question": "기업이 고객과 관련된 모든 내·외부 접점 데이터를 통합·분석하여, 고객 생애 주기 전반에 걸친 고객 경험을 개선하고 장기적인 충성 고객을 확보하기 위해 구축하는 대표적인 기업 정보 시스템은?",
+    "options": [
+      "공급망 관리 (SCM: Supply Chain Management)",
+      "고객 관계 관리 (CRM: Customer Relationship Management)",
+      "전사적 자원 관리 (ERP: Enterprise Resource Planning)",
+      "제품 수명 주기 관리 (PLM: Product Lifecycle Management)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **고객 관계 관리(CRM):** 고객 정보와 접점 활동을 통합 관리하여 고객 유치, 관계 유지, 이탈 방지 및 고객 생애 가치(LTV)를 극대화하는 고객 중심 정보 시스템입니다.\n  * SCM: 원자재 공급부터 최종 소비자까지의 유통·물류 프로세스를 최적화하는 공급망 관리 시스템입니다.\n  * ERP: 생산, 인사, 재무, 회계 등 기업의 전사적 핵심 업무 자원을 하나의 통합 DB로 관리하는 시스템입니다.",
+      "optionsBreakdown": [
+        "① 공급망 관리 (SCM: Supply Chain Management)",
+        "② (정답) 고객 관계 관리 (CRM: Customer Relationship Management)",
+        "③ 전사적 자원 관리 (ERP: Enterprise Resource Planning)",
+        "④ 제품 수명 주기 관리 (PLM: Product Lifecycle Management)"
+      ],
+      "devContext": "고객의 실시간 구매 행동 및 CS 이력을 단일 고객 뷰(Single Customer View)로 통합하는 CRM 백엔드를 구축하여 이탈 위험군 유저 대상 타겟 푸시 알림을 자동 전송합니다."
+    },
+    "tags": [
+      "crm",
+      "customer-relationship-management",
+      "enterprise-systems"
+    ]
+  },
+  {
+    "id": "adsp-50-007",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 하둡(Hadoop) 생태계 맵리듀스(MapReduce) 분산 병렬 처리 모델",
+    "question": "대용량 비정형 데이터를 분산 환경에서 효율적으로 처리하기 위한 하둡(Hadoop) 생태계의 핵심 분산 병렬 프로그래밍 모델인 맵리듀스(MapReduce)에 대한 설명으로 옳은 것은?",
+    "options": [
+      "단일 고성능 메인프레임 서버(Scale-up) 환경에서만 작동하는 실시간 트랜잭션 전용 프레임워크이다.",
+      "입력 데이터를 분할하여 키-값(Key-Value) 쌍으로 변환하는 Map 단계와, 동일 키를 갖는 데이터를 취합·집계하는 Reduce 단계로 나누어 분산 처리한다.",
+      "ACID 트랜잭션을 엄격하게 보장하는 분산 관계형 데이터베이스 관리 시스템(RDBMS) 기술이다.",
+      "데이터 저장 시 결측치와 이상치를 사전에 자동으로 완전히 제거해 주는 데이터 정제 도구이다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **맵리듀스(MapReduce)**는 대용량 데이터를 여러 일반 x86 노드로 구성된 분산 클러스터(Scale-out) 환경에서 처리하는 프레임워크입니다.\n  * **Map 단계:** 대규모 입력 데이터를 블록 단위로 분할하여 필터링 및 변환을 거쳐 (Key, Value) 쌍으로 생성합니다.\n  * **Reduce 단계:** 동일한 Key를 가진 값들을 셔플링·정렬한 후 취합하여 합계, 평균 등의 요약 결과를 산출합니다.",
+      "optionsBreakdown": [
+        "① 단일 고성능 메인프레임 서버(Scale-up) 환경에서만 작동하는 실시간 트랜잭션 전용 프레임워크이다.",
+        "② (정답) 입력 데이터를 분할하여 키-값(Key-Value) 쌍으로 변환하는 Map 단계와, 동일 키를 갖는 데이터를 취합·집계하는 Reduce 단계로 나누어 분산 처리한다.",
+        "③ ACID 트랜잭션을 엄격하게 보장하는 분산 관계형 데이터베이스 관리 시스템(RDBMS) 기술이다.",
+        "④ 데이터 저장 시 결측치와 이상치를 사전에 자동으로 완전히 제거해 주는 데이터 정제 도구이다."
+      ],
+      "devContext": "대규모 분산 클러스터에서 수 테라바이트의 로그를 키-값 쌍으로 매핑(Map)하고 그룹화하여 리듀스(Reduce) 집계하는 Spark/Hadoop 파이프라인으로 대용량 배치 처리를 구현합니다."
+    },
+    "tags": [
+      "hadoop",
+      "mapreduce",
+      "distributed-computing",
+      "batch-processing"
+    ]
+  },
+  {
+    "id": "adsp-50-008",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 빅데이터 분석 패러다임 변화 (상관관계 및 패턴 예측 활용 확대)",
+    "question": "빅데이터 시대의 도래에 따라 기존의 데이터 분석 패러다임이 변화하고 있다. 다음 중 패러다임의 변화 방향으로 가장 올바른 것은?",
+    "options": [
+      "데이터의 사전 정제와 사전 처리를 완료한 후 적재하는 방식에서, 일단 원시 데이터를 대량 수집한 후 사후에 분석 목적에 맞게 처리하는 방식으로 전환되었다.",
+      "모든 분석에서 복잡한 수리적 모델링을 통한 엄격한 인과관계 규명만이 유일한 가치이며, 상관관계 분석은 점차 배제되고 있다.",
+      "데이터의 수집 비용 절감을 위해 전수조사보다는 표본조사의 비중이 비약적으로 증가하였다.",
+      "분석의 신뢰성을 극대화하기 위해 비정형 데이터는 수집을 전면 차단하고 규격화된 정형 데이터만을 분석 대상으로 삼는다."
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "빅데이터 시대의 분석 패러다임 변화:\n  1. **사전처리 → 사후처리:** 정형화된 스키마에 맞춰 사전에 정제하던 방식에서, Data Lake 등에 원시 데이터를 그대로 적재한 뒤 필요 시점에 가공하는 방식으로 전환 (Schema-on-Read).\n  2. **표본조사 → 전수조사:** 컴퓨팅 자원의 발달로 표본 추출 없이 전체 데이터를 분석할 수 있는 범위가 확대됨.\n  3. **질(Quality) → 양(Quantity):** 약간의 잡음(Noise)이 있더라도 방대한 데이터의 양을 통해 전체적 패턴을 포착함.\n  4. **인과관계(Why) → 상관관계(What):** 모든 현상의 이론적 원인을 규명하기 전에 데이터 내의 상관관계와 패턴을 발견하여 예측과 의사결정에 신속하게 활용함.",
+      "optionsBreakdown": [
+        "① (정답) 데이터의 사전 정제와 사전 처리를 완료한 후 적재하는 방식에서, 일단 원시 데이터를 대량 수집한 후 사후에 분석 목적에 맞게 처리하는 방식으로 전환되었다.",
+        "② 모든 분석에서 복잡한 수리적 모델링을 통한 엄격한 인과관계 규명만이 유일한 가치이며, 상관관계 분석은 점차 배제되고 있다.",
+        "③ 데이터의 수집 비용 절감을 위해 전수조사보다는 표본조사의 비중이 비약적으로 증가하였다.",
+        "④ 분석의 신뢰성을 극대화하기 위해 비정형 데이터는 수집을 전면 차단하고 규격화된 정형 데이터만을 분석 대상으로 삼는다."
+      ],
+      "devContext": "실시간 추천 시스템 구축 시 클릭 수와 체류 시간 사이의 강력한 통계적 상관관계를 기반으로 우선 추천 모델을 릴리즈한 뒤 점진적인 인과추론 A/B 테스트로 모델을 개선합니다."
+    },
+    "tags": [
+      "bigdata-paradigm",
+      "correlation-over-causation",
+      "pattern-discovery"
+    ]
+  },
+  {
+    "id": "adsp-50-009",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 개체 간 상호작용 및 연결망 구조 파악 (소셜 네트워크 분석 SNA)",
+    "question": "개체(Node) 간의 상호작용과 연결망 구조를 파악하는 소셜 네트워크 분석(SNA: Social Network Analysis)에 대한 설명으로 가장 부적절한 것은?",
+    "options": [
+      "사람, 집단, 조직, 웹페이지 등을 노드(Node 또는 Vertex)로, 이들 간의 연결 관계나 상호작용을 링크(Link 또는 Edge)로 모델링한다.",
+      "네트워크 내에서 특정 개체가 다른 개체들과 얼마나 많은 연결을 맺고 있는지를 측정하는 지표를 '연결 중심성(Degree Centrality)'이라 한다.",
+      "한 노드가 다른 노드들 간의 최단 경로 상에 위치하여 정보의 흐름을 통제하고 중개하는 역할을 측정하는 지표를 '매개 중심성(Betweenness Centrality)'이라 한다.",
+      "소셜 네트워크 분석은 개체 간의 질적 관계만을 파악하므로 행렬(Matrix)이나 그래프 이론을 적용한 수리적 정량화는 불가능하다."
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "소셜 네트워크 분석(SNA)은 그래프 이론(Graph Theory)과 인접 행렬(Adjacency Matrix)을 기반으로 네트워크 밀도, 중심성(연결 중심성, 매개 중심성, 근접 중심성, 고유벡터 중심성) 등을 엄밀하게 수학적·정량적으로 계산하여 분석하는 기법입니다. 정량화가 불가능하다는 설명은 틀렸습니다.",
+      "optionsBreakdown": [
+        "① 사람, 집단, 조직, 웹페이지 등을 노드(Node 또는 Vertex)로, 이들 간의 연결 관계나 상호작용을 링크(Link 또는 Edge)로 모델링한다.",
+        "② 네트워크 내에서 특정 개체가 다른 개체들과 얼마나 많은 연결을 맺고 있는지를 측정하는 지표를 '연결 중심성(Degree Centrality)'이라 한다.",
+        "③ 한 노드가 다른 노드들 간의 최단 경로 상에 위치하여 정보의 흐름을 통제하고 중개하는 역할을 측정하는 지표를 '매개 중심성(Betweenness Centrality)'이라 한다.",
+        "④ (정답) 소셜 네트워크 분석은 개체 간의 질적 관계만을 파악하므로 행렬(Matrix)이나 그래프 이론을 적용한 수리적 정량화는 불가능하다."
+      ],
+      "devContext": "소셜 미디어 사용자 간의 팔로우/언팔로우 관계를 Neo4j와 같은 그래프 데이터베이스에 Node와 Edge로 모델링하여 인플루언서 탐지 및 친구 추천 피처를 산출합니다."
+    },
+    "tags": [
+      "sna",
+      "social-network-analysis",
+      "node-link",
+      "centrality"
+    ]
+  },
+  {
+    "id": "adsp-50-010",
+    "category": "adsp-understanding",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 데이터 사이언티스트 역량 구분 (DB 튜닝 및 최적화 = 하드 스킬)",
+    "question": "비즈니스 가치를 창출하는 데이터 사이언티스트에게 요구되는 역량 중 통계학, 수학, 알고리즘 구현 및 데이터베이스 튜닝과 같은 '하드 스킬(Hard Skill)'과 구분되는 '소프트 스킬(Soft Skill)'에 해당하는 것은?",
+    "options": [
+      "분산 컴퓨팅 환경에서의 MapReduce 및 Spark 파이프라인 개발 능력",
+      "RDBMS의 물리적 인덱스(B-Tree) 설계 및 쿼리 실행 계획 최적화 역량",
+      "머신러닝 모형의 비용 함수(Cost Function) 수식 유도 및 경사하강법 구현 능력",
+      "비즈니스 도메인 지식에 기반한 문제 정의 능력 및 이해관계자를 설득하는 시각화 스토리텔링 역량"
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "* **하드 스킬(Hard Skill):** 수학/통계학 지식, 컴퓨터 과학 및 분산 프로그래밍, 머신러닝 알고리즘 구현, 데이터베이스 모델링 및 SQL 튜닝 등 기술적·방법론적 역량\n  * **소프트 스킬(Soft Skill):** 비즈니스 도메인에 대한 깊은 이해, 비판적·통찰적 사고, 조직 내 다양한 구성원과의 원활한 커뮤니케이션 및 협업 능력, 분석 결과를 전략적 행동으로 연결하는 시각화 및 스토리텔링 역량",
+      "optionsBreakdown": [
+        "① 분산 컴퓨팅 환경에서의 MapReduce 및 Spark 파이프라인 개발 능력",
+        "② RDBMS의 물리적 인덱스(B-Tree) 설계 및 쿼리 실행 계획 최적화 역량",
+        "③ 머신러닝 모형의 비용 함수(Cost Function) 수식 유도 및 경사하강법 구현 능력",
+        "④ (정답) 비즈니스 도메인 지식에 기반한 문제 정의 능력 및 이해관계자를 설득하는 시각화 스토리텔링 역량"
+      ],
+      "devContext": "데이터 엔지니어와 MLOps 엔지니어에게는 RDBMS 인덱스 튜닝, 파티셔닝, 분산 쿼리 최적화 등의 하드 스킬이 서비스 SLA와 인프라 비용 절감의 핵심 역량으로 평가됩니다."
+    },
+    "tags": [
+      "data-scientist",
+      "hard-skill",
+      "soft-skill",
+      "sql-tuning"
+    ]
+  },
+  {
+    "id": "adsp-50-011",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 데이터 분석 기획 단계 분석 과제 정의서 핵심 구성요소",
+    "question": "데이터 분석 기획 단계에서 수립하는 '분석 과제 정의서(Project Charter)'에 반드시 포함되어야 할 핵심 구성요소로 가장 부적절한 것은?",
+    "options": [
+      "해결하고자 하는 비즈니스 이슈와 구체적인 분석 목적 (Why & What)",
+      "분석에 활용될 내부 원천 데이터 및 외부 수집 데이터의 소스 (Data)",
+      "적용할 통계 기법, 머신러닝 모델링 알고리즘 및 평가 지표 (How)",
+      "데이터 분석 결과에 따라 향후 퇴사 처리할 예정인 현업 실무진의 인사 평가 명단"
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "분석 과제 정의서는 프로젝트의 방향성을 규정하는 문서로 **과제명, 분석의 배경 및 목적(Why/What), 분석 대상 데이터 요건(Data), 분석 방법론 및 기술 아키텍처(How), 프로젝트 수행 일정 및 마일스톤, 산출물 정의, 기대 효과 및 정량적 성과 지표(KPI)** 등으로 구성됩니다. 실무진의 퇴사 인사 명단 등은 과제 정의서의 구성요소가 아닙니다.",
+      "optionsBreakdown": [
+        "① 해결하고자 하는 비즈니스 이슈와 구체적인 분석 목적 (Why & What)",
+        "② 분석에 활용될 내부 원천 데이터 및 외부 수집 데이터의 소스 (Data)",
+        "③ 적용할 통계 기법, 머신러닝 모델링 알고리즘 및 평가 지표 (How)",
+        "④ (정답) 데이터 분석 결과에 따라 향후 퇴사 처리할 예정인 현업 실무진의 인사 평가 명단"
+      ],
+      "devContext": "데이터 분석 프로젝트 킥오프 시 분석 목적, 데이터 소스, 검증 방법론, 예상 KPI를 담은 분석 과제 정의서를 명문화하여 기획팀과 엔지니어링팀 간의 스코프 크립(Scope Creep)을 방지합니다."
+    },
+    "tags": [
+      "task-definition",
+      "analytics-planning",
+      "project-charter"
+    ]
+  },
+  {
+    "id": "adsp-50-012",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 파일럿 분석 모델 도입 후 발전 흐름 (유효성 검증 → 전사 확산 및 고도화)",
+    "question": "기업이 데이터 분석 과제를 추진할 때, 초기 불확실성을 최소화하고 성공 가능성을 높이기 위해 채택하는 합리적인 분석 프로젝트 발전 흐름은?",
+    "options": [
+      "전사 강제 확산 → 사후 타당성 검토 → 비즈니스 목표 정의",
+      "프로토타입/파일럿 검증 → 비즈니스 유효성 평가 → 전사 업무 프로세스 확산 및 고도화",
+      "대규모 전사 인프라 전면 구축 → 파일럿 테스트 없이 모델 일괄 배포 → 문제 발생 시 즉시 폐기",
+      "분석 알고리즘 완성 → 모델의 비즈니스 효과 검증 생략 → 원천 데이터 전면 삭제"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "현대 데이터 분석 프로젝트는 불확실성을 관리하기 위해 초기부터 대규모 투자를 단행하기보다, **소규모 파일럿 과제(애자일/프로토타이핑)**를 통해 기술적 실현 가능성과 비즈니스 유효성을 신속히 검증한 후, 효과가 입증된 모형을 타 부서 및 전사 업무로 **확산(Scaling) 및 지속적으로 모니터링·고도화**하는 점진적 발전 흐름을 거칩니다.",
+      "optionsBreakdown": [
+        "① 전사 강제 확산 → 사후 타당성 검토 → 비즈니스 목표 정의",
+        "② (정답) 프로토타입/파일럿 검증 → 비즈니스 유효성 평가 → 전사 업무 프로세스 확산 및 고도화",
+        "③ 대규모 전사 인프라 전면 구축 → 파일럿 테스트 없이 모델 일괄 배포 → 문제 발생 시 즉시 폐기",
+        "④ 분석 알고리즘 완성 → 모델의 비즈니스 효과 검증 생략 → 원천 데이터 전면 삭제"
+      ],
+      "devContext": "신규 머신러닝 피처 도입 시 소규모 A/B 테스트나 샌드박스 환경에서 유효성을 사전 검증한 후, Kubernetes 기반 추론 클러스터로 무중단 전사 확산 및 재학습 파이프라인을 구축합니다."
+    },
+    "tags": [
+      "pilot-project",
+      "model-scaling",
+      "validation-to-expansion"
+    ]
+  },
+  {
+    "id": "adsp-50-013",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): KDD 분석 방법론 5단계 수행 절차 (선택-전처리-변환-마이닝-해석/평가)",
+    "question": "프로야드(Fayyad) 등이 제안한 데이터 마이닝 표준 절차인 KDD(Knowledge Discovery in Databases) 분석 방법론의 수행 절차를 순서대로 올바르게 나열한 것은?",
+    "options": [
+      "데이터 선택(Selection) → 데이터 전처리(Preprocessing) → 데이터 변환(Transformation) → 데이터 마이닝(Data Mining) → 결과 해석 및 평가(Interpretation/Evaluation)",
+      "데이터 변환(Transformation) → 데이터 선택(Selection) → 데이터 마이닝(Data Mining) → 데이터 전처리(Preprocessing) → 결과 해석(Interpretation)",
+      "데이터 선택(Selection) → 데이터 변환(Transformation) → 데이터 전처리(Preprocessing) → 결과 해석(Interpretation) → 데이터 마이닝(Data Mining)",
+      "결과 해석(Interpretation) → 데이터 마이닝(Data Mining) → 데이터 선택(Selection) → 데이터 전처리(Preprocessing) → 데이터 변환(Transformation)"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "KDD 분석 방법론의 표준 5단계:\n  1. **데이터 선택 (Selection):** 원천 데이터베이스에서 분석 목적에 부합하는 타겟 데이터셋 생성\n  2. **데이터 전처리 (Preprocessing):** 잡음(Noise), 이상치(Outlier), 결측치(Missing Value)를 식별하고 정제\n  3. **데이터 변환 (Transformation):** 분석 목적에 적합하도록 변수 생성, 정규화, 스케일링, 차원 축소 수행\n  4. **데이터 마이닝 (Data Mining):** 실제 알고리즘(분류, 군집, 연관규칙 등)을 적용하여 숨겨진 패턴 탐색\n  5. **해석 및 평가 (Interpretation/Evaluation):** 마이닝된 패턴의 비즈니스 유효성을 평가하고 지식으로 전환",
+      "optionsBreakdown": [
+        "① (정답) 데이터 선택(Selection) → 데이터 전처리(Preprocessing) → 데이터 변환(Transformation) → 데이터 마이닝(Data Mining) → 결과 해석 및 평가(Interpretation/Evaluation)",
+        "② 데이터 변환(Transformation) → 데이터 선택(Selection) → 데이터 마이닝(Data Mining) → 데이터 전처리(Preprocessing) → 결과 해석(Interpretation)",
+        "③ 데이터 선택(Selection) → 데이터 변환(Transformation) → 데이터 전처리(Preprocessing) → 결과 해석(Interpretation) → 데이터 마이닝(Data Mining)",
+        "④ 결과 해석(Interpretation) → 데이터 마이닝(Data Mining) → 데이터 선택(Selection) → 데이터 전처리(Preprocessing) → 데이터 변환(Transformation)"
+      ],
+      "devContext": "ETL 파이프라인 설계 시 KDD 표준에 맞춰 Raw 데이터 수집(Selection), 결측치·이상치 정제(Preprocessing), 피처 엔지니어링(Transformation), 모델 학습(Data Mining), 비즈니스 모니터링(Evaluation) 순으로 DAG를 구성합니다."
+    },
+    "tags": [
+      "kdd-methodology",
+      "data-selection",
+      "data-mining-steps"
+    ]
+  },
+  {
+    "id": "adsp-50-014",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): CRISP-DM 6단계 중 모델링(Modeling) 세부 태스크와 평가(Evaluation) 구분",
+    "question": "CRISP-DM(Cross-Industry Standard Process for Data Mining) 분석 방법론의 6단계 중 '모델링(Modeling)' 단계에서 수행하는 세부 태스크에 해당하지 않는 것은?",
+    "options": [
+      "모델링 기법 선택 (Select Modeling Technique)",
+      "모델 테스트 계획 설계 (Generate Test Design)",
+      "모델 작성 및 파라미터 최적화 (Build Model)",
+      "비즈니스 최종 목표 달성 여부 검토 및 프로세스 전체 리뷰 (Review Process)"
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "* **모델링(Modeling) 단계:** 모델링 기법 선택, 테스트 설계(교차검증 등), 모델 작성, 모델의 기술적 평가(Assess Model)를 수행합니다.\n  * ④ 비즈니스 목표의 실질적 달성 여부를 최종 승인하고, 프로젝트 전 과정을 종합적으로 리뷰하며 배포 여부를 결정하는 것은 다음 단계인 **평가(Evaluation)** 단계의 핵심 태스크입니다.",
+      "optionsBreakdown": [
+        "① 모델링 기법 선택 (Select Modeling Technique)",
+        "② 모델 테스트 계획 설계 (Generate Test Design)",
+        "③ 모델 작성 및 파라미터 최적화 (Build Model)",
+        "④ (정답) 비즈니스 최종 목표 달성 여부 검토 및 프로세스 전체 리뷰 (Review Process)"
+      ],
+      "devContext": "CRISP-DM 파이프라인 구축 시 모델링(Modeling) 단계에서는 알고리즘 튜닝과 교차 검증을 집중 수행하고, 실제 배포(Deployment) 직전 최종 비즈니스 ROI 검토는 평가(Evaluation) 단계에서 게이트키핑합니다."
+    },
+    "tags": [
+      "crisp-dm",
+      "modeling-phase",
+      "evaluation-phase",
+      "process-model"
+    ]
+  },
+  {
+    "id": "adsp-50-015",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 데이터 자체 탐색을 통한 새로운 패턴 발견 및 과제 도출 (상향식 접근법)",
+    "question": "해결해야 할 구체적인 비즈니스 문제가 사전에 정의되어 있지 않거나 불명확할 때, 현재 축적된 원천 데이터를 탐색적(EDA)으로 관찰하고 비지도 학습 등을 적용하여 새로운 패턴과 분석 과제를 도출하는 접근 방식은?",
+    "options": [
+      "하향식 접근법 (Top-Down Approach)",
+      "상향식 접근법 (Bottom-Up Approach)",
+      "폭포수(Waterfall) 확정형 접근법",
+      "전통적 가설검정 기반 접근법"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **상향식 접근법(Bottom-Up Approach):** 문제가 명확히 정의되지 않은 상태에서 보유 데이터를 기반으로 탐색(EDA, 군집분석, 연관분석 등)하여 가치 있는 통찰과 과제를 발견해 나가는 귀납적 방식입니다.\n  * **하향식 접근법(Top-Down Approach):** 문제가 명확히 정의된 상태에서 가설을 설정하고 이를 검증하기 위해 데이터를 수집·분석하는 연역적 방식입니다.",
+      "optionsBreakdown": [
+        "① 하향식 접근법 (Top-Down Approach)",
+        "② (정답) 상향식 접근법 (Bottom-Up Approach)",
+        "③ 폭포수(Waterfall) 확정형 접근법",
+        "④ 전통적 가설검정 기반 접근법"
+      ],
+      "devContext": "명확한 가설이 부재한 신규 서비스 초기에는 사용자 행동 로그에서 비지도 클러스터링(Bottom-Up)을 수행하여 사용자 페르소나와 숨겨진 니즈를 상향식으로 발굴합니다."
+    },
+    "tags": [
+      "bottom-up",
+      "exploratory-discovery",
+      "unsupervised-approach"
+    ]
+  },
+  {
+    "id": "adsp-50-016",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 메타데이터 및 태그/키-값 구조를 포함하는 반정형 데이터 (JSON, XML, 로그)",
+    "question": "데이터의 구조적 형태에 따른 분류 중, 관계형 데이터베이스(RDBMS)처럼 고정된 행과 열의 2차원 테이블 스키마 형태는 아니지만, 데이터 내부에 태그(Tag), 마크업, 키-값(Key-Value) 등의 메타데이터를 포함하고 있어 파싱(Parsing)을 통해 구조를 해석할 수 있는 '반정형 데이터(Semi-structured Data)'에 해당하는 것은?",
+    "options": [
+      "RDBMS의 오라클 고객 기본 정보 테이블",
+      "웹 서버 로그, JSON 문서, XML 파일, 센서 데이터",
+      "압축된 MP4 비디오 스트리밍 파일",
+      "훈련되지 않은 자연어 음성 녹음 WAV 파일"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **정형 데이터(Structured):** RDBMS의 고정 스키마 테이블, CSV 등 명확한 구조를 가진 데이터\n  * **반정형 데이터(Semi-structured):** 고정 테이블 스키마는 없으나 데이터 내부에 메타데이터나 구조를 나타내는 태그가 포함된 데이터 (JSON, XML, HTML, 시스템 로그, 센서 데이터 등)\n  * **비정형 데이터(Unstructured):** 텍스트 본문, 이미지, 동영상, 음성 파일 등 내부 구조가 없는 순수 데이터",
+      "optionsBreakdown": [
+        "① RDBMS의 오라클 고객 기본 정보 테이블",
+        "② (정답) 웹 서버 로그, JSON 문서, XML 파일, 센서 데이터",
+        "③ 압축된 MP4 비디오 스트리밍 파일",
+        "④ 훈련되지 않은 자연어 음성 녹음 WAV 파일"
+      ],
+      "devContext": "MongoDB, Elasticsearch나 AWS Kinesis 로그 수집기에서 JSON/XML 형태로 유입되는 반정형 데이터는 유연한 스키마 온 리드(Schema-on-Read) 방식으로 적재하여 다변화된 필드를 유연하게 수용합니다."
+    },
+    "tags": [
+      "semi-structured-data",
+      "json",
+      "xml",
+      "web-logs"
+    ]
+  },
+  {
+    "id": "adsp-50-017",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 데이터 분석 프로젝트의 순환적(Iterative) 피드백과 가설 보완",
+    "question": "데이터 분석 프로젝트의 특성을 고려한 프로젝트 계획 수립 및 관리 원칙에 대한 설명으로 가장 올바른 것은?",
+    "options": [
+      "데이터 분석 프로젝트는 제조 공정과 동일하므로 초기에 수립한 분석 계획과 통계 모형을 종료 시까지 절대 변경해서는 안 된다.",
+      "데이터의 품질 상태, 탐색적 데이터 분석(EDA) 결과 및 모델링 중간 피드백에 따라 초기 계획과 가설을 반복적·점진적(Iterative)으로 유연하게 수정·보완해야 한다.",
+      "가설 검증 결과가 초기 비즈니스 기대와 상반되게 나오면 즉시 프로젝트를 영구 중단하고 폐기해야 한다.",
+      "분석의 객관성을 보장하기 위해 프로젝트 진행 중에는 현업 실무진의 피드백을 엄격히 통제하고 배제해야 한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "데이터 분석 프로젝트는 데이터에 대한 탐색과 모델링 결과에 따라 새로운 인사이트가 도출되거나 예상치 못한 제약이 발견되는 경우가 많습니다. 따라서 폭포수 방식보다는 **반복적·순환적(Iterative & Agile) 피드백 루프**를 통해 계획, 피처, 가설을 지속적으로 보완해 나가는 유연한 관리 원칙이 필수적입니다.",
+      "optionsBreakdown": [
+        "① 데이터 분석 프로젝트는 제조 공정과 동일하므로 초기에 수립한 분석 계획과 통계 모형을 종료 시까지 절대 변경해서는 안 된다.",
+        "② (정답) 데이터의 품질 상태, 탐색적 데이터 분석(EDA) 결과 및 모델링 중간 피드백에 따라 초기 계획과 가설을 반복적·점진적(Iterative)으로 유연하게 수정·보완해야 한다.",
+        "③ 가설 검증 결과가 초기 비즈니스 기대와 상반되게 나오면 즉시 프로젝트를 영구 중단하고 폐기해야 한다.",
+        "④ 분석의 객관성을 보장하기 위해 프로젝트 진행 중에는 현업 실무진의 피드백을 엄격히 통제하고 배제해야 한다."
+      ],
+      "devContext": "머신러닝 프로젝트는 폭포수 방식이 아닌 애자일 스프린트로 운영되며, 탐색적 데이터 분석(EDA)과 파일럿 모델의 검증 피드백에 따라 초기 피처 설계와 가설을 유연하게 보완·반복합니다."
+    },
+    "tags": [
+      "project-flexibility",
+      "iterative-feedback",
+      "hypothesis-revision"
+    ]
+  },
+  {
+    "id": "adsp-50-018",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 전사 데이터 분석 문화 내재화를 위한 분석 거버넌스(Governance) 관리 구성요소",
+    "question": "기업이 데이터 분석을 일회성 과제에 그치지 않고 지속 가능한 기업 문화로 정착시키기 위해 구축하는 '분석 거버넌스(Analytics Governance)' 체계의 5대 관리 구성요소로 적절하지 않은 것은?",
+    "options": [
+      "분석 과제의 기획, 운영 및 전사 확산을 총괄하는 조직(Organization) 구조",
+      "과제 발굴부터 모형 서빙 및 모니터링까지의 표준화된 프로세스(Process)",
+      "분석을 효율적으로 수행하기 위한 빅데이터 플랫폼 및 IT 인프라 시스템(System)",
+      "데이터 기반 객관적 의사결정을 배제하고 경영진의 비공식적 직관에만 전권을 부여하는 독점 체계"
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "분석 거버넌스 체계의 5대 핵심 축:\n  1. **조직(Organization):** 분석 CoE, 전담 지원 부서, 현업 연계 조직 구조\n  2. **프로세스(Process):** 분석 과제 기획부터 평가 및 유지보수까지의 표준 프로세스\n  3. **시스템(System):** 분석 IT 플랫폼, 분석 도구, 클라우드 컴퓨팅 인프라\n  4. **데이터(Data):** 데이터 품질 관리, 메타데이터 카탈로그, 라이프사이클 관리\n  5. **인력(Human Resource):** 데이터 분석 인력 양성 교육, 리터러시 강화, 변화 관리",
+      "optionsBreakdown": [
+        "① 분석 과제의 기획, 운영 및 전사 확산을 총괄하는 조직(Organization) 구조",
+        "② 과제 발굴부터 모형 서빙 및 모니터링까지의 표준화된 프로세스(Process)",
+        "③ 분석을 효율적으로 수행하기 위한 빅데이터 플랫폼 및 IT 인프라 시스템(System)",
+        "④ (정답) 데이터 기반 객관적 의사결정을 배제하고 경영진의 비공식적 직관에만 전권을 부여하는 독점 체계"
+      ],
+      "devContext": "사내 데이터 플랫폼 구축 시 조직 구조, 파이프라인 표준 프로세스, CI/CD 인프라, 데이터 품질 카탈로그, 전사 데이터 리터러시 교육을 묶는 거버넌스 체계를 수립해야 지속 가능한 확장이 가능합니다."
+    },
+    "tags": [
+      "analytics-governance",
+      "organization-process-system",
+      "human-resource"
+    ]
+  },
+  {
+    "id": "adsp-50-019",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 분석 마스터플랜 수립을 위한 분석 수준 진단(준비도 및 성숙도 평가) 목적",
+    "question": "기업이 데이터 분석 마스터플랜을 수립하기에 앞서 '분석 수준 진단(분석 준비도 및 분석 성숙도 평가)'을 수행하는 주된 목적으로 가장 적절한 것은?",
+    "options": [
+      "기업의 기존 모든 비즈니스 시스템과 데이터베이스를 강제로 백지화하기 위해",
+      "조직의 현재 분석 역량 수준과 제약 요인을 객관적으로 파악하고, 목표 수준으로 도약하기 위한 단계별 이행 로드맵을 체계적으로 도출하기 위해",
+      "분석 인프라에 대한 투자를 영구적으로 동결하기 위해",
+      "전사 모든 직원의 업무를 인공지능으로 대체하여 구조조정 대상자를 선정하기 위해"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "분석 수준 진단은 기업의 현재 데이터 분석 **준비도(Readiness)**와 **성숙도(Maturity)**를 다각도로 평가하여, 동종 업계 대비 자사의 현주소를 객관적으로 인식하고 장기적인 비전 달성을 위한 **단계별 추진 로드맵(단기 Quick-Win 과제와 중장기 과제의 우선순위)을 합리적으로 수립**하는 데 목적이 있습니다.",
+      "optionsBreakdown": [
+        "① 기업의 기존 모든 비즈니스 시스템과 데이터베이스를 강제로 백지화하기 위해",
+        "② (정답) 조직의 현재 분석 역량 수준과 제약 요인을 객관적으로 파악하고, 목표 수준으로 도약하기 위한 단계별 이행 로드맵을 체계적으로 도출하기 위해",
+        "③ 분석 인프라에 대한 투자를 영구적으로 동결하기 위해",
+        "④ 전사 모든 직원의 업무를 인공지능으로 대체하여 구조조정 대상자를 선정하기 위해"
+      ],
+      "devContext": "전사 디지털 전환 컨설팅 시 기업의 인프라 준비도(Readiness)와 성숙도(Maturity)를 4분면으로 진단하여 퀵윈(Quick Win) 과제와 장기 마스터플랜의 우선순위 로드맵을 체계화합니다."
+    },
+    "tags": [
+      "analytics-diagnosis",
+      "readiness-maturity",
+      "master-plan-roadmap"
+    ]
+  },
+  {
+    "id": "adsp-50-020",
+    "category": "adsp-planning",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 분석 수준 진단 사분면 (준비도 낮음 + 성숙도 낮음 = 준비형)",
+    "question": "기업의 분석 수준 진단 4사분면 매트릭스에서, 분석을 위한 6대 영역의 '분석 준비도(Readiness)' 수준이 낮고, CMMI 기반 도입·활용·확산·최적화의 '분석 성숙도(Maturity)' 수준 또한 모두 낮은 상태에 해당하는 기업 유형은?",
+    "options": [
+      "확산형",
+      "정착형",
+      "준비형",
+      "도입형"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "분석 수준 진단 4사분면 매트릭스:\n  * **준비형 (준비도 낮음 & 성숙도 낮음):** 분석을 시작하기 위한 기초 인프라, 조직, 데이터가 부족한 상태로 사전 준비가 최우선 과제임\n  * **도입형 (준비도 낮음 & 성숙도 높음):** 분석 활용도는 높으나 이를 뒷받침할 데이터 거버넌스나 인프라 환경이 미흡한 상태\n  * **정착형 (준비도 높음 & 성숙도 낮음):** 인프라와 툴은 준비되었으나 조직 내 실무 활용도와 프로세스 내재화가 부족한 상태\n  * **확산형 (준비도 높음 & 성숙도 높음):** 전사적 차원에서 분석이 고도화되어 기업 경쟁력의 핵심 동력으로 자리 잡은 상태",
+      "optionsBreakdown": [
+        "① 확산형",
+        "② 정착형",
+        "③ (정답) 준비형",
+        "④ 도입형"
+      ],
+      "devContext": "분석 준비도와 성숙도가 모두 낮은 '준비형' 기업의 경우 고난도 딥러닝 도입보다 기초 데이터 웨어하우스 구축, 로깅 인프라 정비, 데이터 분석 전문 조직 신설이 최우선 선결 과제입니다."
+    },
+    "tags": [
+      "readiness-quadrants",
+      "preparation-type",
+      "readiness-maturity-matrix"
+    ]
+  },
+  {
+    "id": "adsp-50-021",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 정규분포 가정 평균에서 3표준편차 이탈치 판별 통계 기법 (ESD 기법)",
+    "question": "데이터 전처리 단계에서 데이터가 정규분포를 따른다는 가정하에, 평균($\\mu$)으로부터 표준편차($\\sigma$)의 3배($\\mu \\pm 3\\sigma$) 이상 벗어난 관측값을 이상치(Outlier) 후보로 판별하는 통계적 기법은?",
+    "options": [
+      "ESD (Extreme Studentized Deviate) 기법",
+      "K-최근접 이웃 (KNN) 기법",
+      "Apriori 알고리즘",
+      "배깅 (Bagging) 기법"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "* **ESD(Extreme Studentized Deviate) 기법:** 데이터가 정규분포를 따른다는 가정하에 평균으로부터 $3\\sigma$ 바깥(전체 데이터의 약 $0.3\\%$ 영역)에 위치하는 극단적인 관측치를 이상치로 판별하는 고전적인 3-시그마 기반 통계 검정 기법입니다.\n  * KNN은 지도 학습 분류/회귀 알고리즘, Apriori는 연관분석 알고리즘, 배깅은 앙상블 학습 기법입니다.",
+      "optionsBreakdown": [
+        "① (정답) ESD (Extreme Studentized Deviate) 기법",
+        "② K-최근접 이웃 (KNN) 기법",
+        "③ Apriori 알고리즘",
+        "④ 배깅 (Bagging) 기법"
+      ],
+      "devContext": "센서 모니터링 시스템에서 정규분포를 따르는 지표의 이상 스파이크를 탐지하기 위해 `μ ± 3σ` 기준의 ESD 규칙을 적용하여 실시간 슬랙 알림 임계치로 연동합니다."
+    },
+    "tags": [
+      "esd",
+      "outlier-detection",
+      "3-sigma-rule",
+      "extreme-studentized-deviate"
+    ]
+  },
+  {
+    "id": "adsp-50-022",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 상호 독립인 세 번의 반복 시행에서 사건 발생 결합확률 (p³)",
+    "question": "서로 통계적으로 독립인 세 번의 반복 시행에서 어떤 사건 $A$가 매 시행마다 발생할 확률이 각각 $p$로 일정할 때, 세 번의 시행에서 사건 $A$가 모두 발생할 결합 확률은?",
+    "options": [
+      "$3p$",
+      "$\\frac{p}{3}$",
+      "$p^3$",
+      "$1 - p^3$"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "독립 사건(Independent Events)의 곱셈 법칙에 따라, 두 개 이상의 사건이 서로 독립일 때 모든 사건이 동시에 발생할 결합 확률은 각 사건의 발생 확률의 단순 곱과 같습니다.\n$$P(A_1 \\cap A_2 \\cap A_3) = P(A_1) \\times P(A_2) \\times P(A_3) = p \\times p \\times p = p^3$$",
+      "optionsBreakdown": [
+        "① $3p$",
+        "② $\\frac{p}{3}$",
+        "③ (정답) $p^3$",
+        "④ $1 - p^3$"
+      ],
+      "devContext": "마이크로서비스 아키텍처에서 서로 독립적인 3개의 결제 게이트웨이 호출이 모두 성공할 확률을 계산할 때 각 성공 확률의 곱($p^3$)으로 전체 트랜잭션 성공률을 산출합니다."
+    },
+    "tags": [
+      "independent-events",
+      "joint-probability",
+      "multiplication-rule"
+    ]
+  },
+  {
+    "id": "adsp-50-023",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 공정한 동전 5회 독립 던지기 앞면 0회(뒷면 5회) 발생 이항확률 (1/32)",
+    "question": "앞면과 뒷면이 나올 확률이 각각 $\\frac{1}{2}$로 동일한 공정한 동전을 5번 독립적으로 던질 때, 앞면이 단 한 번도 나오지 않을(즉, 5번 모두 뒷면이 나올) 확률은?",
+    "options": [
+      "$\\frac{1}{5}$",
+      "$\\frac{1}{16}$",
+      "$\\frac{1}{32}$",
+      "$\\frac{1}{64}$"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "이항분포 $B\\left(n=5, p=\\frac{1}{2}\\right)$의 확률질량함수 공식:\n$$P(X=k) = \\binom{n}{k} p^k (1-p)^{n-k}$$\n앞면 성공 횟수가 $X=0$일 확률:\n$$P(X=0) = \\binom{5}{0} \\left(\\frac{1}{2}\\right)^0 \\left(\\frac{1}{2}\\right)^5 = 1 \\times 1 \\times \\frac{1}{32} = \\frac{1}{32} \\approx 0.03125\\;(3.125\\%)$$",
+      "optionsBreakdown": [
+        "① $\\frac{1}{5}$",
+        "② $\\frac{1}{16}$",
+        "③ (정답) $\\frac{1}{32}$",
+        "④ $\\frac{1}{64}$"
+      ],
+      "devContext": "비트코인 해시 난이도 조절이나 블록 검증 알고리즘에서 매 독립 시행마다 동일한 확률을 갖는 베르누이 시행의 결합 확률을 이항분포 확률질량함수로 정량 계산합니다."
+    },
+    "tags": [
+      "binomial-distribution",
+      "coin-toss",
+      "bernoulli-trials",
+      "independent-events"
+    ],
+    "codeSnippet": "[동전 5회 독립 시행 이항확률 계산]\n- 시행 횟수 (n): 5회\n- 앞면 발생 확률 (p): 1/2\n- 뒷면 발생 확률 (q = 1 - p): 1/2\n- 앞면 발생 횟수 (X): 0회 (5회 모두 뒷면)\n---------------------------------------------\nP(X = 0) = 5C0 × (1/2)^0 × (1/2)^5 = 1 × 1 × (1/32) = 1/32"
+  },
+  {
+    "id": "adsp-50-024",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 표본 관측치들의 함수로 계산되는 특성값 (통계량 Statistic vs 모수)",
+    "question": "통계적 추론(Statistical Inference)에서 모집단(Population) 전체의 고유한 특성을 나타내는 불변의 상수를 '모수(Parameter)'라고 할 때, 모집단의 특성을 추정하기 위해 추출된 표본(Sample) 데이터들로부터 계산되는 관측치의 함수값을 무엇이라 부르는가?",
+    "options": [
+      "모집단 (Population)",
+      "통계량 (Statistic)",
+      "제1종 오류 (Type I Error)",
+      "전수조사 (Census)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **모수(Parameter):** 모집단의 특성을 나타내는 고정된 미지의 수치(모평균 $\\mu$, 모분산 $\\sigma^2$ 등)\n  * **통계량(Statistic):** 표본 데이터 관측치들로부터 계산되는 확률변수(표본평균 $\\bar{X}$, 표본분산 $S^2$ 등)로, 모수를 추정하고 가설을 검정하는 데 활용됩니다.",
+      "optionsBreakdown": [
+        "① 모집단 (Population)",
+        "② (정답) 통계량 (Statistic)",
+        "③ 제1종 오류 (Type I Error)",
+        "④ 전수조사 (Census)"
+      ],
+      "devContext": "백엔드 모니터링 대시보드(Grafana)에서 관측된 최근 1시간 동안의 요청 지연시간 평균과 분산은 표본 통계량(Statistic)이며, 이를 통해 미지의 전체 시스템 모수(Parameter)를 신뢰구간으로 추정합니다."
+    },
+    "tags": [
+      "statistic",
+      "parameter",
+      "sample-distribution",
+      "population"
+    ]
+  },
+  {
+    "id": "adsp-50-025",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 선형 회귀분석 4대 기본 가정(선형성·독립성·등분산성·정규성)과 모수 선형 결합",
+    "question": "선형 회귀분석(Linear Regression)에서 모형의 타당성을 확보하기 위해 만족해야 하는 오차항(Residuals) 및 모형의 기본 가정으로 가장 부적절한 것은?",
+    "options": [
+      "독립변수와 종속변수 간의 관계가 회귀계수에 대해 선형적이어야 한다 (선형성).",
+      "잔차항들 간에는 어떠한 상관관계도 존재하지 않아야 한다 (독립성).",
+      "독립변수의 모든 값에 대해 오차항들의 분산이 일정해야 한다 (등분산성).",
+      "교호작용항이나 고차 다항식의 포함 여부와 무관하게 종속변수는 반드시 오직 1차원 직선 형태로만 완벽하게 매핑되어야 한다."
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "선형 회귀의 4대 기본 가정은 **선형성(Linearity), 독립성(Independence), 등분산성(Homoscedasticity), 정규성(Normality)**입니다. 회귀분석에서 '선형'이란 독립변수 자체가 아니라 회귀계수(모수 $\\beta$)에 대해 선형 결합 형태임을 의미하며, 다항 회귀($X^2$)나 교호작용항($X_1 X_2$)을 포함하여 곡선적 관계도 모델링할 수 있습니다. 무조건 1차원 직선이어야 한다는 설명은 틀렸습니다.",
+      "optionsBreakdown": [
+        "① 독립변수와 종속변수 간의 관계가 회귀계수에 대해 선형적이어야 한다 (선형성).",
+        "② 잔차항들 간에는 어떠한 상관관계도 존재하지 않아야 한다 (독립성).",
+        "③ 독립변수의 모든 값에 대해 오차항들의 분산이 일정해야 한다 (등분산성).",
+        "④ (정답) 교호작용항이나 고차 다항식의 포함 여부와 무관하게 종속변수는 반드시 오직 1차원 직선 형태로만 완벽하게 매핑되어야 한다."
+      ],
+      "devContext": "다중 선형 회귀 모형을 프로덕션 API로 서빙하기 전 잔차의 선형성, 정규성(Q-Q 플롯), 등분산성(잔차 대 예측값 플롯), 독립성(더빈-왓슨) 가정을 철저히 검증하여 신뢰성을 확보합니다."
+    },
+    "tags": [
+      "linear-regression-assumptions",
+      "linearity",
+      "homoscedasticity",
+      "normality"
+    ]
+  },
+  {
+    "id": "adsp-50-026",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 분산분석(ANOVA) 총제곱합 분해 (SST = SSR + SSE)",
+    "question": "선형 회귀모형의 적합도와 유의성을 검정하는 분산분석(ANOVA)에서 총제곱합(SST), 회귀제곱합(SSR), 오차제곱합(SSE) 간의 수학적 관계식으로 옳은 것은?",
+    "options": [
+      "$\\text{SST} = \\text{SSR} + \\text{SSE}$",
+      "$\\text{SSR} = \\text{SST} + \\text{SSE}$",
+      "$\\text{SSE} = \\text{SSR} \\times \\text{SST}$",
+      "$\\text{SST} = \\text{SSR} - \\text{SSE}$"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "종속변수의 전체 변동인 **총제곱합(SST, Total Sum of Squares)**은 회귀식에 의해 설명되는 변동인 **회귀제곱합(SSR, Regression Sum of Squares)**과 회귀선으로 설명되지 않는 잔차 변동인 **오차제곱합(SSE, Error Sum of Squares)**의 합으로 정확히 분해됩니다 ($\\text{SST} = \\text{SSR} + \\text{SSE}$). 결정계수 $R^2$은 $\\frac{\\text{SSR}}{\\text{SST}} = 1 - \\frac{\\text{SSE}}{\\text{SST}}$로 계산됩니다.",
+      "optionsBreakdown": [
+        "① (정답) $\\text{SST} = \\text{SSR} + \\text{SSE}$",
+        "② $\\text{SSR} = \\text{SST} + \\text{SSE}$",
+        "③ $\\text{SSE} = \\text{SSR} \\times \\text{SST}$",
+        "④ $\\text{SST} = \\text{SSR} - \\text{SSE}$"
+      ],
+      "devContext": "머신러닝 회귀 모델의 설명력 진단 시 분산분석(ANOVA) 표를 생성하여 총변동(SST) 대비 회귀 설명 변동(SSR)과 잔차 변동(SSE)의 비율을 계산하고 $R^2$ 결정계수를 도출합니다."
+    },
+    "tags": [
+      "anova",
+      "sum-of-squares",
+      "sst-ssr-sse",
+      "variance-decomposition"
+    ],
+    "codeSnippet": "[선형 회귀 분산분석(ANOVA) 제곱합 분해]\n- SST (Total Sum of Squares): 종속변수 Y의 총변동\n- SSR (Regression Sum of Squares): 회귀모형에 의해 설명되는 변동\n- SSE (Error Sum of Squares): 회귀모형으로 설명되지 않는 잔차 변동\n---------------------------------------------\n관계식: SST = SSR + SSE\n결정계수 (R²): SSR / SST = 1 - (SSE / SST)"
+  },
+  {
+    "id": "adsp-50-027",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 두 확률변수의 선형 방향성을 나타내는 공분산(Covariance)의 단위 의존성",
+    "question": "두 연속형 확률변수 $X$와 $Y$ 사이의 선형적 연관성을 파악하는 공분산(Covariance)의 성질에 대한 설명으로 옳은 것은?",
+    "options": [
+      "두 변수의 측정 단위 크기에 무관하게 항상 $-1$과 $+1$ 사이의 값으로 표준화되어 산출된다.",
+      "두 변수가 함께 증가하는지 또는 반대로 변화하는지 방향성을 알려주지만, 측정 단위의 크기에 영향을 받아 그 수치 자체로 선형성의 강도를 직접 비교하기 어렵다.",
+      "편차의 제곱합이므로 공분산의 계산 결과는 항상 $0$ 이상의 양수 값만을 갖는다.",
+      "두 변수가 완전한 독립(Independent) 관계일 때 공분산 값은 무조건 $+1$이 된다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* **공분산($\\text{Cov}(X, Y)$):** 두 변수의 선형 방향성(양수면 양의 선형, 음수면 음의 선형)을 알려주지만, 변수의 측정 단위(스케일: 원, 달러, kg 등)에 따라 값이 $-\\infty \\sim +\\infty$로 변하므로 강도를 비교하기 어렵습니다.\n  * 이러한 단위 의존성을 제거하기 위해 각 변수의 표준편차로 나누어 $-1 \\sim +1$로 표준화한 지표가 **피어슨 상관계수(Pearson Correlation Coefficient)**입니다.",
+      "optionsBreakdown": [
+        "① 두 변수의 측정 단위 크기에 무관하게 항상 $-1$과 $+1$ 사이의 값으로 표준화되어 산출된다.",
+        "② (정답) 두 변수가 함께 증가하는지 또는 반대로 변화하는지 방향성을 알려주지만, 측정 단위의 크기에 영향을 받아 그 수치 자체로 선형성의 강도를 직접 비교하기 어렵다.",
+        "③ 편차의 제곱합이므로 공분산의 계산 결과는 항상 $0$ 이상의 양수 값만을 갖는다.",
+        "④ 두 변수가 완전한 독립(Independent) 관계일 때 공분산 값은 무조건 $+1$이 된다."
+      ],
+      "devContext": "피처 엔지니어링 시 두 수치형 변수의 공분산은 피처의 단위(스케일)에 따라 수치가 왜곡되므로, StandardScaler 전처리 후 피어슨 상관계수로 변환하여 표준화된 상관성을 비교합니다."
+    },
+    "tags": [
+      "covariance",
+      "scale-dependence",
+      "linear-direction",
+      "correlation"
+    ]
+  },
+  {
+    "id": "adsp-50-028",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 주성분분석(PCA) 최적 주성분 개수 결정 기준 (고유값, 누적설명분산, 엘보우)",
+    "question": "다변량 연속형 데이터의 차원을 축소하는 주성분분석(PCA)에서, 보존할 최적의 주성분(Principal Component) 개수를 결정할 때 활용하는 통계적 기준으로 가장 거리가 먼 것은?",
+    "options": [
+      "누적 분산 설명 비율(Cumulative Proportion of Variance)이 대략 70% ~ 80% 이상이 되는 주성분까지 선택한다.",
+      "스크리 도표(Scree Plot)에서 고유값의 감소 추세가 급격히 완만해지는 변곡점(Elbow Point) 직전까지의 주성분을 선택한다.",
+      "상관계수 행렬을 기반으로 할 때 고유값(Eigenvalue)이 $1.0$ 이상인 주성분만을 선택한다 (Kaiser 규칙).",
+      "지도 학습 분류 모형에서 산출되는 타겟 범주의 오분류율(Error Rate)을 단독 기준으로 선정한다."
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "주성분분석(PCA)은 정답 레이블(Target) 없이 설명변수 행렬의 공분산/상관계수를 분해하는 **비지도 학습(Unsupervised Learning)**입니다. 따라서 PCA 자체의 주성분 개수 결정 기준은 **고유값 1.0 이상(Kaiser 기준), 누적 분산 기여율(70~80%), Scree Plot의 엘보우 포인트**이며, 타겟 범주의 오분류율은 PCA 자체의 주성분 결정 기준이 아닙니다.",
+      "optionsBreakdown": [
+        "① 누적 분산 설명 비율(Cumulative Proportion of Variance)이 대략 70% ~ 80% 이상이 되는 주성분까지 선택한다.",
+        "② 스크리 도표(Scree Plot)에서 고유값의 감소 추세가 급격히 완만해지는 변곡점(Elbow Point) 직전까지의 주성분을 선택한다.",
+        "③ 상관계수 행렬을 기반으로 할 때 고유값(Eigenvalue)이 $1.0$ 이상인 주성분만을 선택한다 (Kaiser 규칙).",
+        "④ (정답) 지도 학습 분류 모형에서 산출되는 타겟 범주의 오분류율(Error Rate)을 단독 기준으로 선정한다."
+      ],
+      "devContext": "고차원 피처 공간을 차원 축소할 때 Scikit-learn의 PCA 결과에서 Scree Plot의 엘보우 포인트와 누적 분산 설명력 80% 기준을 조합하여 최적의 임베딩 차원을 결정합니다."
+    },
+    "tags": [
+      "pca",
+      "scree-plot",
+      "eigenvalue-rule",
+      "elbow-point"
+    ]
+  },
+  {
+    "id": "adsp-50-029",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 피어슨 상관계수 절댓값에 따른 선형적 상관관계 강도 비교 (|-0.8| > |0.6|)",
+    "question": "두 변수 쌍 $(X_1, Y_1)$ 간의 피어슨 상관계수가 $r_A = -0.8$이고, 다른 두 변수 쌍 $(X_2, Y_2)$ 간의 피어슨 상관계수가 $r_B = 0.6$일 때, 두 변수 쌍의 선형적 상관관계 강도(밀접성)를 올바르게 비교한 것은?",
+    "options": [
+      "$0.6$인 변수 쌍 B가 양수이므로 선형적 상관관계가 더 강하다.",
+      "$-0.8$인 변수 쌍 A의 상관계수 절댓값이 더 크므로 선형적 상관관계가 더 강하다.",
+      "두 변수 쌍 간의 선형적 상관관계의 강도는 완벽하게 동일하다.",
+      "상관계수의 부호가 서로 다르면 선형적 관계의 강도를 비교하는 것은 수학적으로 불가능하다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "피어슨 상관계수($r$)의 부호($+$, $-$)는 두 변수 간의 **선형 방향(비례 또는 반비례)**만을 나타내며, 선형 관계의 **강도(밀접성)**는 상관계수의 **절댓값($|r|$)**이 $1$에 가까울수록 강합니다. $|-0.8| = 0.8 > |0.6| = 0.6$이므로 $-0.8$인 변수 쌍의 선형 상관관계가 더 강합니다.",
+      "optionsBreakdown": [
+        "① $0.6$인 변수 쌍 B가 양수이므로 선형적 상관관계가 더 강하다.",
+        "② (정답) $-0.8$인 변수 쌍 A의 상관계수 절댓값이 더 크므로 선형적 상관관계가 더 강하다.",
+        "③ 두 변수 쌍 간의 선형적 상관관계의 강도는 완벽하게 동일하다.",
+        "④ 상관계수의 부호가 서로 다르면 선형적 관계의 강도를 비교하는 것은 수학적으로 불가능하다."
+      ],
+      "devContext": "피처 선택(Feature Selection) 시 타겟 변수와의 상관관계 절댓값이 큰 피처를 우선 선별하며, $|-0.8| > |0.6|$ 이므로 음의 상관관계가 강한 피처가 더 높은 예측 정보를 제공합니다."
+    },
+    "tags": [
+      "pearson-correlation",
+      "correlation-magnitude",
+      "absolute-value-comparison"
+    ]
+  },
+  {
+    "id": "adsp-50-030",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 2개 범주 이항 분류 문제 사건 발생 확률 추정 모형 (로지스틱 회귀분석)",
+    "question": "금융권 신용평가에서 고객의 '대출 연체 여부(연체=1, 정상=0)'처럼 종속변수가 2개의 상호 배타적인 범주를 갖는 이항 분류 문제에서, 독립변수들의 선형 결합을 통해 사건 발생 확률을 추정하기에 가장 적절한 모형은?",
+    "options": [
+      "단순 이동평균법 (Simple Moving Average)",
+      "이항 로지스틱 회귀분석 (Binary Logistic Regression)",
+      "주성분분석 (PCA) 단독 모형",
+      "K-평균 군집분석 (K-Means Clustering)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "종속변수가 $0$ 또는 $1$의 이항 범주형 변수일 때, 선형 회귀식을 로짓 변환($\\ln\\frac{p}{1-p} = \\beta_0 + \\beta_1 X$)하여 사건 발생 확률($0 \\le p \\le 1$)을 S자형 시그모이드 형태로 추정하고 분류하는 지도 학습 모형은 **로지스틱 회귀분석(Logistic Regression)**입니다.",
+      "optionsBreakdown": [
+        "① 단순 이동평균법 (Simple Moving Average)",
+        "② (정답) 이항 로지스틱 회귀분석 (Binary Logistic Regression)",
+        "③ 주성분분석 (PCA) 단독 모형",
+        "④ K-평균 군집분석 (K-Means Clustering)"
+      ],
+      "devContext": "핀테크 서비스의 대출 연체 예측이나 이상 거래 탐지(FDS)와 같은 이진 분류 문제에서 Scikit-learn의 LogisticRegression을 기본 베이스라인 분류기로 학습시켜 연체 확률을 서빙합니다."
+    },
+    "tags": [
+      "logistic-regression",
+      "binary-classification",
+      "odds-logit"
+    ]
+  },
+  {
+    "id": "adsp-50-031",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 독립변수 개수가 다른 다중 선형 회귀모형 설명력 비교 지표 (수정된 결정계수)",
+    "question": "포함된 설명변수(독립변수)의 개수가 서로 다른 여러 다중 선형 회귀모형들의 적합도와 설명력을 공정하게 비교·평가할 때 가장 적합한 통계 평가지표는?",
+    "options": [
+      "수정된 결정계수 (Adjusted $R^2$)",
+      "종속변수의 단순 표본평균",
+      "잔차제곱합의 단순 합계 (SSE)",
+      "두 변수 간의 단순 공분산"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "일반적인 결정계수($R^2$)는 모형에 무의미한 독립변수를 추가하더라도 값이 절대 감소하지 않고 증가하는 통계적 왜곡이 있습니다. 따라서 독립변수 개수가 다른 후보 모형들을 비교할 때는 변수 개수(자유도)에 대한 페널티를 부과하여 보정한 **수정된 결정계수(Adjusted $R^2$)**를 사용하여야 모형의 과적합을 방지하고 공정한 비교가 가능합니다.",
+      "optionsBreakdown": [
+        "① (정답) 수정된 결정계수 (Adjusted $R^2$)",
+        "② 종속변수의 단순 표본평균",
+        "③ 잔차제곱합의 단순 합계 (SSE)",
+        "④ 두 변수 간의 단순 공분산"
+      ],
+      "devContext": "설명변수 개수가 많은 피처 세트에서 모델을 비교할 때 불필요한 피처 추가에 페널티를 부과하는 수정된 결정계수(Adjusted $R^2$)나 AIC/BIC를 기준으로 최적의 서빙 모형을 선택합니다."
+    },
+    "tags": [
+      "adjusted-r-squared",
+      "model-comparison",
+      "degrees-of-freedom-penalty"
+    ]
+  },
+  {
+    "id": "adsp-50-032",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 크기 d 데이터셋 d회 복원추출 시 특정 관측치 미선택 확률 ((1-1/d)^d)",
+    "question": "배깅(Bagging) 및 랜덤 포레스트에서 크기가 $d$개인 원본 데이터셋으로부터 $d$번 복원추출(Bootstrap)을 수행할 때, 특정 관측치 하나가 $d$번의 추출 과정 동안 단 한 번도 선택되지 않고 Out-Of-Bag(OOB) 데이터로 남을 확률을 나타내는 수식은?",
+    "options": [
+      "$\\left(1 - \\frac{1}{d}\\right)^d$",
+      "$\\left(\\frac{1}{d}\\right)^d$",
+      "$1 - \\left(\\frac{1}{d}\\right)^d$",
+      "$\\frac{d}{d-1}$"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "1회 추출 시 특정 관측치가 선택될 확률은 $\\frac{1}{d}$이고, 선택되지 않을 확률은 $1 - \\frac{1}{d}$입니다. 이를 독립적으로 $d$번 반복 복원추출할 때 매번 선택되지 않을 확률은 $\\left(1 - \\frac{1}{d}\\right)^d$입니다. 데이터 크기 $d$가 무한히 커질 때 이 확률의 극한값은 $\\lim_{d \\to \\infty} \\left(1 - \\frac{1}{d}\\right)^d = e^{-1} \\approx 0.368$ (약 $36.8\\%$)이 됩니다.",
+      "optionsBreakdown": [
+        "① (정답) $\\left(1 - \\frac{1}{d}\\right)^d$",
+        "② $\\left(\\frac{1}{d}\\right)^d$",
+        "③ $1 - \\left(\\frac{1}{d}\\right)^d$",
+        "④ $\\frac{d}{d-1}$"
+      ],
+      "devContext": "Random Forest 알고리즘의 Bootstrap 표본 추출 시 약 36.8%((1 - 1/d)^d)의 데이터가 학습에서 제외되어 OOB(Out-of-Bag) 데이터로 남으며, 이를 교차 검증셋으로 활용합니다."
+    },
+    "tags": [
+      "bootstrap",
+      "bagging",
+      "oob-probability",
+      "sampling-with-replacement"
+    ]
+  },
+  {
+    "id": "adsp-50-033",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 앙상블(Ensemble) 학습 성능 극대화 조건 (개별 모형 정확성 및 다양성)",
+    "question": "여러 개의 개별 분류 모형(Base Learner)을 결합하여 일반화 예측 성능을 극대화하는 앙상블(Ensemble) 학습에서, 앙상블 효과를 높이기 위해 개별 모형들이 갖추어야 할 핵심 조건으로 가장 적절한 것은?",
+    "options": [
+      "결합되는 모든 개별 모형이 완전히 동일한 알고리즘과 동일한 오류 패턴을 가져야 한다.",
+      "개별 모형들이 무작위 추측보다 우수한 예측 성능을 가지면서, 모형 간의 예측 오류가 상호 보완될 수 있도록 모형 간의 상관관계가 낮고 다양성(Diversity)이 확보되어야 한다.",
+      "단일 모형 하나를 가중치 변경 없이 동일하게 100회 단순 복제하여 다수결 투표를 수행한다.",
+      "개별 분류기 간의 예측 결과 상관계수가 항상 $1.0$으로 최대화되어야 한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "앙상블 학습이 성공하기 위한 2대 핵심 요건은 개별 학습기의 **정확성(Accuracy)**과 개별 학습기 간의 **다양성(Diversity)**입니다. 서로 다른 관점에서 데이터를 학습하여 모형 간 오류의 상관관계가 낮아야만 결합 시 개별 오차가 상쇄되어 전체 성능이 향상됩니다.",
+      "optionsBreakdown": [
+        "① 결합되는 모든 개별 모형이 완전히 동일한 알고리즘과 동일한 오류 패턴을 가져야 한다.",
+        "② (정답) 개별 모형들이 무작위 추측보다 우수한 예측 성능을 가지면서, 모형 간의 예측 오류가 상호 보완될 수 있도록 모형 간의 상관관계가 낮고 다양성(Diversity)이 확보되어야 한다.",
+        "③ 단일 모형 하나를 가중치 변경 없이 동일하게 100회 단순 복제하여 다수결 투표를 수행한다.",
+        "④ 개별 분류기 간의 예측 결과 상관계수가 항상 $1.0$으로 최대화되어야 한다."
+      ],
+      "devContext": "배깅(Random Forest)이나 보팅 앙상블 구성 시 단일 결정트리들의 다양성(Diversity)을 극대화하기 위해 피처 무작위 추출(max_features)과 부트스트랩 샘플링을 병행합니다."
+    },
+    "tags": [
+      "ensemble-learning",
+      "diversity",
+      "model-synergy",
+      "base-learners"
+    ]
+  },
+  {
+    "id": "adsp-50-034",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 지도 학습 기반 분류(Classification) 알고리즘 (로지스틱 회귀, SVM, KNN)",
+    "question": "다음 중 지도 학습(Supervised Learning)의 '분류(Classification)' 분석에 직접 활용되는 머신러닝 알고리즘들로만 바르게 짝지어진 것은?",
+    "options": [
+      "로지스틱 회귀 (Logistic Regression), 서포트 벡터 머신 (SVM), K-최근접 이웃 (KNN)",
+      "주성분분석 (PCA), 표본평균, 분산분석 (ANOVA)",
+      "자기회귀모형 (AR), 이동평균모형 (MA), ARMA 모형",
+      "K-평균 군집분석 (K-Means), 계층적 군집분석, Apriori 연관분석"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "* ① 로지스틱 회귀, SVM, KNN, 의사결정나무, 랜덤포레스트, 인공신경망은 범주형 종속변수를 예측하는 대표적인 지도 학습 분류 알고리즘입니다.\n  * ② PCA는 비지도 차원축소, 통계적 검정 기법입니다.\n  * ③ AR, MA는 시계열 분석 모형입니다.\n  * ④ K-Means, 계층적 군집은 비지도 군집분석, Apriori는 비지도 연관분석입니다.",
+      "optionsBreakdown": [
+        "① (정답) 로지스틱 회귀 (Logistic Regression), 서포트 벡터 머신 (SVM), K-최근접 이웃 (KNN)",
+        "② 주성분분석 (PCA), 표본평균, 분산분석 (ANOVA)",
+        "③ 자기회귀모형 (AR), 이동평균모형 (MA), ARMA 모형",
+        "④ K-평균 군집분석 (K-Means), 계층적 군집분석, Apriori 연관분석"
+      ],
+      "devContext": "실시간 이상 유저 판별 서비스 개발 시 타겟 라벨이 존재하는 지도 학습 문제이므로 로지스틱 회귀, SVM, KNN 분류기를 파이프라인 후보군으로 벤치마킹합니다."
+    },
+    "tags": [
+      "classification-algorithms",
+      "supervised-learning",
+      "logistic-svm-knn"
+    ]
+  },
+  {
+    "id": "adsp-50-035",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 이진 분류 모형의 정확도(Accuracy)와 오분류율(Error Rate)의 보수 관계",
+    "question": "이진 분류 모형의 예측 결과를 바탕으로 산출한 전체 데이터에 대한 정확도(Accuracy)가 $0.4$ ($40\\%$)로 나타났을 때, 이 모형의 오분류율(Error Rate)은 얼마인가?",
+    "options": [
+      "$0.2$",
+      "$0.4$",
+      "$0.6$",
+      "$1.4$"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "전체 표본 중 올바르게 분류된 관측치의 비율이 정확도(Accuracy)이고, 잘못 분류된 관측치의 비율이 오분류율(Error Rate)이므로 두 지표는 상호 보수적 관계입니다.\n$$\\text{오분류율(Error Rate)} = 1 - \\text{정확도(Accuracy)} = 1 - 0.4 = 0.6\\;(60\\%)$$",
+      "optionsBreakdown": [
+        "① $0.2$",
+        "② $0.4$",
+        "③ (정답) $0.6$",
+        "④ $1.4$"
+      ],
+      "devContext": "이진 분류 모델의 모니터링 메트릭 수집 시 정확도(Accuracy)가 40%라면 오분류율(Error Rate)은 60%로 상호 보완적 관계를 가지며, 클래스 불균형 상황에서는 F1-score를 함께 모니터링합니다."
+    },
+    "tags": [
+      "accuracy",
+      "error-rate",
+      "complementary-metrics",
+      "model-evaluation"
+    ],
+    "codeSnippet": "[이진 분류 모형의 기본 평가지표 관계]\n- 전체 표본 수: N\n- 맞힌 관측치 수: TP + TN\n- 틀린 관측치 수: FP + FN\n---------------------------------------------\n정확도 (Accuracy) = (TP + TN) / N = 0.40 (40%)\n오분류율 (Error Rate) = (FP + FN) / N = 1 - Accuracy = 0.60 (60%)"
+  },
+  {
+    "id": "adsp-50-036",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 인공신경망 활성화 함수 하이퍼볼릭 탄젠트(tanh) 출력값 범위 ([-1, 1])",
+    "question": "인공신경망(ANN)의 은닉층에서 시그모이드(Sigmoid) 함수의 출력 중심이 $0.5$로 치우치는 문제를 극복하기 위해 사용되는 하이퍼볼릭 탄젠트($\\tanh$) 활성화 함수의 출력값 범위는?",
+    "options": [
+      "$0$에서 $1$ 사이 ($[0, 1]$)",
+      "$-1$에서 $1$ 사이 ($[-1, 1]$)",
+      "$0$ 이상 무한대 ($[0, \\infty)$)",
+      "음의 무한대에서 양의 무한대 ($-\\infty \\sim +\\infty$)"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* 시그모이드(Sigmoid) 함수는 $0 \\sim 1$ 범위를 가집니다.\n  * **하이퍼볼릭 탄젠트($\\tanh$) 함수**는 함수 출력을 $0$을 중심으로 대칭(Zero-centered)시켜 **$-1$에서 $+1$ 사이**의 값을 출력하므로, 경사하강법 학습 시 가중치 갱신의 편향을 줄여줍니다.\n  * $[0, \\infty)$는 ReLU 함수의 출력 범위입니다.",
+      "optionsBreakdown": [
+        "① $0$에서 $1$ 사이 ($[0, 1]$)",
+        "② (정답) $-1$에서 $1$ 사이 ($[-1, 1]$)",
+        "③ $0$ 이상 무한대 ($[0, \\infty)$)",
+        "④ 음의 무한대에서 양의 무한대 ($-\\infty \\sim +\\infty$)"
+      ],
+      "devContext": "딥러닝 인공신경망의 은닉층 설계 시 0을 중심으로 대칭인 [-1, 1] 범위를 출력하는 tanh 함수는 시그모이드(0~1)의 편향 기울기 소실 문제를 완화하는 장점이 있습니다."
+    },
+    "tags": [
+      "activation-function",
+      "tanh",
+      "sigmoid",
+      "neural-networks"
+    ]
+  },
+  {
+    "id": "adsp-50-037",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 로지스틱 회귀분석 회귀계수(β1)의 로그 오즈(로짓) 단위 증가 효과",
+    "question": "로지스틱 회귀분석 결과 특정 독립변수 $X_1$의 회귀계수($\\beta_1$) 추정치가 $0.6$으로 도출되었다. 다른 모든 독립변수가 고정된 상태에서 $X_1$이 $1$단위 증가할 때 나타나는 변화에 대한 통계적 해석으로 옳은 것은?",
+    "options": [
+      "사건 발생 확률($p$) 자체가 무조건 $0.6$만큼 선형적으로 증가한다.",
+      "사건 발생의 로그 오즈(Log-odds, 즉 로짓 $\\ln\\frac{p}{1-p}$) 값이 $0.6$만큼 증가한다.",
+      "사건이 발생할 확률이 $1$단위 증가할 때마다 오즈(Odds)는 무조건 절반으로 감소한다.",
+      "오즈(Odds) 값이 $0.6$만큼 뺄셈으로 감소한다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "로지스틱 회귀식 $\\ln\\left(\\frac{p}{1-p}\\right) = \\beta_0 + \\beta_1 X_1 + \\dots$ 에서 독립변수 $X_1$이 1단위 증가하면 **로그 오즈(로짓)는 $\\beta_1$($0.6$)만큼 증가**하며, **오즈(Odds)는 $e^{\\beta_1}$($e^{0.6} \\approx 1.82$)배 증가**합니다.",
+      "optionsBreakdown": [
+        "① 사건 발생 확률($p$) 자체가 무조건 $0.6$만큼 선형적으로 증가한다.",
+        "② (정답) 사건 발생의 로그 오즈(Log-odds, 즉 로짓 $\\ln\\frac{p}{1-p}$) 값이 $0.6$만큼 증가한다.",
+        "③ 사건이 발생할 확률이 $1$단위 증가할 때마다 오즈(Odds)는 무조건 절반으로 감소한다.",
+        "④ 오즈(Odds) 값이 $0.6$만큼 뺄셈으로 감소한다."
+      ],
+      "devContext": "의료 진단이나 마케팅 전환 로지스틱 회귀 모델 서빙 시 설명변수가 1단위 증가할 때 오즈비($e^{\beta_1}$)와 로그 오즈 증가분을 추출하여 현업 비즈니스 팀에 모델의 의사결정 근거를 설명합니다."
+    },
+    "tags": [
+      "logistic-coefficients",
+      "log-odds",
+      "logit-increase",
+      "odds-ratio"
+    ]
+  },
+  {
+    "id": "adsp-50-038",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 밀도 기반 군집 알고리즘 DBSCAN의 특징 (K 사전 지정 불필요, 잡음 분리)",
+    "question": "비지도 학습 군집분석 알고리즘 중 'DBSCAN(Density-Based Spatial Clustering of Applications with Noise)'에 대한 설명으로 옳은 것은?",
+    "options": [
+      "사전에 군집의 개수($K$)를 반드시 분석가가 지정해야만 알고리즘이 작동한다.",
+      "데이터의 밀도(Density)를 기반으로 군집을 형성하며, 어느 군집에도 속하지 않는 이상치(Noise)를 자동으로 식별할 수 있다.",
+      "오직 구형(Spherical) 형태의 볼록한 군집만을 탐색할 수 있으며 비선형 기하학적 형태는 탐색하지 못한다.",
+      "유클리드 거리만을 기반으로 트리 구조의 덴드로그램을 생성하는 계층적 군집분석이다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "**DBSCAN**은 반경($\\epsilon$) 내에 최소 데이터 개수(MinPts)를 만족하는 고밀도 영역을 연결하여 군집화하는 밀도 기반 비지도 학습 기법입니다.\n  * **군집 수($K$)를 사전에 지정할 필요가 없습니다.**\n  * 초승달 모양 등 기하학적이고 복잡한 비선형 형태의 군집도 효과적으로 탐색합니다.\n  * 밀도가 낮은 영역의 데이터는 **잡음(Noise/이상치)**으로 자동 분류합니다.",
+      "optionsBreakdown": [
+        "① 사전에 군집의 개수($K$)를 반드시 분석가가 지정해야만 알고리즘이 작동한다.",
+        "② (정답) 데이터의 밀도(Density)를 기반으로 군집을 형성하며, 어느 군집에도 속하지 않는 이상치(Noise)를 자동으로 식별할 수 있다.",
+        "③ 오직 구형(Spherical) 형태의 볼록한 군집만을 탐색할 수 있으며 비선형 기하학적 형태는 탐색하지 못한다.",
+        "④ 유클리드 거리만을 기반으로 트리 구조의 덴드로그램을 생성하는 계층적 군집분석이다."
+      ],
+      "devContext": "GPS 이동 경로 데이터나 이상 결제 클러스터링 시 기하학적 형태의 군집을 탐색하고 노이즈(이상치)를 필터링하기 위해 $K$를 미리 정하지 않는 Scikit-learn의 DBSCAN을 활용합니다."
+    },
+    "tags": [
+      "dbscan",
+      "density-based-clustering",
+      "noise-handling",
+      "arbitrary-shapes"
+    ]
+  },
+  {
+    "id": "adsp-50-039",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 연관규칙 마이닝 두 품목 간 향상도(Lift) 수식 산출 계산",
+    "question": "대형 마트의 장바구니 거래 데이터 분석에서 품목 $A$가 구매될 확률이 $P(A) = \\frac{3}{4}$, 품목 $B$가 구매될 확률이 $P(B) = \\frac{1}{2}$, 그리고 두 품목이 동시에 장바구니에 담길 결합 확률이 $P(A \\cap B) = \\frac{1}{2}$일 때, 연관규칙 $A \\rightarrow B$의 향상도(Lift)는 얼마인가?",
+    "options": [
+      "$\\frac{2}{3}$",
+      "$1$",
+      "$\\frac{4}{3}$",
+      "$\\frac{3}{2}$"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "향상도(Lift)는 품목 $A$의 구매와 품목 $B$의 구매가 상호 독립일 때에 비해 $A$를 구매했을 때 $B$를 구매할 확률이 몇 배 증가하는지를 나타냅니다.\n$$\\text{Lift}(A \\rightarrow B) = \\frac{P(A \\cap B)}{P(A) \\times P(B)} = \\frac{\\frac{1}{2}}{\\frac{3}{4} \\times \\frac{1}{2}} = \\frac{\\frac{1}{2}}{\\frac{3}{8}} = \\frac{1}{2} \\times \\frac{8}{3} = \\frac{4}{3} \\approx 1.333$$\n(Lift가 1보다 크므로 두 품목은 양의 상관관계/보완 관계를 가집니다.)",
+      "optionsBreakdown": [
+        "① $\\frac{2}{3}$",
+        "② $1$",
+        "③ (정답) $\\frac{4}{3}$",
+        "④ $\\frac{3}{2}$"
+      ],
+      "devContext": "추천 시스템에서 연관규칙 마이닝(Apriori)을 수행할 때 향상도(Lift)가 1을 초과하는 유의미한 양의 상관 규칙만을 추출하여 번들 상품 할인 프로모션 룰 엔진에 등록합니다."
+    },
+    "tags": [
+      "association-rules",
+      "lift-calculation",
+      "joint-probability"
+    ],
+    "codeSnippet": "[연관규칙 A → B 향상도(Lift) 계산]\n- 품목 A 구매 확률: P(A) = 3/4 = 0.75\n- 품목 B 구매 확률: P(B) = 1/2 = 0.50\n- 동시 구매 확률: P(A ∩ B) = 1/2 = 0.50\n---------------------------------------------\nLift(A → B) = P(A ∩ B) / [P(A) × P(B)]\n            = (1/2) / [(3/4) × (1/2)]\n            = (1/2) / (3/8) = (1/2) × (8/3) = 4/3 ≈ 1.333"
+  },
+  {
+    "id": "adsp-50-040",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 장바구니 분석 조건부 구매 확률 지표 신뢰도(Confidence, P(B|A)) 정의",
+    "question": "연관규칙 마이닝(장바구니 분석)에서 선행 품목(조건절) $A$가 구매된 거래들 중에서 후행 품목(결과절) $B$가 함께 구매된 거래의 비율을 의미하는 조건부 확률 지표인 '신뢰도(Confidence, $A \\rightarrow B$)'의 올바른 수식은?",
+    "options": [
+      "$P(A \\cap B)$",
+      "$P(A \\mid B)$",
+      "$P(B \\mid A)$",
+      "$P(A) \\times P(B)$"
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "* **신뢰도(Confidence, $A \\to B$):** 품목 $A$가 포함된 거래 중 품목 $B$가 함께 포함될 조건부 확률이므로 **$P(B \\mid A) = \\frac{P(A \\cap B)}{P(A)}$**입니다.\n  * $P(A \\cap B)$는 지지도(Support)입니다.\n  * $P(A \\mid B)$는 역규칙 $B \\to A$의 신뢰도입니다.",
+      "optionsBreakdown": [
+        "① $P(A \\cap B)$",
+        "② $P(A \\mid B)$",
+        "③ (정답) $P(B \\mid A)$",
+        "④ $P(A) \\times P(B)$"
+      ],
+      "devContext": "이커머스 장바구니 추천 알고리즘에서 A 상품을 장바구니에 담았을 때 B 상품을 추가 구매할 조건부 확률(신뢰도 Confidence)을 계산하여 실시간 연관 추천 슬롯을 구성합니다."
+    },
+    "tags": [
+      "market-basket",
+      "confidence",
+      "conditional-probability",
+      "support-confidence"
+    ]
+  },
+  {
+    "id": "adsp-50-041",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 소수 클래스 탐지를 저해하는 클래스 불균형(Class Imbalance) 현상",
+    "question": "신용카드 이상 거래 탐지(FDS)나 희귀 질환 진단 데이터셋처럼 정상 클래스의 관측치는 전체의 99% 이상을 차지하는 반면, 탐지 대상인 사기/질환 클래스는 1% 미만으로 극소수여서 범주 간 비율이 심각하게 왜곡된 상태를 일컫는 용어와 이에 대한 올바른 대응 방안은?",
+    "options": [
+      "다중공선성(Multicollinearity) — VIF가 높은 소수 클래스 변수를 모델에서 영구 제거한다.",
+      "과소적합(Underfitting) — 결정트리의 최대 깊이를 1로 강제 제한하여 단순화한다.",
+      "클래스 불균형(Class Imbalance) — 정확도(Accuracy) 대신 F1-Score나 ROC-AUC로 모형을 평가하고 SMOTE 오버샘플링을 적용한다.",
+      "등분산성 위반(Heteroscedasticity) — 모든 종속변수에 일괄적으로 차분(Differencing)을 적용한다."
+    ],
+    "answerIndex": 2,
+    "explanation": {
+      "definition": "목표 범주 간 데이터 관측치 비율이 한쪽으로 크게 치우친 현상을 **클래스 불균형(Class Imbalance)**이라고 합니다. 이 경우 모델이 다수 범주로만 예측해도 높은 정확도(99%)를 기록하는 왜곡이 발생하므로 **정밀도, 재현율, F1-Score, ROC-AUC**로 평가하고, 데이터 수준에서는 **SMOTE 등의 오버샘플링**이나 **언더샘플링**을 적용합니다.",
+      "optionsBreakdown": [
+        "① 다중공선성(Multicollinearity) — VIF가 높은 소수 클래스 변수를 모델에서 영구 제거한다.",
+        "② 과소적합(Underfitting) — 결정트리의 최대 깊이를 1로 강제 제한하여 단순화한다.",
+        "③ (정답) 클래스 불균형(Class Imbalance) — 정확도(Accuracy) 대신 F1-Score나 ROC-AUC로 모형을 평가하고 SMOTE 오버샘플링을 적용한다.",
+        "④ 등분산성 위반(Heteroscedasticity) — 모든 종속변수에 일괄적으로 차분(Differencing)을 적용한다."
+      ],
+      "devContext": "금융 사기 거래 탐지(FDS) 모델 학습 시 정상 거래(99.9%) 대비 사기 거래(0.1%)의 극심한 클래스 불균형을 극복하기 위해 SMOTE 오버샘플링과 Focal Loss를 적용합니다."
+    },
+    "tags": [
+      "class-imbalance",
+      "imbalanced-data",
+      "smote",
+      "fraud-detection"
+    ]
+  },
+  {
+    "id": "adsp-50-042",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 의사결정나무 모델의 과대적합(Overfitting) 방지를 위한 정지규칙(Stopping Rule)",
+    "question": "의사결정나무(Decision Tree) 모델링 과정에서 트리의 최대 깊이(Max Depth), 노드 분할에 필요한 최소 표본 수(Min Samples Split), 리프 노드의 최소 표본 수 등을 지정하는 '정지규칙(Stopping Rule)'을 설정하는 주된 목적은?",
+    "options": [
+      "학습 데이터의 관측치 수를 강제로 증폭시켜 연산 속도를 높이기 위해",
+      "나무가 지나치게 복잡하게 분기하여 학습 데이터의 잡음까지 학습하는 과대적합(Overfitting)을 방지하고 일반화 성능을 확보하기 위해",
+      "데이터셋 내부에 인위적인 결측치를 생성하여 모델의 강건성을 검정하기 위해",
+      "모든 리프 노드의 불순도를 무한대로 증가시키기 위해"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "의사결정나무는 별도의 제한이 없으면 훈련 데이터를 완벽하게 분류할 때까지 끝없이 분기하여 복잡해집니다. 이는 학습 데이터에만 과도하게 적합되는 **과대적합(Overfitting)**을 유발하므로, **정지규칙(Stopping Rule)**과 **가지치기(Pruning)**를 적용하여 모델의 복잡도를 제어하고 새로운 데이터에 대한 일반화 능력을 향상시킵니다.",
+      "optionsBreakdown": [
+        "① 학습 데이터의 관측치 수를 강제로 증폭시켜 연산 속도를 높이기 위해",
+        "② (정답) 나무가 지나치게 복잡하게 분기하여 학습 데이터의 잡음까지 학습하는 과대적합(Overfitting)을 방지하고 일반화 성능을 확보하기 위해",
+        "③ 데이터셋 내부에 인위적인 결측치를 생성하여 모델의 강건성을 검정하기 위해",
+        "④ 모든 리프 노드의 불순도를 무한대로 증가시키기 위해"
+      ],
+      "devContext": "LightGBM이나 Scikit-learn DecisionTreeClassifier 서빙 시 모델 과적합을 방지하고 추론 지연시간을 낮추기 위해 `max_depth`와 `min_samples_split` 등의 정지규칙을 필수로 튜닝합니다."
+    },
+    "tags": [
+      "decision-tree",
+      "stopping-rule",
+      "overfitting-prevention",
+      "max-depth"
+    ]
+  },
+  {
+    "id": "adsp-50-043",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): Z-표준화 변수 기반 표준화 회귀계수(베타 계수)의 상대적 영향력 해석",
+    "question": "다중 선형 회귀분석에서 각 독립변수들의 측정 단위를 통일하기 위해 모든 변수를 평균 0, 표준편차 1로 Z-표준화한 후 도출한 '표준화 회귀계수(Standardized Beta Coefficient)'가 $0.1$일 때, 이에 대한 통계적 해석으로 가장 적절한 것은?",
+    "options": [
+      "다른 모든 변수가 고정된 상태에서 독립변수 $X$가 $1$ 표준편차만큼 증가할 때, 종속변수 $Y$는 평균적으로 $0.1$ 표준편차만큼 증가한다.",
+      "독립변수 $X$가 $1$단위 증가하면 종속변수 $Y$는 무조건 $10$배 증가한다.",
+      "두 변수 간의 피어슨 상관계수는 항상 $1.0$이다.",
+      "측정 단위가 원래 컸던 변수가 무조건 가장 큰 표준화 회귀계수를 갖는다."
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "표준화 회귀계수는 각 변수의 측정 단위를 제거한 지표로, **독립변수 $X$가 $1$표준편차($1\\sigma_X$) 증가할 때 종속변수 $Y$가 몇 표준편차($\\sigma_Y$)만큼 변하는지**를 나타냅니다. 따라서 서로 다른 단위를 가진 여러 독립변수 간의 상대적 영향력 크기를 공정하게 비교할 때 활용됩니다.",
+      "optionsBreakdown": [
+        "① (정답) 다른 모든 변수가 고정된 상태에서 독립변수 $X$가 $1$ 표준편차만큼 증가할 때, 종속변수 $Y$는 평균적으로 $0.1$ 표준편차만큼 증가한다.",
+        "② 독립변수 $X$가 $1$단위 증가하면 종속변수 $Y$는 무조건 $10$배 증가한다.",
+        "③ 두 변수 간의 피어슨 상관계수는 항상 $1.0$이다.",
+        "④ 측정 단위가 원래 컸던 변수가 무조건 가장 큰 표준화 회귀계수를 갖는다."
+      ],
+      "devContext": "회귀 모델의 각 피처 단위를 통일한 후 표준화 회귀계수(Standardized Beta)를 비교하여 매출액 증가에 가장 큰 영향력을 미치는 핵심 KPI 피처를 도출합니다."
+    },
+    "tags": [
+      "standardized-coefficients",
+      "beta-coefficient",
+      "standard-deviation-effect"
+    ]
+  },
+  {
+    "id": "adsp-50-044",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 머신러닝 모형 학습·검증·평가를 위한 데이터 분할(Train/Validation/Test) 원칙",
+    "question": "머신러닝 모형의 개발 및 평가 과정에서 모델의 과대적합을 방지하고 공정한 일반화 성능을 검증하기 위한 데이터 분할(Data Splitting) 전략에 대한 설명으로 가장 부적절한 것은?",
+    "options": [
+      "훈련 데이터(Train Data)는 모형의 가중치나 회귀계수 등 내부 파라미터를 학습하는 데 사용된다.",
+      "검증 데이터(Validation Data)는 하이퍼파라미터 튜닝과 최적의 후보 모형을 선택하는 데 사용된다.",
+      "테스트 데이터(Test Data)는 개발 과정에서 전혀 사용되지 않고, 최종 선정된 모형의 실전 일반화 성능을 객관적으로 측정하는 데 사용된다.",
+      "학습의 신뢰성을 확보하기 위해 테스트 데이터(Test Data)의 표본 비율을 훈련 데이터(Train Data)보다 항상 2배 이상 크게 배정해야 한다."
+    ],
+    "answerIndex": 3,
+    "explanation": {
+      "definition": "모델이 패턴을 충분히 학습할 수 있도록 통상 **훈련 데이터(Train)의 비중을 가장 크게 설정**합니다 (예: Train:Validation:Test = 6:2:2 또는 Train:Test = 7:3, 8:2 등). 테스트 데이터의 크기를 훈련 데이터보다 2배 이상 크게 설정해야 한다는 규칙은 틀렸습니다.",
+      "optionsBreakdown": [
+        "① 훈련 데이터(Train Data)는 모형의 가중치나 회귀계수 등 내부 파라미터를 학습하는 데 사용된다.",
+        "② 검증 데이터(Validation Data)는 하이퍼파라미터 튜닝과 최적의 후보 모형을 선택하는 데 사용된다.",
+        "③ 테스트 데이터(Test Data)는 개발 과정에서 전혀 사용되지 않고, 최종 선정된 모형의 실전 일반화 성능을 객관적으로 측정하는 데 사용된다.",
+        "④ (정답) 학습의 신뢰성을 확보하기 위해 테스트 데이터(Test Data)의 표본 비율을 훈련 데이터(Train Data)보다 항상 2배 이상 크게 배정해야 한다."
+      ],
+      "devContext": "MLOps 파이프라인에서 데이터 누수(Data Leakage)를 방지하고 공정한 모델 평가를 수행하기 위해 원천 데이터를 Train(60%), Validation(20%), Test(20%)로 엄격히 분할하여 보존합니다."
+    },
+    "tags": [
+      "data-splitting",
+      "train-validation-test",
+      "model-generalization"
+    ]
+  },
+  {
+    "id": "adsp-50-045",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 의사결정나무 분할 기준 지니지수(Gini Index) 감소와 노드 순수도 향상",
+    "question": "의사결정나무(CART 알고리즘 등)에서 범주형 목표변수의 노드 분할 기준으로 사용되는 '지니지수(Gini Index)'의 값이 $0$에 가까워질수록 의미하는 바는?",
+    "options": [
+      "해당 노드의 불순도(Impurity)가 낮고, 특정 클래스의 데이터들로만 잘 모여 있어 순수도(Purity)가 높다.",
+      "해당 노드의 불순도가 최대이며, 모든 범주의 클래스가 정확히 동일한 비율로 섞여 있다.",
+      "설명변수 간의 다중공선성이 무한대로 커진다.",
+      "해당 노드에 할당된 전체 표본 데이터의 개수가 0개이다."
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "지니지수($\\text{Gini} = 1 - \\sum p_i^2$)와 엔트로피는 노드의 **불순도(Impurity)**를 측정하는 지표입니다. 모든 데이터가 오직 하나의 범주로만 완전히 분리되었을 때 지니지수는 최솟값인 **$0$**이 되며, 이는 **불순도가 0(순수도 Purity가 100%)**임을 의미합니다. 의사결정나무는 지니지수 감소량이 최대가 되는 방향으로 분할을 수행합니다.",
+      "optionsBreakdown": [
+        "① (정답) 해당 노드의 불순도(Impurity)가 낮고, 특정 클래스의 데이터들로만 잘 모여 있어 순수도(Purity)가 높다.",
+        "② 해당 노드의 불순도가 최대이며, 모든 범주의 클래스가 정확히 동일한 비율로 섞여 있다.",
+        "③ 설명변수 간의 다중공선성이 무한대로 커진다.",
+        "④ 해당 노드에 할당된 전체 표본 데이터의 개수가 0개이다."
+      ],
+      "devContext": "의사결정나무 CART 알고리즘은 노드 분할 시 자식 노드의 가중 평균 지니지수(Gini Impurity)가 최소화(즉, 순수도 Purity 극대화)되는 최적의 특성과 분할점을 탐욕적으로 선택합니다."
+    },
+    "tags": [
+      "gini-index",
+      "impurity",
+      "purity",
+      "cart-algorithm"
+    ]
+  },
+  {
+    "id": "adsp-50-046",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 시계열 데이터의 단기 잡음 완화 및 추세 파악을 위한 평활화(Smoothing) 기법",
+    "question": "시계열 데이터 분석에서 단순 이동평균법(SMA)이나 지수평활법(EMA)과 같은 평활화(Smoothing) 기법을 적용하는 주된 목적은?",
+    "options": [
+      "시계열 데이터의 모든 미래 관측값을 오차 없이 100% 확정적으로 예측하기 위해",
+      "시계열에 내재된 단기적인 불규칙 변동(잡음)을 완화하여 기저에 흐르는 장기적 추세(Trend)나 패턴을 명확히 파악하기 위해",
+      "비정상 시계열 데이터의 모든 분산을 0으로 만들어 상수로 고정하기 위해",
+      "시계열 데이터에 포함된 계절 변동과 순환 변동을 영구적으로 제거하기 위해"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "**시계열 평활화(Smoothing)**는 시점별로 발생하는 우연적이고 단기적인 불규칙 잡음(Noise)을 무디게 걸러내어, 데이터의 전반적인 **장기적 추세(Trend)와 주기적 패턴을 뚜렷하게 식별하고 파악**할 수 있도록 돕는 대표적인 전처리 기법입니다.",
+      "optionsBreakdown": [
+        "① 시계열 데이터의 모든 미래 관측값을 오차 없이 100% 확정적으로 예측하기 위해",
+        "② (정답) 시계열에 내재된 단기적인 불규칙 변동(잡음)을 완화하여 기저에 흐르는 장기적 추세(Trend)나 패턴을 명확히 파악하기 위해",
+        "③ 비정상 시계열 데이터의 모든 분산을 0으로 만들어 상수로 고정하기 위해",
+        "④ 시계열 데이터에 포함된 계절 변동과 순환 변동을 영구적으로 제거하기 위해"
+      ],
+      "devContext": "실시간 서버 CPU 사용량 모니터링 시 스파이크 잡음을 제거하고 기저 트렌드를 파악하기 위해 단순 이동평균(SMA)과 지수평활법(EMA) 필터를 적용하여 알림 억제 로직을 구현합니다."
+    },
+    "tags": [
+      "time-series-smoothing",
+      "moving-average",
+      "exponential-smoothing",
+      "noise-reduction"
+    ]
+  },
+  {
+    "id": "adsp-50-047",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 시계열 2차 자기회귀 AR(2) 모형 ACF 점진 감소 vs PACF 시차 2 절단 패턴",
+    "question": "시계열 분석에서 정상 시계열의 차수를 식별할 때, 2차 자기회귀모형인 $\\text{AR}(2)$ 모형에서 자기상관함수(ACF)와 편자기상관함수(PACF) 도표가 나타내는 전형적인 패턴은?",
+    "options": [
+      "ACF는 시차 2 이후에서 급격히 0으로 절단(Cut-off)되고, PACF는 점진적으로 감소한다.",
+      "ACF는 지수적 또는 사인파 형태로 점진적으로 감소(Tails off)하고, PACF는 시차 2($p=2$) 이후에서 급격히 0으로 절단(Cut-off)된다.",
+      "ACF와 PACF가 모든 시차에서 동일하게 0을 기록한다.",
+      "ACF와 PACF가 모든 시차에서 1로 고정된다."
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "정상 시계열 모형 식별 공식:\n  * **$\\text{AR}(p)$ 모형:** ACF는 점진적 감쇄(지수적 감쇄 또는 사인파 감쇄: Tails off), **PACF는 시차 $p$ 이후 급격히 절단(Cut-off)**됩니다. 따라서 $\\text{AR}(2)$ 모형은 **PACF가 시차 2 이후 절단**됩니다.\n  * **$\\text{MA}(q)$ 모형:** **ACF가 시차 $q$ 이후 절단(Cut-off)**되고, PACF는 점진적으로 감쇄(Tails off)합니다.\n  * **$\\text{ARMA}(p, q)$ 모형:** ACF와 PACF 모두 특정 시차 이후 점진적으로 감쇄합니다.",
+      "optionsBreakdown": [
+        "① ACF는 시차 2 이후에서 급격히 0으로 절단(Cut-off)되고, PACF는 점진적으로 감소한다.",
+        "② (정답) ACF는 지수적 또는 사인파 형태로 점진적으로 감소(Tails off)하고, PACF는 시차 2($p=2$) 이후에서 급격히 0으로 절단(Cut-off)된다.",
+        "③ ACF와 PACF가 모든 시차에서 동일하게 0을 기록한다.",
+        "④ ACF와 PACF가 모든 시차에서 1로 고정된다."
+      ],
+      "devContext": "시계열 분석에서 AR(2) 모형을 자동 식별하기 위해 ACF 플롯의 지수적 감쇠 패턴과 PACF 플롯의 시차 2 이후 급격한 0 수렴(Cut-off) 특성을 통계적으로 검증합니다."
+    },
+    "tags": [
+      "ar-model",
+      "acf-pacf-identification",
+      "cut-off",
+      "tails-off"
+    ],
+    "codeSnippet": "[시계열 모형 ACF / PACF 식별 패턴]\n┌─────────────┬──────────────────────────┬──────────────────────────┐\n│ 모형        │ 자기상관함수 (ACF)       │ 편자기상관함수 (PACF)    │\n├─────────────┼──────────────────────────┼──────────────────────────┤\n│ AR(p)       │ 지수적 감쇠 / 파동 감소  │ 시차 p 이후 절단 (Cut-off)│\n│ MA(q)       │ 시차 q 이후 절단 (Cut-off)│ 지수적 감쇠 / 파동 감소  │\n│ ARMA(p, q)  │ 시차 q 이후 감쇠         │ 시차 p 이후 감쇠         │\n└─────────────┴──────────────────────────┴──────────────────────────┘\n* AR(2) 식별: ACF는 점진적 감쇠, PACF는 시차 2 이후 급격히 0으로 절단"
+  },
+  {
+    "id": "adsp-50-048",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 시계열 이동평균모형 MA(q)의 현시점 및 과거 q개 백색잡음 오차 선형 결합",
+    "question": "시계열 분석의 이동평균모형인 $\\text{MA}(q)$ 모형에서 현시점의 관측값 $Y_t$를 모형화하기 위해 선형 결합으로 사용하는 핵심 구성 항은?",
+    "options": [
+      "현시점의 백색잡음 오차항($\\epsilon_t$)과 과거 $q$개 시점까지의 백색잡음 오차항($\\epsilon_{t-1}, \\dots, \\epsilon_{t-q}$)들의 선형 결합",
+      "과거 $q$개 시점까지의 자기 자신 관측값($Y_{t-1}, \\dots, Y_{t-q}$)들만의 선형 결합",
+      "미래 시점의 종속변수 관측값들만의 선형 결합",
+      "주성분분석(PCA)에서 도출된 상위 $q$개의 고유벡터"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "* **$\\text{AR}(p)$ (자기회귀모형):** 현시점의 값을 과거 $p$개 시점의 '자기 자신 관측값($Y_{t-1}, \\dots, Y_{t-p}$)'들의 선형 결합으로 설명\n  * **$\\text{MA}(q)$ (이동평균모형):** 현시점의 값을 현시점 및 과거 $q$개 시점의 '**백색잡음 오차항($\\epsilon_t, \\epsilon_{t-1}, \\dots, \\epsilon_{t-q}$)**'들의 선형 결합으로 설명 ($Y_t = \\mu + \\epsilon_t - \\theta_1 \\epsilon_{t-1} - \\dots - \\theta_q \\epsilon_{t-q}$)",
+      "optionsBreakdown": [
+        "① (정답) 현시점의 백색잡음 오차항($\\epsilon_t$)과 과거 $q$개 시점까지의 백색잡음 오차항($\\epsilon_{t-1}, \\dots, \\epsilon_{t-q}$)들의 선형 결합",
+        "② 과거 $q$개 시점까지의 자기 자신 관측값($Y_{t-1}, \\dots, Y_{t-q}$)들만의 선형 결합",
+        "③ 미래 시점의 종속변수 관측값들만의 선형 결합",
+        "④ 주성분분석(PCA)에서 도출된 상위 $q$개의 고유벡터"
+      ],
+      "devContext": "시계열 데이터 모델링 시 MA(q) 모형은 과거의 예측 잔차(백색잡음 오차)들의 선형 결합으로 현재 값을 모델링하므로 충격의 지속 효과가 시차 q 이후 완전히 사라지는 특성을 갖습니다."
+    },
+    "tags": [
+      "ma-model",
+      "moving-average-time-series",
+      "white-noise-linear-combination"
+    ]
+  },
+  {
+    "id": "adsp-50-049",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 자기회귀 이동평균 모형 ARMA(2, 0)과 AR(2) 모형의 수학적 동등성",
+    "question": "자기회귀 이동평균 모형인 $\\text{ARMA}(p, q)$에서 이동평균 차수 $q$가 $0$인 $\\text{ARMA}(2, 0)$ 모형과 수학적으로 완전히 동일한 시계열 모형은?",
+    "options": [
+      "$\\text{AR}(2)$ 모형",
+      "$\\text{MA}(2)$ 모형",
+      "$\\text{ARIMA}(0, 2, 0)$ 모형",
+      "순수 백색잡음 (White Noise) 모형"
+    ],
+    "answerIndex": 0,
+    "explanation": {
+      "definition": "$\\text{ARMA}(p, q)$ 모형은 앞의 $p$가 자기회귀(AR) 차수이고 뒤의 $q$가 이동평균(MA) 차수입니다. 따라서 $q=0$이면 이동평균 오차항이 전혀 포함되지 않고 과거 2개 시점의 관측치로만 구성되므로 **2차 자기회귀모형인 $\\text{AR}(2)$ 모형**과 수학적으로 완전히 일치합니다.",
+      "optionsBreakdown": [
+        "① (정답) $\\text{AR}(2)$ 모형",
+        "② $\\text{MA}(2)$ 모형",
+        "③ $\\text{ARIMA}(0, 2, 0)$ 모형",
+        "④ 순수 백색잡음 (White Noise) 모형"
+      ],
+      "devContext": "시계열 파이프라인에서 `statsmodels.tsa.arima.model.ARIMA`를 구성할 때 order=(2, 0, 0)으로 설정하면 MA 항이 제외된 순수 2차 자기회귀 AR(2) 모형으로 최적화 학습됩니다."
+    },
+    "tags": [
+      "arma-model",
+      "ar-ma-equivalence",
+      "time-series-order"
+    ]
+  },
+  {
+    "id": "adsp-50-050",
+    "category": "adsp-analysis",
+    "type": "multiple_choice",
+    "title": "50회 기출 (2026년): 시계열 AR(2) 수식에서 과거 관측치의 자기회귀계수 표기 기호 (φ1, φ2)",
+    "question": "시계열 2차 자기회귀모형 $\\text{AR}(2)$의 표준 수식 $Y_t = c + \\phi_1 Y_{t-1} + \\phi_2 Y_{t-2} + \\epsilon_t$ 에서, 과거 관측치들의 가중치 영향력을 나타내는 자기회귀계수(Autoregressive Parameters)에 해당하는 기호는?",
+    "options": [
+      "$\\theta_1, \\theta_2$",
+      "$\\phi_1, \\phi_2$",
+      "$\\epsilon_t$",
+      "분산 $\\sigma^2$"
+    ],
+    "answerIndex": 1,
+    "explanation": {
+      "definition": "* 시계열 분석 표기 관례상 과거 시점의 자기 관측값($Y_{t-1}, Y_{t-2}$)에 곱해지는 **자기회귀(AR) 계수는 그리스 문자 파이($\\phi_1, \\phi_2, \\dots, \\phi_p$)**로 표기합니다.\n  * 과거 시점의 백색잡음 오차항($\\epsilon_{t-1}, \\epsilon_{t-2}$)에 곱해지는 이동평균(MA) 계수는 세타($\\theta_1, \\theta_2, \\dots, \\theta_q$)로 표기합니다.\n  * $c$는 상수항(Constant), $\\epsilon_t$는 현시점의 백색잡음 오차항입니다.",
+      "optionsBreakdown": [
+        "① $\\theta_1, \\theta_2$",
+        "② (정답) $\\phi_1, \\phi_2$",
+        "③ $\\epsilon_t$",
+        "④ 분산 $\\sigma^2$"
+      ],
+      "devContext": "AR(2) 시계열 수식 $Y_t = c + phi_1 Y_{t-1} + phi_2 Y_{t-2} + epsilon_t$ 에서 파이($phi$) 계수들의 절대값 합과 특성방정식의 근을 검사하여 시계열 모형의 정상성(Stationarity) 조건을 검증합니다."
+    },
+    "tags": [
+      "ar-equation",
+      "autoregressive-parameter",
+      "phi-symbol",
+      "time-series-notation"
+    ],
+    "codeSnippet": "[2차 자기회귀 모형 AR(2) 표준 수식]\nY_t = c + φ₁·Y_{t-1} + φ₂·Y_{t-2} + ε_t\n\n- c : 상수항 (Constant)\n- φ₁, φ₂ : 자기회귀 계수 (Autoregressive Parameters)\n- Y_{t-1}, Y_{t-2} : 과거 1시점, 2시점 관측값 (Lags)\n- ε_t : 현시점 백색잡음 오차항 (White Noise Error, ~ N(0, σ²))"
   }
 ]

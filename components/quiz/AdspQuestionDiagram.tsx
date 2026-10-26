@@ -1179,6 +1179,424 @@ export function AdspQuestionDiagram({ questionId }: AdspQuestionDiagramProps) {
         </div>
       );
 
+    // =============================================================
+    // 제50회 기출 시각 다이어그램 (9개 핵심 문항)
+    // =============================================================
+
+    // -------------------------------------------------------------
+    // [50회 1번] DIKW 피라미드 4단계 계층 구조
+    // -------------------------------------------------------------
+    case "adsp-50-001":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [DIKW 피라미드 4대 핵심 계층 구조]
+          </div>
+          <svg viewBox="0 0 540 220" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 4층: 지혜 (Wisdom) */}
+            <polygon points="270,25 210,65 330,65" className="fill-purple-500/20 stroke-purple-500" strokeWidth="1.5" />
+            <text x="270" y="52" textAnchor="middle" className="fill-purple-600 dark:fill-purple-400 font-extrabold text-xs">지혜 (Wisdom)</text>
+
+            {/* 3층: 지식 (Knowledge) */}
+            <polygon points="210,68 160,110 380,110 330,68" className="fill-blue-500/20 stroke-blue-500" strokeWidth="1.5" />
+            <text x="270" y="94" textAnchor="middle" className="fill-blue-600 dark:fill-blue-400 font-bold text-xs">지식 (Knowledge)</text>
+
+            {/* 2층: 정보 (Information) */}
+            <polygon points="160,113 110,155 430,155 380,113" className="fill-emerald-500/20 stroke-emerald-500" strokeWidth="1.5" />
+            <text x="270" y="139" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-bold text-xs">정보 (Information)</text>
+
+            {/* 1층: 데이터 (Data) */}
+            <polygon points="110,158 60,200 480,200 430,158" className="fill-amber-500/20 stroke-amber-500" strokeWidth="1.5" />
+            <text x="270" y="184" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold text-xs">데이터 (Data)</text>
+
+            {/* 좌측 상세 설명 */}
+            <text x="50" y="182" textAnchor="end" className="fill-muted-foreground text-[10px]">순수 사실/관측값</text>
+            <text x="100" y="137" textAnchor="end" className="fill-muted-foreground text-[10px]">가공·맥락 부여</text>
+            <text x="150" y="92" textAnchor="end" className="fill-muted-foreground text-[10px]">규칙·행동 지침</text>
+            <text x="200" y="47" textAnchor="end" className="fill-muted-foreground text-[10px]">창의적 통찰/예측</text>
+
+            {/* 우측 주의 배지 (통찰 Insight는 기본 4단계 아님) */}
+            <rect x="425" y="30" width="105" height="55" rx="6" className="fill-rose-500/10 stroke-rose-500/50" strokeWidth="1.2" />
+            <text x="477" y="52" textAnchor="middle" className="fill-rose-500 font-bold text-[11px]">⚠️ 오답 주의</text>
+            <text x="477" y="70" textAnchor="middle" className="fill-muted-foreground text-[10px]">통찰(Insight) ✕</text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 13번] KDD 분석 방법론 5단계 파이프라인
+    // -------------------------------------------------------------
+    case "adsp-50-013":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [KDD(Knowledge Discovery in Databases) 5단계 프로세스]
+          </div>
+          <svg viewBox="0 0 540 180" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 1. Selection */}
+            <rect x="10" y="40" width="95" height="60" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="57" y="62" textAnchor="middle" className="fill-primary font-bold text-[11px]">1. 데이터 선택</text>
+            <text x="57" y="78" textAnchor="middle" className="fill-muted-foreground text-[9px]">Selection</text>
+            <text x="57" y="92" textAnchor="middle" className="fill-foreground text-[9px]">목표 데이터셋 추출</text>
+
+            <path d="M 108 70 L 113 70" className="stroke-muted-foreground" strokeWidth="2" />
+
+            {/* 2. Preprocessing */}
+            <rect x="115" y="40" width="95" height="60" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="162" y="62" textAnchor="middle" className="fill-primary font-bold text-[11px]">2. 전처리</text>
+            <text x="162" y="78" textAnchor="middle" className="fill-muted-foreground text-[9px]">Preprocessing</text>
+            <text x="162" y="92" textAnchor="middle" className="fill-foreground text-[9px]">잡음·이상치·결측치</text>
+
+            <path d="M 213 70 L 218 70" className="stroke-muted-foreground" strokeWidth="2" />
+
+            {/* 3. Transformation */}
+            <rect x="220" y="40" width="95" height="60" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="267" y="62" textAnchor="middle" className="fill-primary font-bold text-[11px]">3. 데이터 변환</text>
+            <text x="267" y="78" textAnchor="middle" className="fill-muted-foreground text-[9px]">Transformation</text>
+            <text x="267" y="92" textAnchor="middle" className="fill-foreground text-[9px]">차원축소·변수생성</text>
+
+            <path d="M 318 70 L 323 70" className="stroke-muted-foreground" strokeWidth="2" />
+
+            {/* 4. Data Mining */}
+            <rect x="325" y="40" width="95" height="60" rx="8" className="fill-primary/10 stroke-primary" strokeWidth="2" />
+            <text x="372" y="62" textAnchor="middle" className="fill-primary font-bold text-[11px]">4. 데이터마이닝</text>
+            <text x="372" y="78" textAnchor="middle" className="fill-primary text-[9px]">Data Mining</text>
+            <text x="372" y="92" textAnchor="middle" className="fill-foreground text-[9px]">패턴 탐색·모델링</text>
+
+            <path d="M 423 70 L 428 70" className="stroke-muted-foreground" strokeWidth="2" />
+
+            {/* 5. Interpretation/Evaluation */}
+            <rect x="430" y="40" width="100" height="60" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+            <text x="480" y="62" textAnchor="middle" className="fill-primary font-bold text-[11px]">5. 해석 및 평가</text>
+            <text x="480" y="78" textAnchor="middle" className="fill-muted-foreground text-[9px]">Evaluation</text>
+            <text x="480" y="92" textAnchor="middle" className="fill-foreground text-[9px]">지식 도출·유효성</text>
+
+            {/* 하단 요약 */}
+            <rect x="20" y="120" width="500" height="42" rx="6" className="fill-muted/30 stroke-border" strokeWidth="1" />
+            <text x="270" y="137" textAnchor="middle" className="fill-foreground font-semibold text-[11px]">
+              순서 암기: <tspan className="fill-primary font-bold">선택(Selection)</tspan> → <tspan className="fill-primary font-bold">전처리</tspan> → <tspan className="fill-primary font-bold">변환</tspan> → <tspan className="fill-primary font-bold">마이닝</tspan> → <tspan className="fill-primary font-bold">해석/평가</tspan>
+            </text>
+            <text x="270" y="152" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              데이터 전처리(정제)가 변환(차원축소)보다 먼저 수행되는 점에 유의!
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 14번] CRISP-DM 모델링 vs 평가 태스크 분리
+    // -------------------------------------------------------------
+    case "adsp-50-014":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [CRISP-DM 6단계 중 &apos;모델링&apos; vs &apos;평가&apos; 태스크 비교]
+          </div>
+          <svg viewBox="0 0 540 200" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측: 모델링 (Modeling) */}
+            <rect x="30" y="30" width="220" height="150" rx="10" className="fill-primary/10 stroke-primary" strokeWidth="2" />
+            <text x="140" y="55" textAnchor="middle" className="fill-primary font-bold text-sm">4. 모델링 (Modeling)</text>
+            <line x1="50" y1="65" x2="230" y2="65" className="stroke-border" strokeWidth="1" />
+            <text x="50" y="88" className="fill-foreground font-medium text-[11px]">• 모델링 기법 선택 (Select Technique)</text>
+            <text x="50" y="112" className="fill-foreground font-medium text-[11px]">• 테스트 설계 (Generate Test Design)</text>
+            <text x="50" y="136" className="fill-foreground font-medium text-[11px]">• 모델 작성 (Build Model)</text>
+            <text x="50" y="160" className="fill-foreground font-medium text-[11px]">• 모델 평가 (Assess Model - 기술적)</text>
+
+            {/* 피드백 화살표 */}
+            <path d="M 255 105 L 285 105" className="stroke-primary" strokeWidth="2.5" />
+            <polygon points="285,105 277,100 277,110" className="fill-primary" />
+
+            {/* 우측: 평가 (Evaluation) */}
+            <rect x="290" y="30" width="220" height="150" rx="10" className="fill-rose-500/10 stroke-rose-500" strokeWidth="1.5" />
+            <text x="400" y="55" textAnchor="middle" className="fill-rose-600 dark:fill-rose-400 font-bold text-sm">5. 평가 (Evaluation)</text>
+            <line x1="310" y1="65" x2="490" y2="65" className="stroke-border" strokeWidth="1" />
+            <text x="310" y="88" className="fill-foreground font-medium text-[11px]">• 비즈니스 목표 달성 검토 (Evaluate)</text>
+            <text x="310" y="112" className="fill-foreground font-medium text-[11px]">• 프로세스 전체 리뷰 (Review Process)</text>
+            <text x="310" y="136" className="fill-rose-600 dark:fill-rose-400 font-bold text-[11px]">★ 다음 단계/배포 결정 (Next Steps)</text>
+            <text x="310" y="160" className="fill-muted-foreground text-[10px]">(비즈니스 관점의 최종 승인 단계)</text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 20번] 분석 수준 진단 사분면 (준비형 하이라이트)
+    // -------------------------------------------------------------
+    case "adsp-50-020":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [분석 수준 진단 4사분면: 준비형(Preparation) 매트릭스]
+          </div>
+          <svg viewBox="0 0 540 220" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 축 레이블 */}
+            <text x="270" y="18" textAnchor="middle" className="fill-muted-foreground font-bold">
+              분석 성숙도 (Maturity) ➔ 높음
+            </text>
+            <text x="18" y="115" textAnchor="middle" className="fill-muted-foreground font-bold" transform="rotate(-90 18 115)">
+              준비도 (Readiness)
+            </text>
+
+            {/* 좌하단: 준비형 (정답 - 하이라이트) */}
+            <rect x="70" y="115" width="190" height="85" rx="8" className="fill-primary/20 stroke-primary" strokeWidth="2.5" />
+            <text x="165" y="145" textAnchor="middle" className="fill-primary font-extrabold text-sm">★ 준비형 (Preparation)</text>
+            <text x="165" y="165" textAnchor="middle" className="fill-foreground font-bold text-[11px]">준비도 낮음 + 성숙도 낮음</text>
+            <text x="165" y="182" textAnchor="middle" className="fill-muted-foreground text-[10px]">사전 인프라·인력 정비 최우선</text>
+
+            {/* 우하단: 도입형 */}
+            <rect x="280" y="115" width="190" height="85" rx="8" className="fill-muted/30 stroke-border" strokeWidth="1.2" />
+            <text x="375" y="145" textAnchor="middle" className="fill-foreground font-bold text-sm">도입형 (Introduction)</text>
+            <text x="375" y="165" textAnchor="middle" className="fill-muted-foreground text-[11px]">준비도 낮음 + 성숙도 높음</text>
+            <text x="375" y="182" textAnchor="middle" className="fill-muted-foreground text-[10px]">조직·인프라 보강 필요</text>
+
+            {/* 좌상단: 정착형 */}
+            <rect x="70" y="25" width="190" height="85" rx="8" className="fill-muted/30 stroke-border" strokeWidth="1.2" />
+            <text x="165" y="55" textAnchor="middle" className="fill-foreground font-bold text-sm">정착형 (Settlement)</text>
+            <text x="165" y="75" textAnchor="middle" className="fill-muted-foreground text-[11px]">준비도 높음 + 성숙도 낮음</text>
+            <text x="165" y="92" textAnchor="middle" className="fill-muted-foreground text-[10px]">조직 내재화·활용 확산 집중</text>
+
+            {/* 우상단: 확산형 */}
+            <rect x="280" y="25" width="190" height="85" rx="8" className="fill-muted/30 stroke-border" strokeWidth="1.2" />
+            <text x="375" y="55" textAnchor="middle" className="fill-foreground font-bold text-sm">확산형 (Spreading)</text>
+            <text x="375" y="75" textAnchor="middle" className="fill-muted-foreground text-[11px]">준비도 높음 + 성숙도 높음</text>
+            <text x="375" y="92" textAnchor="middle" className="fill-muted-foreground text-[10px]">전사적 최적화 및 지속 혁신</text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 23번] 동전 5회 독립 던지기 이항확률 (1/32)
+    // -------------------------------------------------------------
+    case "adsp-50-023":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [독립 시행 이항분포: 동전 5회 연속 뒷면 확률]
+          </div>
+          <svg viewBox="0 0 540 180" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 5개 독립 시행 원형 표시 */}
+            {[
+              { num: 1, label: "1회(뒷면)", x: 60 },
+              { num: 2, label: "2회(뒷면)", x: 140 },
+              { num: 3, label: "3회(뒷면)", x: 220 },
+              { num: 4, label: "4회(뒷면)", x: 300 },
+              { num: 5, label: "5회(뒷면)", x: 380 },
+            ].map((item, idx) => (
+              <g key={idx}>
+                <circle cx={item.x} cy="55" r="26" className="fill-primary/15 stroke-primary" strokeWidth="2" />
+                <text x={item.x} y="53" textAnchor="middle" className="fill-foreground font-extrabold text-xs">1/2</text>
+                <text x={item.x} y="68" textAnchor="middle" className="fill-muted-foreground text-[9px]">{item.label}</text>
+                {idx < 4 && (
+                  <text x={item.x + 40} y="58" textAnchor="middle" className="fill-muted-foreground font-bold text-sm">×</text>
+                )}
+              </g>
+            ))}
+
+            <text x="425" y="58" textAnchor="middle" className="fill-primary font-bold text-base">=</text>
+
+            {/* 결과 상자 */}
+            <rect x="445" y="30" width="80" height="50" rx="8" className="fill-emerald-500/20 stroke-emerald-500" strokeWidth="2" />
+            <text x="485" y="54" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-extrabold text-sm">1/32</text>
+            <text x="485" y="70" textAnchor="middle" className="fill-muted-foreground text-[10px]">≈ 3.125%</text>
+
+            {/* 수식 요약 */}
+            <rect x="30" y="110" width="480" height="50" rx="8" className="fill-card stroke-border" strokeWidth="1.2" />
+            <text x="270" y="130" textAnchor="middle" className="fill-primary font-bold text-xs">
+              P(X = 0) = ₅C₀ × (1/2)⁰ × (1/2)⁵ = (1/2)⁵ = 1/32
+            </text>
+            <text x="270" y="148" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              각 시행이 독립(Independent)이므로 결합확률은 각 개별 확률의 곱으로 산출
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 26번] 회귀분석 총제곱합 분해 (SST = SSR + SSE)
+    // -------------------------------------------------------------
+    case "adsp-50-026":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [선형 회귀분석: 분산분석(ANOVA) 총변동 분해 구조]
+          </div>
+          <svg viewBox="0 0 540 190" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 전체 SST 바 */}
+            <rect x="40" y="30" width="460" height="40" rx="6" className="fill-muted/40 stroke-border" strokeWidth="1.5" />
+            <text x="270" y="55" textAnchor="middle" className="fill-foreground font-extrabold text-sm">
+              총제곱합: SST (Total Sum of Squares) = Σ(Yᵢ - Ȳ)²
+            </text>
+
+            {/* 분해 화살표 */}
+            <path d="M 270 73 L 270 95" className="stroke-primary" strokeWidth="2" />
+            <polygon points="270,95 265,87 275,87" className="fill-primary" />
+
+            {/* SSR 바 */}
+            <rect x="40" y="100" width="290" height="45" rx="6" className="fill-primary/20 stroke-primary" strokeWidth="2" />
+            <text x="185" y="122" textAnchor="middle" className="fill-primary font-bold text-xs">회귀제곱합 (SSR)</text>
+            <text x="185" y="137" textAnchor="middle" className="fill-muted-foreground text-[10px]">회귀선에 의해 설명되는 변동</text>
+
+            {/* + 기호 */}
+            <circle cx="340" cy="122" r="10" className="fill-card stroke-border" />
+            <text x="340" y="126" textAnchor="middle" className="fill-foreground font-bold text-sm">+</text>
+
+            {/* SSE 바 */}
+            <rect x="350" y="100" width="150" height="45" rx="6" className="fill-rose-500/15 stroke-rose-500" strokeWidth="1.5" />
+            <text x="425" y="122" textAnchor="middle" className="fill-rose-600 dark:fill-rose-400 font-bold text-xs">오차제곱합 (SSE)</text>
+            <text x="425" y="137" textAnchor="middle" className="fill-muted-foreground text-[10px]">설명되지 않는 잔차 변동</text>
+
+            {/* 하단 결정계수 관계 */}
+            <text x="270" y="172" textAnchor="middle" className="fill-muted-foreground font-semibold text-[11px]">
+              결정계수(R²) = SSR / SST = 1 - (SSE / SST)
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 36번] 하이퍼볼릭 탄젠트(tanh) 활성화 함수 출력 범위 [-1, 1]
+    // -------------------------------------------------------------
+    case "adsp-50-036":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [활성화 함수 비교: tanh ([-1, 1]) vs Sigmoid ([0, 1])]
+          </div>
+          <svg viewBox="0 0 540 210" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측 좌표계: tanh */}
+            <g transform="translate(40, 20)">
+              <rect x="0" y="0" width="210" height="150" rx="8" className="fill-card stroke-border" strokeWidth="1" />
+              {/* x축, y축 */}
+              <line x1="15" y1="75" x2="195" y2="75" className="stroke-border" strokeWidth="1" />
+              <line x1="105" y1="15" x2="105" y2="135" className="stroke-border" strokeWidth="1" />
+              {/* y=+1, y=-1 점선 */}
+              <line x1="15" y1="30" x2="195" y2="30" strokeDasharray="3 3" className="stroke-muted-foreground/40" />
+              <text x="100" y="28" textAnchor="end" className="fill-primary font-bold text-[10px]">+1</text>
+              <line x1="15" y1="120" x2="195" y2="120" strokeDasharray="3 3" className="stroke-muted-foreground/40" />
+              <text x="100" y="125" textAnchor="end" className="fill-primary font-bold text-[10px]">-1</text>
+              <text x="100" y="73" textAnchor="end" className="fill-muted-foreground text-[9px]">0</text>
+
+              {/* tanh 곡선 */}
+              <path d="M 20 118 Q 80 115, 105 75 T 190 32" fill="none" className="stroke-primary" strokeWidth="3" />
+              <text x="105" y="145" textAnchor="middle" className="fill-primary font-bold text-xs">★ tanh ([-1, 1])</text>
+            </g>
+
+            {/* 우측 좌표계: Sigmoid */}
+            <g transform="translate(290, 20)">
+              <rect x="0" y="0" width="210" height="150" rx="8" className="fill-card stroke-border" strokeWidth="1" />
+              {/* x축, y축 */}
+              <line x1="15" y1="125" x2="195" y2="125" className="stroke-border" strokeWidth="1" />
+              <line x1="105" y1="15" x2="105" y2="135" className="stroke-border" strokeWidth="1" />
+              {/* y=+1 점선 */}
+              <line x1="15" y1="30" x2="195" y2="30" strokeDasharray="3 3" className="stroke-muted-foreground/40" />
+              <text x="100" y="28" textAnchor="end" className="fill-muted-foreground font-semibold text-[10px]">1</text>
+              <text x="100" y="123" textAnchor="end" className="fill-muted-foreground text-[9px]">0</text>
+
+              {/* Sigmoid 곡선 */}
+              <path d="M 20 123 Q 80 121, 105 75 T 190 32" fill="none" className="stroke-muted-foreground" strokeWidth="2.5" />
+              <text x="105" y="145" textAnchor="middle" className="fill-muted-foreground font-bold text-xs">Sigmoid ([0, 1])</text>
+            </g>
+
+            <text x="270" y="195" textAnchor="middle" className="fill-foreground font-semibold text-[11px]">
+              tanh는 중심이 0(Zero-centered)으로 대칭되어 신경망 학습 효율이 시그모이드보다 개선됨
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 38번] DBSCAN 밀도 기반 군집화: Core, Border, Noise
+    // -------------------------------------------------------------
+    case "adsp-50-038":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [DBSCAN 밀도 기반 군집화 핵심 구성 원리]
+          </div>
+          <svg viewBox="0 0 540 210" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* Core 반경 원 */}
+            <circle cx="160" cy="90" r="55" className="fill-primary/10 stroke-primary" strokeDasharray="3 3" strokeWidth="1.5" />
+            <circle cx="230" cy="90" r="55" className="fill-primary/10 stroke-primary" strokeDasharray="3 3" strokeWidth="1.5" />
+
+            {/* Core 점들 */}
+            <circle cx="160" cy="90" r="7" className="fill-primary" />
+            <text x="160" y="78" textAnchor="middle" className="fill-primary font-bold text-[11px]">Core 점</text>
+
+            <circle cx="140" cy="110" r="5" className="fill-primary/80" />
+            <circle cx="175" cy="115" r="5" className="fill-primary/80" />
+            <circle cx="180" cy="70" r="5" className="fill-primary/80" />
+
+            {/* Border 점 */}
+            <circle cx="270" cy="110" r="6" className="fill-amber-500" />
+            <text x="270" y="130" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold text-[11px]">Border 점</text>
+
+            {/* Noise 점 (잡음/이상치) */}
+            <circle cx="440" cy="70" r="6" className="fill-rose-500" />
+            <text x="440" y="52" textAnchor="middle" className="fill-rose-600 dark:fill-rose-400 font-bold text-xs">★ Noise 점 (잡음/이상치)</text>
+            <text x="440" y="90" textAnchor="middle" className="fill-muted-foreground text-[10px]">어느 군집에도 속하지 않음</text>
+
+            {/* 하단 특성 카드 */}
+            <rect x="30" y="155" width="480" height="45" rx="6" className="fill-card stroke-border" strokeWidth="1" />
+            <text x="270" y="172" textAnchor="middle" className="fill-primary font-bold text-[11px]">
+              특징: 1. 군집 수(K) 사전 지정 불필요 | 2. 불규칙·기하학적 형상 탐색 | 3. 잡음(Noise) 자동 분리
+            </text>
+            <text x="270" y="188" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              주요 하이퍼파라미터: 이웃 반경(ε, Epsilon)과 최소 데이터 수(MinPts)
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [50회 47번] 시계열 AR(2) 식별: ACF 점진 감소 vs PACF 시차 2 절단
+    // -------------------------------------------------------------
+    case "adsp-50-047":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [시계열 AR(2) 식별: ACF 감쇄 vs PACF 시차 2 절단(Cut-off)]
+          </div>
+          <svg viewBox="0 0 540 210" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측: ACF 플롯 (지수적 감쇄) */}
+            <g transform="translate(30, 25)">
+              <rect x="0" y="0" width="225" height="130" rx="6" className="fill-card stroke-border" strokeWidth="1" />
+              <text x="112" y="20" textAnchor="middle" className="fill-foreground font-bold text-xs">ACF (자기상관함수)</text>
+              <line x1="20" y1="75" x2="205" y2="75" className="stroke-border" strokeWidth="1" />
+              {/* 바 차트: 점진적 지수 감쇄 */}
+              <line x1="45" y1="75" x2="45" y2="35" className="stroke-primary" strokeWidth="6" strokeLinecap="round" />
+              <line x1="75" y1="75" x2="75" y2="48" className="stroke-primary" strokeWidth="6" strokeLinecap="round" />
+              <line x1="105" y1="75" x2="105" y2="58" className="stroke-primary" strokeWidth="6" strokeLinecap="round" />
+              <line x1="135" y1="75" x2="135" y2="66" className="stroke-primary" strokeWidth="6" strokeLinecap="round" />
+              <line x1="165" y1="75" x2="165" y2="71" className="stroke-primary" strokeWidth="6" strokeLinecap="round" />
+              <line x1="195" y1="75" x2="195" y2="73" className="stroke-primary" strokeWidth="6" strokeLinecap="round" />
+              <text x="112" y="118" textAnchor="middle" className="fill-primary font-bold text-[11px]">점진적 지수 감쇄 (Tails off)</text>
+            </g>
+
+            {/* 우측: PACF 플롯 (시차 2 절단) */}
+            <g transform="translate(285, 25)">
+              <rect x="0" y="0" width="225" height="130" rx="6" className="fill-primary/10 stroke-primary" strokeWidth="1.5" />
+              <text x="112" y="20" textAnchor="middle" className="fill-primary font-bold text-xs">★ PACF (편자기상관함수)</text>
+              <line x1="20" y1="75" x2="205" y2="75" className="stroke-border" strokeWidth="1" />
+              {/* 바 차트: 시차 1, 2만 유의미하고 시차 3부터 0 */}
+              <line x1="45" y1="75" x2="45" y2="35" className="stroke-emerald-500" strokeWidth="6" strokeLinecap="round" />
+              <text x="45" y="90" textAnchor="middle" className="fill-foreground text-[9px]">시차1</text>
+              <line x1="75" y1="75" x2="75" y2="45" className="stroke-emerald-500" strokeWidth="6" strokeLinecap="round" />
+              <text x="75" y="90" textAnchor="middle" className="fill-foreground text-[9px]">시차2</text>
+              {/* 시차 3, 4, 5 절단 */}
+              <line x1="105" y1="75" x2="105" y2="76" className="stroke-muted-foreground/40" strokeWidth="4" />
+              <line x1="135" y1="75" x2="135" y2="74" className="stroke-muted-foreground/40" strokeWidth="4" />
+              <line x1="165" y1="75" x2="165" y2="75" className="stroke-muted-foreground/40" strokeWidth="4" />
+              <text x="140" y="90" textAnchor="middle" className="fill-rose-500 font-bold text-[9px]">시차 2 이후 절단</text>
+              <text x="112" y="118" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-extrabold text-[11px]">시차 2 이후 절단 (Cut-off)</text>
+            </g>
+
+            {/* 하단 요약 문구 */}
+            <text x="270" y="185" textAnchor="middle" className="fill-foreground font-semibold text-xs">
+              AR(p) 모형 판별 공식: <tspan className="fill-primary font-bold">PACF가 시차 p 이후 급격히 0으로 절단</tspan> (AR(2)는 시차 2 이후 절단!)
+            </text>
+          </svg>
+        </div>
+      );
+
     default:
       return null;
   }

@@ -44,7 +44,9 @@ export default function AdspExamResultPage() {
 
   const roundInfo = getAdspExamRound(examRound);
   const nextRound: AdspExamRound =
-    examRound === "48"
+    examRound === "50"
+      ? "48"
+      : examRound === "48"
       ? "47"
       : examRound === "47"
       ? "44"
@@ -52,7 +54,7 @@ export default function AdspExamResultPage() {
       ? "43"
       : examRound === "43"
       ? "42"
-      : "48";
+      : "50";
   const nextRoundInfo = getAdspExamRound(nextRound);
 
   const effectiveQueue = queue.length > 0 ? queue : roundInfo.questionIds;

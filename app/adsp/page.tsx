@@ -32,7 +32,7 @@ export default function AdspPage() {
   const hasHydrated = useQuizStore((state) => state.hasHydrated);
   const startSession = useQuizStore((state) => state.startSession);
   const setExamRound = useQuizStore((state) => state.setExamRound);
-  const [selectedRound, setSelectedRound] = useState<AdspExamRound>("48");
+  const [selectedRound, setSelectedRound] = useState<AdspExamRound>("50");
   const [selected, setSelected] = useState<SubjectCategory[]>(ALL_SUBJECTS);
   const [questionCount, setQuestionCount] = useState(DEFAULT_QUESTION_COUNT);
 

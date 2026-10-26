@@ -1,4 +1,4 @@
-export type AdspExamRound = "48" | "47" | "44" | "43" | "42";
+export type AdspExamRound = "50" | "48" | "47" | "44" | "43" | "42";
 
 export interface AdspExamSection {
   id: string;
@@ -9,6 +9,68 @@ export interface AdspExamSection {
   maxScore: number;
   cutoffScore: number; // 40% 미만 과락 (1과목 8점, 2과목 8점, 3과목 24점)
 }
+
+// =================================================================
+// 제50회 ADsP 실전 기출 복원 (2026년 최신 기출 50문항 전수 1:1 매핑)
+// 1과목(10) + 2과목(10) + 3과목(30)
+// =================================================================
+export const ADSP_EXAM_50_IDS: string[] = [
+  // 1과목: 데이터 이해 (1 ~ 10번)
+  "adsp-50-001", // 1번: DIKW 피라미드 기본 4단계 계층 구조 (Data-Info-Knowledge-Wisdom)
+  "adsp-50-002", // 2번: 디지털 정보 시스템의 물리적·논리적 최소 단위 (Bit vs Byte)
+  "adsp-50-003", // 3번: 데이터베이스(DB) 핵심 특성 (통합·공용·운영 데이터 및 중복 최소화)
+  "adsp-50-004", // 4번: 개인에게 체화된 경험적 노하우와 직관 (암묵지 vs 형식지)
+  "adsp-50-005", // 5번: 전사 DW 기반 특정 부서·주제별 맞춤형 소규모 저장소 (데이터 마트)
+  "adsp-50-006", // 6번: 고객 통합 관리 및 맞춤형 서비스 지원 시스템 (CRM)
+  "adsp-50-007", // 7번: 하둡(Hadoop) 생태계 맵리듀스(MapReduce) 분산 병렬 처리 모델
+  "adsp-50-008", // 8번: 빅데이터 분석 패러다임 변화 (상관관계 및 패턴 예측 활용 확대)
+  "adsp-50-009", // 9번: 개체 간 상호작용 및 연결망 구조 파악 (소셜 네트워크 분석 SNA)
+  "adsp-50-010", // 10번: 데이터 사이언티스트 역량 구분 (DB 튜닝 및 최적화 = 하드 스킬)
+
+  // 2과목: 데이터 분석 기획 (11 ~ 20번)
+  "adsp-50-011", // 11번: 데이터 분석 기획 단계 분석 과제 정의서 핵심 구성요소
+  "adsp-50-012", // 12번: 파일럿 분석 모델 도입 후 발전 흐름 (유효성 검증 → 전사 확산 및 고도화)
+  "adsp-50-013", // 13번: KDD 분석 방법론 5단계 수행 절차 (선택-전처리-변환-마이닝-해석/평가)
+  "adsp-50-014", // 14번: CRISP-DM 6단계 중 모델링(Modeling) 세부 태스크와 평가(Evaluation) 구분
+  "adsp-50-015", // 15번: 데이터 자체 탐색을 통한 새로운 패턴 발견 및 과제 도출 (상향식 접근법)
+  "adsp-50-016", // 16번: 메타데이터 및 태그/키-값 구조를 포함하는 반정형 데이터 (JSON, XML, 로그)
+  "adsp-50-017", // 17번: 데이터 분석 프로젝트의 순환적(Iterative) 피드백과 가설 보완
+  "adsp-50-018", // 18번: 전사 데이터 분석 문화 내재화를 위한 분석 거버넌스(Governance) 관리 구성요소
+  "adsp-50-019", // 19번: 분석 마스터플랜 수립을 위한 분석 수준 진단(준비도 및 성숙도 평가) 목적
+  "adsp-50-020", // 20번: 분석 수준 진단 사분면 (준비도 낮음 + 성숙도 낮음 = 준비형)
+
+  // 3과목: 데이터 분석 (21 ~ 50번)
+  "adsp-50-021", // 21번: 정규분포 가정 평균에서 3표준편차 이탈치 판별 통계 기법 (ESD 기법)
+  "adsp-50-022", // 22번: 상호 독립인 세 번의 반복 시행에서 사건 발생 결합확률 (p³)
+  "adsp-50-023", // 23번: 공정한 동전 5회 독립 던지기 앞면 0회(뒷면 5회) 발생 이항확률 (1/32)
+  "adsp-50-024", // 24번: 표본 관측치들의 함수로 계산되는 특성값 (통계량 Statistic vs 모수)
+  "adsp-50-025", // 25번: 선형 회귀분석 4대 기본 가정(선형성·독립성·등분산성·정규성)과 모수 선형 결합
+  "adsp-50-026", // 26번: 분산분석(ANOVA) 총제곱합 분해 (SST = SSR + SSE)
+  "adsp-50-027", // 27번: 두 확률변수의 선형 방향성을 나타내는 공분산(Covariance)의 단위 의존성
+  "adsp-50-028", // 28번: 주성분분석(PCA) 최적 주성분 개수 결정 기준 (고유값, 누적설명분산, 엘보우)
+  "adsp-50-029", // 29번: 피어슨 상관계수 절댓값에 따른 선형적 상관관계 강도 비교 (|-0.8| > |0.6|)
+  "adsp-50-030", // 30번: 2개 범주 이항 분류 문제 사건 발생 확률 추정 모형 (로지스틱 회귀분석)
+  "adsp-50-031", // 31번: 독립변수 개수가 다른 다중 선형 회귀모형 설명력 비교 지표 (수정된 결정계수)
+  "adsp-50-032", // 32번: 크기 d 데이터셋 d회 복원추출 시 특정 관측치 미선택 확률 ((1-1/d)^d)
+  "adsp-50-033", // 33번: 앙상블(Ensemble) 학습 성능 극대화 조건 (개별 모형 정확성 및 다양성)
+  "adsp-50-034", // 34번: 지도 학습 기반 분류(Classification) 알고리즘 (로지스틱 회귀, SVM, KNN)
+  "adsp-50-035", // 35번: 이진 분류 모형의 정확도(Accuracy)와 오분류율(Error Rate)의 보수 관계
+  "adsp-50-036", // 36번: 인공신경망 활성화 함수 하이퍼볼릭 탄젠트(tanh) 출력값 범위 ([-1, 1])
+  "adsp-50-037", // 37번: 로지스틱 회귀분석 회귀계수(β1)의 로그 오즈(로짓) 단위 증가 효과
+  "adsp-50-038", // 38번: 밀도 기반 군집 알고리즘 DBSCAN의 특징 (K 사전 지정 불필요, 잡음 분리)
+  "adsp-50-039", // 39번: 연관규칙 마이닝 두 품목 간 향상도(Lift) 수식 산출 계산
+  "adsp-50-040", // 40번: 장바구니 분석 조건부 구매 확률 지표 신뢰도(Confidence, P(B|A)) 정의
+  "adsp-50-041", // 41번: 소수 클래스 탐지를 저해하는 클래스 불균형(Class Imbalance) 현상
+  "adsp-50-042", // 42번: 의사결정나무 모델의 과대적합(Overfitting) 방지를 위한 정지규칙(Stopping Rule)
+  "adsp-50-043", // 43번: Z-표준화 변수 기반 표준화 회귀계수(베타 계수)의 상대적 영향력 해석
+  "adsp-50-044", // 44번: 머신러닝 모형 학습·검증·평가를 위한 데이터 분할(Train/Validation/Test) 원칙
+  "adsp-50-045", // 45번: 의사결정나무 분할 기준 지니지수(Gini Index) 감소와 노드 순수도 향상
+  "adsp-50-046", // 46번: 시계열 데이터의 단기 잡음 완화 및 추세 파악을 위한 평활화(Smoothing) 기법
+  "adsp-50-047", // 47번: 시계열 2차 자기회귀 AR(2) 모형 ACF 점진 감소 vs PACF 시차 2 절단 패턴
+  "adsp-50-048", // 48번: 시계열 이동평균모형 MA(q)의 현시점 및 과거 q개 백색잡음 오차 선형 결합
+  "adsp-50-049", // 49번: 자기회귀 이동평균 모형 ARMA(2, 0)과 AR(2) 모형의 수학적 동등성
+  "adsp-50-050", // 50번: 시계열 AR(2) 수식에서 과거 관측치의 자기회귀계수 표기 기호 (φ1, φ2)
+];
 
 // =================================================================
 // 제48회 ADsP 실전 기출 복원 (2026년 최신 기출 50문항 전수 1:1 매핑)
@@ -320,8 +382,6 @@ export const ADSP_EXAM_42_IDS: string[] = [
   "adsp-past-035", // ROC-AUC 해석
 ];
 
-export const ADSP_EXAM_50_IDS: string[] = ADSP_EXAM_48_IDS;
-
 export interface AdspRoundInfo {
   round: AdspExamRound;
   year: string;
@@ -332,6 +392,14 @@ export interface AdspRoundInfo {
 }
 
 export const ADSP_EXAM_ROUNDS: Record<AdspExamRound, AdspRoundInfo> = {
+  "50": {
+    round: "50",
+    year: "2026년",
+    name: "제50회 기출 복원",
+    badge: "2026 최신 기출",
+    description: "2026년 제50회 실전 기출 전수 100% 복원 (1~50번 원본 문제 세트)",
+    questionIds: ADSP_EXAM_50_IDS,
+  },
   "48": {
     round: "48",
     year: "2026년",
@@ -374,13 +442,13 @@ export const ADSP_EXAM_ROUNDS: Record<AdspExamRound, AdspRoundInfo> = {
   },
 };
 
-export const ADSP_ROUND_KEYS: AdspExamRound[] = ["48", "47", "44", "43", "42"];
+export const ADSP_ROUND_KEYS: AdspExamRound[] = ["50", "48", "47", "44", "43", "42"];
 
 export function getAdspExamRound(round?: string | null): AdspRoundInfo {
   if (round && round in ADSP_EXAM_ROUNDS) {
     return ADSP_EXAM_ROUNDS[round as AdspExamRound];
   }
-  return ADSP_EXAM_ROUNDS["48"];
+  return ADSP_EXAM_ROUNDS["50"];
 }
 
 export const ADSP_EXAM_SECTIONS: AdspExamSection[] = [
