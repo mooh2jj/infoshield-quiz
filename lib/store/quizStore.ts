@@ -26,14 +26,14 @@ interface QuizSessionState {
   answers: Record<string, AnswerRecord>;
   isHintShown: boolean;
   timeSpentSeconds: number;
-  examRound: "50" | "48" | "47" | "44" | "43" | "42";
+  examRound: "50" | "49" | "48" | "47" | "44" | "43" | "42";
   startSession: (filters: QuizFilters, options?: StartSessionOptions) => void;
   submitAnswer: (itemId: string, submitted: string, correct: boolean) => void;
   nextQuestion: () => void;
   previousQuestion: () => void;
   goToQuestion: (index: number) => void;
   setTimeSpentSeconds: (seconds: number) => void;
-  setExamRound: (round: "50" | "48" | "47" | "44" | "43" | "42") => void;
+  setExamRound: (round: "50" | "49" | "48" | "47" | "44" | "43" | "42") => void;
   toggleHint: () => void;
   resetSession: () => void;
   setHasHydrated: (value: boolean) => void;

@@ -45,6 +45,8 @@ export default function AdspExamResultPage() {
   const roundInfo = getAdspExamRound(examRound);
   const nextRound: AdspExamRound =
     examRound === "50"
+      ? "49"
+      : examRound === "49"
       ? "48"
       : examRound === "48"
       ? "47"

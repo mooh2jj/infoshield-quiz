@@ -1597,6 +1597,317 @@ export function AdspQuestionDiagram({ questionId }: AdspQuestionDiagramProps) {
         </div>
       );
 
+    // =============================================================
+    // 제49회 기출 시각 다이어그램 (5개 핵심 문항)
+    // =============================================================
+
+    // -------------------------------------------------------------
+    // [49회 14번] 품질 관리: 정확도(Accuracy) vs 정밀도(Precision) 과녁판
+    // -------------------------------------------------------------
+    case "adsp-49-014":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [분석 품질 관리: 정확도(Accuracy) vs 정밀도(Precision) 과녁 비교]
+          </div>
+          <svg viewBox="0 0 540 210" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측 과녁: 높은 정밀도 + 낮은 정확도 (한곳에 모였으나 중심 벗어남) */}
+            <g transform="translate(40, 20)">
+              <rect x="0" y="0" width="210" height="155" rx="8" className="fill-primary/10 stroke-primary" strokeWidth="2" />
+              <text x="105" y="22" textAnchor="middle" className="fill-primary font-bold text-xs">★ 높은 정밀도 + 낮은 정확도</text>
+              {/* 과녁 동심원 */}
+              <circle cx="105" cy="78" r="45" className="fill-none stroke-border" strokeWidth="1" />
+              <circle cx="105" cy="78" r="30" className="fill-none stroke-border" strokeWidth="1" />
+              <circle cx="105" cy="78" r="15" className="fill-rose-500/10 stroke-rose-500" strokeWidth="1" />
+              <circle cx="105" cy="78" r="3" className="fill-rose-500" />
+              {/* 우상단에 좁게 뭉친 탄착군 (정밀도 높음, 분산 작음) */}
+              <circle cx="128" cy="52" r="3.5" className="fill-primary" />
+              <circle cx="132" cy="55" r="3.5" className="fill-primary" />
+              <circle cx="130" cy="50" r="3.5" className="fill-primary" />
+              <circle cx="126" cy="56" r="3.5" className="fill-primary" />
+              <circle cx="134" cy="52" r="3.5" className="fill-primary" />
+              <text x="105" y="136" textAnchor="middle" className="fill-foreground font-semibold text-[10px]">
+                반복 측정의 안정성(재현성) 우수
+              </text>
+              <text x="105" y="148" textAnchor="middle" className="fill-muted-foreground text-[9px]">
+                (분산 작음, 편향 큼)
+              </text>
+            </g>
+
+            {/* 우측 과녁: 높은 정밀도 + 높은 정확도 */}
+            <g transform="translate(290, 20)">
+              <rect x="0" y="0" width="210" height="155" rx="8" className="fill-card stroke-border" strokeWidth="1" />
+              <text x="105" y="22" textAnchor="middle" className="fill-foreground font-bold text-xs">높은 정밀도 + 높은 정확도</text>
+              {/* 과녁 동심원 */}
+              <circle cx="105" cy="78" r="45" className="fill-none stroke-border" strokeWidth="1" />
+              <circle cx="105" cy="78" r="30" className="fill-none stroke-border" strokeWidth="1" />
+              <circle cx="105" cy="78" r="15" className="fill-emerald-500/15 stroke-emerald-500" strokeWidth="1" />
+              <circle cx="105" cy="78" r="3" className="fill-emerald-500" />
+              {/* 중심에 정확하고 조밀하게 모인 탄착군 */}
+              <circle cx="104" cy="77" r="3.5" className="fill-emerald-600 dark:fill-emerald-400" />
+              <circle cx="106" cy="79" r="3.5" className="fill-emerald-600 dark:fill-emerald-400" />
+              <circle cx="105" cy="75" r="3.5" className="fill-emerald-600 dark:fill-emerald-400" />
+              <circle cx="103" cy="80" r="3.5" className="fill-emerald-600 dark:fill-emerald-400" />
+              <circle cx="107" cy="78" r="3.5" className="fill-emerald-600 dark:fill-emerald-400" />
+              <text x="105" y="136" textAnchor="middle" className="fill-foreground font-semibold text-[10px]">
+                참값 일치도 및 안정성 모두 충족
+              </text>
+              <text x="105" y="148" textAnchor="middle" className="fill-muted-foreground text-[9px]">
+                (분산 작음, 편향 작음)
+              </text>
+            </g>
+
+            <text x="270" y="195" textAnchor="middle" className="fill-primary font-bold text-xs">
+              ★ 핵심: &quot;반복 측정의 안정성&quot; = 정밀도(Precision) | &quot;참값과의 일치도&quot; = 정확도(Accuracy)
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [49회 23번] 연속확률분포: 확률밀도함수(PDF) 면적과 높이
+    // -------------------------------------------------------------
+    case "adsp-49-023":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [연속확률분포의 원리: 전체 면적 = 1 vs 밀도 높이 f(x) &gt; 1 가능]
+          </div>
+          <svg viewBox="0 0 540 190" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측: 균등분포 U(0, 0.5) 직사각형 그래프 */}
+            <g transform="translate(60, 20)">
+              {/* x축, y축 */}
+              <line x1="30" y1="120" x2="220" y2="120" className="stroke-foreground" strokeWidth="1.5" />
+              <line x1="30" y1="20" x2="30" y2="120" className="stroke-foreground" strokeWidth="1.5" />
+
+              {/* 직사각형 영역 (너비 0.5, 높이 2.0 ➔ 면적 = 1.0) */}
+              <rect x="30" y="40" width="120" height="80" className="fill-primary/20 stroke-primary" strokeWidth="2" />
+              <text x="90" y="80" textAnchor="middle" className="fill-primary font-extrabold text-sm">
+                면적(적분) = 1.0
+              </text>
+              <text x="90" y="98" textAnchor="middle" className="fill-foreground font-semibold text-[10px]">
+                0.5 × 2.0 = 1.0
+              </text>
+
+              {/* 눈금 레이블 */}
+              <text x="22" y="45" textAnchor="end" className="fill-rose-500 font-extrabold text-xs">f(x) = 2.0</text>
+              <line x1="26" y1="40" x2="30" y2="40" className="stroke-rose-500" strokeWidth="2" />
+
+              <text x="22" y="80" textAnchor="end" className="fill-muted-foreground text-[10px]">1.0</text>
+              <line x1="26" y1="80" x2="30" y2="80" strokeDasharray="2 2" className="stroke-muted-foreground" />
+
+              <text x="30" y="135" textAnchor="middle" className="fill-muted-foreground text-[10px]">0</text>
+              <text x="150" y="135" textAnchor="middle" className="fill-muted-foreground font-bold text-[10px]">0.5</text>
+              <line x1="150" y1="120" x2="150" y2="125" className="stroke-foreground" strokeWidth="1.5" />
+            </g>
+
+            {/* 우측 공식 및 개념 카드 */}
+            <g transform="translate(310, 25)">
+              <rect x="0" y="0" width="190" height="120" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+              <text x="95" y="24" textAnchor="middle" className="fill-rose-500 font-bold text-xs">⚠️ 중요 개념 포인트</text>
+              <line x1="15" y1="34" x2="175" y2="34" className="stroke-border" strokeWidth="1" />
+              <text x="15" y="55" className="fill-foreground font-semibold text-[11px]">1. 총 확률(면적)은 항상 1</text>
+              <text x="25" y="70" className="fill-muted-foreground text-[10px]">∫ f(x) dx = 1.0</text>
+
+              <text x="15" y="92" className="fill-primary font-bold text-[11px]">2. 함수 높이 f(x)는 1 초과 가능</text>
+              <text x="25" y="107" className="fill-muted-foreground text-[10px]">구간 폭이 좁으면 높이 &gt; 1 !</text>
+            </g>
+
+            {/* 하단 요약 문구 */}
+            <text x="270" y="172" textAnchor="middle" className="fill-muted-foreground font-medium text-xs">
+              확률밀도함수(PDF)에서 특정 점의 함수값은 확률 자체가 아니며, 확률은 해당 구간의 적분(면적)으로 계산됨
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [49회 41번] 서포트 벡터 머신(SVM): 초평면, 마진, 서포트 벡터
+    // -------------------------------------------------------------
+    case "adsp-49-041":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [서포트 벡터 머신(SVM): 결정 초평면, 최대 마진, 서포트 벡터 기하 구조]
+          </div>
+          <svg viewBox="0 0 540 210" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측 기하학적 분리 다이어그램 */}
+            <g transform="translate(40, 20)">
+              <rect x="0" y="0" width="260" height="160" rx="8" className="fill-card stroke-border" strokeWidth="1" />
+
+              {/* 결정 초평면 (중앙선) */}
+              <line x1="40" y1="140" x2="220" y2="20" className="stroke-primary" strokeWidth="2.5" />
+              <text x="200" y="24" className="fill-primary font-bold text-[11px]">결정 초평면</text>
+
+              {/* 마진 점선 2개 */}
+              <line x1="20" y1="120" x2="200" y2="0" strokeDasharray="3 3" className="stroke-muted-foreground" strokeWidth="1.5" />
+              <line x1="60" y1="160" x2="240" y2="40" strokeDasharray="3 3" className="stroke-muted-foreground" strokeWidth="1.5" />
+
+              {/* 마진 너비 화살표 */}
+              <line x1="90" y1="62" x2="130" y2="102" className="stroke-amber-500" strokeWidth="2" markerEnd="url(#arrow)" />
+              <text x="125" y="80" className="fill-amber-600 dark:fill-amber-400 font-extrabold text-[11px]">마진(Margin) 최대화</text>
+
+              {/* 클래스 A (파란 점) */}
+              <circle cx="50" cy="50" r="4.5" className="fill-blue-500" />
+              <circle cx="70" cy="30" r="4.5" className="fill-blue-500" />
+              <circle cx="90" cy="20" r="4.5" className="fill-blue-500" />
+              {/* 서포트 벡터 A (경계선 위의 점) */}
+              <circle cx="110" cy="60" r="6" className="fill-blue-500 stroke-primary" strokeWidth="2" />
+
+              {/* 클래스 B (빨간 네모) */}
+              <rect x="180" y="110" width="8" height="8" className="fill-rose-500" />
+              <rect x="200" y="130" width="8" height="8" className="fill-rose-500" />
+              <rect x="160" y="140" width="8" height="8" className="fill-rose-500" />
+              {/* 서포트 벡터 B (경계선 위의 점) */}
+              <rect x="150" y="100" width="10" height="10" className="fill-rose-500 stroke-primary" strokeWidth="2" />
+            </g>
+
+            {/* 우측 핵심 요약 카드 */}
+            <g transform="translate(320, 20)">
+              <rect x="0" y="0" width="180" height="160" rx="8" className="fill-muted/20 stroke-border" strokeWidth="1.2" />
+              <text x="90" y="24" textAnchor="middle" className="fill-foreground font-bold text-xs">SVM 핵심 요소</text>
+              <line x1="15" y1="34" x2="165" y2="34" className="stroke-border" strokeWidth="1" />
+
+              <text x="15" y="55" className="fill-primary font-bold text-[11px]">• 서포트 벡터 (Support Vector)</text>
+              <text x="25" y="70" className="fill-muted-foreground text-[10px]">초평면을 결정짓는 최외곽 관측치</text>
+
+              <text x="15" y="92" className="fill-primary font-bold text-[11px]">• 마진 (Margin)</text>
+              <text x="25" y="107" className="fill-muted-foreground text-[10px]">서포트 벡터와 초평면 간 최단거리</text>
+
+              <text x="15" y="128" className="fill-rose-500 font-bold text-[11px]">★ 커널 트릭 (Kernel Trick)</text>
+              <text x="25" y="143" className="fill-foreground font-semibold text-[10px]">고차원 공간 매핑 (저차원 축소 ✕)</text>
+            </g>
+
+            <text x="270" y="198" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+              SVM은 마진(Margin)을 최대화하는 일반화 능력이 우수하며 비선형 문제는 커널 함수를 적용함
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [49회 44번] 혼동 행렬: 양성 클래스 F1-Score (6/19) 조화평균 계산
+    // -------------------------------------------------------------
+    case "adsp-49-044":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [혼동 행렬 기반 양성 F1-Score 조화평균 계산 (49회 기출)]
+          </div>
+          <svg viewBox="0 0 540 200" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 혼동 행렬 2x2 그리드 */}
+            <g transform="translate(40, 25)">
+              <text x="75" y="12" textAnchor="middle" className="fill-muted-foreground text-[10px]">예측 Positive</text>
+              <text x="165" y="12" textAnchor="middle" className="fill-muted-foreground text-[10px]">예측 Negative</text>
+
+              <text x="-10" y="45" textAnchor="end" className="fill-muted-foreground text-[10px]">실제 Positive</text>
+              <text x="-10" y="95" textAnchor="end" className="fill-muted-foreground text-[10px]">실제 Negative</text>
+
+              {/* TP = 3 */}
+              <rect x="30" y="20" width="90" height="45" rx="6" className="fill-emerald-500/20 stroke-emerald-500" strokeWidth="2" />
+              <text x="75" y="43" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-extrabold text-sm">TP = 3</text>
+              <text x="75" y="57" textAnchor="middle" className="fill-muted-foreground text-[9px]">양성 적중</text>
+
+              {/* FN = 5 */}
+              <rect x="125" y="20" width="80" height="45" rx="6" className="fill-muted/30 stroke-border" strokeWidth="1" />
+              <text x="165" y="43" textAnchor="middle" className="fill-foreground font-bold text-sm">FN = 5</text>
+
+              {/* FP = 8 */}
+              <rect x="30" y="70" width="90" height="45" rx="6" className="fill-amber-500/15 stroke-amber-500" strokeWidth="1.5" />
+              <text x="75" y="93" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold text-sm">FP = 8</text>
+
+              {/* TN = 24 */}
+              <rect x="125" y="70" width="80" height="45" rx="6" className="fill-muted/30 stroke-border" strokeWidth="1" />
+              <text x="165" y="93" textAnchor="middle" className="fill-foreground font-bold text-sm">TN = 24</text>
+            </g>
+
+            {/* 우측 수식 유도 박스 */}
+            <g transform="translate(290, 20)">
+              <rect x="0" y="0" width="210" height="145" rx="8" className="fill-primary/10 stroke-primary" strokeWidth="2" />
+              <text x="105" y="22" textAnchor="middle" className="fill-primary font-bold text-xs">★ 조화평균 계산 과정</text>
+              <line x1="15" y1="30" x2="195" y2="30" className="stroke-border" strokeWidth="1" />
+
+              <text x="15" y="48" className="fill-foreground font-semibold text-[11px]">• 재현율 = TP / (TP + FN) = 3 / 8</text>
+              <text x="15" y="68" className="fill-foreground font-semibold text-[11px]">• 정밀도 = TP / (TP + FP) = 3 / 11</text>
+
+              <text x="105" y="95" textAnchor="middle" className="fill-muted-foreground text-[10px]">
+                F1 = 2 × (Precision × Recall) / (P + R)
+              </text>
+              <text x="105" y="115" textAnchor="middle" className="fill-primary font-extrabold text-sm">
+                = 2 × (9/88) / (57/88) = 18/57
+              </text>
+              <text x="105" y="134" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-400 font-extrabold text-base">
+                = 6 / 19 ≈ 0.3158
+              </text>
+            </g>
+
+            <text x="270" y="185" textAnchor="middle" className="fill-foreground font-medium text-xs">
+              정밀도(3/11)와 재현율(3/8)의 역수 평균의 역수인 조화평균을 계산하면 정확히 6/19 도출
+            </text>
+          </svg>
+        </div>
+      );
+
+    // -------------------------------------------------------------
+    // [49회 48번] 거리 지표: 맨해튼 거리(L1) vs 유클리드 거리(L2) 비교
+    // -------------------------------------------------------------
+    case "adsp-49-048":
+      return (
+        <div className="my-3 rounded-xl border border-border bg-card/70 p-4 shadow-sm">
+          <div className="mb-2 text-center text-xs font-bold text-muted-foreground">
+            [거리 측정 지표 비교: 맨해튼 거리(L1) ≥ 유클리드 거리(L2)]
+          </div>
+          <svg viewBox="0 0 540 190" className="w-full max-w-[500px] mx-auto text-xs">
+            {/* 좌측 직각삼각형 좌표계 (Δx = 3, Δy = 4) */}
+            <g transform="translate(60, 20)">
+              {/* 격자 점선 */}
+              <line x1="30" y1="120" x2="180" y2="120" strokeDasharray="2 2" className="stroke-border" />
+              <line x1="30" y1="40" x2="180" y2="40" strokeDasharray="2 2" className="stroke-border" />
+              <line x1="30" y1="40" x2="30" y2="120" strokeDasharray="2 2" className="stroke-border" />
+              <line x1="180" y1="40" x2="180" y2="120" strokeDasharray="2 2" className="stroke-border" />
+
+              {/* 맨해튼 경로 (가로 3칸 + 세로 4칸 = 7) */}
+              <path d="M 30 120 L 180 120 L 180 40" fill="none" className="stroke-amber-500" strokeWidth="3" />
+              <text x="105" y="136" textAnchor="middle" className="fill-amber-600 dark:fill-amber-400 font-bold text-xs">가로: 3</text>
+              <text x="195" y="80" className="fill-amber-600 dark:fill-amber-400 font-bold text-xs">세로: 4</text>
+
+              {/* 유클리드 최단 직선 경로 (빗변 = 5) */}
+              <line x1="30" y1="120" x2="180" y2="40" className="stroke-primary" strokeWidth="3" />
+              <text x="95" y="72" textAnchor="middle" className="fill-primary font-extrabold text-sm">
+                유클리드 = 5
+              </text>
+
+              {/* 시작점 A와 도착점 B */}
+              <circle cx="30" cy="120" r="5" className="fill-foreground" />
+              <text x="20" y="135" className="fill-foreground font-bold text-xs">A</text>
+              <circle cx="180" cy="40" r="5" className="fill-foreground" />
+              <text x="185" y="32" className="fill-foreground font-bold text-xs">B</text>
+            </g>
+
+            {/* 우측 수식 및 성질 비교 박스 */}
+            <g transform="translate(300, 20)">
+              <rect x="0" y="0" width="200" height="135" rx="8" className="fill-card stroke-border" strokeWidth="1.5" />
+              <text x="100" y="24" textAnchor="middle" className="fill-foreground font-bold text-xs">거리 공식 비교</text>
+              <line x1="15" y1="34" x2="185" y2="34" className="stroke-border" strokeWidth="1" />
+
+              <text x="15" y="55" className="fill-amber-600 dark:fill-amber-400 font-bold text-[11px]">• 맨해튼 거리 (L1)</text>
+              <text x="25" y="70" className="fill-foreground font-semibold text-[10px]">|Δx| + |Δy| = 3 + 4 = 7</text>
+
+              <text x="15" y="92" className="fill-primary font-bold text-[11px]">• 유클리드 거리 (L2)</text>
+              <text x="25" y="107" className="fill-foreground font-semibold text-[10px]">√(3² + 4²) = √25 = 5</text>
+
+              <text x="100" y="126" textAnchor="middle" className="fill-primary font-extrabold text-xs">
+                ★ 항상 L1(맨해튼) ≥ L2(유클리드)
+              </text>
+            </g>
+
+            <text x="270" y="175" textAnchor="middle" className="fill-muted-foreground font-medium text-xs">
+              삼각부등식에 의해 빗변(직선 유클리드 거리)은 직각변의 합(맨해튼 거리)보다 항상 작거나 같음
+            </text>
+          </svg>
+        </div>
+      );
+
     default:
       return null;
   }
