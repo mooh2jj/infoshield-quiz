@@ -55,7 +55,7 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "linux",
     label: "리눅스마스터 2급",
-    description: "5개 챕터 마인드맵 · 80제 단답형 스피드 퀴즈 · ROI 30선 전략 메모장 & 함정 기출",
+    description: "5개 챕터 마인드맵 · 80제 단답형 스피드 퀴즈 · ROI 50선 전략 메모장 & 함정 기출",
     href: "/linux",
     status: "available",
   },

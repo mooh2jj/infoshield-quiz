@@ -33,7 +33,7 @@ export default function LinuxPage() {
         </h1>
         <p className="text-sm text-muted-foreground leading-relaxed">
           문제은행식 기출 변형 80% 완벽 대비! 2차 시험 실제 80문항 비중(1과목 48제 + 2과목 32제)을 그대로 반영한
-          <strong> 80제 단답형 스피드 퀴즈</strong>와 <strong>기출 빈출 ROI 30선 전략 메모장</strong>으로 단기간에 합격권을 완성하세요.
+          <strong> 80제 단답형 스피드 퀴즈</strong>와 <strong>기출 빈출 ROI 50선 전략 메모장</strong>으로 단기간에 합격권을 완성하세요.
         </p>
       </div>
 
@@ -80,13 +80,13 @@ export default function LinuxPage() {
                 <Flame className="size-5 fill-current text-amber-400" />
               </span>
               <span className="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-bold text-amber-800 dark:text-amber-300">
-                ROI 30선 + 도식 8선
+                ROI 50선 + 도식 15선
               </span>
             </div>
             <div>
               <h2 className="text-lg font-bold tracking-tight">마인드맵 & ROI 메모장</h2>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                5개 챕터 시각화 체계도와 우하단 플로팅 전략 메모장(출제 1순위 30선, 단골 함정 10선, 직전 치트시트) 탑재.
+                5개 챕터 시각화 체계도와 우하단 플로팅 전략 메모장(출제 1순위 50선, 단골 함정 15선, 직전 치트시트) 탑재.
               </p>
             </div>
           </div>

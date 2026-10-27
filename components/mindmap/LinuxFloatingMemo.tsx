@@ -46,7 +46,7 @@ export interface LinuxRoiItem {
 
 export const LINUX_ROI_ITEMS: LinuxRoiItem[] = [
   // =================================================================
-  // === [1] 계정, 권한 & 디스크 쿼터 (accounts-permissions)
+  // === [1] 계정, 권한 & 디스크 쿼터 (accounts-permissions) - 10선
   // =================================================================
   {
     id: "roi-01",
@@ -153,9 +153,71 @@ export const LINUX_ROI_ITEMS: LinuxRoiItem[] = [
   style S3 fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
   style S4 fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b`,
   },
+  {
+    id: "roi-31",
+    sectionId: "accounts-permissions",
+    sectionName: "계정·권한·쿼터",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 96%+",
+    title: "파일 접근 제어 목록 ACL (setfacl & getfacl 문법)",
+    formula: "설정: setfacl -m u:사용자:권한 파일 / 삭제: setfacl -x u:사용자 파일 / 전체제거: setfacl -b 파일 / 기본 상속 ACL: setfacl -m d:u:사용자:권한 디렉터리 / 확인: getfacl 파일",
+    trap: "[최근 기출 단골!] 1) 'ls -l' 실행 시 권한 맨 끝에 '+'(예: -rw-rwxr--+)가 붙어 있으면 ACL이 설정된 파일! 2) 특정 사용자의 ACL 항목 하나만 지울 때는 '-x', 모든 ACL을 일괄 초기화할 때는 '-b(base)'! 3) 디렉터리 내 새로 생성되는 파일들에 자동 상속되게 하려면 디폴트 ACL 접두사 'd:'(또는 -d)를 붙여야 함!",
+    tags: ["ACL", "setfacl", "getfacl", "-m", "-x", "-b", "default", "상속"],
+  },
+  {
+    id: "roi-32",
+    sectionId: "accounts-permissions",
+    sectionName: "계정·권한·쿼터",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 95%+",
+    title: "/etc/sudoers 설정 & visudo 명령어 (%wheel 그룹)",
+    formula: "[사용자/그룹] [접속호스트]=(실행권한자) [NOPASSWD:] [실행가능명령어] / 예: %wheel ALL=(ALL) ALL / sudoers 편집 전용 명령어: visudo (문법 검증 자동 수행)",
+    trap: "1) /etc/sudoers 파일을 일반 vi로 직접 수정하면 문법 오류 시 sudo 자체가 먹통될 위험이 있으므로 반드시 'visudo' 명령어로 편집해야 함! 2) 특정 그룹에 sudo 권한을 줄 때는 그룹명 앞에 반드시 '%'를 붙여야 함(예: %wheel)! 3) 패스워드 입력 없이 실행하려면 'NOPASSWD: ALL'을 지정!",
+    tags: ["sudo", "sudoers", "visudo", "wheel", "NOPASSWD", "관리자권한"],
+  },
+  {
+    id: "roi-33",
+    sectionId: "accounts-permissions",
+    sectionName: "계정·권한·쿼터",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 92%+",
+    title: "PAM (장착형 인증 모듈) 4대 인터페이스 & 제어 플래그",
+    formula: "4대 모듈 타입: auth(사용자 인증), account(계정 유효성·만료·접근시간), password(패스워드 규칙·갱신), session(로그인 전후 환경 세팅) / 4대 제어 플래그: required(실패해도 나머지 계속 수행 후 최종 실패), requisite(실패 시 즉시 중단 및 거부), sufficient(이전 실패 없으면 즉시 성공 통과), optional(결과 무시)",
+    trap: "1) 'required'는 실패하더라도 스택 내 다음 모듈을 끝까지 실행한 후 실패 결과를 반환하지만, 'requisite'는 실패 즉시 뒤 모듈을 실행하지 않고 곧바로 거부함! 2) 설정 디렉터리는 '/etc/pam.d/'!",
+    tags: ["PAM", "auth", "account", "password", "session", "required", "requisite", "sufficient"],
+    diagramTitle: "PAM 인증 모듈 4대 플래그 스택 평가 처리 흐름도",
+    mermaidChart: `flowchart TD
+  REQ["모듈 호출 요청"] --> M1["스택 모듈 순차 실행"]
+  M1 --> COND{"제어 플래그 종류"}
+  COND -->|"requisite (실패 시)"| FAIL_NOW["즉시 거부 (추가 모듈 평가 즉시 중단)"]
+  COND -->|"required (실패 시)"| CONT_F["실패 상태 기록 후 다음 모듈 계속 진행"]
+  COND -->|"sufficient (성공 시)"| SUCC_NOW["이전 실패 없으면 즉시 최종 성공 승인"]
+  COND -->|"optional"| CONT_O["모듈 성공/실패 여부와 무관하게 계속 진행"]
+  CONT_F --> FINAL{"스택 전체 완료"}
+  CONT_O --> FINAL
+  FINAL -->|"스택 내 실패 기록 존재"| FAIL_END["최종 거부"]
+  FINAL -->|"모든 모듈 통과"| PASS_END["최종 허용"]
+  style FAIL_NOW fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
+  style SUCC_NOW fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b`,
+  },
+  {
+    id: "roi-34",
+    sectionId: "accounts-permissions",
+    sectionName: "계정·권한·쿼터",
+    grade: "B",
+    stars: 3,
+    frequencyRate: "출제율 88%+",
+    title: "그룹 관리 명령어 & gpasswd 옵션 (-a, -d, -M, -A)",
+    formula: "groupadd -g [GID] [그룹] / groupmod -g [GID] -n [새이름] [그룹] / groupdel [그룹] / gpasswd -a [사용자] [그룹] (멤버 추가), -d (멤버 삭제), -M (멤버 일괄 교체 등록), -A (그룹 관리자 지정)",
+    trap: "1) 기본 주 그룹(Primary Group)으로 지정된 사용자가 남아있는 그룹은 'groupdel'로 직접 삭제할 수 없음(먼저 사용자의 주 그룹 변경 필요)! 2) 특정 사용자를 그룹 멤버에 추가하는 명령어는 'gpasswd -a [유저] [그룹]' (usermod -aG [그룹] [유저]와 동일)!",
+    tags: ["groupadd", "groupmod", "groupdel", "gpasswd", "-a", "-d", "-M", "-A"],
+  },
 
   // =================================================================
-  // === [2] 파일시스템·디스크 & 셸 (filesystem-shell)
+  // === [2] 파일시스템·디스크 & 셸 (filesystem-shell) - 10선
   // =================================================================
   {
     id: "roi-07",
@@ -237,9 +299,110 @@ export const LINUX_ROI_ITEMS: LinuxRoiItem[] = [
     trap: "명령어 실행 결과를 화면에 띄우면서 동시에 파일로도 기록하려면 'tee' 명령어를 파이프(| tee output.log)와 함께 사용!",
     tags: ["리다이렉션", ">>", "2>&1", "파이프", "tee", "stdout", "stderr"],
   },
+  {
+    id: "roi-35",
+    sectionId: "filesystem-shell",
+    sectionName: "파일시스템·셸",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 98%+",
+    title: "LVM (논리 볼륨 관리자) 3단계 구축 절차 & 확장",
+    formula: "1단계 PV(물리볼륨): pvcreate /dev/sdb1 ➔ 2단계 VG(볼륨그룹): vgcreate vg_data /dev/sdb1 (확장은 vgextend) ➔ 3단계 LV(논리볼륨): lvcreate -L 10G -n lv_data vg_data (확장은 lvextend -L +5G) ➔ 파일시스템 확장: resize2fs (ext4) 또는 xfs_growfs (xfs)",
+    trap: "[단골 순서 함정] 볼륨 구축 순서는 반드시 PV ➔ VG ➔ LV 순서임! 디스크 파티션 ID는 '8e(Linux LVM)'! 또한 ext4 파일시스템 확장은 'resize2fs', CentOS 7+ xfs 파일시스템 확장은 'xfs_growfs'를 사용해야 함!",
+    tags: ["LVM", "pvcreate", "vgcreate", "lvcreate", "lvextend", "resize2fs", "xfs_growfs", "8e"],
+    diagramTitle: "LVM 3단계 계층 구조 및 확장(PV ➔ VG ➔ LV) 아키텍처",
+    mermaidChart: `flowchart TD
+  subgraph DISK["1. 물리 디스크 & 파티션 (ID: 8e)"]
+    D1["/dev/sdb1"]
+    D2["/dev/sdc1"]
+  end
+  subgraph PV["2. 물리 볼륨 (PV - pvcreate)"]
+    PV1["PV 1 (/dev/sdb1)"]
+    PV2["PV 2 (/dev/sdc1)"]
+  end
+  subgraph VG["3. 볼륨 그룹 (VG - vgcreate / vgextend)"]
+    VG1["VG 풀 (스토리지 합산 공유 풀)"]
+  end
+  subgraph LV["4. 논리 볼륨 (LV - lvcreate / lvextend)"]
+    LV1["LV 1 (/dev/vg_data/lv_home)<br/>마운트: /home"]
+    LV2["LV 2 (/dev/vg_data/lv_var)<br/>마운트: /var"]
+  end
+  D1 --> PV1
+  D2 --> PV2
+  PV1 --> VG1
+  PV2 --> VG1
+  VG1 --> LV1
+  VG1 --> LV2
+  style PV1 fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style PV2 fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style VG1 fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
+  style LV1 fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b
+  style LV2 fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b`,
+  },
+  {
+    id: "roi-36",
+    sectionId: "filesystem-shell",
+    sectionName: "파일시스템·셸",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 97%+",
+    title: "소프트웨어 RAID 레벨별 특징 (0, 1, 5, 6, 1+0)",
+    formula: "RAID 0(스트라이핑, 최소 2개, 용량 100%, 내결함성 0) / RAID 1(미러링, 최소 2개, 용량 50%, 내결함성 1개) / RAID 5(패리티 1개 분산, 최소 3개, 용량 N-1, 내결함성 1개) / RAID 6(패리티 2개 분산, 최소 4개, 용량 N-2, 내결함성 2개 동시 결함 허용) / RAID 생성 명령어: mdadm",
+    trap: "1) 패리티(Parity)를 2개 사용하여 하드디스크 2개가 동시에 고장 나도 복구 가능한 레벨은 'RAID 6'! 2) 최소 디스크 수: RAID 0/1은 2개, RAID 5는 3개, RAID 6은 4개! 3) 파티션 시스템 ID는 'fd(Linux RAID auto)'!",
+    tags: ["RAID", "RAID0", "RAID1", "RAID5", "RAID6", "mdadm", "패리티", "fd"],
+    diagramTitle: "RAID 레벨별 데이터 저장 및 패리티 분산 구조 비교",
+    mermaidChart: `flowchart TD
+  subgraph R0["RAID 0 (스트라이핑)"]
+    R0_1["디스크 1: A1, A3, A5"]
+    R0_2["디스크 2: A2, A4, A6"]
+    R0_T["최소 2개 / 용량 100% / 결함허용 0개"]
+  end
+  subgraph R1["RAID 1 (미러링)"]
+    R1_1["디스크 1: A1, A2, A3"]
+    R1_2["디스크 2: A1, A2, A3 (복제)"]
+    R1_T["최소 2개 / 용량 50% / 결함허용 1개"]
+  end
+  subgraph R5["RAID 5 (분산 패리티 1개)"]
+    R5_1["디스크 1: A1, B1, P(C)"]
+    R5_2["디스크 2: A2, P(B), C1"]
+    R5_3["디스크 3: P(A), B2, C2"]
+    R5_T["최소 3개 / 용량 N-1 / 결함허용 1개"]
+  end
+  subgraph R6["RAID 6 (이중 패리티 2개)"]
+    R6_T["최소 4개 / 용량 N-2 / 2개 동시 결함 허용"]
+  end
+  style R0_T fill:#fee2e2,stroke:#ef4444,stroke-width:1px
+  style R1_T fill:#eff6ff,stroke:#2563eb,stroke-width:1px
+  style R5_T fill:#ecfdf5,stroke:#059669,stroke-width:1px
+  style R6_T fill:#fef3c7,stroke:#d97706,stroke-width:1px`,
+  },
+  {
+    id: "roi-37",
+    sectionId: "filesystem-shell",
+    sectionName: "파일시스템·셸",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 91%+",
+    title: "고급 마운트 옵션 & UUID 확인 (blkid, fuser, lsof)",
+    formula: "blkid (장치 UUID 및 파일시스템 확인) / mount -o ro (읽기전용), noexec (바이너리 실행차단), nosuid (SetUID 무효화), loop (ISO 이미지 마운트), remount (재마운트) / 마운트 해제 불가 시 프로세스 확인: fuser -cu [마운트포인트] 또는 lsof +D",
+    trap: "1) 'device is busy'로 umount가 안 될 때 해당 디렉터리를 물고 있는 프로세스를 찾아 강제 종료하는 명령어는 'fuser -ck [마운트포인트]'! 2) ISO 파일 마운트 옵션은 '-o loop'!",
+    tags: ["blkid", "UUID", "mount -o", "loop", "noexec", "nosuid", "fuser", "lsof"],
+  },
+  {
+    id: "roi-38",
+    sectionId: "filesystem-shell",
+    sectionName: "파일시스템·셸",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 89%+",
+    title: "텍스트 스트림 에디터 sed & 패턴 처리 언어 awk",
+    formula: "sed: 비대화형 스트림 에디터 / 치환: sed 's/foo/bar/g' file / 파일직접수정: sed -i 's/.../g' / 특정줄삭제: sed '2d' file / awk: 텍스트 열(Column) 필터링 / awk -F: '{print $1, $3}' /etc/passwd (구분자 ':' 기준 1번째 3번째 열 출력)",
+    trap: "1) 원본 파일을 열지 않고 명령줄에서 특정 문자열을 즉시 치환하여 원본에 영구 반영하는 옵션은 'sed -i'! 2) awk에서 필드 구분자를 지정하는 옵션은 대문자 '-F'!",
+    tags: ["sed", "awk", "sed -i", "awk -F", "스트림에디터", "열추출"],
+  },
 
   // =================================================================
-  // === [3] 프로세스, 시그널 & 에디터 (process-scheduling)
+  // === [3] 프로세스, 시그널 & 에디터 (process-scheduling) - 10선
   // =================================================================
   {
     id: "roi-13",
@@ -339,9 +502,80 @@ export const LINUX_ROI_ITEMS: LinuxRoiItem[] = [
     trap: "[단골 7번 함정] :s/linux/LINUX/g 처럼 앞의 '%'를 생략하면 전체 문서가 아니라 '현재 커서가 위치한 한 줄'에서만 치환됨!",
     tags: ["vi", ":%s", "~/.exrc", "set nu", "set ai", "set ic", "치환함정"],
   },
+  {
+    id: "roi-39",
+    sectionId: "process-scheduling",
+    sectionName: "프로세스·에디터",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 99%+",
+    title: "systemd & systemctl 명령어 & 런레벨 Target 매핑",
+    formula: "명령어: systemctl start/stop/restart/reload/enable/disable/status/mask [데몬] / 부팅 기본 타깃: systemctl get-default / 영구 변경: systemctl set-default [타깃] / 런레벨 매핑: 0(poweroff.target), 1(rescue.target), 3(multi-user.target 텍스트모드), 5(graphical.target GUI모드), 6(reboot.target)",
+    trap: "[매회 출제 단골!] 1) 과거 런레벨 3(텍스트 다중사용자)에 해당하는 systemd 타깃은 'multi-user.target'! 런레벨 5(GUI 그래픽)는 'graphical.target'! 2) 서비스를 재부팅 시 자동 시작되도록 활성화하는 명령어는 'systemctl enable [데몬]'!",
+    tags: ["systemd", "systemctl", "target", "multi-user", "graphical", "런레벨", "enable", "mask"],
+    diagramTitle: "systemd Target 유닛과 SysVinit 런레벨(Runlevel) 1:1 매핑도",
+    mermaidChart: `flowchart LR
+  subgraph SYSV["전통 SysVinit 런레벨"]
+    L0["런레벨 0: 종료 (Halt)"]
+    L1["런레벨 1: 단일 사용자 (Single)"]
+    L3["런레벨 3: 다중 사용자 텍스트 (CLI)"]
+    L5["런레벨 5: 그래픽 환경 (GUI)"]
+    L6["런레벨 6: 재부팅 (Reboot)"]
+  end
+  subgraph SYSTEMD["systemd Target 유닛"]
+    T0["poweroff.target"]
+    T1["rescue.target"]
+    T3["multi-user.target (기본 서버)"]
+    T5["graphical.target (데스크톱)"]
+    T6["reboot.target"]
+  end
+  L0 <--> T0
+  L1 <--> T1
+  L3 <--> T3
+  L5 <--> T5
+  L6 <--> T6
+  style T3 fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b
+  style T5 fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a`,
+  },
+  {
+    id: "roi-40",
+    sectionId: "process-scheduling",
+    sectionName: "프로세스·에디터",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 93%+",
+    title: "systemd 시스템 로그 분석 도구 journalctl 핵심 옵션",
+    formula: "journalctl -u [서비스명] (특정 유닛/데몬 로그만 필터링) / -f (실시간 모니터링 follow) / -n [줄수] (끝에서 N줄 출력) / -r (역순 최신순 출력) / -p err (에러 수준 로그만 출력) / --since '1 hour ago'",
+    trap: "systemd 환경에서는 텍스트 로그 파일(/var/log/messages) 외에 바이너리 형태의 systemd journal 로그를 열람하기 위해 반드시 'journalctl' 명령어를 사용해야 함!",
+    tags: ["journalctl", "systemd", "-u", "-f", "-n", "-p", "로그분석"],
+  },
+  {
+    id: "roi-41",
+    sectionId: "process-scheduling",
+    sectionName: "프로세스·에디터",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 92%+",
+    title: "1회성 예약 스케줄링 명령어 at & batch (/etc/at.allow)",
+    formula: "at [시간] (지정 시간에 1회만 작업 실행) / batch (시스템 평균 부하가 0.8 이하일 때 1회 실행) / atq 또는 at -l (예약 큐 목록 확인) / atrm [작업번호] 또는 at -d (예약 취소) / 접근 제어: /etc/at.allow (허용 사용자), /etc/at.deny (거부 사용자)",
+    trap: "1) crontab은 '주기적·반복적' 실행 도구이고, at은 '단 1회성' 실행 도구임! 2) /etc/at.allow 파일이 존재하면 at.deny는 무시되고 allow에 등록된 사용자만 사용 가능!",
+    tags: ["at", "batch", "atq", "atrm", "at.allow", "at.deny", "1회성스케줄"],
+  },
+  {
+    id: "roi-42",
+    sectionId: "process-scheduling",
+    sectionName: "프로세스·에디터",
+    grade: "B",
+    stars: 3,
+    frequencyRate: "출제율 87%+",
+    title: "top 실시간 모니터링 대화형 키 & 백그라운드 시그널",
+    formula: "top 내부 단축키: P (CPU 점유율 정렬), M (메모리 정렬), T (누적 실행시간 정렬), k (kill 시그널 전송), r (renice 우선순위 변경), q (종료) / 추가 시그널: SIGCONT(18: 정지된 프로세스 재개), SIGSTOP(19: 강제 정지, 무시불가)",
+    trap: "top 화면에서 메모리 사용량이 높은 순으로 정렬하는 키는 대문자 'M', CPU 기준 정렬은 대문자 'P'!",
+    tags: ["top", "P", "M", "T", "k", "r", "SIGCONT", "SIGSTOP"],
+  },
 
   // =================================================================
-  // === [4] 패키지 관리 & 네트워크 설정 (package-network)
+  // === [4] 패키지 관리 & 네트워크 설정 (package-network) - 10선
   // =================================================================
   {
     id: "roi-19",
@@ -439,9 +673,58 @@ export const LINUX_ROI_ITEMS: LinuxRoiItem[] = [
     trap: "물리적 랜카드의 케이블 체결 여부와 링크 속도를 확인하는 명령어는 'ethtool' 또는 'mii-tool'!",
     tags: ["netstat", "ss", "-r", "ethtool", "mii-tool", "라우팅테이블"],
   },
+  {
+    id: "roi-43",
+    sectionId: "package-network",
+    sectionName: "패키지·네트워크",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 96%+",
+    title: "현대적 네트워크 설정 도구 ip & nmcli (ifconfig/route 대체)",
+    formula: "ip 명령어: ip addr show/add (IP 주소 확인·추가), ip link set [장치] up/down (링크 활성/비활성), ip route show/add (라우팅 테이블) / NetworkManager CLI: nmcli con show, nmcli con up/down [세션명], nmtui (텍스트 GUI)",
+    trap: "CentOS/RHEL 7+ 이후 레거시 net-tools(ifconfig, route) 대신 iproute2 패키지의 'ip' 명령어와 'nmcli'가 표준으로 출제됨! 인터페이스 링크 상태는 'ip link', IP 주소는 'ip addr', 라우팅은 'ip route'!",
+    tags: ["ip", "nmcli", "nmtui", "iproute2", "ipaddr", "iplink", "iproute"],
+  },
+  {
+    id: "roi-44",
+    sectionId: "package-network",
+    sectionName: "패키지·네트워크",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 98%+",
+    title: "리눅스 2대 방화벽: iptables 3대 테이블 vs firewall-cmd",
+    formula: "iptables 테이블: filter(기본 패킷필터링), nat(주소변환), mangle(패킷특성수정) / 체인: INPUT(수신), OUTPUT(송신), FORWARD(경유) / 타겟: ACCEPT, DROP(무응답폐기), REJECT(거부응답전송) / firewall-cmd: --permanent (영구적용 필수!), --add-service=http, --add-port=80/tcp, --reload",
+    trap: "[단골 함정] firewall-cmd로 규칙을 추가할 때 '--permanent' 옵션을 빠뜨리면 방화벽 리로드(firewall-cmd --reload)나 시스템 재부팅 시 규칙이 즉시 증발함!",
+    tags: ["iptables", "firewalld", "firewall-cmd", "filter", "nat", "INPUT", "DROP", "--permanent"],
+    diagramTitle: "iptables 3대 테이블 및 기본 체인(INPUT·FORWARD·OUTPUT) 패킷 처리 흐름도",
+    mermaidChart: `flowchart LR
+  IN["네트워크 패킷 유입"] --> PREROUTING["PREROUTING (nat/mangle)"]
+  PREROUTING --> ROUTE{"목적지 로컬 호스트?"}
+  ROUTE -->|"Yes"| INPUT["INPUT (filter/mangle)<br/>로컬 프로세스로 전달"]
+  ROUTE -->|"No"| FORWARD["FORWARD (filter/mangle)<br/>타 네트워크로 라우팅 경유"]
+  INPUT --> LOCAL["로컬 데몬 프로세스"]
+  LOCAL --> OUTPUT["OUTPUT (filter/nat/mangle)<br/>로컬 생성 패킷 송신"]
+  FORWARD --> POSTROUTING["POSTROUTING (nat/mangle)<br/>외부 네트워크 송출"]
+  OUTPUT --> POSTROUTING
+  style INPUT fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b
+  style FORWARD fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style OUTPUT fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f`,
+  },
+  {
+    id: "roi-45",
+    sectionId: "package-network",
+    sectionName: "패키지·네트워크",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 92%+",
+    title: "네트워크 시간 동기화 데몬 chrony & chronyc (NTP 대체)",
+    formula: "데몬: chronyd (CentOS 7/8+ 기본 시간 동기화) / 설정 파일: /etc/chrony.conf (server [NTP서버주소] iburst) / 제어 도구: chronyc / 동기화 출처 및 상태 확인: chronyc sources -v, chronyc tracking",
+    trap: "과거 ntpd/ntpdate를 대체하여 최신 리눅스 배포판의 기본 시간 동기화 솔루션으로 채택된 데몬은 'chronyd', CLI 제어 명령어는 'chronyc'!",
+    tags: ["chrony", "chronyd", "chronyc", "NTP", "시간동기화", "chrony.conf"],
+  },
 
   // =================================================================
-  // === [5] X-Window & 최신 IT·라이선스 (xwindow-security)
+  // === [5] X-Window & 최신 IT·라이선스 (xwindow-security) - 10선
   // =================================================================
   {
     id: "roi-26",
@@ -518,10 +801,97 @@ export const LINUX_ROI_ITEMS: LinuxRoiItem[] = [
     trap: "라이브러리를 동적 링크(Dynamic Link)하여 단순 호출하는 경우 소스코드 공개 의무를 면제해 주는 라이선스는 'LGPL'!",
     tags: ["GPL", "LGPL", "BSD", "MIT", "Apache2.0", "라이선스", "특허권"],
   },
+  {
+    id: "roi-46",
+    sectionId: "xwindow-security",
+    sectionName: "X-Window·IT활용",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 95%+",
+    title: "차세대 디스플레이 프로토콜 Wayland vs 레거시 X11 (X.org)",
+    formula: "X11 (X.org): 1980년대 레거시, 무거운 X 서버가 렌더링/이벤트 중개, 클라이언트 간 화면 도청 취약 || Wayland: 프로토콜 자체, 클라이언트가 직접 렌더링하고 컴포지터(Compositor)가 디스플레이 합성 표출, 프로세스 간 완전 격리(보안 우수) / 대표 참조 구현체: Weston",
+    trap: "1) Wayland는 프로그램이 아니라 '통신 프로토콜 규격'이며, 레퍼런스 컴포지터 구현체는 'Weston'임! 2) X11과 달리 불필요한 X 서버 중개 없이 클라이언트와 컴포지터가 직접 통신하여 지연시간을 줄이고 보안을 강화함!",
+    tags: ["Wayland", "Weston", "X11", "Xorg", "컴포지터", "디스플레이서버"],
+    diagramTitle: "X-Window(X11) vs 차세대 Wayland 아키텍처 비교 도식",
+    mermaidChart: `flowchart LR
+  subgraph X11_ARCH["레거시 X11 구조"]
+    XC["X 클라이언트"] <-->|IPC 통신| XS["X 서버 (Xorg)"]
+    WM["윈도우 매니저"] <--> XS
+    XS --> DISP1["하드웨어 화면 표출"]
+  end
+  subgraph WAYLAND_ARCH["차세대 Wayland 구조"]
+    WC["Wayland 클라이언트<br/>(직접 렌더링)"] <-->|Wayland 프로토콜| COMP["컴포지터 (Weston/Mutter)<br/>(합성 및 디스플레이 제어)"]
+    COMP --> DISP2["KMS/DRM 하드웨어 표출"]
+  end
+  style XS fill:#fee2e2,stroke:#ef4444,stroke-width:1px
+  style COMP fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b`,
+  },
+  {
+    id: "roi-47",
+    sectionId: "xwindow-security",
+    sectionName: "X-Window·IT활용",
+    grade: "B",
+    stars: 3,
+    frequencyRate: "출제율 88%+",
+    title: "X-Window 디스플레이 제어 유틸리티 (xrandr, xset, xdpyinfo)",
+    formula: "xrandr: 모니터 해상도, 주사율, 다중 디스플레이(듀얼모니터) 설정 변경 / xset: X 윈도우 환경설정(키보드 반복속도, 마우스 감도, 모니터 절전 DPMS, 화면보호기) / xdpyinfo: 현재 X 서버의 디스플레이 해상도·색상수·화면정보 출력 / xwininfo: 특정 창의 ID와 기하학적 정보 출력",
+    trap: "화면 해상도를 동적으로 변경하거나 듀얼 모니터를 설정하는 명령어는 'xrandr'! 화면보호기나 키보드/마우스 감도를 조절하는 명령어는 'xset'!",
+    tags: ["xrandr", "xset", "xdpyinfo", "xwininfo", "해상도", "DPMS"],
+  },
+  {
+    id: "roi-48",
+    sectionId: "xwindow-security",
+    sectionName: "X-Window·IT활용",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 96%+",
+    title: "SELinux (보안 강화 리눅스) 3대 동작 모드 & 제어 명령어",
+    formula: "3대 모드: Enforcing(보안 정책 강제 적용 및 차단), Permissive(경고 로그만 기록하고 실제 차단은 안 함), Disabled(기능 완전 끔) / 확인: getenforce / 임시 변경: setenforce 1 (Enforcing) 또는 setenforce 0 (Permissive) / 영구 설정 파일: /etc/selinux/config",
+    trap: "[단골 15번 함정] 1) setenforce로는 Enforcing(1)과 Permissive(0) 간 전환만 가능하며, Disabled로 바꾸려면 반드시 '/etc/selinux/config' 수정 후 '재부팅'해야 함! 2) 정책 위반을 차단하지 않고 로그만 남기는 모드는 'Permissive'!",
+    tags: ["SELinux", "Enforcing", "Permissive", "Disabled", "getenforce", "setenforce", "강제접근통제"],
+  },
+  {
+    id: "roi-49",
+    sectionId: "xwindow-security",
+    sectionName: "X-Window·IT활용",
+    grade: "S",
+    stars: 5,
+    frequencyRate: "출제율 97%+",
+    title: "클라우드 IaaS 플랫폼 오픈스택 (OpenStack) 6대 핵심 컴포넌트",
+    formula: "Nova(컴퓨팅/가상머신 인스턴스 관리) / Swift(객체 스토리지, 대용량 비정형) / Cinder(블록 스토리지, 가상디스크) / Neutron(네트워크 및 IP 관리) / Keystone(인증 및 권한 관리 토큰) / Glance(가상머신 VM 디스크 이미지 저장소) / Horizon(웹 대시보드 GUI)",
+    trap: "[클라우드 짝짓기 단골!] 1) 인증 및 사용자 관리는 'Keystone'! 2) 가상머신 이미지(ISO/QCOW2) 관리는 'Glance'! 3) 블록 스토리지는 'Cinder', 오브젝트 스토리지는 'Swift'!",
+    tags: ["OpenStack", "Nova", "Swift", "Cinder", "Neutron", "Keystone", "Glance", "IaaS"],
+    diagramTitle: "OpenStack 핵심 6대 컴포넌트 상호작용 아키텍처",
+    mermaidChart: `flowchart TD
+  HORIZON["Horizon (웹 대시보드 UI)"] --> KEYSTONE["Keystone (통합 인증 & 서비스 카탈로그)"]
+  NOVA["Nova (가상머신 컴퓨팅 연산)"] <--> KEYSTONE
+  NEUTRON["Neutron (소프트웨어 가상 네트워크)"] <--> KEYSTONE
+  GLANCE["Glance (VM 디스크 이미지 저장소)"] <--> KEYSTONE
+  CINDER["Cinder (블록 스토리지)"] <--> KEYSTONE
+  SWIFT["Swift (오브젝트 스토리지)"] <--> KEYSTONE
+  NOVA -.-> GLANCE
+  NOVA -.-> NEUTRON
+  NOVA -.-> CINDER
+  style KEYSTONE fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
+  style NOVA fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+  style HORIZON fill:#ecfdf5,stroke:#059669,stroke-width:2px,color:#064e3b`,
+  },
+  {
+    id: "roi-50",
+    sectionId: "xwindow-security",
+    sectionName: "X-Window·IT활용",
+    grade: "A",
+    stars: 4,
+    frequencyRate: "출제율 94%+",
+    title: "도커(Docker) 명령어 & Dockerfile 7대 핵심 지시어",
+    formula: "Dockerfile 지시어: FROM(베이스 이미지), RUN(빌드 시 패키지 설치 명령어), CMD(컨테이너 시작 시 기본 실행 명령), ENTRYPOINT(고정 실행 명령), COPY(호스트 파일 복사), ENV(환경변수 설정), EXPOSE(수신 대기 포트 지정) / CLI: docker build -t [태그] . , docker run -d -p 80:80 [이미지]",
+    trap: "1) 컨테이너가 실행될 때 기본적으로 실행되는 명령어를 정의하는 지시어는 'CMD' 또는 'ENTRYPOINT'! 2) 베이스 이미지를 지정하는 지시어는 가장 첫 줄에 오는 'FROM'!",
+    tags: ["Docker", "Dockerfile", "FROM", "RUN", "CMD", "ENTRYPOINT", "COPY", "EXPOSE"],
+  },
 ];
 
 // =====================================================================
-// === PART 4 & 5 고난도 함정 기출 10선 데이터
+// === PART 4 & 5 고난도 함정 기출 15선 데이터 (Q1 ~ Q15)
 // =====================================================================
 export interface KillerTrapQuestion {
   id: number;
@@ -685,10 +1055,85 @@ export const KILLER_TRAP_QUESTIONS: KillerTrapQuestion[] = [
     explanation: "이름 풀이(Name Resolution) 시 /etc/hosts 파일과 DNS(bind) 중 검색 참조 순서('order hosts, bind')를 지정하는 파일은 '/etc/host.conf' (또는 /etc/nsswitch.conf)입니다.",
     trapWarning: "/etc/resolv.conf는 질의할 DNS 서버의 IP 주소(nameserver)를 지정하는 파일이지 검색 우선순위를 정하는 파일이 아닙니다!",
   },
+  {
+    id: 11,
+    category: "LVM 스토리지",
+    question: "새로운 물리 디스크 파티션(/dev/sdb1)을 추가하여 새로운 논리 볼륨(LV)을 생성하고 마운트하려고 한다. 올바른 작업 순서는?",
+    options: [
+      "pvcreate -> vgcreate -> lvcreate -> mkfs -> mount",
+      "vgcreate -> pvcreate -> lvcreate -> mkfs -> mount",
+      "lvcreate -> vgcreate -> pvcreate -> mkfs -> mount",
+      "pvcreate -> lvcreate -> vgcreate -> mount -> mkfs",
+    ],
+    correctAnswer: 1,
+    answerText: "① pvcreate -> vgcreate -> lvcreate -> mkfs -> mount",
+    explanation: "LVM은 반드시 물리 볼륨(PV: pvcreate) 생성 -> 볼륨 그룹(VG: vgcreate) 풀 생성 -> 논리 볼륨(LV: lvcreate) 분할 생성 -> 파일시스템 포맷(mkfs) -> 마운트(mount) 순서로 진행됩니다.",
+    trapWarning: "PV(Physical) -> VG(Group) -> LV(Logical)의 계층적 포함 관계를 거꾸로 꼬아 출제하는 전형적인 순서 배열 함정입니다!",
+  },
+  {
+    id: 12,
+    category: "systemd 런레벨",
+    question: "CentOS 7 이상 환경에서 서버 부팅 시 X 윈도우 GUI 화면이 아닌 콘솔 텍스트 모드(과거 런레벨 3)로 영구 부팅되도록 기본 타깃을 변경하는 명령어로 올바른 것은?",
+    options: [
+      "systemctl isolate multi-user.target",
+      "systemctl set-default multi-user.target",
+      "systemctl set-default graphical.target",
+      "systemctl enable rescue.target",
+    ],
+    correctAnswer: 2,
+    answerText: "② systemctl set-default multi-user.target",
+    explanation: "부팅 시 적용되는 기본 타깃 유닛을 영구적으로 변경할 때는 'systemctl set-default' 명령어를 사용하며, 텍스트 콘솔 다중사용자 환경은 'multi-user.target'입니다.",
+    trapWarning: "'systemctl isolate multi-user.target'은 현재 세션에서 즉시 런레벨을 전환하는 일시적 명령이며, 재부팅 후에도 유지되도록 영구 설정하려면 반드시 'set-default'를 써야 합니다!",
+  },
+  {
+    id: 13,
+    category: "방화벽 관리",
+    question: "firewalld 방화벽 데몬에서 외부 웹 서버 접속을 위해 80/tcp 포트를 개방하고자 한다. 시스템 재부팅이나 방화벽 리로드 후에도 규칙이 영구적으로 유지되도록 설정하는 명령어로 올바른 것은?",
+    options: [
+      "firewall-cmd --add-port=80/tcp",
+      "firewall-cmd --permanent --add-port=80/tcp",
+      "firewall-cmd --reload --add-port=80/tcp",
+      "iptables -A INPUT -p tcp --dport 80 -j PERMANENT",
+    ],
+    correctAnswer: 2,
+    answerText: "② firewall-cmd --permanent --add-port=80/tcp",
+    explanation: "firewall-cmd에서 규칙을 영구적으로 저장하려면 반드시 '--permanent' 옵션을 붙여야 합니다. (적용 후 firewall-cmd --reload 필요)",
+    trapWarning: "1번 보기처럼 '--permanent' 없이 실행하면 현재 메모리 상에서만 일시적으로 열리며, 'firewall-cmd --reload'를 실행하거나 서버를 재부팅하면 규칙이 즉시 삭제됩니다!",
+  },
+  {
+    id: 14,
+    category: "접근 제어 (ACL)",
+    question: "특정 디렉터리 '/data' 내에 향후 새롭게 생성되는 모든 하위 파일과 디렉터리에 대해 사용자 'kim'에게 읽기·쓰기(rw-) 권한이 자동으로 상속되도록 설정하는 명령어로 올바른 것은?",
+    options: [
+      "setfacl -m u:kim:rw- /data",
+      "setfacl -m d:u:kim:rw- /data",
+      "getfacl -d u:kim:rw- /data",
+      "chmod 760 /data",
+    ],
+    correctAnswer: 2,
+    answerText: "② setfacl -m d:u:kim:rw- /data",
+    explanation: "하위 생성 객체에 자동 상속되는 디폴트(Default) ACL을 설정할 때는 'd:' 접두사를 붙여 'setfacl -m d:u:사용자:권한 디렉터리' 형태로 지정합니다.",
+    trapWarning: "1번 보기처럼 'd:' 없이 설정하면 현재 디렉터리 자체의 접근 권한만 변경될 뿐, 향후 새로 만들어지는 하위 파일에는 권한이 상속되지 않습니다!",
+  },
+  {
+    id: 15,
+    category: "보안 (SELinux)",
+    question: "현재 Enforcing(강제 적용) 모드로 동작 중인 SELinux를 재부팅 없이 즉시 '차단하지 않고 보안 위반 로그만 기록하는 모드(Permissive)'로 일시 전환하는 명령어로 올바른 것은?",
+    options: [
+      "setenforce 0",
+      "setenforce 1",
+      "setenforce Disabled",
+      "getenforce Permissive",
+    ],
+    correctAnswer: 1,
+    answerText: "① setenforce 0",
+    explanation: "SELinux의 런타임 모드 전환은 'setenforce [0|1]'을 사용합니다. '0'은 차단 없이 로그만 남기는 Permissive 모드이고, '1'은 위반 시 실제 차단하는 Enforcing 모드입니다.",
+    trapWarning: "숫자 매칭 함정! 0이 Permissive(경고 로그만), 1이 Enforcing(강제 차단)입니다! 또한 Disabled로 끄는 것은 setenforce로 불가능하며 /etc/selinux/config 수정 후 재부팅해야 합니다.",
+  },
 ];
 
 // =====================================================================
-// === 시험장 직전 요약 기본 템플릿
+// === 시험장 직전 요약 기본 템플릿 (18대 실전 핵심 치트시트)
 // =====================================================================
 const DEFAULT_LINUX_MEMO_TEMPLATE = `# 🐧 리눅스마스터 2급 시험장 직전 초압축 치트시트
 
@@ -697,19 +1142,25 @@ const DEFAULT_LINUX_MEMO_TEMPLATE = `# 🐧 리눅스마스터 2급 시험장 �
 - 1과목 (운영 및 관리, 48문항): 최소 20문항 이상 득점 (과락 40% 미만 방지)
 - 2과목 (리눅스 활용, 32문항): 최소 13문항 이상 득점 (과락 40% 미만 방지)
 
-## 🎯 2. 단골 옵션 & 계산 공식 TOP 10
+## 🎯 2. 단골 옵션 & 계산 공식 TOP 18
 1. [특수권한] SetUID: 4000 (/usr/bin/passwd) / SetGID: 2000 / Sticky Bit: 1000 (/tmp)
 2. [umask 0027] 디렉터리: 750 (rwxr-x---) / 파일: 640 (rw-r-----)  *639 절대 아님!*
-3. [디스크 쿼터 4단계] /etc/fstab usrquota ➔ quotacheck -augvm ➔ edquota -u ➔ quotaon -auv (repquota는 현황보고)
-4. [tar 압축 매칭] gzip: -czvf / bzip2: -cjvf / xz: -cJvf (대문자 J!) / 맨뒤추가: -r
-5. [nice 우선순위] 범위 -20(최고)~19(최저) / nice -10 bash ➔ +10 (낮아짐) / nice --10 bash ➔ -10 (높아짐)
-6. [crontab 포맷] 분(0-59) 시(0-23) 일(1-31) 월(1-12) 요일(0-7, 0·7:일) / */30 9-18 * * 1-5 (월~금 9-18시 30분간격)
-7. [시그널 6총사] 1 SIGHUP(Reload) / 2 SIGINT(Ctrl+C) / 3 SIGQUIT(Ctrl+\\) / 9 SIGKILL(강제종료) / 15 SIGTERM(기본값) / 20 SIGTSTP(Ctrl+Z)
-8. [vi 치환] :%s/기존/변경/g (문서전체 치환, % 없으면 커서행만 치환)
-9. [X-Window] xhost(호스트 IP +/- 제어) vs xauth(~/.Xauthority 쿠키 인증키) / export DISPLAY=내IP:0.0
-10. [데스크톱 매칭] GNOME = GTK+ + Nautilus + Mutter / KDE = Qt + Dolphin + KWin
-11. [네트워크 파일] /etc/hosts(로컬매핑) / /etc/resolv.conf(nameserver IP) / /etc/host.conf(order hosts, bind 순서결정)
-12. [라이선스] GPL(엄격 소스공개) / LGPL(동적링크 사용시 공개면제) / Apache 2.0(특허권 명시)
+3. [ACL 권한] 설정: setfacl -m u:user:rwx 파일 / 상속(디폴트): setfacl -m d:u:user:rwx 디렉터리 / 삭제: -x, 초기화: -b
+4. [디스크 쿼터 4단계] /etc/fstab usrquota ➔ quotacheck -augvm ➔ edquota -u ➔ quotaon -auv (repquota는 현황보고)
+5. [LVM 3단계] PV(pvcreate) ➔ VG(vgcreate/vgextend) ➔ LV(lvcreate -L 10G -n)/lvextend ➔ resize2fs/xfs_growfs
+6. [RAID 레벨] RAID 0(스트라이핑, 최소2, 100%, 내결함0) / RAID 1(미러링, 최소2, 50%, 내결함1) / RAID 5(패리티1, 최소3, N-1) / RAID 6(패리티2, 최소4, N-2)
+7. [tar 압축 매칭] gzip: -czvf / bzip2: -cjvf / xz: -cJvf (대문자 J!) / 맨뒤추가: -r
+8. [nice 우선순위] 범위 -20(최고)~19(최저) / nice -10 bash ➔ +10 (낮아짐) / nice --10 bash ➔ -10 (높아짐)
+9. [crontab 포맷] 분(0-59) 시(0-23) 일(1-31) 월(1-12) 요일(0-7, 0·7:일) / */30 9-18 * * 1-5 (월~금 9-18시 30분간격)
+10. [시그널 6총사] 1 SIGHUP(Reload) / 2 SIGINT(Ctrl+C) / 3 SIGQUIT(Ctrl+\\) / 9 SIGKILL(강제종료) / 15 SIGTERM(기본값) / 20 SIGTSTP(Ctrl+Z)
+11. [systemd 타깃] 3: multi-user.target (CLI) / 5: graphical.target (GUI) / 변경: systemctl set-default [타깃]
+12. [vi 치환] :%s/기존/변경/g (문서전체 치환, % 없으면 커서행만 치환)
+13. [방화벽] firewall-cmd --permanent --add-service=http --reload (--permanent 누락 시 리로드 후 소멸!)
+14. [네트워크 파일] /etc/hosts(로컬매핑) / /etc/resolv.conf(nameserver IP) / /etc/host.conf(order hosts, bind 순서결정)
+15. [X-Window] xhost(호스트 IP +/- 제어) vs xauth(~/.Xauthority 쿠키 인증키) / export DISPLAY=내IP:0.0
+16. [데스크톱 매칭] GNOME = GTK+ + Nautilus + Mutter / KDE = Qt + Dolphin + KWin
+17. [SELinux 모드] Enforcing(강제차단) / Permissive(로그만기록) / Disabled(완전비활성화) / 임시전환: setenforce 0(Permissive), 1(Enforcing)
+18. [오픈스택] Nova(연산) / Swift(오브젝트스토리지) / Cinder(블록스토리지) / Neutron(네트워크) / Keystone(인증) / Glance(이미지)
 
 ## ✍️ 나의 취약점 & 오답 체크리스트
 - [ ] 
@@ -730,7 +1181,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
   // 북마크 상태 (로컬스토리지 연동)
   const [starredIds, setStarredIds] = useState<string[]>([]);
 
-  // 10 Killer Trap 문제 풀이 상태
+  // 15 Killer Trap 문제 풀이 상태
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
   const [showExplanation, setShowExplanation] = useState<Record<number, boolean>>({});
 
@@ -890,7 +1341,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
             <div className="flex flex-col text-left">
               <span className="text-xs font-bold leading-tight">리눅스마스터 2급</span>
               <span className="text-[11px] font-medium text-emerald-100">
-                ROI 전략 메모장 (30선 + 함정 10선)
+                ROI 전략 메모장 (50선 + 함정 15선)
               </span>
             </div>
             {starredIds.length > 0 && (
@@ -927,7 +1378,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                 </div>
                 {!isMinimized && (
                   <p className="text-[11px] text-muted-foreground">
-                    1과목 48문항 + 2과목 32문항 초빈출 핵심 요약 30선 & 함정 10선
+                    1과목 48문항 + 2과목 32문항 초빈출 핵심 요약 50선 & 함정 15선
                   </p>
                 )}
               </div>
@@ -970,7 +1421,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                   )}
                 >
                   <Flame className="size-3.5 fill-current text-amber-500" />
-                  기출 빈출 ROI 30선
+                  기출 빈출 ROI 50선
                 </button>
                 <button
                   type="button"
@@ -983,7 +1434,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                   )}
                 >
                   <Zap className="size-3.5 text-amber-500" />
-                  단골 함정 기출 10선
+                  단골 함정 기출 15선
                   {killerStats.solved > 0 && (
                     <span className="rounded-full bg-emerald-500/20 px-1.5 py-0.2 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 ml-1">
                       {killerStats.correct}/{killerStats.total}
@@ -1008,7 +1459,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                 </button>
               </div>
 
-              {/* [TAB 1] 기출 빈출 ROI 30선 목록 */}
+              {/* [TAB 1] 기출 빈출 ROI 50선 목록 */}
               {activeTab === "roi" && (
                 <div className="flex flex-1 flex-col overflow-hidden">
                   {/* 검색 바 & 필터 */}
@@ -1020,7 +1471,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                           type="text"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          placeholder="명령어, 옵션, 키워드 검색 (예: umask, tar, nice, fdisk, xhost, quota, 640)..."
+                          placeholder="명령어, 옵션, 키워드 검색 (예: umask, LVM, RAID, systemctl, ACL, SELinux, 방화벽, 640)..."
                           className="h-9 w-full rounded-lg border border-border bg-background pl-9 pr-8 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
                         />
                         {searchQuery && (
@@ -1256,7 +1707,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                 </div>
               )}
 
-              {/* [TAB 2] 단골 함정 기출 10선 인터랙티브 풀이 */}
+              {/* [TAB 2] 단골 함정 기출 15선 인터랙티브 풀이 */}
               {activeTab === "killer" && (
                 <div className="flex flex-1 flex-col overflow-hidden">
                   {/* 함정 퀴즈 진행 상태 배너 */}
@@ -1264,7 +1715,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                     <div className="flex items-center gap-2">
                       <Zap className="size-4 text-amber-500" />
                       <span className="text-xs font-bold">
-                        단골 함정 10선 테스트 진행률: {killerStats.solved}/10 완료
+                        단골 함정 15선 테스트 진행률: {killerStats.solved}/15 완료
                       </span>
                       {killerStats.solved > 0 && (
                         <span className="rounded bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white">
@@ -1285,7 +1736,7 @@ export function LinuxFloatingMemo({ activeSectionId }: { activeSectionId?: strin
                     )}
                   </div>
 
-                  {/* 10문항 카드 리스트 */}
+                  {/* 15문항 카드 리스트 */}
                   <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     {KILLER_TRAP_QUESTIONS.map((q) => {
                       const selected = userAnswers[q.id];

@@ -18,7 +18,7 @@ export default function LinuxMindmapPage() {
               리눅스마스터 2급 마인드맵
             </h1>
             <span className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-              ROI 30선 탑재
+              ROI 50선 & 도식 15선 탑재
             </span>
           </div>
           <p className="text-muted-foreground text-sm">
