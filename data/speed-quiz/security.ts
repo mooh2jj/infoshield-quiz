@@ -1,962 +1,1452 @@
 import type { SpeedQuizChapter, SpeedQuizItem } from "./types";
 
 export const SECURITY_CHAPTERS: SpeedQuizChapter[] = [
-  { id: "system", name: "제1과목 시스템 보안", shortName: "시스템 보안" },
-  { id: "network", name: "제2과목 네트워크 보안", shortName: "네트워크 보안" },
-  { id: "application", name: "제3과목 애플리케이션 보안", shortName: "애플리케이션 보안" },
-  { id: "general", name: "제4과목 정보보안 일반", shortName: "정보보안 일반" },
-  { id: "law", name: "제5과목 정보보안 관리 및 법규", shortName: "관리 및 법규" },
+  { id: "sec-cmd", name: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션", shortName: "보안 명령어" },
+  { id: "sec-conf", name: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자", shortName: "설정 파일·지시자" },
+  { id: "sec-code", name: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점", shortName: "시큐어코딩" },
+  { id: "sec-web", name: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성", shortName: "웹·앱 보안" },
+  { id: "sec-net", name: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안", shortName: "네트워크·공격" },
+  { id: "sec-law", name: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리", shortName: "법규·관리" },
 ];
 
 export const SECURITY_QUIZ_LIST: SpeedQuizItem[] = [
   // =================================================================
-  // === [제1과목] 시스템 보안 (8문항)
+  // === [1. 명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션 (Q1 ~ Q26)
   // =================================================================
   {
     id: 1,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 시스템에서 일반 사용자가 실행할 때 파일 소유자(root)의 권한으로 임시 실행되도록 부여하는 8진수 4000번대의 특수 권한은?",
-    answer: "SetUID (SUID)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스에서 SetUID 권한(4000)이 부여된 모든 실행 파일을 루트(/)부터 검색하는 find 명령어 구문은?",
+    answer: "find / -perm -4000",
   },
   {
     id: 2,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "스택 메모리에 할당된 버퍼 크기를 초과하는 데이터를 주입하여 반환 주소(RET)를 변조해 임의의 코드를 실행하는 공격 기법은?",
-    answer: "버퍼 오버플로우 (Buffer Overflow)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "특정 파일에서 SetUID 권한만을 안전하게 제거하는 chmod 명령어 옵션은?",
+    answer: "chmod u-s <파일명>",
   },
   {
     id: 3,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "버퍼 오버플로우 공격을 방어하기 위해 스택의 RET 직전에 카나리(Canary) 값을 삽입하여 변조 여부를 검증하는 보호 기법은?",
-    answer: "스택 가드 (StackGuard / Stack Canary)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "특정 파일에서 SetGID 권한만을 안전하게 제거하는 chmod 명령어 옵션은?",
+    answer: "chmod g-s <파일명>",
   },
   {
     id: 4,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "printf 등 C언어 출력 함수의 포맷 인자(%x, %s, %n 등)를 부적절하게 검증하지 않아 메모리 내용을 읽거나 변조하는 취약점 공격은?",
-    answer: "포맷 스트링 공격 (Format String Attack)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스에서 POSIX 파일 접근 제어 목록(ACL)을 파일에 추가/수정하는 명령어는?",
+    answer: "setfacl -m",
   },
   {
     id: 5,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "자원에 대한 검사 시점(Check)과 사용 시점(Use) 사이의 시간차를 악용하여 심볼릭 링크 등을 통해 권한을 탈취하는 동시성 취약점 공격은?",
-    answer: "레이스 컨디션 (Race Condition / TOCTOU)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "파일에 설정된 확장 접근 제어 목록(ACL) 설정 내용을 확인하는 명령어는?",
+    answer: "getfacl <파일명>",
   },
   {
     id: 6,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "프로그램 실행 시마다 스택, 힙, 라이브러리 메모리 주소를 무작위로 배치하여 공격자의 악성 코드 주소 예측을 방해하는 기법은?",
-    answer: "ASLR (주소 공간 배치 무작위화)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "사용자 패스워드의 최소/최대 사용 기간, 만료 경고 일수를 조회 및 변경하는 사용자 관리 명령어는?",
+    answer: "chage",
   },
   {
     id: 7,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "시스템 내 주요 파일들의 해시(MD5/SHA 등) 값을 데이터베이스화해 두고, 주기적으로 비교하여 파일의 변조 및 백도어를 탐지하는 무결성 검사 도구는?",
-    answer: "트립와이어 (Tripwire)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "현재 시스템에서 특정 포트(예: 80번)를 열고 있거나 특정 파일을 점유 중인 프로세스를 조회하는 명령어는?",
+    answer: "lsof (또는 fuser)",
   },
   {
     id: 8,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스/유닉스 환경에서 응용 프로그램의 수정 없이 다양한 사용자 인증 방식(패스워드, OTP 등)을 모듈화하여 관리하는 프레임워크는?",
-    answer: "PAM (장착형 인증 모듈)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스 네트워크 인터페이스 패킷을 캡처하여 16진수 및 ASCII로 덤프 분석하는 CLI 패킷 캡처 도구는?",
+    answer: "tcpdump",
   },
-
-  // =================================================================
-  // === [제2과목] 네트워크 보안 (8문항)
-  // =================================================================
   {
     id: 9,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "TCP 3-Way Handshake 과정에서 대량의 SYN 패킷만을 서버로 전송하여 백로그 큐(Backlog Queue)를 고갈시키는 DoS 공격은?",
-    answer: "SYN 플러딩 (SYN Flooding)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "iptables에서 패킷의 연결 추적 상태가 이미 연결되었거나 연관된 패킷만을 허용하는 규칙 상태값은?",
+    answer: "-m state --state ESTABLISHED,RELATED",
   },
   {
     id: 10,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "공격자가 자신의 MAC 주소를 게이트웨이 또는 피해자의 MAC 주소인 것처럼 위조하여 트래픽을 도청·가로채는 공격은?",
-    answer: "ARP 스푸핑 (ARP Spoofing)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "iptables 방화벽의 기본 정책(Default Policy)을 거부(DROP)로 설정하는 명령어 옵션은?",
+    answer: "iptables -P INPUT DROP",
   },
   {
     id: 11,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "출발지 IP를 희생자 IP로 위조한 후 브로드캐스트 주소로 대량의 ICMP Echo Request를 보내 희생자를 마비시키는 증폭 공격은?",
-    answer: "스머프 공격 (Smurf Attack)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "시스템 내 주요 파일들의 무결성(해시값 변조)을 주기적으로 점검하는 대표적 HIDS 도구는?",
+    answer: "트립와이어 (Tripwire / AIDE)",
   },
   {
     id: 12,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "TCP 연결 상태의 클라이언트와 서버 사이에서 시퀀스 번호(Sequence Number)를 위조·예측하여 통신 세션 제어권을 탈취하는 공격은?",
-    answer: "TCP 세션 하이재킹 (TCP Session Hijacking)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스에서 로그인 실패 기록(btmp)을 확인하는 명령어는?",
+    answer: "lastb",
   },
   {
     id: 13,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "IP 단편화 시 오프셋(Offset)과 길이를 비정상적으로 중복 조작하여 수신 측이 패킷 재조합 시 시스템 충돌을 일으키게 하는 DoS 공격은?",
-    answer: "티어드롭 공격 (Teardrop Attack)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스에서 현재 접속 중인 사용자의 계정명, 터미널(pts), 접속 IP, 로그인 시간을 확인하는 명령어는?",
+    answer: "who (또는 w)",
   },
   {
     id: 14,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "오픈소스 기반의 대표적인 네트워크 침입 탐지 및 방지 시스템(NIDS/NIPS)으로, 패킷 캡처 및 규칙(Rule) 기반 패턴 매칭을 수행하는 도구는?",
-    answer: "스노트 (Snort)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "모든 사용자의 가장 최근 마지막 로그인 시간(lastlog 파일)을 확인하는 명령어는?",
+    answer: "lastlog",
   },
   {
     id: 15,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "IP(네트워크) 계층에서 기밀성, 무결성, 인증을 제공하며 인증 헤더(AH)와 암호화 캡슐화(ESP)로 구성된 표준 보안 프로토콜은?",
-    answer: "IPSec"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "프로세스 회계 감사(Process Accounting) 로그를 기반으로 이전에 실행된 명령어 이력을 조회하는 명령어는?",
+    answer: "lastcomm",
   },
   {
     id: 16,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "출발지 IP를 피해자 IP로 변조한 후 개방형 DNS 재귀 서버에 대량의 질의를 보내 대용량 응답 트래픽으로 공격하는 반사 증폭 DRDoS는?",
-    answer: "DNS 증폭 DRDoS 공격"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "네트워크 카드를 무차별 모드(Promiscuous Mode)로 설정하여 네트워크의 모든 패킷을 스니핑하도록 하는 ifconfig 옵션은?",
+    answer: "ifconfig eth0 promisc",
   },
-
-  // =================================================================
-  // === [제3과목] 애플리케이션 보안 (8문항)
-  // =================================================================
   {
     id: 17,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹 애플리케이션의 입력값 검증 미흡을 악용하여 악의적인 SQL 구문을 삽입함으로써 DB를 무단 조회·변조하는 웹 공격은?",
-    answer: "SQL 인젝션 (SQL Injection)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "윈도우에서 실행 중인 프로세스와 열려 있는 포트 매핑을 PID와 함께 확인하는 netstat 옵션은?",
+    answer: "netstat -ano",
   },
   {
     id: 18,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹사이트에 악성 스크립트를 삽입하여 이를 열람하는 피해자의 브라우저에서 세션 쿠키 탈취 등의 악의적 행위를 수행하는 공격은?",
-    answer: "XSS (크로스 사이트 스크립팅)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스에서 sudo 권한 설정 파일인 /etc/sudoers를 안전하게 문법 검증하며 편집하는 전용 명령어는?",
+    answer: "visudo",
   },
   {
     id: 19,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "로그인된 피해자의 권한과 신뢰 관계를 도용하여 공격자가 의도한 위조 요청(비밀번호 변경, 송금 등)을 강제로 전송하게 하는 공격은?",
-    answer: "CSRF (크로스 사이트 요청 위조)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "사용자 셸에서 코어 덤프(Core Dump) 파일 생성을 비활성화(크기 0)하여 메모리 정보 유출을 차단하는 ulimit 명령어는?",
+    answer: "ulimit -c 0",
   },
   {
     id: 20,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹 파라미터에 '../' 와 같은 경로 순회 문자를 주입하여 웹 루트 외부의 시스템 파일(/etc/passwd 등)에 무단 접근하는 공격은?",
-    answer: "디렉토리 트래버설 (Directory Traversal)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스 파일시스템에서 삭제/수정/이름변경을 방지하는 불변 속성(immutable)을 지정하는 명령어는?",
+    answer: "chattr +i <파일명>",
   },
   {
     id: 21,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "공격자가 취약한 웹 서버를 조작하여 서버가 내부 네트워크의 비공개 자원이나 인트라넷 서비스로 요청을 보내도록 유도하는 공격은?",
-    answer: "SSRF (Server-Side Request Forgery)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "파일에 설정된 특수 속성(immutable, append-only 등)을 조회하는 명령어는?",
+    answer: "lsattr <파일명>",
   },
   {
     id: 22,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "애플리케이션 계층(OSI 7계층)에서 HTTP/HTTPS 트래픽을 검사하여 SQL 인젝션, XSS 등 웹 공격을 전문적으로 방어하는 전용 보안 장비는?",
-    answer: "WAF (웹 방화벽)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "윈도우에서 파일이나 디렉터리의 NTFS 접근 제어 목록(DACL)을 명령줄에서 확인·수정하는 명령어는?",
+    answer: "icacls (또는 cacls)",
   },
   {
     id: 23,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "이메일 헤더에 발신자의 디지털 서명을 첨부하고 수신 측이 발신 도메인의 DNS 공개키로 서명을 검증하여 메일 위조를 방지하는 기술은?",
-    answer: "DKIM (도메인키 식별 메일)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "커널 메모리 주소(스택, 힙, 라이브러리)를 실행마다 무작위로 변경하는 리눅스 ASLR 설정 파일 경로는?",
+    answer: "/proc/sys/kernel/randomize_va_space",
   },
   {
     id: 24,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹 브라우저에서 프로토콜, 호스트, 포트 번호가 모두 일치하는 출처(Origin)의 스크립트만 문서(DOM)와 데이터에 접근을 허용하는 핵심 보안 정책은?",
-    answer: "SOP (동일 출처 정책)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "SYN Stealth Scan(Half-Open Scan)을 수행하기 위한 nmap 명령어 옵션은?",
+    answer: "nmap -sS <목적지>",
   },
-
-  // =================================================================
-  // === [제4과목] 정보보안 일반 (7문항)
-  // =================================================================
   {
     id: 25,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "미국 NIST 표준 대칭키 블록 암호 알고리즘으로, 128비트 블록 크기와 128/192/256비트 키 길이를 지원하는 현대 표준 암호는?",
-    answer: "AES (Advanced Encryption Standard)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "TCP 헤더의 FIN, PSH, URG 플래그를 모두 1로 설정하여 방화벽을 우회 탐색하는 nmap 스캔 옵션은?",
+    answer: "nmap -sX (XMAS Scan)",
   },
   {
     id: 26,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "두 개의 거대한 소수의 곱을 소인수분해하기 어렵다는 수학적 난제를 기반으로 동작하는 대표적인 비대칭키(공개키) 암호 알고리즘은?",
-    answer: "RSA (Rivest-Shamir-Adleman)"
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스 시스템 감사 데몬 auditd의 감사 규칙을 실시간으로 추가·조회하는 명령어는?",
+    answer: "auditctl",
   },
+
+  // =================================================================
+  // === [2. 설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자 (Q27 ~ Q52)
+  // =================================================================
   {
     id: 27,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "사전 비밀키 공유 없이 공개된 통신망에서 이산대수의 어려움을 이용하여 안전하게 대칭 세션키를 공유할 수 있게 해주는 알고리즘은?",
-    answer: "디피-헬만 (Diffie-Hellman) 키 교환"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "BIND DNS 서버의 zone 파일 매핑, 접근 제어, 캐시 정책을 관리하는 주 설정 파일은?",
+    answer: "named.conf",
   },
   {
     id: 28,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "송신자의 개인키로 해시값을 암호화하고 수신자가 송신자의 공개키로 검증하여 위조 방지, 무결성, 부인 방지를 제공하는 기술은?",
-    answer: "전자서명 (Digital Signature)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 클라이언트가 질의할 로컬 네임서버 IP 주소 목록을 지정하는 설정 파일 경로는?",
+    answer: "/etc/resolv.conf",
   },
   {
     id: 29,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "타원곡선 상의 이산대수 난이도에 기반하여 RSA 대비 훨씬 짧은 키 길이(256비트)로 대등한 보안 강도를 제공하는 공개키 암호는?",
-    answer: "ECC (타원곡선 암호)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "원격 r-command(rsh, rlogin) 계열에서 패스워드 없이 호스트 간 무인증 로그인을 허용하는 전역 설정 파일은?",
+    answer: "/etc/hosts.equiv",
   },
   {
     id: 30,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "송·수신자가 공유하는 비밀키와 원본 메시지를 해시 함수에 입력하여 생성하며 데이터 무결성과 송신자 인증을 검증하는 코드는?",
-    answer: "MAC (메시지 인증 코드 / HMAC)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "/etc/hosts.equiv 및 ~/.rhosts 설정 시 보안 가이드 기준 적정 파일 권한과 파일 내 금지되는 기호는?",
+    answer: "600 이하, '+'(플러스 와일드카드)",
   },
   {
     id: 31,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "정보보호의 3대 핵심 목표로서 인가된 접근만 허용하는 기밀성, 변조를 막는 무결성, 필요 시 사용을 보장하는 가용성을 일컫는 용어는?",
-    answer: "CIA 트라이어드 (보안 3대 요소)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 계정 패스워드의 최소 길이(PASS_MIN_LEN), 최대 사용일(PASS_MAX_DAYS)을 설정하는 기본 파일은?",
+    answer: "/etc/login.defs",
   },
-
-  // =================================================================
-  // === [제5과목] 정보보안 관리 및 법규 (6문항)
-  // =================================================================
   {
     id: 32,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "조직의 정보보호 및 개인정보보호 관리체계가 국가 기준에 적합한지 한국인터넷진흥원(KISA) 등이 종합 심사하는 국내 공인 인증 제도는?",
-    answer: "ISMS-P"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "SSH 서버(sshd)에서 관리자(root)의 원격 직접 로그인을 차단하기 위해 설정해야 하는 지시자는?",
+    answer: "PermitRootLogin no",
   },
   {
     id: 33,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "기업이나 기관의 정보보안 종합 대책을 수립하고 보안 예산, 인력 및 기술적 보호대책을 총괄 지휘하는 임원급 최고 책임자는?",
-    answer: "CISO (정보보호 최고책임자)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "SSH 서버에서 패스워드 인증을 비활성화하고 오직 공개키 인증만 허용하는 sshd_config 지시자는?",
+    answer: "PasswordAuthentication no",
   },
   {
     id: 34,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "개인정보보호법에 따라 기업이나 공공기관에서 개인정보의 처리와 보호, 정보주체 권리 구제 및 유출 방지를 총괄하는 책임자는?",
-    answer: "CPO (개인정보 보호책임자)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "NFS 공유 설정 파일(/etc/exports)에서 root 사용자의 권한을 익명(nobody)으로 강등시키는 필수 보안 옵션은?",
+    answer: "root_squash",
   },
   {
     id: 35,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "재난 발생 시 비즈니스 기능 중단에 따른 재정적·운영적 손실을 평가하여 각 업무의 복구 우선순위를 결정하는 체계적 분석 기법은?",
-    answer: "BIA (업무 영향 분석)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 TCP Wrapper 접근 제어에서 서비스별로 접근 허용 및 거부 호스트를 정의하는 2대 파일은?",
+    answer: "/etc/hosts.allow, /etc/hosts.deny",
   },
   {
     id: 36,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "재난 및 장애 발생 시점부터 업무가 정상적으로 복구되어 재가동될 때까지 허용되는 최대 목표 복구 시간을 의미하는 지표는?",
-    answer: "RTO (Recovery Time Objective, 목표 복구 시간)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "사용자 로그인 실패 시 계정을 잠그기 위해 /etc/pam.d/system-auth에 설정하는 PAM 모듈명은?",
+    answer: "pam_faillock (또는 pam_tally2)",
   },
   {
     id: 37,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "악성코드 감염 및 기밀 유출 방지를 위해 사내 업무망(내부망)과 인터넷망(외부망)을 물리적 또는 가상화로 분리하는 조치는?",
-    answer: "망분리 (물리적/논리적 망분리)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "아파치(Apache) 웹 서버에서 디렉터리 내 파일 목록이 웹 브라우저에 그대로 노출되는 취약점을 막기 위해 제거해야 하는 옵션은?",
+    answer: "Indexes (Options -Indexes)",
   },
-
-  // =================================================================
-  // === [실기 연계 특별 테마] 최신 실기 빈출 핵심 스피드 퀴즈 (15문항)
-  // =================================================================
   {
     id: 38,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "윈도우 NTFS 파일 시스템에서 정상 파일 뒤에 숨겨진 별도 데이터 스트림을 연결할 수 있어 악성코드 은닉에 악용되는 고유 기능은?",
-    answer: "ADS (대체 데이터 스트림 / Alternate Data Streams)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "아파치 웹 서버 응답 헤더에서 웹 서버의 상세 버전 및 OS 정보를 숨기기 위해 설정하는 2대 지시자는?",
+    answer: "ServerTokens Prod, ServerSignature Off",
   },
   {
     id: 39,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "메신저 통신 시 중계 서버 관리자나 통신 사업자조차 복호화 키가 없어 평문을 열람할 수 없도록 송·수신 단말 간에만 암호화를 수행하는 기술은?",
-    answer: "E2EE (종단간 암호화 / End-to-End Encryption)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "Nginx 웹 서버 응답 헤더에서 Nginx 버전 번호 노출을 숨기는 nginx.conf 지시자는?",
+    answer: "server_tokens off;",
   },
   {
     id: 40,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "사내 민감 정보나 기밀 데이터가 USB, 이메일, 메신저 등을 통해 외부로 불법 유출되는 것을 콘텐츠 기반으로 탐지 및 차단하는 보안 솔루션은?",
-    answer: "DLP (데이터 유출 방지 / Data Loss Prevention)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "DNS 존 전송(Zone Transfer) 취약점을 막기 위해 BIND named.conf의 options 블록에 특정 2차 네임서버만 지정하는 지시자는?",
+    answer: "allow-transfer { <보조DNS_IP>; };",
   },
   {
     id: 41,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "DNS 리졸버가 네임서버로부터 수신한 IP 매핑 레코드를 캐시에 보관하여 재사용할 수 있는 유효 시간(초 단위)을 나타내는 리소스 레코드 필드는?",
-    answer: "TTL (Time To Live)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "BIND DNS 서버에서 외부 임의 호스트에 대한 재귀적 질의(Recursion)를 차단하여 DNS 증폭 공격을 막는 지시자는?",
+    answer: "recursion no;",
   },
   {
     id: 42,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스에서 프로세스 어카운팅(pacct) 감사 기능을 활성화했을 때, 종료된 프로세스의 실행 명령어와 실행 사용자 이력을 조회하는 명령어는?",
-    answer: "lastcomm"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "SNMPv1/v2c에서 사실상 평문 패스워드 역할을 하며 무단 설정 변경을 막기 위해 반드시 변경해야 하는 기본 문자열은?",
+    answer: "Community String (기본값: public, private)",
   },
   {
     id: 43,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "모바일 앱에 신뢰할 수 있는 서버의 공개키나 인증서 해시를 하드코딩하여 프록시 도구를 통한 중간자(MITM) 패킷 감청을 원천 차단하는 기법은?",
-    answer: "인증서 피닝 (Certificate Pinning / SSL Pinning)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 시스템에서 일반 계정 생성 시 기본 파일 권한 마스크(umask)를 정의하는 전역 환경 설정 파일은?",
+    answer: "/etc/profile (또는 /etc/bashrc)",
   },
   {
     id: 44,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "유효하지 않은 NULL 주소를 가리키는 포인터를 통해 메모리 값에 직접 접근을 시도하여 프로세스 비정상 종료(Segmentation Fault)를 초래하는 보안 약점은?",
-    answer: "널 포인터 역참조 (Null Pointer Dereference / CWE-476)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "관리자(root)의 환경변수 PATH에서 현재 디렉터리('.')가 맨 앞이나 중간에 포함되면 안 되는 보안 이유는?",
+    answer: "트로이 목마/악성 실행 파일 우선 실행 방지 (경로 조작 방어)",
   },
   {
     id: 45,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "지능형 지속 위협(APT) 공격 과정을 '정찰 -> 무기화 -> 전달 -> 취약점 공격 -> 설치 -> C2 -> 행동'의 7단계로 모델링한 보안 프레임워크는?",
-    answer: "사이버 킬체인 (Cyber Kill Chain)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "crontab 작업 스케줄러 사용을 허용 및 제한하는 리눅스 보안 설정 파일 2가지는?",
+    answer: "/etc/cron.allow, /etc/cron.deny",
   },
   {
     id: 46,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "취약한 웹 서버가 공격자가 조작한 URL로 대리 요청을 보내도록 유도하여 외부에서 접근할 수 없는 내부망 자원이나 클라우드 메타데이터(169.254.169.254)를 탈취하는 공격은?",
-    answer: "SSRF (서버 측 요청 위조 / Server-Side Request Forgery)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 rsyslog에서 인증 관련 모든 수준의 로그를 /var/log/secure에 기록하도록 지정하는 문법은?",
+    answer: "authpriv.* /var/log/secure",
   },
   {
     id: 47,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 시스템에서 실행 중인 프로세스가 오픈한 파일 디스크립터 목록이나 특정 포트를 점유하고 있는 네트워크 소켓(`-i` 옵션)을 확인하는 명령어는?",
-    answer: "lsof (List Open Files)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "윈도우 IIS 웹 서버에서 요청 URL의 최대 길이 및 쿼리스트링 길이를 제한하는 web.config 설정 요소는?",
+    answer: "<requestLimits maxUrl=\"...\" maxQueryString=\"...\" />",
   },
   {
     id: 48,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 시스템에서 무차별 대입 공격 등을 분석하기 위해 `/var/log/btmp`에 기록된 로그인 실패 이력을 조회하는 명령어는?",
-    answer: "lastb"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "웹 서버 루트에 위치하여 검색엔진 크롤러의 관리자 페이지 등 민감 경로 접근을 차단하도록 권고하는 텍스트 파일은?",
+    answer: "robots.txt",
   },
   {
     id: 49,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "희생자 IP로 위조된 ICMP Echo Request 브로드캐스트 패킷의 유입 및 반사 증폭을 차단하기 위해 라우터 인터페이스에 적용하는 Cisco 명령어는?",
-    answer: "no ip directed-broadcast"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스에서 su 명령어를 통한 root 전환 권한을 특정 관리 그룹(wheel)으로 제한하는 PAM 설정 파일은?",
+    answer: "/etc/pam.d/su (pam_wheel.so)",
   },
   {
     id: 50,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "윈도우 NetBIOS over TCP/IP(137~139) 서비스에서 패스워드 없이 익명 연결을 맺어 원격에서 계정 및 공유 폴더 목록을 열거하는 데 악용되는 취약점은?",
-    answer: "널 세션 (Null Session)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "세션 타임아웃을 강제하기 위해 /etc/profile에 정의해야 하는 셸 환경변수명은? (초 단위)",
+    answer: "TMOUT (예: TMOUT=300)",
   },
   {
     id: 51,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "Java 웹 개발 시 SQL 쿼리의 구조와 사용자 입력값을 분리하여 위치 홀더(`?`)에 파라미터를 바인딩함으로써 SQL 인젝션을 원천 차단하는 JDBC 객체는?",
-    answer: "PreparedStatement"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "MySQL/MariaDB에서 원격 루트 접속을 원천 차단하기 위해 my.cnf에 로컬 루프백만 바인딩하는 지시자는?",
+    answer: "bind-address = 127.0.0.1",
   },
   {
     id: 52,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "NTP 서버의 최근 접속 클라이언트 최대 600개 목록을 반환하는 특성을 악용하여 수백 배의 트래픽을 희생자에게 반사 집중시키는 DRDoS 공격 명령어는?",
-    answer: "monlist (NTP monlist)"
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "Apache 웹 서버에서 Slowloris 공격을 완화하기 위해 HTTP 요청 헤더와 바디 수신 제한 시간을 설정하는 모듈은?",
+    answer: "mod_reqtimeout",
   },
+
+  // =================================================================
+  // === [3. 시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점 (Q53 ~ Q82)
+  // =================================================================
   {
     id: 53,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "디스크 없는 호스트(Diskless Host) 등이 부팅 시 자신의 물리적 MAC 주소는 알지만 논리적 IP 주소를 모를 때 IP를 할당받기 위해 사용하는 프로토콜은?",
-    answer: "RARP (Reverse ARP)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "C언어에서 버퍼 크기를 검사하지 않아 버퍼 오버플로우를 유발하는 대표적 취약 함수 3가지는?",
+    answer: "strcpy, gets, sprintf (또는 strcat, scanf)",
   },
   {
     id: 54,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "정보화 사업 추진(CIO)과 정보보호 통제(CISO) 간의 이해 상충을 방지하기 위해 전자금융거래법 및 망법에서 규정한 CISO의 핵심 인사 제한 규정은?",
-    answer: "CISO 겸직 금지"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "strcpy 함수의 버퍼 오버플로우를 방지하기 위해 복사할 최대 버퍼 크기를 명시하는 안전한 C 표준 대체 함수는?",
+    answer: "strncpy (또는 strlcpy, strncpy_s)",
   },
   {
     id: 55,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "클라이언트의 요청 헤더를 그대로 에코(반사)하여 반환하는 디버깅용 메서드로, XSS와 결합 시 HttpOnly 쿠키까지 탈취하는 XST 공격에 악용되는 HTTP 메서드는?",
-    answer: "TRACE (XST / Cross-Site Tracing)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "gets() 함수의 취약점을 대체하여 버퍼 크기와 입력 스트림(stdin)을 함께 전달받는 안전한 함수는?",
+    answer: "fgets",
   },
   {
     id: 56,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "MS SQL Server에서 데이터베이스 계정으로 윈도우 운영체제의 커맨드 쉘(cmd.exe) 명령어를 실행할 수 있어 보안상 비활성화해야 하는 확장 저장 프로시저는?",
-    answer: "xp_cmdshell"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "Java JDBC에서 문자열 결합 SQL 인젝션을 원천 차단하기 위해 파라미터 바인딩('?')을 사용하는 인터페이스는?",
+    answer: "PreparedStatement",
   },
   {
     id: 57,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "TCP 3-Way Handshake를 완료하지 않고 SYN 패킷 전송 후 SYN/ACK 응답을 받으면 즉시 RST를 전송하여 대상 시스템에 접속 로그를 남기지 않는 스캔 기법은?",
-    answer: "SYN 스캔 (Half-Open Scan)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "MyBatis 프레임워크에서 문자열 직접 치환('${}') 대신 PreparedStatement 파라미터 바인딩으로 매핑하는 표현식은?",
+    answer: "#{변수명}",
   },
   {
     id: 58,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "TCP 제어 플래그 중 FIN, PSH, URG 플래그를 모두 1로 설정하여 크리스마스 트리처럼 불을 켠 형태로 패킷을 전송하는 스텔스 포트 스캔 기법은?",
-    answer: "XMAS 스캔 (Xmas Scan)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "printf(user_input)과 같이 포맷 스트링 인자(%x, %n 등)를 직접 전달할 때 발생하는 소프트웨어 보안약점은?",
+    answer: "포맷 스트링 취약점 (Format String Vulnerability)",
   },
   {
     id: 59,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "단 하나의 공인 IP 주소에 고유한 레이어 4 포트(Port) 번호를 매핑하여 수많은 내부 사설 단말기가 동시에 인터넷에 접속할 수 있도록 하는 N:1 주소 변환 기술은?",
-    answer: "PAT (Port Address Translation / NAPT)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "C언어에서 시스템 쉘(/bin/sh)을 호출하는 system()이나 popen() 대신 명령어와 인자를 분리 실행하는 안전한 API 군은?",
+    answer: "execve (또는 exec 계열)",
   },
   {
     id: 60,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "주 센터와 동일한 전산 설비를 원격지에 구축하고 데이터를 실시간(동기식)으로 이중화 복제하여 재해 발생 시 즉시(RTO=0) 서비스 전환이 가능한 재해복구센터 형태는?",
-    answer: "미러 사이트 (Mirror Site)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "자원에 대한 권한 검증 시점(Check)과 실제 자원 사용 시점(Use) 사이의 경쟁 상태를 악용하는 보안약점은?",
+    answer: "레이스 컨디션 (Race Condition / TOCTOU)",
   },
   {
     id: 61,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "전산실 공간, 전력, 공조 시설 등 기본 인프라만 확보해 두고 재해 발생 시 장비 도입과 데이터 복원을 시작하여 복구 시간(RTO)이 수주~수개월 걸리는 가장 저렴한 재해복구센터 형태는?",
-    answer: "콜드 사이트 (Cold Site)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "파일 경로 입력값에서 상위 디렉터리 이동 문자열('../', '..\\')을 악용하여 시스템 파일에 접근하는 공격은?",
+    answer: "경로 조작 및 자원 삽입 (Path Traversal / Directory Traversal)",
   },
   {
     id: 62,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 시스템에서 umask 값이 027로 설정되어 있을 때, 사용자가 `touch` 명령어로 생성한 일반 파일(기본 666)의 최종 8진수 접근 권한 숫자는?",
-    answer: "640 (rw-r-----)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "Java에서 경로 조작(Path Traversal)을 방어하기 위해 정규화된 절대 경로를 구하는 Path/File 메서드는?",
+    answer: "toRealPath() (또는 getCanonicalPath())",
   },
   {
     id: 63,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "MyBatis 프레임워크에서 문자열 치환(`${}`) 대신 SQL 인젝션을 원천 방지하기 위해 내부적으로 PreparedStatement의 `?` 바인딩을 적용하는 문법은?",
-    answer: "#{ } (파라미터 바인딩)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "보안 기능(난수, 세션 토큰, 솔트) 구현 시 java.util.Random 대신 반드시 사용해야 하는 암호학적 안전 난수 생성 클래스는?",
+    answer: "java.security.SecureRandom",
   },
   {
     id: 64,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "안드로이드 AndroidManifest.xml에서 외부 비인가 앱이 임의로 액티비티나 서비스를 실행하지 못하도록 비공개 컴포넌트에 선언해야 하는 속성 값은?",
-    answer: "android:exported=\"false\""
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "패스워드를 단순 MD5/SHA 해시하지 않고 솔트(Salt)와 반복 연산(Key Stretching)을 적용하는 전용 암호화 함수는?",
+    answer: "PBKDF2 (또는 bcrypt, scrypt, Argon2)",
   },
   {
     id: 65,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스에서 `/var/log/lastlog` 파일을 참조하여 시스템에 등록된 모든 사용자 계정의 '가장 최근(마지막) 로그인 시각과 접속 IP'를 일괄 조회하는 명령어는?",
-    answer: "lastlog"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "XML 파서에서 외부 DTD 및 외부 일반 엔티티 참조를 처리할 때 시스템 내부 파일이 탈취되는 취약점은?",
+    answer: "XML 외부 개체 참조 취약점 (XXE, XML External Entity)",
   },
   {
     id: 66,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "오라클 DB에서 단순 테이블 접근 여부를 넘어 '급여 > 1000만원' 등 특정 조건문(WHERE 절)에 부합하는 세부 데이터 행(Row) 단위로 정밀하게 감사를 기록하는 기법은?",
-    answer: "FGA (Fine-Grained Auditing / 미세 조정 감사)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "Java DocumentBuilderFactory에서 XXE 취약점을 방어하기 위해 비활성화해야 하는 핵심 보안 기능 속성은?",
+    answer: "setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)",
   },
   {
     id: 67,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "개인정보 유출이나 해킹 사고로 인한 거액의 재무적 손실에 대비하여 '정보보호 배상책임보험'에 가입하거나 보안관제를 전문 업체에 위탁하는 위험 처리 전략은?",
-    answer: "위험 전가 (Risk Transfer / 공유)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "정규식(RegEx) 엔진의 과도한 역추적(Backtracking)으로 인해 CPU 점유율이 100%에 달해 서버가 마비되는 DoS 취약점은?",
+    answer: "ReDoS (Regular Expression Denial of Service)",
   },
   {
     id: 68,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "노후화되어 보안 패치가 중단된 취약한 결제 모듈의 위험을 제거하기 위해 해당 비즈니스 서비스를 전면 중단하고 폐쇄하는 위험 처리 전략은?",
-    answer: "위험 회피 (Risk Avoidance)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "신뢰할 수 없는 외부 직렬화 데이터를 역직렬화(Deserialization)할 때 원격 코드 실행(RCE)이 유발되는 보안약점은?",
+    answer: "안전하지 않은 역직렬화 (Insecure Deserialization)",
   },
   {
     id: 69,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "정보통신망법 제48조의3에 따라 정보통신서비스 제공자가 해킹이나 서비스 거부 공격 등 침해사고가 발생했을 때 즉시 신고해야 하는 정부 주무부처는?",
-    answer: "과학기술정보통신부 (과기정통부 / KISA)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "동적 메모리 할당(malloc) 후 free()로 이미 해제된 메모리 포인터 주소를 다시 참조할 때 발생하는 코드 오류는?",
+    answer: "해제된 메모리 참조 (UAF, Use-After-Free)",
   },
   {
     id: 70,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "개인정보 안전성 확보조치 기준에 따라 5만 명 이상의 정보주체 개인정보를 처리하거나 고유식별정보·민감정보를 처리하는 시스템의 접속기록 최소 보관 기간은?",
-    answer: "2년 (2년 이상)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "동일한 메모리 영역을 두 번 연속으로 free() 해제할 때 힙 링킹 구조를 파괴하여 악용되는 취약점은?",
+    answer: "이중 해제 취약점 (Double Free Vulnerability)",
   },
   {
     id: 71,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "취약한 Custom URL Scheme 대신 웹 도메인 소유권(assetlinks.json)을 상호 검증하여 오직 공식 앱만 안전하게 실행되도록 보장하는 모바일 표준 링크 기술은?",
-    answer: "앱 링크 (App Links / Universal Links)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "정수형 변수에 담을 수 있는 최댓값을 초과하는 연산으로 인해 음수나 0에 가까운 작은 수로 순환 왜곡되는 취약점은?",
+    answer: "정수 오버플로우 (Integer Overflow)",
   },
   {
     id: 72,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "AWS, GCP 등 클라우드 인스턴스 환경에서 SSRF 취약점 공격자가 IAM 임시 보안 자격증명(Access Key) 토큰을 탈취하기 위해 접근하는 링크-로컬 기본 IP 주소는?",
-    answer: "169.254.169.254"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "Java/Spring에서 예외 처리 블록(catch)을 비워두거나(Empty Catch Block) e.printStackTrace()를 클라이언트에 출력할 때의 위험은?",
+    answer: "민감 정보(시스템 경로, DB 구조, 스택 트레이스) 노출",
   },
   {
     id: 73,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 `/etc/shadow` 파일의 두 번째 필드에서 `$6$`으로 시작하는 패스워드 해시 암호화에 사용된 일방향 알고리즘은?",
-    answer: "SHA-512"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "사용자 입력값을 문자열 상태로 JavaScript 실행 엔진(eval, Function, setTimeout)에 전달하여 스크립트가 실행되는 약점은?",
+    answer: "코드 삽입 (Code Injection / Eval Injection)",
   },
   {
     id: 74,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "IPSec 프로토콜 군 중 발신지 인증과 무결성은 제공하지만, 페이로드 암호화(기밀성)는 제공하지 않는 헤더 프로토콜은?",
-    answer: "AH (Authentication Header)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "서버가 클라이언트의 요청에 포함된 URL로 새로운 HTTP 요청을 대신 보내도록 유도하여 내부망 자원을 공격하는 기법은?",
+    answer: "SSRF (Server-Side Request Forgery, 서버 측 요청 위조)",
   },
   {
     id: 75,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "침입 탐지 시스템 Snort 룰에서 페이로드 문자열을 매칭할 때 검색 시작 위치를 바이트 단위로 지정하는 옵션 키워드는?",
-    answer: "offset (오프셋)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "서버 측 템플릿 엔진(Jinja2, Thymeleaf, FreeMarker)에 사용자 입력이 검증 없이 삽입되어 RCE로 이어지는 취약점은?",
+    answer: "SSTI (Server-Side Template Injection)",
   },
   {
     id: 76,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "HTTP 요청 헤더의 끝을 알리는 빈 줄(`\\r\\n\\r\\n`)을 보내지 않고 조작된 헤더를 매우 느린 주기로 지속 전송하여 웹 서버 연결을 고갈시키는 DoS 공격은?",
-    answer: "슬로로리스 (Slowloris)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "XSS 공격을 방어하기 위해 HTML 특수문자(<, >, &, \", ')를 안전한 HTML 엔티티(&lt;, &gt; 등)로 변환하는 기법은?",
+    answer: "HTML 엔티티 인코딩 (HTML Entity Encoding)",
   },
   {
     id: 77,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "HTTP POST 요청 시 Content-Length를 거대하게 설정한 후 본문 데이터를 1바이트씩 매우 긴 간격으로 전송하여 서버 세션을 고갈시키는 DoS 공격은?",
-    answer: "RUDY (R-U-Dead-Yet)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "웹 애플리케이션에서 HTTP 응답 헤더 내에 개행문자(\\r\\n, CRLF)를 삽입하여 임의의 헤더나 본문을 위조 주입하는 공격은?",
+    answer: "HTTP 응답 분할 (CRLF Injection / HTTP Response Splitting)",
   },
   {
     id: 78,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "TLS Heartbeat 확장의 길이 검증 부재를 악용하여 공격자가 서버 메모리 데이터(최대 64KB)를 인가 없이 원격 유출할 수 있었던 OpenSSL 취약점은?",
-    answer: "하트블리드 (Heartbleed / CVE-2014-0160)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "LDAP(Lightweight Directory Access Protocol) 인증 쿼리문에 특수문자(*, (, ), &)를 삽입하여 인증을 우회하는 공격은?",
+    answer: "LDAP 인젝션 (LDAP Injection)",
   },
   {
     id: 79,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹 브라우저가 다른 출처(Cross-Origin)로 실제 요청을 보내기 전, 서버의 허용 출처 및 헤더를 사전 확인하기 위해 보내는 HTTP 사전 요청 메서드는?",
-    answer: "OPTIONS (Preflight 요청)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "XML 데이터베이스 검색 언어인 XPath 쿼리문에 악의적 구문을 삽입하여 데이터를 무단 열람하는 인젝션 공격은?",
+    answer: "XPath 인젝션 (XPath Injection)",
   },
   {
     id: 80,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "대칭 블록 암호 CBC 모드에서 첫 번째 평문 블록과 XOR 연산을 수행하기 위해 입력하는 무작위 난수 비트 열은?",
-    answer: "IV (초기화 벡터 / Initialization Vector)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "사용자 로그인 성공 후에도 기존 세션 ID를 파기하지 않고 그대로 유지할 때 공격자가 세션을 가로채는 취약점은?",
+    answer: "세션 고정 취약점 (Session Fixation)",
   },
   {
     id: 81,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "무작위 서브도메인 질의를 연속 발생시켜 권위 네임서버의 응답보다 먼저 위조된 글루 레코드를 주입하는 지능형 DNS 캐시 포이즈닝 기법은?",
-    answer: "카민스키 공격 (Kaminsky Attack)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "클라이언트에게 제공되는 파일 다운로드 파라미터(filename)를 조작하여 시스템 주요 설정 파일을 탈취하는 취약점은?",
+    answer: "임의 파일 다운로드 (Arbitrary File Download / Directory Traversal)",
   },
   {
     id: 82,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "디지털 포렌식 증거의 수집부터 법정 제출까지 모든 취급자와 보관 장소를 연속 기록하여 증거 훼손이 없음을 입증하는 원칙은?",
-    answer: "연계보관성의 원칙 (Chain of Custody)"
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "Java에서 직렬화 인터페이스(Serializable)를 구현할 때 민감한 필드가 바이트 스트림으로 노출되지 않도록 붙이는 예약어는?",
+    answer: "transient",
   },
+
+  // =================================================================
+  // === [4. 웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성 (Q83 ~ Q110)
+  // =================================================================
   {
     id: 83,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "사용자 입력값에 개행 문자(`%0D%0A`)를 주입하여 HTTP 응답 헤더와 본문을 강제 분리시키고 위조된 본문(XSS 등)을 출력시키는 공격은?",
-    answer: "HTTP 응답 분할 (CRLF Injection)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "악성 스크립트가 포함된 URL 링크를 피해자가 클릭했을 때 응답 페이지에 즉시 반사되어 실행되는 XSS 유형은?",
+    answer: "Reflected XSS (반사형 XSS)",
   },
   {
     id: 84,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "IEEE 802.1Q 트렁크 환경에서 2개의 802.1Q 태그를 삽입한 패킷을 전송하여 외부에서 접근할 수 없는 격리된 VLAN으로 패킷을 침투시키는 공격은?",
-    answer: "VLAN 홉핑 (VLAN Hopping / 이중 태깅 공격)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "게시판 본문, 댓글 등 서버 DB에 공격 스크립트가 영구 저장되어 접속하는 모든 희생자에게 실행되는 XSS 유형은?",
+    answer: "Stored XSS (저장형 XSS / Persistent XSS)",
   },
   {
     id: 85,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "별도의 클라이언트 전용 소프트웨어 설치 없이 표준 웹 브라우저만으로 원격 접근 암호화 터널을 제공하는 전송/응용 계층 기반 VPN 기술은?",
-    answer: "SSL VPN"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "서버와의 상호작용 없이 브라우저 내 JavaScript가 DOM(Document Object Model) 환경을 조작하여 실행되는 XSS는?",
+    answer: "DOM-based XSS (DOM 기반 XSS)",
   },
   {
     id: 86,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "화면에 SQL 에러나 데이터가 출력되지 않을 때, 참/거짓 조건에 따른 응답 차이나 DB 지연 함수(SLEEP)를 이용해 데이터를 1글자씩 추출하는 공격은?",
-    answer: "블라인드 SQL 인젝션 (Blind SQLi)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "클라이언트 측 스크립트(document.cookie)를 통한 세션 쿠키 탈취를 원천 차단하는 HTTP 쿠키 보안 플래그는?",
+    answer: "HttpOnly",
   },
   {
     id: 87,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "네트워크 7계층(L7)의 HTTP/HTTPS 페이로드를 검사하여 SQL 인젝션, XSS, 웹쉘 업로드 등 웹 애플리케이션 공격을 실시간 차단하는 보안 솔루션은?",
-    answer: "WAF (웹 방화벽 / Web Application Firewall)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "쿠키가 오직 HTTPS 보안 암호화 통신 채널을 통해서만 전송되도록 강제하는 쿠키 보안 플래그는?",
+    answer: "Secure",
   },
   {
     id: 88,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 pacct 회계 로그를 기반으로 특정 사용자나 프로세스가 실행한 명령어 이력, CPU 사용 시간 등을 조회하는 시스템 보안 명령어는?",
-    answer: "lastcomm"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "서로 다른 도메인 간의 교차 사이트 요청 시 쿠키 전송을 제한하여 CSRF 공격을 효과적으로 방어하는 쿠키 속성은?",
+    answer: "SameSite (Strict / Lax / None)",
   },
   {
     id: 89,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "포인터가 가리키는 메모리가 NULL인 상태에서 참조를 시도할 때 프로그램 비정상 종료(Crash)나 DoS를 유발하는 메모리 소프트웨어 보안 취약점은?",
-    answer: "NULL Pointer 역참조 (Null Pointer Dereference)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "사용자가 의도하지 않은 비정상적 트랜잭션 요청을 인증된 권한으로 공격자가 대신 전송하도록 유도하는 공격은?",
+    answer: "CSRF (Cross-Site Request Forgery, 크로스 사이트 요청 위조)",
   },
   {
     id: 90,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "IP 주소를 모르는 디스크 없는 호스트(디스크리스 워크스테이션)가 자신의 MAC 주소를 브로드캐스트하여 서버로부터 IP를 할당받는 프로토콜은?",
-    answer: "RARP (Reverse ARP)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "CSRF 공격을 원천 방어하기 위해 매 세션/폼 요청마다 서버가 생성하고 검증하는 일회성 난수 토큰은?",
+    answer: "CSRF 토큰 (Synchronizer Token Pattern)",
   },
   {
     id: 91,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "침해사고를 선제적으로 방어하기 위해 공격자의 행동 단계(정찰→무기화→전달→취약점 악용→설치→C2→행동)를 7단계로 모델링한 보안 프레임워크는?",
-    answer: "사이버 킬체인 (Cyber Kill Chain)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹 브라우저가 신뢰할 수 있는 출처(Origin)의 스크립트/이미지만 실행하도록 제한하여 XSS를 방어하는 HTTP 응답 헤더는?",
+    answer: "CSP (Content-Security-Policy)",
   },
   {
     id: 92,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "스마트폰 모바일 앱에서 커스텀 스킴 URL(`myapp://...`)을 호출하여 다른 앱을 실행하거나 특정 파라미터 화면으로 직행시키는 기능이자 취약점 표적은?",
-    answer: "딥링크 (Deeplink / Custom URL Scheme)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹사이트가 타 사이트의 <iframe> 내에 삽입되어 클릭재킹(Clickjacking) 공격을 당하는 것을 방지하는 HTTP 응답 헤더는?",
+    answer: "X-Frame-Options (DENY / SAMEORIGIN)",
   },
   {
     id: 93,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹 공격자가 서버로 하여금 내부망 비인가 주소(`127.0.0.1`, 클라우드 메타데이터 URL 등)로 조작된 HTTP 요청을 대신 전송하게 만드는 취약점 공격은?",
-    answer: "SSRF (Server-Side Request Forgery)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹 브라우저에게 향후 모든 통신을 HTTP 대신 반드시 HTTPS 보안 연결로만 수행하도록 강제하는 보안 헤더는?",
+    answer: "HSTS (Strict-Transport-Security)",
   },
   {
     id: 94,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "자바 DB 연동 시 SQL 파라미터를 '?' 플레이스홀더로 컴파일 후 바인딩하여 특수문자 조작을 원천 방어하는 가장 확실한 방어 인터페이스는?",
-    answer: "PreparedStatement"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "브라우저의 MIME 타입 스니핑(MIME-sniffing)을 강제로 비활성화하여 악성 스크립트 실행을 막는 응답 헤더는?",
+    answer: "X-Content-Type-Options: nosniff",
   },
   {
     id: 95,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "공격자가 출발지 IP를 희생자 IP로 위조한 후 서브넷 브로드캐스트 주소로 ICMP Echo Request를 대량 전송하여 희생자를 고갈시키는 증폭 공격은?",
-    answer: "스머핑 (Smurf 공격 / Direct Broadcast)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹 서버에 침투한 공격자가 백도어로 활용하기 위해 업로드하는 웹 기반의 원격 제어 쉘 프로그램을 통칭하는 용어는?",
+    answer: "웹쉘 (WebShell)",
   },
   {
     id: 96,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "공격자가 특정 계정의 암호를 알아내기 위해 시스템에 접속을 반복 시도하다가 '실패한 로그인 기록'(/var/log/btmp)을 확인하는 명령어는?",
-    answer: "lastb"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹쉘 파일 업로드 공격을 방어하기 위해 업로드 디렉터리에 반드시 조치해야 하는 핵심 서버 권한 설정은?",
+    answer: "실행 권한(Execute, x) 제거",
   },
   {
     id: 97,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "재해 발생 시 비즈니스 핵심 기능의 중단 영향을 평가하여 RTO(목표복구시간)와 RPO(목표복구시점)를 산출하는 재해복구 분석 활동은?",
-    answer: "BIA (업무 영향 분석 / Business Impact Analysis)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "파일 업로드 검증 시 블랙리스트(php, jsp 차단) 대신 안전한 확장자만 엄격히 허용하는 보안 검증 방식을 무엇이라 하는가?",
+    answer: "화이트리스트 (Whitelist) 검증",
   },
   {
     id: 98,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "정보보호 위험 대응 전략 중 위험 수준이 수용 가능한 한계치(DoA) 이하일 때 별도의 추가 통제 없이 조직이 위험을 그대로 감수하는 전략은?",
-    answer: "위험 수용 (Risk Acceptance)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "CORS(Cross-Origin Resource Sharing)에서 실제 요청(PUT, DELETE, 커스텀 헤더) 전송 전에 권한을 묻는 사전 요청은?",
+    answer: "Preflight 요청 (HTTP OPTIONS 메서드)",
   },
   {
     id: 99,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "모든 자산에 기본 보안 대책을 일괄 적용(기준선)한 후, 고위험 중요 자산에 대해서만 추가 상세 위험분석을 수행하는 고효율 절충형 위험분석법은?",
-    answer: "복합적 접근법 (Combined Approach)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "CORS 설정 시 `Access-Control-Allow-Origin: *` 와 함께 절대 동시에 허용해서는 안 되는 민감 자격증명 헤더 설정은?",
+    answer: "Access-Control-Allow-Credentials: true",
   },
   {
     id: 100,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "NTP 증폭 디도스 공격(Monlist)을 방어하기 위해 ntp.conf 설정 파일에서 반드시 비활성화해야 하는 쿼리 제한 옵션은?",
-    answer: "noquery (또는 nomodify noquery)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "데이터베이스 에러 메시지(Syntax Error 등)에 SQL 실행 결과를 노출시켜 정보를 탈취하는 SQLi 기법은?",
+    answer: "Error-based SQL Injection (오류 기반 SQL 인젝션)",
   },
   {
     id: 101,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "개인정보의 안전성 확보조치 기준에서 전산실, 자료보관실 등 개인정보를 보관하는 중요 장소에 대해 출입 인가를 설정하고 통제하는 물리적 구역은?",
-    answer: "통제구역"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "2개 이상의 SELECT 쿼리 결과를 합쳐서 공격자가 원하는 타 테이블의 데이터를 출력 화면에 노출시키는 SQLi 기법은?",
+    answer: "UNION-based SQL Injection (유니온 기반 SQL 인젝션)",
   },
   {
     id: 102,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "기업에서 정보기술(IT) 인프라 구축 및 혁신을 총괄하는 책임자와 정보보호 정책 및 보안 거버넌스를 전담하는 최고책임자를 분리할 때 각각의 직책은?",
-    answer: "CIO (최고정보책임자) / CISO (최고정보보호책임자)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "화면에 SQL 에러나 데이터가 일체 노출되지 않을 때 참/거짓 응답 차이를 이용해 한 글자씩 추출하는 SQLi 기법은?",
+    answer: "Blind SQL Injection (블라인드 SQL 인젝션)",
   },
   {
     id: 103,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 시스템에서 사용자 계정 생성 시 패스워드의 최소 길이를 강제 설정하기 위해 수정하는 환경 설정 파일과 변수명은?",
-    answer: "/etc/login.defs (변수: PASS_MIN_LEN)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "SLEEP()이나 WAITFOR DELAY 함수를 삽입하여 서버의 응답 지연 시간 차이로 데이터를 한 글자씩 추출하는 SQLi는?",
+    answer: "Time-based Blind SQL Injection (시간 기반 블라인드 SQLi)",
   },
   {
     id: 104,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "무선 LAN(802.11 CSMA/CA)에서 프레임 간 충돌 방지를 위해 두는 대기 시간 중, ACK/CTS 등 최우선순위 제어 프레임에 적용되는 가장 짧은 간격은?",
-    answer: "SIFS (Short Inter-Frame Space)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "사용자가 의도한 정상 버튼 위에 투명한 iframe 레이어를 겹쳐 놓아 공격자가 원하는 클릭을 유도하는 UI 변조 공격은?",
+    answer: "클릭재킹 (Clickjacking / UI Redressing)",
   },
   {
     id: 105,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "무선 LAN의 숨은 노드 문제(Hidden Node)를 해결하기 위해 데이터 전송 전 송수신측이 채널 예약 및 송신 유예를 위해 주고받는 2가지 제어 프레임은?",
-    answer: "RTS (Request To Send) / CTS (Clear To Send)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "프론트엔드 프록시와 백엔드 서버 간의 Content-Length와 Transfer-Encoding 헤더 해석 차이로 발생하는 HTTP 공격은?",
+    answer: "HTTP Request Smuggling (HTTP 요청 밀수)",
   },
   {
     id: 106,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "무선 LAN 환경에서 다른 노드가 보낸 RTS/CTS 프레임을 수신한 단말들이 채널 사용 중임을 가상으로 인지하고 전송을 유예하기 위해 설정하는 타이머는?",
-    answer: "NAV (Network Allocation Vector)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹 애플리케이션의 세션 타임아웃 기본 권고 시간은 은행/금융권 기준 통상 몇 분 이내인가?",
+    answer: "10분 ~ 15분 이내 (행안부 가이드: 최대 30분 이내)",
   },
   {
     id: 107,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "정보보호 위험관리(ISO 27005)에서 위험(Risk)의 크기를 산정하기 위해 상호작용을 분석하는 3대 기본 요소는?",
-    answer: "자산(Asset), 위협(Threat), 취약점(Vulnerability)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "이미 유출된 다수의 계정 ID/PW 목록을 다른 웹사이트들에 대량으로 무작위 대입하여 로그인 성공을 시도하는 공격은?",
+    answer: "크리덴셜 스터핑 (Credential Stuffing)",
   },
   {
     id: 108,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "XML 입력 파싱 시 DTD의 SYSTEM 외부 엔티티 처리를 악용하여 서버 내부 파일을 탈취하거나 SSRF를 유발하는 취약점은?",
-    answer: "XXE (XML 외부 개체 참조 / XML External Entity)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "로그인 시 전송되는 패스워드를 안전하게 전송하기 위해 브라우저 단과 서버 단에서 취해야 하는 암호화 프로토콜은?",
+    answer: "HTTPS (TLS 1.2 / TLS 1.3)",
   },
   {
     id: 109,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "공격자가 악성 스크립트를 게시판 DB 등에 영구 저장시켜 해당 페이지를 열람하는 모든 희생자에게 실행되도록 만드는 XSS 공격 유형은?",
-    answer: "저장형 XSS (Stored XSS)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "웹 캐시 서버에 조작된 헤더를 주입하여 악성 응답이 캐싱되도록 유도해 다수 사용자에게 유포하는 공격은?",
+    answer: "웹 캐시 포이즈닝 (Web Cache Poisoning)",
   },
   {
     id: 110,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "DNS 계층 구조에서 호스트의 요청을 대신 받아 루트부터 순차적으로 반복 질의를 수행하고 결과를 임시 보관하는 서버는?",
-    answer: "Local DNS (Recursive DNS / 캐시 DNS)"
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "OpenSSL의 TLS 하트비트 확장 기능에서 버퍼 길이 검증 누락으로 메모리 데이터 64KB가 유출되던 취약점(CVE-2014-0160)은?",
+    answer: "하트블리드 (Heartbleed)",
   },
+
+  // =================================================================
+  // === [5. 네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안 (Q111 ~ Q135)
+  // =================================================================
   {
     id: 111,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "프론트엔드 프록시와 백엔드 서버 간에 Content-Length와 Transfer-Encoding 헤더 해석 불일치로 다음 사용자 요청에 악성 요청이 주입되는 공격은?",
-    answer: "HTTP Request Smuggling (HTTP 요청 밀수)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "출발지 IP와 목적지 IP 주소를 피해자 자신의 IP로 일치시켜 전송하여 자기 자신에게 무한 응답 루프를 돌게 하는 DoS 공격은?",
+    answer: "Land Attack (랜드 어택)",
   },
   {
     id: 112,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "특정 표적을 정하고 장기간에 걸쳐 스피어 피싱, 제로데이, 루트킷 등 다양한 기술을 잠복·우회 활용하여 은밀히 목적을 달성하는 공격 형태는?",
-    answer: "APT (지능형 지속 위협 / Advanced Persistent Threat)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "출발지 IP를 피해자 IP로 위조한 후 ICMP Echo Request를 브로드캐스트 주소로 전송하여 증폭 반사시키는 DoS 공격은?",
+    answer: "스머프 공격 (Smurf Attack)",
   },
   {
     id: 113,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "정상적인 HTTP 요청 후 TCP 수신 윈도우 크기(Window Size)를 0 또는 극소치로 유지하여 서버의 송신 버퍼와 세션을 고갈시키는 DoS 공격은?",
-    answer: "Slow HTTP Read DoS (Slow Read)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IP 단편화(Fragmentation) 재조합 시 오프셋(Fragment Offset) 값을 고의로 중복·왜곡시켜 시스템 충돌(크래시)을 유발하는 DoS는?",
+    answer: "티어드롭 공격 (Teardrop Attack)",
   },
   {
     id: 114,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "보안관제 장비에서 실제 악성 공격이 발생하였음에도 정상 트래픽으로 오인하여 탐지하지 못하고 그냥 놓쳐버리는 가장 위험한 탐지 오류는?",
-    answer: "미탐 (False Negative / 거짓 부정)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IP 패킷의 최대 허용 크기(65,535 바이트)를 초과하는 거대 ICMP 패킷을 단편화 전송하여 재조합 버퍼를 고갈시키는 DoS는?",
+    answer: "핑 오브 데스 (Ping of Death / Boink / Bonk)",
   },
   {
     id: 115,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "네트워크 패킷이 HTTPS 등으로 암호화된 환경에서, 패킷 페이로드 대신 서버 내부 시스템 콜, 로그, 파일 무결성을 통해 공격을 탐지하는 IDS는?",
-    answer: "HIDS (호스트 기반 침입탐지시스템)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "TCP SYN 패킷만을 대량으로 전송하고 ACK를 회신하지 않아 서버의 백로그 큐(Backlog Queue)를 채워 서비스를 마비시키는 공격은?",
+    answer: "SYN 플러딩 (SYN Flooding)",
   },
   {
     id: 116,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "ISMS-P 인증 심사 시 조직의 적용 가능한 보안 통제 항목 중 채택할 항목과 제외할 항목 및 그 사유를 명시한 필수 제출 산출물 문서는?",
-    answer: "정보보호대책 명세서 (적용성 보고서 / SoA)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "SYN 플러딩 공격을 방어하기 위해 서버가 연결 상태(TCB)를 즉시 저장하지 않고 암호화된 시퀀스 번호로 응답하는 기술은?",
+    answer: "SYN 쿠키 (SYN Cookie)",
   },
   {
     id: 117,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 `/var/log/messages`에서 인터페이스가 목적지와 무관한 모든 네트워크 패킷을 도청(Sniffing)하기 위해 활성화한 동작 모드는?",
-    answer: "무차별 모드 (Promiscuous Mode)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "HTTP 요청 헤더의 끝을 알리는 개행문자(\\r\\n\\r\\n)를 미완성으로 남겨두고 지속적인 지연 헤더를 보내 웹 커넥션을 고갈시키는 DoS는?",
+    answer: "슬로로리스 (Slowloris / Slow HTTP Header DoS)",
   },
   {
     id: 118,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "윈도우에서 표준 사용자로 실행 중 관리자 권한 작업 필요 시 격리된 보안 데스크톱에 동의 팝업을 띄워 권한 상승을 통제하는 기술은?",
-    answer: "UAC (사용자 계정 컨트롤 / User Account Control)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "HTTP POST 요청 시 Content-Length를 매우 크게 잡고 메시지 바디를 1바이트씩 매우 느리게 전송하여 연결을 독점하는 DoS는?",
+    answer: "RUDY (R-U-Dead-Yet / Slow HTTP POST DoS)",
   },
   {
     id: 119,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "XSS 공격 방어를 위해 웹 서버 응답 시 HTML 특수문자(`<`, `>`)를 브라우저 텍스트로 치환하는 엔티티 코드는 각각 무엇인가?",
-    answer: "&lt; 및 &gt;"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "TCP 윈도우 크기(Window Size)를 0 또는 매우 작게 조작하여 서버가 데이터를 극도로 느리게 보내도록 유도하는 DoS는?",
+    answer: "Slow HTTP Read DoS",
   },
   {
     id: 120,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "웹 브라우저가 특정 신뢰 출처의 스크립트·스타일·이미지만 로드하고 실행하도록 강제하여 XSS를 완화하는 HTTP 보안 헤더는?",
-    answer: "CSP (Content-Security-Policy)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "발신 도메인 소유자가 공인 DNS의 TXT 레코드에 정당한 메일 발송 서버의 IP 목록을 등록하여 위조 메일을 차단하는 기술은?",
+    answer: "SPF (Sender Policy Framework)",
   },
   {
     id: 121,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "공공기관이 개인정보 영향평가(PIA)를 의무적으로 수행해야 하는 민감정보 또는 고유식별정보 처리 인원수 기준은 몇 명 이상인가?",
-    answer: "5만 명 이상"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "발신자가 이메일 헤더를 개인키로 전자서명하고, 수신자는 발신 도메인 DNS TXT 레코드의 공개키로 무결성을 검증하는 기술은?",
+    answer: "DKIM (DomainKeys Identified Mail)",
   },
   {
     id: 122,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "DBMS 권한 부여 시 다른 사용자에게 해당 권한을 마음대로 재부여할 수 있어 일반 계정에는 절대 부여하면 안 되는 위험한 옵션은?",
-    answer: "WITH GRANT OPTION"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "SPF 및 DKIM 인증 실패 메일에 대해 수신 서버가 취해야 할 정책(none, quarantine, reject)을 선언하고 리포팅을 받는 프로토콜은?",
+    answer: "DMARC",
   },
   {
     id: 123,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "서버를 거치지 않고 브라우저 측 자바스크립트가 location.hash나 innerHTML 등 문서 객체 모델을 조작하여 발생하는 XSS 유형은?",
-    answer: "DOM 기반 XSS (DOM-based XSS)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IPSec 프로토콜 군 중 패킷 데이터의 기밀성(암호화), 발신지 인증, 무결성을 모두 제공하는 프로토콜은?",
+    answer: "ESP (Encapsulating Security Payload)",
   },
   {
     id: 124,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "침입탐지시스템(IDS)이나 보안장비가 정상적인 정상 트래픽이나 업무 행위를 악성 공격으로 잘못 판단하여 울리는 경보 오류는?",
-    answer: "오탐 (False Positive / 거짓 긍정)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IPSec 프로토콜 중 기밀성(암호화)은 제공하지 않고 오직 발신지 인증과 무결성만을 제공하는 프로토콜은?",
+    answer: "AH (Authentication Header)",
   },
   {
     id: 125,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "해당 도메인의 원본 존(Zone) 파일을 직접 보유하고 질의에 대해 최종 책임 권한을 가진 네임서버를 무엇이라 부르는가?",
-    answer: "Authoritative DNS (권위 DNS 서버)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IPSec에서 재전송 공격(Replay Attack)을 방어하기 위해 패킷마다 단조 증가시키며 헤더에 기록하는 필드는?",
+    answer: "순서 번호 (Sequence Number)",
   },
   {
     id: 126,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스 PAM 모듈 중 패스워드 최소 길이(minlen), 대소문자/숫자/특수문자 조합 복잡성을 강제 검증하는 핵심 모듈은?",
-    answer: "pam_pwquality.so (또는 pam_cracklib.so)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IPSec VPN에서 원본 IP 헤더까지 전체를 암호화하고 새로운 New IP 헤더를 덧붙여 전송하는 모드는?",
+    answer: "터널 모드 (Tunnel Mode)",
   },
   {
     id: 127,
-    chapterId: "general",
-    chapterName: "제4과목 정보보안 일반",
-    question: "전자서명에서 송신자가 메시지를 비밀키로 서명하여 송신한 후, 차후 자신이 전송한 사실을 부인할 수 없도록 보장하는 정보보안 특성은?",
-    answer: "부인 방지 (Non-Repudiation)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "DNS 캐시 서버에 조작된 질의 응답을 주입하여 가짜 IP로 접속을 유도하는 Kaminsky 공격을 무엇이라 하는가?",
+    answer: "DNS 캐시 포이즈닝 (DNS Cache Poisoning)",
   },
   {
     id: 128,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "IPv4 패킷이 네트워크 상에서 무한 라우팅 루프를 도는 것을 방지하기 위해 홉마다 1씩 감소시키며 0이 되면 폐기하는 IP 헤더 필드는?",
-    answer: "TTL (Time to Live)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "DNS 캐시 포이즈닝을 근본적으로 방지하기 위해 DNS 데이터에 공개키 전자서명을 도입한 보안 확장 표준은?",
+    answer: "DNSSEC (DNS Security Extensions)",
   },
   {
     id: 129,
-    chapterId: "application",
-    chapterName: "제3과목 애플리케이션 보안",
-    question: "오픈소스 취약점 관리 및 소프트웨어 공급망 보안을 위해 애플리케이션에 포함된 모든 컴포넌트·라이브러리 목록을 명세한 '소프트웨어 자재명세서'는?",
-    answer: "SBOM (Software Bill of Materials)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "NTP 서버의 monlist 명령어 등 UDP 프로토콜의 증폭 특성을 악용하여 출발지 IP를 위조해 쏟아붓는 분산 공격은?",
+    answer: "DRDoS (분산 반사 서비스 거부 공격 / Reflection Attack)",
   },
   {
     id: 130,
-    chapterId: "network",
-    chapterName: "제2과목 네트워크 보안",
-    question: "스위치 포트에 연결될 수 있는 단말의 최대 MAC 주소 개수를 제한하거나 특정 MAC만 허용하여 MAC Flooding을 방어하는 보안 기능은?",
-    answer: "포트 시큐리티 (Port Security)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IP 패킷 헤더에서 라우팅 루프를 방지하고 패킷이 네트워크에 무한히 생존하는 것을 막기 위해 1씩 감소시키는 필드는?",
+    answer: "TTL (Time To Live)",
   },
   {
     id: 131,
-    chapterId: "system",
-    chapterName: "제1과목 시스템 보안",
-    question: "리눅스에서 실행 중인 특정 프로세스가 현재 열고(Open) 있는 파일, 디렉터리, 네트워크 소켓 목록을 확인하는 명령어는?",
-    answer: "lsof (List Open Files)"
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "라우터 간 네트워크 최적 경로를 재지정해 주는 ICMP 제어 메시지를 공격자가 위조하여 트래픽을 가로채는 공격은?",
+    answer: "ICMP Redirect 공격",
   },
   {
     id: 132,
-    chapterId: "law",
-    chapterName: "제5과목 정보보안 관리 및 법규",
-    question: "개인정보보호법상 개인정보처리자가 개인정보 유출 사실을 인지하였을 때 정당한 사유가 없는 한 지체 없이(72시간 이내) 통지해야 하는 주체는?",
-    answer: "정보주체 (및 개인정보보호위원회/KISA)"
-  }
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "스위치의 MAC 주소 테이블(CAM Table)을 무작위 MAC 주소로 가득 채워 일반 더미 허브처럼 패킷을 브로드캐스팅하게 만드는 공격은?",
+    answer: "스위치 재밍 (Switch Jamming / MAC Flooding)",
+  },
+  {
+    id: 133,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "패킷 필터링 방화벽 ACL에서 FTP 데이터 전송, FTP 제어 명령, Telnet이 사용하는 표준 TCP 포트 번호 3가지는?",
+    answer: "TCP 20, TCP 21, TCP 23",
+  },
+  {
+    id: 134,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "DNS 질의 시 사용하는 표준 포트 번호와 트랜스포트 계층 프로토콜 2가지는?",
+    answer: "포트 53 (일반 질의: UDP 53, 존 전송: TCP 53)",
+  },
+  {
+    id: 135,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "윈도우 파일 공유 및 SMB 프로토콜이 TCP 상에서 직접 바인딩되어 동작하는 표준 포트 번호는?",
+    answer: "TCP 445 (Microsoft-DS)",
+  },
+
+  // =================================================================
+  // === [6. 법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리 (Q136 ~ Q160)
+  // =================================================================
+  {
+    id: 136,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보 안전성 확보조치 기준에서 개인정보처리시스템에 대해 취급자 권한 통제를 의무화하는 3대 행위는?",
+    answer: "접속 권한 (부여·변경·말소), 다운로드, 삭제 (또는 파기)",
+  },
+  {
+    id: 137,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보처리시스템에 접속한 개인정보취급자의 접속기록(로그)은 법정 최소 몇 년(개월) 이상 보관해야 하는가?",
+    answer: "최소 1년 이상 (5만명 이상 민감·고유식별정보 처리 시 2년 이상)",
+  },
+  {
+    id: 138,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보취급자의 접속기록(로그)에 반드시 포함되어야 하는 5대 필수 항목은?",
+    answer: "계정(ID), 접속일시, 접속지(IP), 수행업무(조회/수정/삭제 등), 정보주체 정보",
+  },
+  {
+    id: 139,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보보호법상 개인정보가 유출되었음을 알게 되었을 때 지체 없이(법정 기준 시간 내) 정보주체에게 통지해야 하는 기한은?",
+    answer: "72시간 이내 (개정 개인정보보호법 기준)",
+  },
+  {
+    id: 140,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보보호법상 1천 명 이상의 개인정보 유출 시 개인정보보호위원회 또는 KISA에 신고해야 하는 법정 기한은?",
+    answer: "72시간 이내",
+  },
+  {
+    id: 141,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보보호법상 비밀번호, 바이오정보를 저장할 때 의무적으로 적용해야 하는 암호화 방식은?",
+    answer: "일방향 암호화 (단방향 해시 암호화)",
+  },
+  {
+    id: 142,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "개인정보보호법상 주민등록번호, 여권번호, 운전면허번호, 외국인등록번호를 통칭하는 법정 용어는?",
+    answer: "고유식별정보",
+  },
+  {
+    id: 143,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "사상·신념, 노동조합, 정당, 정치적 견해, 건강, 성생활 등에 관한 정보를 뜻하는 법정 보호 개인정보는?",
+    answer: "민감정보",
+  },
+  {
+    id: 144,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "IT 인프라 시스템의 잠재적 약점을 사전에 식별하여 위험 수준을 측정·평가하는 보안 활동은?",
+    answer: "취약성 평가 (Vulnerability Assessment)",
+  },
+  {
+    id: 145,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "이기종 보안 장비(방화벽, IDS, IPS)의 로그를 중앙 집중 수집하여 상관관계를 분석하는 빅데이터 보안 관제 시스템은?",
+    answer: "SIEM (Security Information and Event Management)",
+  },
+  {
+    id: 146,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "보안 위협에 대해 플레이북(Playbook) 기반으로 분석, 오케스트레이션 및 대응을 자동화하는 최신 관제 솔루션은?",
+    answer: "SOAR (Security Orchestration, Automation and Response)",
+  },
+  {
+    id: 147,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "재해 및 비상 위기 상황에서도 핵심 비즈니스 기능을 중단 없이 지속하기 위한 총체적 관리 계획은?",
+    answer: "BCP (Business Continuity Plan, 업무 연속성 계획)",
+  },
+  {
+    id: 148,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "재해 발생 시 업무가 중단된 시점부터 정상 복구되어 재개될 때까지 허용되는 최대 시간 목표는?",
+    answer: "RTO (Recovery Time Objective, 목표 복구 시간)",
+  },
+  {
+    id: 149,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "재해 발생 시 데이터 손실을 허용할 수 있는 최대 시점(데이터 복원 기준점) 목표는?",
+    answer: "RPO (Recovery Point Objective, 목표 복구 시점)",
+  },
+  {
+    id: 150,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "재해복구센터(DRS) 중 주 센터와 완전히 동일한 인프라를 실시간 미러링하여 수 분 내 복구 가능한 최상위 센터는?",
+    answer: "미러 사이트 (Mirror Site)",
+  },
+  {
+    id: 151,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "주 센터와 동일한 전산 자원을 갖추고 데이터를 주기적으로 백업 동기화하여 수 시간 내 복구 가능한 DRS 센터는?",
+    answer: "핫 사이트 (Hot Site)",
+  },
+  {
+    id: 152,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "장소와 공조 시설만 마련되어 있고 재해 시 전산 장비를 신규 조달해야 하므로 복구에 수주~수개월이 걸리는 DRS는?",
+    answer: "콜드 사이트 (Cold Site)",
+  },
+  {
+    id: 153,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "악성코드를 실제 환경과 격리된 안전한 가상 머신에서 실행하여 API 호출, 레지스트리 변조 행위를 분석하는 기술은?",
+    answer: "샌드박스 (Sandbox)",
+  },
+  {
+    id: 154,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "사이버 침해사고 조사 시 증거가 훼손·위조되지 않고 최초 상태 그대로 유지되어야 한다는 포렌식 원칙은?",
+    answer: "무결성의 원칙",
+  },
+  {
+    id: 155,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "증거 수집부터 이송, 분석, 법정 제출까지 모든 단계의 담당자와 일시가 명확히 기록·증명되어야 한다는 원칙은?",
+    answer: "연계보관성의 원칙 (Chain of Custody)",
+  },
+  {
+    id: 156,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "디지털 포렌식 증거 수집 시 휘발성 메모리(RAM)와 비휘발성 디스크 중 어떤 데이터를 먼저 수집해야 하는가?",
+    answer: "휘발성 높은 데이터 (RAM ➔ 네트워크 연결 ➔ 디스크 순서)",
+  },
+  {
+    id: 157,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "공공기관 및 기업이 새로운 대규모 개인정보처리시스템 구축 시 정보주체의 사생활 침해 위험을 사전에 평가하는 제도는?",
+    answer: "개인정보 영향평가 (PIA)",
+  },
+  {
+    id: 158,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "ISMS-P 인증 기준의 3대 핵심 영역은?",
+    answer: "1. 관리체계 수립 및 운영, 2. 보호대책 요구사항, 3. 개인정보 처리단계별 요구사항",
+  },
+  {
+    id: 159,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "정보보호 관리체계(ISMS)에서 수용 가능한 목표 위험 수준을 의미하는 용어는?",
+    answer: "DoA (Degree of Acceptance / 위험수용수준)",
+  },
+  {
+    id: 160,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "위험 관리 4대 대응 전략 중 보험 가입이나 보안 관제 외주 위탁을 통해 제3자에게 위험을 이전하는 전략은?",
+    answer: "위험 전가 (Risk Transference)",
+  },
+
+  // =================================================================
+  // === 2025년 3회차 & 2026년 1회차 실기 기출 실무 플래시카드 보강 (Q161 ~ Q200)
+  // =================================================================
+
+  // --- [1. 명령어·도구] (Q161 ~ Q167) ---
+  {
+    id: 161,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "Windows 서버에서 현재 접속된 원격 세션 목록을 조회하고 필요 시 강제 종료(/delete)하는 CLI 명령어는?",
+    answer: "net session (강제 종료: net session \\\\컴퓨터명 /delete)",
+  },
+  {
+    id: 162,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "Windows 명령 프롬프트에서 시스템에 설정된 공유 디렉터리 및 관리 숨김 공유(C$, ADMIN$) 목록을 확인하는 명령어는?",
+    answer: "net share",
+  },
+  {
+    id: 163,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "TCP/IP 패킷을 임의로 조작·생성하여 방화벽 규칙 검사, 포트 스캔 및 모의 DoS 테스트에 사용되는 CLI 도구는?",
+    answer: "hping3 (또는 hping)",
+  },
+  {
+    id: 164,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스 주요 시스템 파일의 해시값을 데이터베이스에 저장한 후 주기적으로 변조 여부를 대조하는 무결성 점검 도구는?",
+    answer: "트립와이어 (Tripwire)",
+  },
+  {
+    id: 165,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "Tenable사에서 개발한 대표적인 네트워크 기반 종합 보안 취약점 원격 진단 스캐너는?",
+    answer: "Nessus (넥서스)",
+  },
+  {
+    id: 166,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "Sendmail의 스팸 릴레이 텍스트 설정 파일(/etc/mail/access)을 데몬이 참조할 수 있는 해시 DB 파일로 컴파일하는 명령어는?",
+    answer: "makemap hash",
+  },
+  {
+    id: 167,
+    chapterId: "sec-cmd",
+    chapterName: "1. [명령어·도구] 리눅스·윈도우 보안 명령어 & 핵심 옵션",
+    question: "리눅스 시스템 전체에서 기타 사용자에게 쓰기 권한이 부여된 World Writable 파일을 탐색하는 find 옵션은?",
+    answer: "find / -perm -2 -type f (또는 -perm -0002)",
+  },
+
+  // --- [2. 설정·지시자] (Q168 ~ Q174) ---
+  {
+    id: 168,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 /etc/shadow 파일의 패스워드 해시 필드에서 $6$이 의미하는 암호화 해시 알고리즘은?",
+    answer: "SHA-512 ($1$=MD5, $5$=SHA-256, $6$=SHA-512)",
+  },
+  {
+    id: 169,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 /etc/shadow 파일에서 만료일 며칠 전부터 로그인 시 경고 메시지를 출력할지 지정하는 필드는?",
+    answer: "패스워드 만료 경고 일수 (Warning Days, 6번째 필드)",
+  },
+  {
+    id: 170,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 /etc/passwd 파일에서 패스워드가 /etc/shadow 파일에 안전하게 쉐도잉 암호화되어 있음을 나타내는 2번째 필드의 표식은?",
+    answer: "x",
+  },
+  {
+    id: 171,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스에서 root 관리자의 직접 원격 콘솔 로그인을 차단하기 위해 가상 터미널(pts/*)을 삭제해야 하는 설정 파일은?",
+    answer: "/etc/securetty",
+  },
+  {
+    id: 172,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 쉘 환경에서 10분간 아무런 입력이 없을 때 세션을 자동 종료(Timeout)시키기 위해 /etc/profile에 선언하는 환경 변수는?",
+    answer: "export TMOUT=600 (초 단위 지정)",
+  },
+  {
+    id: 173,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "리눅스 xinetd 슈퍼 데몬 환경에서 비인가 또는 취약한 네트워크 서비스를 비활성화할 때 사용하는 지시어는?",
+    answer: "disable = yes",
+  },
+  {
+    id: 174,
+    chapterId: "sec-conf",
+    chapterName: "2. [설정·지시자] 서버·네트워크 보안 설정 파일 & 지시자",
+    question: "Windows IIS 웹 서버에서 HTTP 프로토콜 에러 로그가 기록되는 대표적인 기본 폴더 경로는?",
+    answer: "HTTPERR (C:\\Windows\\System32\\LogFiles\\HTTPERR)",
+  },
+
+  // --- [3. 시큐어코딩] (Q175 ~ Q181) ---
+  {
+    id: 175,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "소프트웨어의 버퍼 오버플로우나 예외 크래시를 유발하기 위해 무작위적이거나 유효하지 않은 입력값을 대량 주입하는 블랙박스 테스트 기법은?",
+    answer: "퍼징 (Fuzzing / Fuzz Testing)",
+  },
+  {
+    id: 176,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "입력값 검증 부재로 공격자가 '../' 문자열을 주입하여 웹 루트 상위의 비인가 시스템 파일에 접근하는 취약점은?",
+    answer: "경로 조작 (Path Traversal / Directory Traversal)",
+  },
+  {
+    id: 177,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "OpenSSL의 Heartbeat 확장 기능에서 바운드 검사 누락으로 최대 64KB의 서버 메모리가 평문 유출되었던 취약점 명칭은?",
+    answer: "하트블리드 (Heartbleed / CVE-2014-0160)",
+  },
+  {
+    id: 178,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "보안 패치가 공식 배포되기 전에 취약점을 먼저 발견하여 선제적으로 감행하는 사이버 공격은?",
+    answer: "제로데이 공격 (Zero-Day Attack)",
+  },
+  {
+    id: 179,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "이미 유출된 대량의 사용자 계정 ID와 패스워드 목록을 타 사이트 로그인 창에 자동으로 대입하여 계정을 탈취하는 공격은?",
+    answer: "크리덴셜 스터핑 (Credential Stuffing)",
+  },
+  {
+    id: 180,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "C/C++에서 버퍼 오버플로우를 유발하는 위험 함수 strcpy, strcat 대신 버퍼 크기를 명시적으로 제한하는 안전한 대체 함수는?",
+    answer: "strncpy, strncat (또는 strcpy_s, strcat_s)",
+  },
+  {
+    id: 181,
+    chapterId: "sec-code",
+    chapterName: "3. [시큐어코딩] 취약 API vs 안전 대체 함수 & 보안약점",
+    question: "리눅스 C 언어에서 포맷 스트링 취약점(CWE-134)을 방지하기 위해 사용자 입력을 직접 서식 인자로 전달하지 않는 올바른 출력 코드는?",
+    answer: 'printf("%s", user_input);',
+  },
+
+  // --- [4. 웹·앱 보안] (Q182 ~ Q187) ---
+  {
+    id: 182,
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "Fiddler 프록시 도구에서 암호화된 HTTPS 트래픽의 본문(Body)을 정상 복호화하여 분석하기 위해 클라이언트 OS에 설치해야 하는 것은?",
+    answer: "Fiddler 사설 루트 CA 인증서 (신뢰할 수 있는 루트 인증 기관 등록)",
+  },
+  {
+    id: 183,
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "IIS 웹 서버에서 HTTP 응답 헤더의 Server 및 X-Powered-By 배너 정보를 제거·마스킹하여 시스템 정보를 은닉하는 확장 모듈은?",
+    answer: "URL Rewrite (URL 재작성 모듈)",
+  },
+  {
+    id: 184,
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "희생자가 도메인을 질의했을 때 DNS 서버보다 먼저 위조된 IP 응답 패킷을 보내 가짜 피싱 사이트로 유도하는 공격은?",
+    answer: "DNS 스푸핑 (DNS Spoofing)",
+  },
+  {
+    id: 185,
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "운영 DB 데이터를 테스트 환경으로 복제하기 전 영구적으로 가짜 값으로 일괄 변환하는 데이터 보호 기법은?",
+    answer: "정적 데이터 마스킹 (SDM: Static Data Masking)",
+  },
+  {
+    id: 186,
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "사용자의 접속 권한이나 요청 쿼리에 따라 원본 DB는 유지한 채 실시간으로 마스킹된 값을 반환하는 기법은?",
+    answer: "동적 데이터 마스킹 (DDM: Dynamic Data Masking)",
+  },
+  {
+    id: 187,
+    chapterId: "sec-web",
+    chapterName: "4. [웹·앱 보안] 웹 취약점(CWE), 보안 헤더 & 쿠키 속성",
+    question: "XSS 취약점 중 웹 서버 DB나 네트워크 응답을 거치지 않고 오직 브라우저 클라이언트 단에서 DOM 트리를 조작해 스크립트를 실행하는 유형은?",
+    answer: "DOM 기반 XSS (DOM-based XSS)",
+  },
+
+  // --- [5. 네트워크·공격] (Q188 ~ Q194) ---
+  {
+    id: 188,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IPSec 프로토콜 중 IP 패킷의 데이터 암호화(기밀성)와 무결성/인증을 동시에 제공하는 보안 헤더는?",
+    answer: "ESP (Encapsulating Security Payload)",
+  },
+  {
+    id: 189,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "IPSec 통신에서 공격자가 도청한 이전 패킷을 그대로 재전송하는 Replay Attack을 방어하기 위해 사용하는 헤더 필드는?",
+    answer: "시퀀스 넘버 (Sequence Number, 슬라이딩 윈도우)",
+  },
+  {
+    id: 190,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "외부로부터 들어오는 ICMP Ping 요청(Echo Request)을 공격자에게 아무런 에러 응답 없이 조용히 버리기 위한 iptables 지시어는?",
+    answer: "-p icmp --icmp-type 8 -j DROP",
+  },
+  {
+    id: 191,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "L2 스위치 프레임 포워딩 방식 중 목적지 MAC 주소(초기 6바이트)만 읽고 즉시 포워딩하여 지연 시간(Latency)을 최소화하는 방식은?",
+    answer: "Cut-Through (컷스루)",
+  },
+  {
+    id: 192,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "L2 스위치에서 전체 프레임을 버퍼에 모두 수신한 후 CRC 오류 검증을 완료하고 나서야 포워딩하는 가장 안전한 방식은?",
+    answer: "Store-and-Forward (스토어 앤 포워드)",
+  },
+  {
+    id: 193,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "L2 스위치에서 충돌 프레임 방지를 위해 이더넷 최소 프레임 크기인 64바이트까지만 검사하고 즉시 포워딩하는 방식은?",
+    answer: "Fragment-Free (프래그먼트 프리)",
+  },
+  {
+    id: 194,
+    chapterId: "sec-net",
+    chapterName: "5. [네트워크·공격] DoS 원리, 프로토콜 헤더 & 메일 보안",
+    question: "Snort 룰에서 페이로드 검사를 시작할 바이트 위치와 탐색할 최대 바이트 길이를 지정하는 2대 성능 최적화 키워드는?",
+    answer: "offset (시작 위치), depth (최대 검색 길이)",
+  },
+
+  // --- [6. 법규·관리] (Q195 ~ Q200) ---
+  {
+    id: 195,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "정보통신망법상 기업의 정보보호 관리체계 수립, 취약점 분석, 침해사고 대응, 임직원 교육을 총괄하는 법정 책임자는?",
+    answer: "CISO (정보보호최고책임자)",
+  },
+  {
+    id: 196,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "정보통신망법 제46조에 따라 타인의 정보통신서비스를 위해 전산 설비를 위탁 운영·관리하는 데이터센터 운영자를 지칭하는 법률 용어는?",
+    answer: "집적정보통신시설 사업자 (IDC 사업자)",
+  },
+  {
+    id: 197,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "여러 보안 전문가들에게 익명의 설문지를 반복 배포·회수하여 주관적 편견을 배제하고 합의를 도출하는 정성적 위험분석 기법은?",
+    answer: "델파이 기법 (Delphi Technique)",
+  },
+  {
+    id: 198,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "KISA 위험 관리 6단계 프로세스 중 '전략 및 계획 수립' 다음 단계로 위협과 취약점을 식별하는 단계는?",
+    answer: "위험 분석 (Risk Analysis)",
+  },
+  {
+    id: 199,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "위험 관리 6단계 프로세스 중 위험도를 산정하고 수용 가능 위험 수준(DoA)과 비교하여 대책 우선순위를 정하는 단계는?",
+    answer: "위험 평가 (Risk Evaluation)",
+  },
+  {
+    id: 200,
+    chapterId: "sec-law",
+    chapterName: "6. [법규·관리] 안전성 확보조치 기준, ISMS-P & 위기관리",
+    question: "단 1회 로그인으로 복수 이기종 시스템에 인증되는 SSO와 세부 자원 접근 권한을 제어하는 EAM을 포함하며, 계정 라이프사이클 전사 거버넌스를 관리하는 체계는?",
+    answer: "IAM (Identity & Access Management)",
+  },
 ];
-
-
-

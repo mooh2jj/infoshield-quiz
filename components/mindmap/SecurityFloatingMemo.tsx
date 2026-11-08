@@ -1111,6 +1111,274 @@ export const SECURITY_ROI_ITEMS: SecurityRoiMemoItem[] = [
     sectionId: "computer-architecture",
     tags: ["인터럽트", "DaisyChain", "Polling", "우선순위", "SVC"],
   },
+
+  // =================================================================
+  // 2026년 2회차 실기 기출 최신 복원 핵심 킬러 토픽 (sec-roi-81 ~ 90)
+  // =================================================================
+  {
+    id: "sec-roi-81",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "메일 스푸핑 방지 3총사 (SPF / DKIM / DMARC) 메커니즘",
+    formula: "SPF: 수신 서버가 발신 도메인의 DNS TXT 레코드에 등록된 '발신 IP 목록'과 실제 발신 서버 IP 대조 검증\nDKIM: 발신 서버가 개인키로 메일 헤더에 전자서명, 수신자는 DNS TXT로 발신자의 '공개키'를 조회하여 위변조 검증\nDMARC: SPF/DKIM 검증 실패 시 수신 서버의 메일 처리 정책(none, quarantine, reject)을 DNS TXT에 정의",
+    trap: "수신측은 SPF/DKIM/DMARC 정책을 모두 'DNS TXT 레코드' 질의를 통해 확인함! DMARC는 SPF와 DKIM 결과를 통합하여 실패 메일을 격리(quarantine)하거나 수신 거부(reject)하도록 강제하는 최상위 프로토콜임.",
+    sectionId: "network",
+    tags: ["SPF", "DKIM", "DMARC", "메일스푸핑", "DNSTXT", "전자서명", "2026기출"],
+  },
+  {
+    id: "sec-roi-82",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "r-command 계열 신뢰 관계 파일 설정 보안 (/etc/hosts.equiv, ~/.rhosts)",
+    formula: "소유자: root 또는 해당 사용자 계정\n권한: 600 이하 (소유자 외 읽기/쓰기/실행 금지)\n설정 내용: IP나 호스트명 뒤에 와일드카드 기호인 `+` 절대 사용 금지 (반드시 삭제/주석 처리)",
+    trap: "설정 파일에 `+ +`가 들어가면 모든 원격 호스트와 계정의 패스워드 없는 무인증 r-command(rsh, rlogin, rcp) 접속이 허용되어 즉시 루트 탈취 위험! 실무 가이드 0순위 조치 항목.",
+    sectionId: "system",
+    tags: ["hosts.equiv", "rhosts", "rcommand", "600이하", "와일드카드+", "2026기출"],
+  },
+  {
+    id: "sec-roi-83",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "고전 DoS 3대 공격 원리 비교 (Land vs Smurf vs Teardrop)",
+    formula: "Land Attack: 송신지 IP와 수신지 IP를 피해자 IP로 동일하게 위조하여 자기 자신에게 SYN-ACK 무한 루프 유발\nSmurf Attack: 출발지 IP를 피해자 IP로 위조 후 ICMP Echo Request를 브로드캐스트로 전송, 전체 호스트가 피해자에게 동시 응답(반사 증폭)\nTeardrop: IP 패킷 단편화 시 오프셋(Fragment Offset) 값을 고의로 중복·왜곡시켜 재조합 단계에서 시스템 크래시 유발",
+    trap: "단편화(Fragment) 관련 공격 중 오프셋 조작/중복은 'Teardrop', 최대 허용 패킷 크기(65,535바이트) 초과는 'Ping of Death'임! 혼동 주의.",
+    sectionId: "network",
+    tags: ["LandAttack", "Smurf", "Teardrop", "DoS", "단편화오프셋", "ICMP반사", "2026기출"],
+  },
+  {
+    id: "sec-roi-84",
+    chapterId: "app",
+    chapterName: "애플리케이션 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "파일 업로드 취약점 및 악성 웹쉘(WebShell) 방어 4대 원칙",
+    formula: "1. 확장자 화이트리스트 검증 (서버 단에서 안전한 확장자만 엄격 허용)\n2. 업로드 디렉터리 실행(Execute) 권한 제거 (NoExec 설정)\n3. 업로드 디렉터리를 웹 루트(DocumentRoot) 외부에 위치시켜 직접 URL 요청 차단\n4. 업로드된 파일명 및 확장자를 난수화(UUID 등)하여 저장",
+    trap: "프론트엔드 자바스크립트 검증이나 블랙리스트(.php, .asp 차단)는 우회 확장자(.php5, .phtml, null byte)로 무력화됨! 반드시 서버 측 화이트리스트 검증 + 실행권한 제거 결합 필수.",
+    sectionId: "application",
+    tags: ["웹쉘", "WebShell", "파일업로드", "화이트리스트", "실행권한제거", "웹루트격리", "난수화", "2026기출"],
+  },
+  {
+    id: "sec-roi-85",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "특수 권한(SUID / SGID) 취약점 관리 및 탐색 명령어",
+    formula: "위험성: 파일 실행 시 프로세스가 파일 소유자(예: root) 권한으로 동작하여 임의 코드 실행 시 '권한 상승(Privilege Escalation)' 및 시스템 장악 발생\n탐색 명령: `find / -user root -perm -4000` (SUID), `-perm -2000` (SGID)\n제거 명령: `chmod u-s <파일명>`, `chmod g-s <파일명>`",
+    trap: "권한 제거 시 `chmod -s`는 SUID/SGID가 모두 해제될 수 있으므로, 명시적으로 유저 특수권한만 뺄 때는 `u-s`, 그룹만 뺄 때는 `g-s` 구분을 정확히 기술해야 함!",
+    sectionId: "system",
+    tags: ["SUID", "SGID", "권한상승", "find", "-perm-4000", "chmod", "2026기출"],
+  },
+  {
+    id: "sec-roi-86",
+    chapterId: "law",
+    chapterName: "정보보안 법규",
+    grade: "SS",
+    stars: 4,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "개인정보의 안전성 확보조치 기준: 필수 통제 3대 행위",
+    formula: "1. [접속 권한]: 개인정보처리시스템에 대한 접근 권한의 부여, 변경, 말소 내역 최소 3년 보관\n2. [다운로드]: 개인정보를 다운로드할 수 있는 취급자의 권한을 최소화하고 사유를 승인·기록\n3. [삭제 / 파기]: 개인정보의 정정·삭제 또는 보유기간 경과 시 파기 권한 통제",
+    trap: "조문 빈칸 단골! 취급자 통제 3대 권한 키워드는 '접속 권한(접근 권한)', '다운로드', '삭제(또는 파기)'임!",
+    sectionId: "law",
+    tags: ["개인정보안전성확보조치기준", "접속권한", "다운로드", "삭제파기", "접근통제", "2026기출"],
+  },
+  {
+    id: "sec-roi-87",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SS",
+    stars: 4,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "DNS 서버/클라이언트 2대 핵심 설정 파일 구분",
+    formula: "1. `named.conf`: BIND DNS 데몬의 메인 환경 설정 파일 (도메인 Zone 파일 경로, allow-transfer, 캐시 네임서버 옵션 관리)\n2. `/etc/resolv.conf`: 리눅스 클라이언트 호스트가 도메인 질의 시 사용할 네임서버 IP(nameserver x.x.x.x) 및 도메인 검색 접미사(search) 설정",
+    trap: "서버 측 Zone 파일 설정은 `named.conf`, 클라이언트 측 질의 대상 네임서버 지정은 `/etc/resolv.conf`임! 두 파일의 역할을 뒤바꿔 쓰지 않도록 주의.",
+    sectionId: "system",
+    tags: ["DNS", "named.conf", "resolv.conf", "BIND", "네임서버", "Zone파일", "2026기출"],
+  },
+  {
+    id: "sec-roi-88",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SS",
+    stars: 4,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "Windows 보안 감사 정책(Audit Policy) 3대 핵심 카테고리",
+    formula: "1. [계정 관리 감사]: 사용자 계정 생성, 삭제, 이름 변경, 활성화/비활성화, 비밀번호 변경 기록\n2. [로그온 이벤트 감사]: 사용자가 로컬 또는 네트워크를 통해 시스템에 로그온/로그오프를 시도한 성공 및 실패 기록 (이벤트 ID 4624 성공, 4625 실패)\n3. [권한 사용 감사]: 사용자에게 할당된 사용자 권한(관리자 특권, 시스템 시간 변경, 백업/복원 등)을 행사할 때 기록",
+    trap: "단순 로그온 성공/실패는 '로그온 이벤트 감사(Logon Events)', 계정 자체의 생성/수정/삭제는 '계정 관리 감사(Account Management)'로 명확히 구분해야 함!",
+    sectionId: "system",
+    tags: ["Windows감사", "계정관리감사", "로그온이벤트감사", "권한사용감사", "EventID4624", "EventID4625", "2026기출"],
+  },
+  {
+    id: "sec-roi-89",
+    chapterId: "general",
+    chapterName: "정보보호 일반",
+    grade: "S",
+    stars: 3,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "업무 연속성 계획(BCP) & 샌드박스(Sandbox) 악성코드 격리 분석",
+    formula: "BCP (Business Continuity Plan): 자연재해, 사이버 테러 등 위기 상황에서도 핵심 비즈니스 기능의 연속성을 유지하기 위한 종합 관리 계획 (BIA ➔ 전략수립 ➔ DRP)\n샌드박스 (Sandbox): 외부로부터 유입된 악성 의심 파일이나 코드를 실제 운영체제와 격리된 가상 환경에서 실행하여 행위(레지스트리 변경, 네트워크 연결)를 안전하게 분석하는 기술",
+    trap: "재해 발생 시 IT 인프라 시스템 복구에 초점을 맞춘 것은 DRP(재해복구계획)이고, 비즈니스 핵심 프로세스 전체의 영속성을 보장하는 상위 체계가 BCP(업무연속성계획)임!",
+    sectionId: "general",
+    tags: ["BCP", "업무연속성계획", "샌드박스", "Sandbox", "동적분석", "BIA", "DRP", "2026기출"],
+  },
+  {
+    id: "sec-roi-90",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "S",
+    stars: 3,
+    frequencyRate: "2026 2회차 실기 기출",
+    title: "SIEM (Security Information and Event Management) 통합 보안 관제",
+    formula: "정의: 방화벽, IPS, WAF, 서버, 엔드포인트 등 이기종 보안 장비에서 발생하는 대용량 로그를 중앙 집중 수집·정규화하고 상관관계(Correlation)를 실시간 분석하는 솔루션\n핵심 기능: 로그 수집 및 저장, 정규화(Normalization), 상관관계 분석(Correlation Analysis), 대시보드 및 경보 통지",
+    trap: "단순 로그 취합에 그치는 것이 아니라, 서로 다른 장비의 이벤트(예: 방화벽 비정상 트래픽 탐지 + 서버 비인가 파일 생성) 간의 '상관관계 분석'을 통해 고도화된 지능형 지속 위협(APT)을 조기 탐지하는 것이 SIEM의 핵심!",
+    sectionId: "network",
+    tags: ["SIEM", "보안관제", "상관관계분석", "로그정규화", "통합보안", "빅데이터", "2026기출"],
+  },
+
+  // =================================================================
+  // 2025년 3회차 & 2026년 1회차 실기 기출 최신 복원 킬러 토픽 (sec-roi-91 ~ 100)
+  // =================================================================
+  {
+    id: "sec-roi-91",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2025 3회차 실기 기출",
+    title: "Linux /etc/shadow 9개 필드 구조 & 패스워드 해시 포맷",
+    formula: "구조: `계정명:패스워드해시:최종변경일:최소일수:최대일수:경고일수:비활성일수:만료일수:예약`\n해시 포맷: `$id$salt$hash` (`$1$`=MD5, `$5$`=SHA-256, `$6$`=SHA-512, `$y$`=yescrypt)\n솔트(Salt): 동일 패스워드의 서로 다른 해시 생성 및 레인보우 테이블 무력화",
+    trap: "6번째 필드는 '만료 경고 일수(Warning Days)'로 만료 며칠 전부터 경고할지 지정함! 2번째 필드가 비어있거나 `x`가 아닌 평문이 들어가면 보안 취약점 발생.",
+    sectionId: "system",
+    tags: ["shadow", "SHA-512", "$6$", "Salt", "레인보우테이블", "패스워드만료", "2025기출"],
+  },
+  {
+    id: "sec-roi-92",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2025 3회차 실기 기출",
+    title: "IPSec 보안 프로토콜 (AH vs ESP) 및 Replay Attack 방어",
+    formula: "AH: 인증, 무결성, 재전송 방지 제공 (기밀성 미제공)\nESP: 기밀성(페이로드 암호화) + 무결성 + 인증 + 재전송 방지 제공\n재전송 방어(Anti-Replay): 시퀀스 넘버(Sequence Number, 32비트)와 수신측 슬라이딩 윈도우 메커니즘",
+    trap: "IP 패킷의 '데이터 암호화(기밀성)'를 요구하면 반드시 ESP를 골라야 함! AH는 IP 헤더까지 인증하므로 NAT 장비를 통과(NAT-T)할 때 무결성 오류가 발생함.",
+    sectionId: "network",
+    tags: ["IPSec", "ESP", "AH", "시퀀스넘버", "ReplayAttack", "슬라이딩윈도우", "기밀성", "2025기출"],
+  },
+  {
+    id: "sec-roi-93",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2025 3회차 실기 기출",
+    title: "통합 계정·접근 관리 거버넌스 3단계 (SSO ➔ EAM ➔ IAM)",
+    formula: "SSO: 단 1회 로그인으로 연동된 모든 이기종 시스템 무재인증 접근 (통합 인증)\nEAM: SSO + 사용자 역할/권한에 따른 세부 자원 접근 제어 (통합 인가)\nIAM: SSO + EAM + 인사 DB 연동 계정 프로비저닝/디프로비저닝 라이프사이클 관리 및 전사 거버넌스 통제",
+    trap: "포괄 범위: SSO(인증) ⊂ EAM(인가/권한) ⊂ IAM(계정 수명주기/거버넌스/감사)! IAM은 입사/전보/퇴사에 따른 자동 권한 회수가 핵심.",
+    sectionId: "system",
+    tags: ["SSO", "EAM", "IAM", "프로비저닝", "계정관리", "통합인증", "거버넌스", "2025기출"],
+  },
+  {
+    id: "sec-roi-94",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2025 3회차 실기 기출",
+    title: "Snort 침해 탐지 룰 성능 최적화 4대 키워드",
+    formula: "절대 위치: `offset`(페이로드 검색 시작 바이트 위치), `depth`(offset 시작점부터 탐색할 최대 바이트 수)\n상대 위치: `distance`(직전 매칭 끝난 위치로부터 건너뛸 바이트 수), `within`(distance 지점부터 탐색할 최대 바이트 수)\n성능 이슈: 룰이 너무 포괄적이면 오탐(False Positive) 급증 및 센서 과부하로 패킷 드랍 발생",
+    trap: "`offset`/`depth`는 페이로드 맨 처음(0)부터 계산하는 절대 좌표, `distance`/`within`은 직전 `content` 매칭 완료 지점부터 계산하는 상대 좌표임!",
+    sectionId: "network",
+    tags: ["Snort", "offset", "depth", "distance", "within", "오탐", "패킷드랍", "2025기출"],
+  },
+  {
+    id: "sec-roi-95",
+    chapterId: "system",
+    chapterName: "시스템 보안",
+    grade: "SSS",
+    stars: 5,
+    frequencyRate: "2025 3회차 실기 기출",
+    title: "리눅스 서버 기술적 취약점 4대 핵심 조치 (KISA 가이드)",
+    formula: "1. root 직접 원격 차단: `/etc/securetty`에서 `pts/0`, `pts/1` 등 가상 터미널 주석/삭제\n2. 세션 타임아웃 10분 설정: `/etc/profile`에 `export TMOUT=600` (초 단위)\n3. World Writable 제거: `chmod o-w <파일명>` (탐색: `find / -perm -2 -type f`)\n4. xinetd 비인가 서비스 차단: 해당 설정 파일 내 `disable = yes` 설정",
+    trap: "`TMOUT` 값은 분 단위가 아닌 '초(Seconds)' 단위임! (10분 = 600). `/etc/securetty`는 로컬 콘솔(`console`, `tty*`)만 남기고 네트워크 가상 터미널(`pts/*`)을 삭제해야 root 원격 접속이 차단됨.",
+    sectionId: "system",
+    tags: ["securetty", "pts", "TMOUT", "WorldWritable", "chmod o-w", "xinetd", "disable=yes", "2025기출"],
+  },
+  {
+    id: "sec-roi-96",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "SS",
+    stars: 4,
+    frequencyRate: "2026 1회차 실기 기출",
+    title: "iptables ICMP Type 8(Ping) 차단 및 Sendmail 릴레이 제어",
+    formula: "iptables: `iptables -A INPUT -p icmp --icmp-type 8 -j DROP` (Echo Request 조용히 폐기)\nSendmail: `/etc/mail/access` 편집 (IP/도메인 RELAY/REJECT) ➔ `makemap hash /etc/mail/access.db < /etc/mail/access`로 컴파일",
+    trap: "ICMP Type 8은 Echo-Request(요청), Type 0은 Echo-Reply(응답)임! `REJECT`는 에러 패킷을 반환하여 시스템 생존을 노출하므로 공격 은닉을 위해 반드시 `DROP`을 사용해야 함.",
+    sectionId: "network",
+    tags: ["iptables", "icmp-type 8", "DROP", "Sendmail", "access.db", "makemap", "2026기출"],
+  },
+  {
+    id: "sec-roi-97",
+    chapterId: "general",
+    chapterName: "정보보호 일반",
+    grade: "SS",
+    stars: 4,
+    frequencyRate: "2026 1회차 실기 기출",
+    title: "SSL/TLS 하이브리드 암호화 핸드셰이크 메커니즘",
+    formula: "핸드셰이크 단계 (공개키/비대칭키):\n - 서버 인증서 전자서명 검증으로 서버 신원 인증\n - Pre-master Secret(사전 마스터 비밀값) 안전 교환/암호화\n데이터 전송 단계 (대칭키):\n - 협상된 대칭 세션키로 실제 응용 데이터(Application Data) 초고속 암·복호화",
+    trap: "공개키 암호화는 연산 오버헤드가 극심하여 대용량 본문 암호화에 부적합함! 따라서 키 교환/인증에만 공개키를 쓰고, 실제 데이터는 대칭키로 암호화하는 하이브리드 방식을 적용함.",
+    sectionId: "general",
+    tags: ["SSL/TLS", "핸드셰이크", "하이브리드암호", "Pre-master Secret", "세션키", "인증서", "2026기출"],
+  },
+  {
+    id: "sec-roi-98",
+    chapterId: "app",
+    chapterName: "애플리케이션 보안",
+    grade: "SS",
+    stars: 4,
+    frequencyRate: "2026 1회차 실기 기출",
+    title: "Fiddler 웹 프록시 HTTPS 복호화 메커니즘 & 브라우저 조치",
+    formula: "동작 원리: Fiddler가 클라이언트와 목적지 서버 사이에서 동적 인증서를 생성하는 중간자(MITM) 프록시로 동작\n복호화 조치: Fiddler 생성 사설 루트 CA 인증서를 OS/브라우저의 '신뢰할 수 있는 루트 인증 기관'에 설치하고 `Decrypt HTTPS traffic` 옵션 활성화",
+    trap: "루트 CA 인증서를 신뢰할 수 있는 기관으로 등록하지 않으면 브라우저에서 '신뢰할 수 없는 인증 기관(SEC_ERROR_UNKNOWN_ISSUER)' 경고가 뜨며 세션이 중단됨!",
+    sectionId: "application",
+    tags: ["Fiddler", "루트CA", "HTTPS복호화", "MITM", "신뢰할수있는루트인증기관", "2026기출"],
+  },
+  {
+    id: "sec-roi-99",
+    chapterId: "network",
+    chapterName: "네트워크 보안",
+    grade: "S",
+    stars: 3,
+    frequencyRate: "2025 3회차 실기 기출",
+    title: "L2 스위치 프레임 포워딩 3종 & Windows 세션/공유 CLI",
+    formula: "L2 스위칭: Cut-Through(목적지 MAC 6바이트만 읽고 즉시 전송, 지연 최소) / Store-and-Forward(전체 프레임 버퍼링 후 CRC 검증, 에러 검출 최고) / Fragment-Free(충돌 방지 최소 크기 64바이트 검사)\nWindows CLI: `net session`(활성 원격 세션 확인 및 `/delete` 강제 종료), `net share`(공유 폴더 및 관리공유 목록 확인)",
+    trap: "Cut-Through 방식은 에러 검출을 하지 않아 런트(Runt) 프레임이나 충돌 패킷까지 전달하는 단점이 있고, Store-and-Forward는 에러를 완벽 차단하나 지연(Latency)이 큼.",
+    sectionId: "network",
+    tags: ["Cut-Through", "Store-and-Forward", "Fragment-Free", "net session", "net share", "2025기출"],
+  },
+  {
+    id: "sec-roi-100",
+    chapterId: "law",
+    chapterName: "정보보안 법규",
+    grade: "S",
+    stars: 3,
+    frequencyRate: "2026 1회차 실기 기출",
+    title: "정보통신망법 CISO 법정 4대 업무 & 집적정보통신시설(IDC) 사업자",
+    formula: "CISO 법정 4대 업무 (망법 시행령 제36조의7):\n 1. 정보보호 관리체계의 수립 및 운영·관리\n 2. 정보보호 취약점 및 위협의 분석·평가 및 개선대책 수립\n 3. 침해사고 발생 시 원인 분석 및 긴급 대응·피해 확산 방지\n 4. 임직원 대상 정보보호 교육 및 훈련 계획 수립·시행\n망법 제46조: 집적정보통신시설 사업자 (IDC/데이터센터 전산 설비 위탁 운영자)의 물리적/기술적 보호조치 의무",
+    trap: "CISO는 기술적·관리적 정보보안 총괄이고, CPO는 개인정보보호 총괄임! 일정 규모 이상 상장사는 CISO의 겸직이 금지됨.",
+    sectionId: "law",
+    tags: ["CISO", "CISO4대업무", "집적정보통신시설사업자", "IDC", "망법제46조", "정보통신망법", "2026기출"],
+  },
 ];
 
 const LOCAL_STORAGE_KEY_NOTES = "security_mindmap_scratchpad";
@@ -1201,6 +1469,27 @@ export function SecurityFloatingMemo() {
     setTimeout(() => setIsCopiedNotes(false), 2000);
   };
 
+  // 비정형 소스코드 5단계 추적 공식 템플릿 삽입
+  const handleInsert5StepTemplate = () => {
+    const template = `\n\n[2026 실기 대비: 비정형 소스코드 취약점 5단계 추적 공식]
+1. [Source] 외부 입력값 유입점 식별 (request.getParameter, $_GET, argv, req.body 등)
+2. [Sanitize] 검증/필터링 부재 구간 확인 (화이트리스트 부재, replace 단순 치환, 정규식 누락 등)
+3. [Sink] 위험한 실행 함수 도달 (executeQuery, eval, Runtime.getRuntime.exec, system 등)
+4. [Impact/Error] 발생 취약점 명칭 식별 (CWE-89 SQLi, CWE-79 XSS, CWE-78 Command Injection 등)
+5. [Remediation] 시큐어 코딩 근본 대책 (PreparedStatement, HTML Entity Escape, 화이트리스트 검증 등)`;
+    const newNotes = userNotes ? userNotes + template : template.trim();
+    handleNotesChange(newNotes);
+  };
+
+  // 챕터별 항목 수 동적 집계
+  const chapterCounts = useMemo(() => {
+    const counts: Record<string, number> = { all: SECURITY_ROI_ITEMS.length };
+    SECURITY_ROI_ITEMS.forEach((item) => {
+      counts[item.chapterId] = (counts[item.chapterId] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
   // 필터링된 아이템 목록
   const filteredItems = useMemo(() => {
     return SECURITY_ROI_ITEMS.filter((item) => {
@@ -1268,7 +1557,7 @@ export function SecurityFloatingMemo() {
             기출빈도 ROI 전략 메모장
           </span>
           <span className="rounded-full bg-black/25 px-2 py-0.5 text-xs font-semibold backdrop-blur-sm">
-            80선
+            100선
           </span>
         </Button>
       </div>
@@ -1303,7 +1592,7 @@ export function SecurityFloatingMemo() {
                     </span>
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    필기·실기 공통 빈출 초고수익 80대 킬러 개념 &amp; 나만의 시험 요약장
+                    필기·실기 공통 빈출 초고수익 100대 킬러 개념 &amp; 나만의 시험 요약장
                   </p>
                 </div>
               </div>
@@ -1348,7 +1637,7 @@ export function SecurityFloatingMemo() {
                 )}
               >
                 <Flame className="size-3.5 fill-current text-emerald-500" />
-                기출 80대 핵심 카드
+                기출 100대 핵심 카드
                 <span className="ml-1 rounded-full bg-emerald-500/15 px-1.5 py-0.2 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                   {filteredItems.length}
                 </span>
@@ -1418,14 +1707,14 @@ export function SecurityFloatingMemo() {
                   {/* 챕터 필터 */}
                   <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
                     {[
-                      { id: "all", label: `전체 (${SECURITY_ROI_ITEMS.length})` },
-                      { id: "general", label: "일반/암호 (25)" },
-                      { id: "network", label: "네트워크 (17)" },
-                      { id: "system", label: "시스템 (14)" },
-                      { id: "app", label: "어플리케이션 (10)" },
-                      { id: "law", label: "법규/ISMS (6)" },
-                      { id: "os", label: "OS (4)" },
-                      { id: "arch", label: "구조 (4)" },
+                      { id: "all", label: `전체 (${chapterCounts.all || 0})` },
+                      { id: "general", label: `일반/암호 (${chapterCounts.general || 0})` },
+                      { id: "network", label: `네트워크 (${chapterCounts.network || 0})` },
+                      { id: "system", label: `시스템 (${chapterCounts.system || 0})` },
+                      { id: "app", label: `어플리케이션 (${chapterCounts.app || 0})` },
+                      { id: "law", label: `법규/ISMS (${chapterCounts.law || 0})` },
+                      { id: "os", label: `OS (${chapterCounts.os || 0})` },
+                      { id: "arch", label: `구조 (${chapterCounts.arch || 0})` },
                     ].map((sub) => (
                       <button
                         key={sub.id}
@@ -1617,7 +1906,17 @@ export function SecurityFloatingMemo() {
                     <BookmarkCheck className="size-4 text-emerald-500" />
                     작성한 내용은 브라우저(localStorage)에 실시간 자동 저장됩니다.
                   </span>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-xs gap-1.5 px-3 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10"
+                      onClick={handleInsert5StepTemplate}
+                      title="실기 시험 대비 비정형 소스코드 분석 5단계 추적 공식 서식을 추가합니다"
+                    >
+                      <Sparkles className="size-3.5" />
+                      5단계 소스코드 추적 공식 삽입
+                    </Button>
                     <Button
                       variant="outline"
                       size="sm"

