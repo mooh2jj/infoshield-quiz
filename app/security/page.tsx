@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Minus, Plus, Zap, FileCheck2 } from "lucide-react";
+import { Minus, Plus, Zap, FileCheck2, BookOpen } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SubjectChip } from "@/components/quiz/SubjectChip";
 import { useQuizStore } from "@/lib/store/quizStore";
@@ -74,9 +74,6 @@ export default function HomePage() {
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 PRACTICAL EXAM
               </span>
-              <span className="rounded bg-primary/20 px-1.5 py-0.2 text-[10px] font-semibold text-primary">
-                신규
-              </span>
             </div>
             <h2 className="text-base font-semibold tracking-tight text-foreground">
               정보보안기사 실기 실전 모의고사
@@ -94,6 +91,41 @@ export default function HomePage() {
           >
             <FileCheck2 className="size-3.5" />
             실기 모의고사 시작
+          </Link>
+        </div>
+      </div>
+
+      {/* 정보보안기사 실기 기출 배너 */}
+      <div className="relative overflow-hidden rounded-xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="flex size-5 items-center justify-center rounded-md bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                <BookOpen className="size-3.5" />
+              </span>
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                PAST EXAM (18문항 완제)
+              </span>
+              <span className="rounded bg-emerald-500/20 px-1.5 py-0.2 text-[10px] font-semibold text-emerald-700 dark:text-emerald-300">
+                신규
+              </span>
+            </div>
+            <h2 className="text-base font-semibold tracking-tight text-foreground">
+              정보보안기사 실기 기출문제 풀세트 (18문항 완제)
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              2026년 2회, 1회, 2025년 3회 회차별 단답·서술·실무 18문항 전 문항 완제 복원 및 실시간 자가 채점
+            </p>
+          </div>
+          <Link
+            href="/security/past-exam"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "h-10 shrink-0 gap-1.5 bg-emerald-600 font-semibold text-white hover:bg-emerald-700 shadow-sm"
+            )}
+          >
+            <BookOpen className="size-3.5" />
+            실기 기출 시작
           </Link>
         </div>
       </div>
