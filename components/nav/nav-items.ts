@@ -186,11 +186,17 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       {
         href: "/linux",
-        label: "퀴즈",
-        pillLabel: "리눅스 퀴즈 준비중",
+        label: "홈",
+        pillLabel: "리눅스 홈",
         icon: ListChecks,
         matchPrefixes: ["/linux"],
-        status: "coming-soon",
+      },
+      {
+        href: "/linux/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "리눅스 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/linux/speed-quiz"],
       },
       {
         href: "/linux/mindmap",
@@ -228,11 +234,10 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       {
         href: "/netadmin",
-        label: "퀴즈",
-        pillLabel: "네트워크관리사 퀴즈 준비중",
+        label: "모의고사 (CBT)",
+        pillLabel: "네트워크 CBT 모의고사",
         icon: ListChecks,
-        matchPrefixes: ["/netadmin"],
-        status: "coming-soon",
+        matchPrefixes: ["/netadmin", "/netadmin/exam", "/netadmin/quiz", "/netadmin/result"],
       },
       {
         href: "/netadmin/mindmap",
@@ -240,6 +245,33 @@ export const NAV_GROUPS: NavGroup[] = [
         pillLabel: "네트워크관리사 마인드맵",
         icon: Network,
         matchPrefixes: ["/netadmin/mindmap"],
+      },
+    ],
+  },
+  {
+    id: "csts",
+    label: "CSTS(SW테스트전문가)",
+    items: [
+      {
+        href: "/csts",
+        label: "실전 기출 20제",
+        pillLabel: "CSTS 실전 기출",
+        icon: ListChecks,
+        matchPrefixes: ["/csts", "/csts/quiz", "/csts/result"],
+      },
+      {
+        href: "/csts/speed-quiz",
+        label: "스피드 퀴즈",
+        pillLabel: "CSTS 스피드 퀴즈",
+        icon: Zap,
+        matchPrefixes: ["/csts/speed-quiz"],
+      },
+      {
+        href: "/csts/mindmap",
+        label: "마인드맵 & ROI",
+        pillLabel: "CSTS 마인드맵",
+        icon: Network,
+        matchPrefixes: ["/csts/mindmap"],
       },
     ],
   },

@@ -1,0 +1,456 @@
+import type { SpeedQuizChapter, SpeedQuizItem } from "./types";
+
+export const CSTS_CHAPTERS: SpeedQuizChapter[] = [
+  { id: "ch1", name: "제1영역 테스트 기본 원리 및 개요", shortName: "기본 원리" },
+  { id: "ch2", name: "제2영역 테스트 프로세스 & 레벨", shortName: "프로세스·레벨" },
+  { id: "ch3", name: "제3영역 정적 테스팅 & 리뷰", shortName: "정적 테스팅" },
+  { id: "ch4", name: "제4영역 동적 테스팅 (블랙박스)", shortName: "블랙박스" },
+  { id: "ch5", name: "제5영역 동적 테스팅 (화이트박스)", shortName: "화이트박스" },
+  { id: "ch6", name: "제6영역 테스트 관리 & 품질 표준", shortName: "관리·품질" },
+];
+
+export const CSTS_QUIZ_LIST: SpeedQuizItem[] = [
+  // =================================================================
+  // === [제1영역] 테스트 기본 원리 및 개요 (10문항)
+  // =================================================================
+  {
+    id: 1,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "인간의 실수나 착각으로 인해 발생한 행동이나 잘못된 결정을 뜻하는 결함 용어는?",
+    answer: "오류 (Error / Mistake)",
+  },
+  {
+    id: 2,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "오류로 인해 소스코드나 문서에 존재하는 결점을 뜻하는 용어는? (버그)",
+    answer: "결함 (Defect / Fault / Bug)",
+  },
+  {
+    id: 3,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "소프트웨어 실행 중 결함이 발현되어 외부로 비정상 동작을 일으키는 현상은?",
+    answer: "장애 (Failure)",
+  },
+  {
+    id: 4,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "'Are we building the product right?' 개발 규격 및 명세 충족 여부를 점검하는 것은?",
+    answer: "검증 (Verification)",
+  },
+  {
+    id: 5,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "'Are we building the right product?' 사용자의 실제 필요와 목적 충족을 점검하는 것은?",
+    answer: "확인 (Validation)",
+  },
+  {
+    id: 6,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "소수의 특정 모듈에 대다수의 결함이 집중된다는 원리는? (파레토 80:20)",
+    answer: "결함 집중 (Defect Clustering)",
+  },
+  {
+    id: 7,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "동일한 테스트 케이스를 반복하면 새로운 결함을 찾기 어려워지는 현상은?",
+    answer: "살충제 패러독스 (Pesticide Paradox)",
+  },
+  {
+    id: 8,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "결함 전파를 막고 수정 비용을 최소화하기 위해 개발 초기부터 테스팅을 시작해야 한다는 원리는?",
+    answer: "조기 테스팅 (Early Testing)",
+  },
+  {
+    id: 9,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "결함을 모두 수정했더라도 사용자의 요구와 기대에 부합하지 못하면 실패라는 원리는?",
+    answer: "오류 부재의 궤변 (Absence-of-errors Fallacy)",
+  },
+  {
+    id: 10,
+    chapterId: "ch1",
+    chapterName: "제1영역 테스트 기본 원리 및 개요",
+    question: "테스팅의 제1원리: 테스팅은 결함의 무엇을 증명할 수 있는가? (존재 vs 부재)",
+    answer: "결함의 존재 (부재 증명 불가)",
+  },
+
+  // =================================================================
+  // === [제2영역] 테스트 프로세스 & 레벨 (10문항)
+  // =================================================================
+  {
+    id: 11,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "ISO/IEC/IEEE 국제 표준 소프트웨어 테스트 프로세스 표준 번호는?",
+    answer: "ISO/IEC/IEEE 29119",
+  },
+  {
+    id: 12,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "개별 모듈/컴포넌트의 내부 로직과 기능을 검증하는 가장 작은 단위의 테스트 레벨은?",
+    answer: "단위 테스트 (Unit Test)",
+  },
+  {
+    id: 13,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "모듈 간 상호작용 및 데이터 전달 인터페이스의 이상 유무를 검증하는 테스트 레벨은?",
+    answer: "통합 테스트 (Integration Test)",
+  },
+  {
+    id: 14,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "상향식 통합 테스트에서 미구현 상위 모듈의 역할을 대신하는 가상 모듈은?",
+    answer: "드라이버 (Driver)",
+  },
+  {
+    id: 15,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "하향식 통합 테스트에서 미구현 하위 모듈의 역할을 대신하는 가상 모듈은?",
+    answer: "스텁 (Stub)",
+  },
+  {
+    id: 16,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "완성된 전체 시스템의 기능적/비기능적 요구사항 명세 충족을 검증하는 테스트 레벨은?",
+    answer: "시스템 테스트 (System Test)",
+  },
+  {
+    id: 17,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "고객이나 사용자가 시스템 도입 승인 여부를 결정하기 위해 수행하는 최종 테스트 레벨은?",
+    answer: "인수 테스트 (Acceptance Test)",
+  },
+  {
+    id: 18,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "개발자 환경 내에서 사용자가 개발자와 함께 참여하여 수행하는 인수 테스트는?",
+    answer: "알파 테스트 (Alpha Test)",
+  },
+  {
+    id: 19,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "실제 운영 환경에서 불특정 다수의 잠재 고객이 직접 수행하는 인수 테스트는?",
+    answer: "베타 테스트 (Beta Test)",
+  },
+  {
+    id: 20,
+    chapterId: "ch2",
+    chapterName: "제2영역 테스트 프로세스 & 레벨",
+    question: "모든 모듈을 한 번에 결합하여 테스트하는 통합 방식으로 결함 위치 파악이 어려운 방식은?",
+    answer: "빅뱅 통합 (Big-bang Integration)",
+  },
+
+  // =================================================================
+  // === [제3영역] 정적 테스팅 & 리뷰 (10문항)
+  // =================================================================
+  {
+    id: 21,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "코드를 직접 실행하지 않고 산출물(문서, 코드)을 분석하여 결함을 찾는 테스팅 방식은?",
+    answer: "정적 테스팅 (Static Testing)",
+  },
+  {
+    id: 22,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "훈련된 중재자(Moderator) 주도하에 공식 체크리스트와 메트릭을 수집하는 가장 엄격한 리뷰는?",
+    answer: "인스펙션 (Inspection)",
+  },
+  {
+    id: 23,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "저작자(Author)가 주도하여 산출물을 참가자에게 설명하고 교육과 대안 모색을 하는 리뷰는?",
+    answer: "워크스루 (Walkthrough)",
+  },
+  {
+    id: 24,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "동료 간 신속한 피드백을 위해 별도 사전 준비 없이 진행하는 가장 비정형적인 리뷰는?",
+    answer: "비공식 리뷰 (Informal Review)",
+  },
+  {
+    id: 25,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "소프트웨어 아키텍트나 기술 리더가 기술적 타당성과 표준 준수를 검토하는 리뷰는?",
+    answer: "기술 리뷰 (Technical Review)",
+  },
+  {
+    id: 26,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "실행 흐름상 어떤 경우에도 실행될 수 없는 코드를 뜻하는 용어는?",
+    answer: "도달 불가능 코드 (Dead Code)",
+  },
+  {
+    id: 27,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "코딩 규칙 준수, Dead Code 검출, 순환 복잡도 측정을 자동 수행하는 도구 유형은?",
+    answer: "정적 분석 도구 (Static Analysis Tool)",
+  },
+  {
+    id: 28,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "인스펙션 회의 중 작성자의 산출물을 소리 내어 한 줄씩 읽어나가는 참가자의 역할은?",
+    answer: "낭독자 (Reader)",
+  },
+  {
+    id: 29,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "인스펙션 프로세스를 총괄 관리하고 회의의 중립성을 유지하는 핵심 리더 역할은?",
+    answer: "주재자 / 중재자 (Moderator)",
+  },
+  {
+    id: 30,
+    chapterId: "ch3",
+    chapterName: "제3영역 정적 테스팅 & 리뷰",
+    question: "정적 테스팅으로 발견하기 적합한 것은? (메모리 누수 vs 코딩 표준 위반)",
+    answer: "코딩 표준 위반 (메모리 누수는 동적 분석)",
+  },
+
+  // =================================================================
+  // === [제4영역] 동적 테스팅 (블랙박스 기법) (10문항)
+  // =================================================================
+  {
+    id: 31,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "입력 도메인을 유효/비유효 동등 클래스로 나누고 각 클래스에서 대표값을 뽑는 기법은?",
+    answer: "동등 분할 (Equivalence Partitioning)",
+  },
+  {
+    id: 32,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "경곗값 분석(BVA)에서 유효 범위의 경계값 자체와 인접 바깥쪽 값 2개를 취하는 방식은?",
+    answer: "2-Value BVA",
+  },
+  {
+    id: 33,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "정수 1~100 범위에서 2-Value BVA 적용 시 선정되는 4가지 입력값은?",
+    answer: "0, 1, 100, 101",
+  },
+  {
+    id: 34,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "논리적 조건 조합과 그에 따른 동작을 표로 정리하여 복잡한 업무 규칙을 검증하는 기법은?",
+    answer: "의사결정 테이블 테스팅 (Decision Table)",
+  },
+  {
+    id: 35,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "의사결정 테이블에서 불리언 조건(T/F)이 3개일 때 가능한 규칙(Rule)의 총 개수는?",
+    answer: "8개 (2의 3제곱)",
+  },
+  {
+    id: 36,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "상태 전이 테스팅에서 모든 단일 전이(1-hop)를 최소 1회 실행하는 커버리지는?",
+    answer: "0-스위치 커버리지 (0-Switch Coverage)",
+  },
+  {
+    id: 37,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "상태 전이 테스팅에서 연속된 2개의 전이 시퀀스(2-hop)를 실행하는 커버리지는?",
+    answer: "1-스위치 커버리지 (1-Switch Coverage)",
+  },
+  {
+    id: 38,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "결함의 대다수가 2개 인자의 상호작용에서 발생함에 착안해 케이스 수를 압축하는 기법은?",
+    answer: "페어와이즈 테스팅 (Pairwise)",
+  },
+  {
+    id: 39,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "입력 도메인을 분류(Classification)와 클래스(Class)의 계층 트리로 시각화해 조합하는 기법은?",
+    answer: "분류 트리 기법 (Classification Tree Method)",
+  },
+  {
+    id: 40,
+    chapterId: "ch4",
+    chapterName: "제4영역 동적 테스팅 (블랙박스)",
+    question: "사용자 시나리오나 유스케이스 명세서의 정상/대안 흐름을 기반으로 테스트를 도출하는 기법은?",
+    answer: "유스케이스 테스팅 (Use Case Testing)",
+  },
+
+  // =================================================================
+  // === [제5영역] 동적 테스팅 (화이트박스 기법) (10문항)
+  // =================================================================
+  {
+    id: 41,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "소스코드 내 실행 가능한 모든 문장을 최소 1회 실행하는 커버리지는?",
+    answer: "구문 커버리지 (Statement Coverage)",
+  },
+  {
+    id: 42,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "모든 분기점의 결과가 참(True)과 거짓(False)을 최소 1회씩 갖도록 실행하는 커버리지는?",
+    answer: "결정 커버리지 / 분기 커버리지 (Decision Coverage)",
+  },
+  {
+    id: 43,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "분기 커버리지 100% 달성 시 항상 100% 보장되는 커버리지는?",
+    answer: "구문 커버리지 (문장 커버리지)",
+  },
+  {
+    id: 44,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "분기문 내 각 개별 조건식(A, B)이 독립적으로 True/False를 최소 1회 갖도록 하는 커버리지는?",
+    answer: "조건 커버리지 (Condition Coverage)",
+  },
+  {
+    id: 45,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "다른 조건식을 고정하고 자신의 값 변경만으로 전체 결정 결과를 반전시키는 커버리지는?",
+    answer: "MC/DC (변경 조건/결정 커버리지)",
+  },
+  {
+    id: 46,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "개별 조건식이 N개일 때 100% MC/DC 달성을 위한 최소 테스트 케이스 수는?",
+    answer: "N + 1개",
+  },
+  {
+    id: 47,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "N개의 개별 조건식의 모든 가능한 참/거짓 조합(2^N개)을 테스트하는 커버리지는?",
+    answer: "다중 조건 커버리지 (Multiple Condition Coverage)",
+  },
+  {
+    id: 48,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "매케이브 순환 복잡도 공식 V(G) = E - N + ? (간선 E, 노드 N, 단일 컴포넌트)",
+    answer: "+ 2 (또는 P + 1)",
+  },
+  {
+    id: 49,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "CFG에서 분기 조건 노드(Predicate Node) 수가 4개일 때 매케이브 순환 복잡도는?",
+    answer: "5 (P + 1)",
+  },
+  {
+    id: 50,
+    chapterId: "ch5",
+    chapterName: "제5영역 동적 테스팅 (화이트박스)",
+    question: "제어 흐름 그래프에서 선형 독립적인 실행 경로들의 집합을 찾는 테스팅 기법은?",
+    answer: "기본 경로 테스팅 (Basis Path Testing)",
+  },
+
+  // =================================================================
+  // === [제6영역] 테스트 관리 & 품질 표준 (10문항)
+  // =================================================================
+  {
+    id: 51,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "테스트 헌장(Charter)을 바탕으로 정해진 타임박스 내에 탐색·설계·실행·학습을 동시 수행하는 기법은?",
+    answer: "탐색적 테스팅 (Exploratory Testing)",
+  },
+  {
+    id: 52,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "테스터의 직관과 과거 경험에 기반하여 발생 가능한 결함을 예측해 테스트하는 기법은?",
+    answer: "오류 추정 (Error Guessing)",
+  },
+  {
+    id: 53,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "결함 수정 보고 후 원래 실패했던 케이스를 재실행해 결함이 해결되었는지 확인하는 테스트는?",
+    answer: "확인 테스트 (Re-test / Confirmation)",
+  },
+  {
+    id: 54,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "결함 수정이나 코드 변경 후 기존 다른 정상 기능에 부작용(결함)이 없는지 확인하는 테스트는?",
+    answer: "회귀 테스트 (Regression Test)",
+  },
+  {
+    id: 55,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "시스템의 정상 한계를 초과하는 극단적 과부하를 가해 임계점과 복원력을 점검하는 비기능 테스트는?",
+    answer: "스트레스 테스트 (Stress Testing)",
+  },
+  {
+    id: 56,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "소프트웨어 테스트 조직의 독립성 4단계 중 객관성과 독립성이 가장 높은 주체는?",
+    answer: "외부 전문 시험/인증 기관 테스터",
+  },
+  {
+    id: 57,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "ISO/IEC 25010 제품 품질 8대 특성에 포함되지 않는 단골 오답 특성은? (생산성 vs 신뢰성)",
+    answer: "개발 생산성 (Productivity는 프로세스 척도)",
+  },
+  {
+    id: 58,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "결함 관리 생명주기에서 결함이 접수된 후 담당 개발자가 지정된 직후의 상태는?",
+    answer: "Assigned (할당됨)",
+  },
+  {
+    id: 59,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "수정된 결함의 재테스트 결과 여전히 결함이 재현될 때 설정하는 결함 상태는?",
+    answer: "Reopened (재오픈)",
+  },
+  {
+    id: 60,
+    chapterId: "ch6",
+    chapterName: "제6영역 테스트 관리 & 품질 표준",
+    question: "빌드 직후 가장 기본적이고 핵심적인 기능이 정상 동작하는지 신속히 확인하는 테스트는?",
+    answer: "스모크 테스트 (Smoke Test)",
+  },
+];

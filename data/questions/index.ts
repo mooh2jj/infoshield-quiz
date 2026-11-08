@@ -9,6 +9,7 @@ import bigdata from "./bigdata.json";
 import sqld from "./sqld.json";
 import adsp from "./adsp.json";
 import netadmin from "./netadmin.json";
+import csts from "./csts.json";
 
 export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   system: system as QuizItem[],
@@ -71,6 +72,22 @@ export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
     (item) => item.category === "netadmin-linux"
   ),
   "netadmin-past": netadmin as QuizItem[],
+  "csts-principles": (csts as QuizItem[]).filter(
+    (item) => item.category === "csts-principles"
+  ),
+  "csts-static": (csts as QuizItem[]).filter(
+    (item) => item.category === "csts-static"
+  ),
+  "csts-blackbox": (csts as QuizItem[]).filter(
+    (item) => item.category === "csts-blackbox"
+  ),
+  "csts-whitebox": (csts as QuizItem[]).filter(
+    (item) => item.category === "csts-whitebox"
+  ),
+  "csts-management": (csts as QuizItem[]).filter(
+    (item) => item.category === "csts-management"
+  ),
+  "csts-past": csts as QuizItem[],
 };
 
 export const ALL_QUESTIONS: QuizItem[] = Object.values(

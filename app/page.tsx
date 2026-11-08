@@ -74,6 +74,13 @@ const CERTIFICATIONS: CertificationCard[] = [
     status: "available",
   },
   {
+    id: "csts",
+    label: "CSTS (소프트웨어 테스트 전문가)",
+    description: "5대 영역 마인드맵 · 기출 ROI 전략 메모장(24선) · 60제 스피드 퀴즈 & 실전 기출 20제",
+    href: "/csts",
+    status: "available",
+  },
+  {
     id: "aws-saa",
     label: "AWS SAA",
     description: "4대 도메인 마인드맵 · 실전 시나리오 4지선다 퀴즈",

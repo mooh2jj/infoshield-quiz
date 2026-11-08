@@ -22,7 +22,13 @@ export type SubjectCategory =
   | "netadmin-devices"
   | "netadmin-windows"
   | "netadmin-linux"
-  | "netadmin-past";
+  | "netadmin-past"
+  | "csts-principles"
+  | "csts-static"
+  | "csts-blackbox"
+  | "csts-whitebox"
+  | "csts-management"
+  | "csts-past";
 
 export type QuestionType = "multiple_choice" | "term_identification";
 
@@ -69,4 +75,10 @@ export const SUBJECT_LABELS: Record<SubjectCategory, string> = {
   "netadmin-windows": "Windows Server",
   "netadmin-linux": "Linux 시스템",
   "netadmin-past": "기출 복원 (20261101 회차)",
+  "csts-principles": "테스트 기본 원리 및 프로세스",
+  "csts-static": "정적 테스팅",
+  "csts-blackbox": "블랙박스 테스팅",
+  "csts-whitebox": "화이트박스 테스팅",
+  "csts-management": "테스트 관리 및 비기능",
+  "csts-past": "CSTS 실전 기출 복원",
 };
