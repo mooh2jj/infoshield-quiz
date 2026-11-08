@@ -8,6 +8,7 @@ import awsSaa from "./aws-saa.json";
 import bigdata from "./bigdata.json";
 import sqld from "./sqld.json";
 import adsp from "./adsp.json";
+import netadmin from "./netadmin.json";
 
 export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   system: system as QuizItem[],
@@ -57,6 +58,19 @@ export const QUESTIONS_BY_CATEGORY: Record<SubjectCategory, QuizItem[]> = {
   "adsp-past": (adsp as QuizItem[]).filter(
     (item) => item.category === "adsp-past"
   ),
+  "netadmin-general": (netadmin as QuizItem[]).filter(
+    (item) => item.category === "netadmin-general"
+  ),
+  "netadmin-devices": (netadmin as QuizItem[]).filter(
+    (item) => item.category === "netadmin-devices"
+  ),
+  "netadmin-windows": (netadmin as QuizItem[]).filter(
+    (item) => item.category === "netadmin-windows"
+  ),
+  "netadmin-linux": (netadmin as QuizItem[]).filter(
+    (item) => item.category === "netadmin-linux"
+  ),
+  "netadmin-past": netadmin as QuizItem[],
 };
 
 export const ALL_QUESTIONS: QuizItem[] = Object.values(

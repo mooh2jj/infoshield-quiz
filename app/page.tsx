@@ -69,9 +69,9 @@ const CERTIFICATIONS: CertificationCard[] = [
   {
     id: "netadmin",
     label: "네트워크관리사 1·2급",
-    description: "5개 과목 마인드맵 공개 · 퀴즈는 준비 중",
+    description: "5개 과목 마인드맵 · 20261101 실전 기출 복원 CBT 모의고사",
     href: "/netadmin",
-    status: "coming-soon",
+    status: "available",
   },
   {
     id: "aws-saa",

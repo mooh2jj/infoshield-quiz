@@ -17,7 +17,12 @@ export type SubjectCategory =
   | "adsp-understanding"
   | "adsp-planning"
   | "adsp-analysis"
-  | "adsp-past";
+  | "adsp-past"
+  | "netadmin-general"
+  | "netadmin-devices"
+  | "netadmin-windows"
+  | "netadmin-linux"
+  | "netadmin-past";
 
 export type QuestionType = "multiple_choice" | "term_identification";
 
@@ -59,4 +64,9 @@ export const SUBJECT_LABELS: Record<SubjectCategory, string> = {
   "adsp-planning": "데이터 분석 기획",
   "adsp-analysis": "데이터 분석",
   "adsp-past": "기출 복원 (42·43·44·47·48회)",
+  "netadmin-general": "네트워크 일반 & 프로토콜",
+  "netadmin-devices": "네트워크 기기 & 토폴로지",
+  "netadmin-windows": "Windows Server",
+  "netadmin-linux": "Linux 시스템",
+  "netadmin-past": "기출 복원 (20261101 회차)",
 };
